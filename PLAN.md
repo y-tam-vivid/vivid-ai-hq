@@ -25,21 +25,31 @@
 | 作業ログの強度 | 「都度・積極的に」 | 「一段落したら」（旧版） |
 | 学習ログDBの参照形式 | `collection://16936917…` | `data_source 16936917…` |
 
-### 真因（推測ではなく実物で確定）
+### 真因（2026-08-12 訂正済み）
 
-全10体の CORE:BEGIN マーカーにこう書かれている:
-
-```
-正本は ~/.claude/core/ を編集し sync-agents.sh を実行
-```
+当初「生成器が作られていない」と判定したが**誤り**。Mac mini セッションの実測で確定した真の構造:
 
 ```
-~/.claude/core/   → 存在しない
-sync-agents.sh    → 存在しない（~/bin にも find でも 0件）
+生成器は Mac mini に実在し、今日3回稼働している
+  ~/.claude/core/{00-共通,10-法人,11-営業部門,20-個人}.md ＋ sync-agents.sh
+
+しかし MacBook⇄mini の同期対象は agents/ skills/ output-styles/ memory/ の4つだけ
+  → core/ と CLAUDE.md は同期対象外 ＝ MacBook からは存在しないように見えていた
 ```
 
-**正本ディレクトリも生成器も作られていない。** だから全員が配布先を直接手編集するしかなく、
-CORE区間の外にあった「Notion運用ルール」節と Output Style が取り残された。
+**真因は「生成器が無い」ではなく、生成器の配布先リストに1面しか登録されていないこと。**
+
+```
+sync-agents.sh の配布先
+  agents/*.md ×10 の CORE区間          ← 登録済み・完全一致 (f6b60f52ae60)
+  output-styles/fable-mode.md          ← ★未登録 → 8項目が置いていかれた
+  ~/.claude/CLAUDE.md                  ← ★未登録 → core/ と8行以上が逐語重複
+  agents/*.md の CORE区間の外           ← ★対象外 → Notion運用ルールが手貼りで10体に重複
+  Notion「🗺️ AI設定ファイルの地図」の写し  ← ★手動 → 4つ目の複製
+```
+
+配布先を足せばこの症例は直るが、**面が増えるたびに登録を思い出す必要がある**という同じ失敗の型は残る。
+だから採る手は「配布先を足す」ではなく「配布そのものをやめる（参照だけ配る）」。
 
 ### 増幅器
 
@@ -166,3 +176,50 @@ Output Style は「口調」だけに縮小し、組織ルールを一切持た�
 1. このファイルを読む
 2. `cd ~/vivid-ai-hq && git status && git log --oneline | head` で現在地を確認
 3. 上のチェックリストの未完項目から続行
+
+---
+
+## 7. Mac mini セッションとの合流（2026-08-12 23:50）
+
+mini 側監査（Google Doc: 1KJ_5cM_uq279TRnAUW-ysM-envj2YKr5RTlAleyo3KQ）を受けて実施。
+
+### 突合の結果
+
+| 論点 | 結果 |
+|---|---|
+| MacBook の agents は mini の今日の版か | **一致**。10体すべて `f6b60f52ae60`（mini指定の shasum 方式で実測） |
+| 私の正本 vs mini の core（00-共通＋10-法人） | 見出し差ゼロ／本文差12行。内訳＝sync-agents.sh の運用注記3行（意図的に除去）＋写し更新の手順4行（旧方式固有）＋遵守義務の一文2行（旧手貼り節から引き継ぎ） |
+| mini が指摘した「A2は不要」 | **半分正しい**。分解し直しはしていない（生成済みの出力をそのまま使ったので内容は同一）。ただし取り込みは必要だった |
+| mini が指摘した「A6は不要」 | **不採用**。`sync-agents.sh --check` は複製の一致だけを見る。`check.sh` は複製の**存在**・skills参照漏れ・memory索引の孤児・symlink状態も見る |
+
+### mini 側が数えていなかった複製が2つあった
+
+- `~/.claude/CLAUDE.md`（5,659B）が core/ と **8行以上を逐語で重複**。sync-agents.sh の管理外
+- Notion「🗺️ AI設定ファイルの地図」の全文写し（00/10/11）が4つ目の複製
+
+→ どちらもリポジトリ方式では不要になる。CLAUDE.md は @import のみ、Notion写しは
+   リポジトリへのポインタ＋要約（参照層ブリーフィング型）へ縮小する。
+
+### 採った構造（mini の「混ぜない」原則は保持）
+
+```
+.claude/skills/
+  fukuchi-core/     00-共通＋10-法人   → 全10体が frontmatter skills: で参照（配布はしない）
+  fukuchi-sales/    11-営業部門        → 営業の作業時のみ。全体へ注入しない
+  fukuchi-personal/ 20-個人           → 法人エージェントには載せない
+_archive/           旧方式の実物（11/20原本・sync-agents.sh・mini CLAUDE.md）を保存
+```
+
+### 実施済み
+
+- [x] **15分双方向 rsync を停止**（crontab をコメントアウト。バックアップ: scratchpad/crontab.backup-2026-08-12）
+      ← mini 監査の「止めるまで両機の編集が競合し続ける」に対応。**最優先で実施**
+- [x] mini の `core/` 4ファイル＋`sync-agents.sh`＋`CLAUDE.md` を回収
+- [x] 11-営業部門 / 20-個人 を Skill 化。00/10 は fukuchi-core と突合の上で削除
+
+### mini 側に残る作業（Phase B の後）
+
+- mini の `~/.claude/core/` は**今後編集しない**。編集先はリポジトリの `.claude/skills/`
+- mini でも repo を clone し、`~/.claude/{agents,skills,output-styles}` を symlink 化
+- mini の `~/.claude/CLAUDE.md` は repo の CLAUDE.md へ置換（本文を持たせない）
+- Notion「🗺️ AI設定ファイルの地図」を全文写し → リポジトリへのポインタ＋要約に縮小
