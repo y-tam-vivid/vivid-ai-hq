@@ -1,0 +1,69 @@
+- [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — MacBookから`ssh mini`(yuji_macmini@mac-mini/Tailscale)で操作する主作業機。~/.claude資産移植済・残りはmini側ログイン認証
+- [Language: Japanese](feedback_language_japanese.md) — ユーザーへの応答は常に日本語で行う
+- [大きなSheetsはgviz経由で読む](reference_gviz_large_sheet_access.md) — ブラウザ自動化下はDL不可・localhostもPNAで遮断。同一オリジンのページ内fetchで`gviz/tq?tq=select 列`。**ただしgvizは黙って嘘をつく**（シート名不一致→1枚目／型推定でテキスト数値→null）。数値状文字列は`export?format=csv&gid=`で読む
+- [kintoneエクスポートは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーにならず別レコードを読む
+- [モデル使い分けルール](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印(指名時のみ)＋別モデルが適する時は能動的に推奨
+- [思考OS Skill(thinking-os)](project_thinking_os_skill.md) — NewsPicks記事発の「思考OS」10レンズ＋6要素骨格をモデル非依存ローカルSkill化。/thinking-osで全モデル共通利用。④DB正本登録済
+- [Fable Style改善ループ](project_fable_style_improvement_loop.md) — 規範を週次×ハイブリッドで自己改善。**ユーザーの訂正/やり直しは改善ログDBに種を記録**／「改善ログを適用して」で軽微=自動・構造=承認で反映
+- [AI活用→発信ネタ化パイプライン](project_ai_usage_to_content_pipeline.md) — **実務の区切りごとに⑥ディスカッションログへ作業記録を残す(=モルガンズ週次巡回のネタ源)。都度確認せず自動記録=全エージェント+Fable Styleに埋込済の全AI共通ルール(2026-07-11)**／発信価値ある事例は学習ログDBに発信候補✓も。週次モルガンズが素材化(自動公開なし)。案A整合・Phase2(モルガンズ付替)は保留
+- [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — claude.ai各Project(約15本)の議論ログを新規📚プロジェクト・ナレッジDB(collection 894c592f…)へ構造化移行。3層+発信ネタ型/④登記簿は不変で一方向Relation。パイロット=ふくち事業構想の空ページ作成済、エクスポートJSON流し込み待ち
+- [AI活用ログDB統合方針(案A)](project_ai_log_db_consolidation.md) — 学習ログを単一台帳化し発信は発信候補フラグ＋📣発信ネタボードで運用。Phase1完了/Phase2(発信ネタDB統合・モルガンズ参照付替・投稿生成Skill)保留
+- [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はローカルに無く claude.ai Project「SNS有璽個人投稿用」内。参照は投稿アーカイブDBのみ＝発信ネタ一元化しても影響なし(付替えは routine/ビュー/docの3点だけ)
+- [Secretary agent「ビビ」](project_secretary_agent.md) — ふくち。グループの秘書ビビ:サブエージェント(~/.claude/agents/secretary.md)+ 毎朝8時の自動ブリーフィングroutine
+- [CFO agent「ナミ」](project_cfo_agent.md) — ふくち。グループのCFOナミ:サブエージェント(~/.claude/agents/cfo.md)+ Notion財務ハブ + 月次/週次routine
+- [CLO agent「センゴク」](project_legal_agent.md) — ふくち。グループのCLO(法務)センゴク:サブエージェント(~/.claude/agents/legal.md)+ Claude for Legalプラグイン二層(commercial/privacy/corporate)。日本法ラッパー。Notion法務ハブ(契約レビュー/期日管理DB)構築済・名鑑稼働中。プラグイン導入はユーザー未実行
+- [CKO agent「ロビン」](project_cko_agent.md) — ナレッジ統括ロビン(~/.claude/agents/cko.md)。会議準備を裏方で作りビビへ受け渡し(毎朝7:40 routine)。Phase B=議事録DB連携待ち
+- [広報PR agent「モルガンズ」](project_pr_agent.md) — ふくち。グループの外部CCO(広報PR)モルガンズ:サブエージェント(~/.claude/agents/pr.md)。プレスリリースは提供資料(Drive/Notion)ベースで設計・配信設計(実送信は承認後)。メディア露出モードは研修プレイブック準拠(~/.claude/agents/pr-playbook.md)
+- [親子向けAI体験イベントPR](project_ai_kids_event_pr.md) — モルガンズ初の実案件。2026/7/25-26 グランフロント大阪。NPO名義PR TIMES(企業ID184772)にテスト下書き投入済。配信は案件確定・SB承認・Roblox商標確認後
+- [締切ダッシュボード](project_deadline_dashboard.md) — タスクDB(62c7fadf…)+法務期日DB(498d4f2e…)に🚦信号Formula列、📆締切ダッシュボードpageで横断把握、ビビ朝ブリーフィングに🔴🟡集約(2026-07-17)。将来は各人向け配信へ
+- [デザイン統括「フランキー」](project_design_agent.md) — デザイン/クリエイティブ統括(~/.claude/agents/design.md)。NotionのUI・情報設計・成果物の見せ方(embed/Artifact)・社内外ビジュアル制作(Figma/Canva/Gamma)。ロビン=中身/モルガンズ=対外/リリス=web実装と棲み分け。Notionはフォント自由化不可→テンプレ/ビュー/IA/埋め込みの4レバー
+- [開発エージェント群「ステラ＋サテライト」](project_dev_agents.md) — 開発ライン(ベガパンク命名):ステラ(統括/dev-producer)＋エジソン(アプリ)/ピタゴラス(システム)/リリス(ウェブ)+ Notion開発ハブ + 週次routine
+- [いろどり／IRODORI(美容診断アプリ)](project_irodori_app.md) — 開発第一号:女性向けパーソナルカラー＋肌診断。端末内処理・実年齢オプトイン・クチュールモード。プロトタイプ稼働中、次は精度向上(要 本番ホスティング)
+- [イベントAIアプリ集約ポータル](project_ai_event_portal.md) — 来場者向けランチャー。/Users/yujimac/fukuchi-ai-event/(**MacBook側のみ**)をVercel公開予定。いろどり公開・他8本は準備中。フォルダ追加で拡張
+- [子ども向けイベントミニAIアプリ シリーズ](project_kids_event_apps.md) — 開発第二ライン:キオスク設置・お金リテラシー知育。~/fukuchi-kids-apps に共通キット確立。13本量産・全公開済(ポータル15タイトル・準備中0)、以降もオリジナル案で量産可
+- [アプリ量産モード](feedback_app_mass_production_mode.md) — 子どもアプリはステラ+エジソンで自律量産。確認は致命的5項目(公開/コスト/プライバシー/既存破壊/大分岐)のみ
+- [Agent naming](project_agent_naming.md) — AIエージェント群はONE PIECEで統一。麦わらの一味=CXO/サポート、ベガパンク(ステラ＋分身)=開発ライン
+- [AI組織図・名鑑](reference_ai_org_chart.md) — 全AIエージェントの役割/成果ハブをNotion名鑑DBで一覧化(ビビが会社把握で参照する正の索引)。page 3957b156-8b57-81b4-a9dc-ffa26382e48c
+- [CXO build playbook](project_cxo_build_playbook.md) — CXO/秘書エージェントを1体作る標準手順(別タブでも同構成で作るため)。**新規サブエージェントは「行動規範(Fable Style)」＋「モデル運用」節の埋め込みが必須**
+- [Downloads整理→Drive本棚システム](project_downloads_archive_system.md) — Downloads=受け皿/マイドライブ=17分類の本棚。~/bin/sort_downloads.pyで週次自動振り分け(cron月9時)。要フルディスクアクセス許可
+- [toC顧客台帳(資産形成・投資商材)](project_toc_customer_ledger.md) — toB顧客DB(kintoneミラー)と別にNotion完結で構築。①個人顧客マスター+②提案商談。関連法人relでtoB×toCクロスセル。将来=人物マスター中心。BI=Notion簡易+Claude
+- [組織マスター4DB](reference_org_master_4db.md) — 全社の組織軸の正本。部門/法人/部署/プロジェクトをRelation連結(2026-07-16構築)。スタッフ・議事録・顧客・タスク・月報が参照する。担当者マスターのselect→Relation張替は未実施
+- [組織マスターのNotion所在とコード体系](reference_org_master_notion.md) — 4DBのdata source ID一覧＋部門は機能軸10-15のみ/法人はCompanyタグで分離。施設運営は15-300(LSU)・15-400(オレンジワークス)へ再コード化済(旧20-100/30-100は解消)。30=リアンライフ(旧SWELL)
+- [Notion Relation双方向化の地雷](reference_notion_relation_dual_landmine.md) — one-way→DUAL変換で既存Relation値が全件消失。新規列は最初からDUALで作る／変換前に全行エクスポート必須(2026-07-21実地)
+- [案B タスクDB→組織マスターRelation付替え](project_task_db_relation_migration.md) — Step1-5＋双方向化まで完了(2026-07-21)。旧select列は非破壊で並走。残件=ビュー実在確認・Step7降格処理
+- [Notionナレッジハブ・組織マスター](reference_notion_knowledge_hub.md) — ビビッド業務管理Notion+組織マスター(Company10ビビッド/20ILIFE/30SWELL × Division10-15/LSU/OW × Dept5桁)。全ナレッジ整理の整合性の軸。別タブClaude Code会話は読めない
+- [ローカルメモ棚卸しプロジェクト](project_local_memo_cleanup.md) — テキストエディットの.rtf/.txt約1,004件を20カテゴリに自動分類(未移動)。最終形は事業部×種類の2軸。商談/文字起こし約300件は03議事録DB原資
+- [bundler HTML→Figma数値化移行の定型手順](project_html_to_figma_pipeline.md) — 配布用bundler形式HTMLをフォント剥がし→1440px数値化→Figma MCPで直接構築。福地/スタンドアップ/プライバシーポリシー変換済
+- [共有ドライブのフォームはファイル添付不可](reference_shared_drive_form_upload.md) — 「ファイルのアップロード」がグレーアウト。親ルートが`0A`始まり=共有ドライブ。フォーム本体だけマイドライブへ移す(戻すと回答受付が壊れる)。GASに`addFileUploadItem()`は無い
+- [共有ドライブは権限を狭められない](reference_shared_drive_permission_floor.md) — メンバー権限は配下に継承され個別に外せない。`_機微`サブフォルダは共有ドライブ内では無効＝別ドライブへ出すしかない
+- [機微の二層管理ルール](feedback_confidential_two_layer_rule.md) — フォルダは原則共有・機微だけ`_機微`サブフォルダで本人限定(本人+代表+管理部門長)。経理=部署ごと本人限定/労務法務採用=共有+_機微。sort_downloads.pyで自動隔離
+- [デザイン方針: 図解ファースト＋絵文字抑制](feedback_design_diagram_first_minimal_emoji.md) — 流れ/関係/階層は言葉でなく図式(矢印フロー・分岐・マトリクス)で主に見せ言葉は補足。図を1行に潰すのは改悪。絵文字は機能的最小限に抑制。2026-07-16フランキーレビューで確定
+- [生成ファイルはNotionに添付](feedback_generated_files_attach_notion.md) — 生成/発行したMD/Skill/HTML/資料は該当Notionページに実ファイル添付(DL可)。テキスト=全文+`<file>`原本、動くHTML=`<embed>`ライブ描画+Artifact併記。一時領域に放置しない。2026-07-16全AI標準
+- [Notion運用ルール正本](project_notion_operating_rules.md) — **全AIが読み書き前に必ず参照**。4層モデル(正本/参照/記録/作業)＋要約は鮮度ヘッダー必須＋参照層ブリーフィング型。ローカル11ファイルにポインタ埋込済(2026-07-20)
+- [【廃止】Notion最新版を最上部ルール](feedback_notion_latest_version_top.md) — 2026-07-21廃止。📌最新版インデックス方式は規律依存で破綻。後継=[Notion運用ルール正本]。「旧版を消さない」原則のみ継承
+- [Notionナレッジ設計ページ](reference_notion_knowledge_design.md) — 【設計】ナレッジホーム設計ページ=Drive住み分け/命名(事業×法人)§9を追記した協議ハブ。[[reference_notion_knowledge_hub]]の組織体系に整合させる
+- [指数表記の法人番号を復元する](reference_recover_exponential_corp_number.md) — 値からは戻せないが国税庁全件データ＋丸め戻し一致で1社に絞れる。指数表記が4つ目の照合条件
+- [kintoneルックアップはコピー](reference_kintone_lookup_is_a_copy.md) — コピー元を直しても自動追随しない。マスタ更新→参照アプリで取り直しまでが1作業。参照側に選択肢は存在しない
+- [空行が汚れる2つの経路](reference_sheet_scan_range_pollution.md) — 書式の継承だけでなく走査範囲の広さでも空行に値が入る。実データが離れた行にあると手前が全部巻き込まれる
+- [Sheetsチェックボックス書式の侵食](reference_sheets_checkbox_format_creep.md) — 空行のfalseは「実害なし」ではない。後から行が入った瞬間にキーが壊れる。CSVはキーの形を必ず検査
+- [レコード統合の手順](reference_record_merge_protocol.md) — 全列突合→移送→集計列を空に→削除。廃止した選択肢はリネームでなく上書きで始末
+- [営業案件管理：現在地と起点](project_sales_workbook_read_first.md) — 起点は🧭全体像1枚(3b47b156…)9章の索引から辿る。**入口の正は「名刺フォルダ毎朝07:00→00_企業マスタ」(7/29設計確定・未実装)＋営業の直接入力。受付フォームは本体未開放の間の暫定で入口の1つに降格**／毎朝07:30 Notion upsertも未実装／層は並走させない／A案=本体を営業へ開放(2026-08-12)
+- [読むもの一覧は地図ではない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る。再発防止策が出力側に偏っていないか数える
+- [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 文書・図・レイアウトは作る前に3〜5行で形を見せる。スクリプトのドライランと同じ。抽象語（図/整理/分かりやすく）が出たら合図
+- [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — 打ち切られた書き出し・gsのコメント・過去の要約を根拠に「無い/未実施」と断定しない
+- [営業案件管理ワークブック(3層)](project_sales_pipeline_workbook.md) — スプレッドシート=案件層/kintone=確定層/Notion=参照。**層の役割分担は語彙統一より優先**。2026-08-03に統合完了(企業マスタ387⇄kintone384が1対1・鍵は社内顧客ID)。週次手順書＋GAS10本。buildWorkbookは実行禁止
+- [営業ワークブックは列移動してよい](reference_sales_workbook_column_moves.md) — マスタ2枚は全GASが見出し名で引く(37本実測)。「追加は末尾」は旧前提。受付シートは例外／apply_schema_v3.gsは実行禁止(旧10値に巻き戻る)
+- [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」で指定/ユーザー選択はログイン名/日付はyyyy-MM-dd/**書き出しはUTF-8**(Shift_JISで髙﨑É〜が化ける)/取り込んだら必ず突合し直す
+- [kintone顧客マスター](reference_kintone_customer_master.md) — 顧客の正本はkintone(松本構築)。Notion顧客DBは中間ミラー、結合キー=法人番号。Excel追記→kintone→Notionの一方向。機微(口座等)はkintone留置。議事録DBの相手/会社はこのDBへrelation
+- [名刺→kintone反映パイプライン](project_meishi_to_kintone_pipeline.md) — 名刺OCR(raw.csv)を1顧客に統合→kintone61列転記→GBizINFO等でWEB厚め補完(10社刻み並列)→黄色フラグ付xlsx別名反映。資本金/従業員はWEB必須・登記簿は不足社のみ
+- [コミュニケーションログ基盤](project_communication_log_hub.md) — LINE/Messenger/メール等のやり取りを📨ログDB(collection 1d129663…)へ格納し顧客DB/kintone/議事録と相互リンク。スキルcustomer-db-syncに④入口として統合済・どのClaudeでも同処理可
+- [顧客ファイルのDrive格納先](feedback_customer_files_drive_location.md) — 顧客情報・kintone反映系は財務(03)でなく取引先・人物別(11)/顧客情報kintone反映csv へ。2026-07-16ユーザー指示・申し送り徹底
+- [kintoneCSV→Notion顧客DBミラー反映](project_kintone_csv_to_notion_mirror.md) — kintone顧客管理エクスポートを61列整形しNotion🏢顧客DB(中間ミラー・法人番号キー collection f506787d…)へ直接書込。地雷=Excel経由で法人番号指数表記化(WEB再取得・社名照合)/サブテーブル継続行/プレースホルダ実値/cp932化け/手転記の漢字化け→作成後SELECT突合検証必須
+- [AIエージェント体制＋Notion蓄積で進める](working-via-ai-agents-and-notion-hub.md) — 今後の作業はビビ中央窓口経由＋AIナレッジハブ参照で継続する方針
+- [カレンダー テンプレ自動挿入GAS](project_calendar_template_autofill.md) — 会議準備テンプレをGASで自動挿入。タイトル【種別】で振り分け(商談/面談/社内/定例/セミナー=入れる)。空保存→10分後反映。命名ルール(【】=種別)徹底が前提
+- [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — 詰まり①の担い手＝ローカルスクリプト(毎朝07:35)に決定・実装済。対象320件。**残=Notionインテグレーションを2DBへ「接続」する1操作(田村さん)**
+- [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — SQLはワークスペース上限あり/viewモードは無制限だがSHOWが効かず全列返る。大量処理は内部インテグレーション＋ローカルスクリプトへ
+- [議事録自動整理GAS 復旧＋Notion基盤移行](project_giji_automation_gas.md) — notta/Meet議事録の自動整理GAS。停止真因=廃止モデルnot_found→復旧済。オーナー区分ルーティング(田村個人=個人ゲート/社員=自動全社)設計中・バックログ停止中。Driveフォルダ構造(事業部門分類)の議論は現行作業完了後に併せて。ビジョン=まず自分で確立→社員展開、社員のタスク可視化＋商談事前準備まで
+- [Apps Script生成時のAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを検出しない。Sheet/Range/Spreadsheetの所属クラス突合が必須。onOpenメニューはバインド時のみ
+- [Sheets書き込みの暗黙挙動4点](reference_sheets_number_format_order.md) — ①書式はsetValuesより前②getLastRowは数式セルを非空と数える③既存スキップは冪等性を壊す④入力規則違反のsetValuesは部分書き込みして落ち、例外は次の読み取り行で出る
+- [Drive上の.gsは開けない](reference_drive_gs_file_not_previewable.md) — 拡張子なし/.gsはoctet-stream固定でプレビュー不可。リネームでは直らずGoogleドキュメントとして作り直す

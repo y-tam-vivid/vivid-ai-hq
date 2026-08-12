@@ -1,0 +1,21 @@
+---
+name: project_calendar_template_autofill
+description: Googleカレンダーの会議準備テンプレをGASで自動挿入。タイトルの種別で振り分け
+metadata: 
+  node_type: memory
+  type: project
+  originSessionId: a5c258b1-21a4-4d70-8a4d-916760150ede
+---
+
+[01]ビビッド_田村有璽（カレンダーID=`y_tam@vivid-global.com`）の予定に、**会議準備テンプレを自動挿入するGAS**（2026-07-13確定）。Googleカレンダー単体には既定テンプレ機能が無いための代替。費用0（GAS無料枠・AI不使用）。
+
+**挙動**：作成ダイアログへの即表示は不可。**空の説明で保存 → 10分おきの時間トリガーがテンプレを差し込む**（＝保存後に自動反映）。一度入ると空でなくなり次回スキップ（自己ガード）。
+
+**種別フィルタ（田村さん判断で確定）**：タイトル先頭の`[種別]`/`【種別】`を読み判定。
+- テンプレを**入れる**：商談 / 面談 / 社内 / 定例 / セミナー
+- **入れない**：現場（送迎・配車）/ 私用 / イベント / その他 / 種別なし
+- 定例（繰り返し）はシリーズ単位で1回。自分作成の予定のみ（他人主催は不干渉）。
+
+**前提＝命名ルール徹底**：【】＝**種別**（手段=オンライン/電話は説明欄「■手段」へ）。確定版ルールは Phase B要件書A節 https://app.notion.com/p/3957b1568b5781679355e365a9029e26 。種別9種=商談/定例/社内/面談/現場/イベント/セミナー/私用/その他。テンプレ本文はこのルールのA-2と一致。挿入先の説明欄は🌐全社議事録DB連携（相手/会社は顧客DB表記に統一）。
+
+**コード**：scratchpad `calendar_template_autofill.gs`（セッション限り）。関数=insertTemplateIntoEmptyEvents / setupTrigger(10分トリガー) / extractType_。設置は田村さんのGoogleアカウントのApps Script。関連 [[reference_notion_knowledge_hub]] [[reference_kintone_customer_master]]。
