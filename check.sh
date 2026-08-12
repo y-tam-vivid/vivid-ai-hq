@@ -57,5 +57,26 @@ for p in agents skills output-styles; do
   esac
 done
 
+
+say "── 6. リポジトリ外に取り残された .md が無いか（抜け漏れ検出）"
+missing=0
+while IFS= read -r f; do
+  b=$(basename "$f")
+  find . -name "$b" -not -path "./.git/*" | grep -q . || { fail "repo未収録: ${f#$HOME/.claude/}"; missing=1; }
+done < <(find "$HOME/.claude" -name "*.md" \
+           -not -path "*/paste-cache/*" -not -path "*/file-history/*" \
+           -not -path "*/plugins/*" -not -path "*/sessions/*" -not -path "*/tasks/*" \
+           -not -path "*/cache/*" 2>/dev/null)
+[ $missing -eq 0 ] && ok "~/.claude 配下の .md はすべて repo に存在する"
+
+say "── 7. バージョン違いの散乱"
+sprawl=$(find . "$HOME/bin" -maxdepth 3 \( -name "*_v[0-9]*" -o -name "*_backup*" -o -name "*_old*" -o -name "*コピー*" -o -name "*最新*" \) -not -path "./.git/*" -not -path "./_archive/*" 2>/dev/null)
+if [ -n "$sprawl" ]; then
+  fail "版が並んでいるファイル（_archive/ へ集約すること）:"
+  printf '      %s\n' $sprawl
+else
+  ok "版の並存なし"
+fi
+
 say ""
 [ $NG -eq 0 ] && { say "✅ ズレなし"; exit 0; } || { say "❌ ズレを検出。上記を解消してから commit すること"; exit 1; }

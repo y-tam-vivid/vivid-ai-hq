@@ -67,3 +67,7 @@
 - [Apps Script生成時のAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを検出しない。Sheet/Range/Spreadsheetの所属クラス突合が必須。onOpenメニューはバインド時のみ
 - [Sheets書き込みの暗黙挙動4点](reference_sheets_number_format_order.md) — ①書式はsetValuesより前②getLastRowは数式セルを非空と数える③既存スキップは冪等性を壊す④入力規則違反のsetValuesは部分書き込みして落ち、例外は次の読み取り行で出る
 - [Drive上の.gsは開けない](reference_drive_gs_file_not_previewable.md) — 拡張子なし/.gsはoctet-stream固定でプレビュー不可。リネームでは直らずGoogleドキュメントとして作り直す
+- [AI資産カタログ](ai-asset-catalog.md) — Skill/GAS/MCP/主要MDの台帳化。**Drive `マイドライブ/AI資産_正本/` を正本と宣言済(2026-07-07)＝vivid-ai-hqの設計と要調整**。旧版は`_旧版/`へ・Notion台帳の現行バージョン列が単一の真実
+- [Downloads整理の2段設計](downloads-archive-system.md) — Stage1=17分類へ機械振り分け(自動化OK)／Stage2=事業部・個人へは人＋AI協業で、**いきなり自動振り分けは誤配リスクのため禁止**
+- [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — **ファイル作成/編集の前に変更内容をdiffで提示し、同時に触る全ファイルを一覧化して承認を待つ**。サプライズ書き込みは禁忌
+- [ふくち。アンブレラサイトv2.0](project_handoff_bundle.md) — `~/Downloads/サイト改修2026/…(Remix)/` はClaude Designのハンドオフ束。静的HTML+shared.css・ビルド無し。旧vivid-global.comのリブランド
