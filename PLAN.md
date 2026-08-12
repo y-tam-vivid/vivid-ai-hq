@@ -223,3 +223,41 @@ _archive/           旧方式の実物（11/20原本・sync-agents.sh・mini CLA
 - mini でも repo を clone し、`~/.claude/{agents,skills,output-styles}` を symlink 化
 - mini の `~/.claude/CLAUDE.md` は repo の CLAUDE.md へ置換（本文を持たせない）
 - Notion「🗺️ AI設定ファイルの地図」を全文写し → リポジトリへのポインタ＋要約に縮小
+
+---
+
+## 8. 未決の判断 ─ Skill の正本は Drive か Git か（2026-08-13）
+
+検査6（リポジトリ外の .md 検出）で、他cwdスコープに閉じ込められて不可視だった
+`ai-asset-catalog` を回収した際に判明した衝突。
+
+```
+2026-07-07 決定   Drive「マイドライブ/AI資産_正本/」が Skill の正本
+                  ~/.claude/skills は "稼働コピー"
+                  旧版は _旧版/ へ・命名は _v1.0（禁止語=最新/コピー/修正版）
+                  Notion台帳の「現行バージョン」列が単一の真実
+
+今回の設計        .claude/skills/ が正本（git で版管理・check.sh で機械検査）
+```
+
+用途が違うだけで競合ではない可能性がある（Drive＝人が開く・DL可・Notion台帳と紐づく／
+リポジトリ＝AIが実行時に読む・4面へ自動配布）。取りうる形:
+
+| 案 | 内容 | 効果 |
+|---|---|---|
+| **案1** | リポジトリを正本、Drive を配布用ミラー（人が読む窓口）へ降格。Drive側は編集禁止と明記 | git履歴・check.sh が効く。Notion台帳は「現行=リポジトリのcommit」を指す |
+| 案2 | Drive を正本のまま、リポジトリを実行用ミラーへ降格 | **編集先がDriveになり git と check.sh が効かなくなる**。今回の一元化の趣旨と衝突 |
+| **案3** | 対象で分ける（実行されるSkill/agents＝リポジトリ／人が読む資料・成果物＝Drive） | 二重管理が増えない範囲で両立。境界の明文化が必要 |
+
+推奨は案1。理由＝今回の一連の問題はすべて「機械が検査できない場所に正本を置いた」ことから出ている。
+※ 2026-07-07 の宣言をどういう意図で出したかは本人しか知らないため、決定は本人。**ユーザー回答待ち。**
+
+## 9. 承認待ちの破壊的操作（2026-08-13 提示済み・未実行）
+
+いずれも削除はせず `_archive/` への移動のみ。git 管理下で巻き戻し可。
+
+- ① 版の並存の解消: `~/bin/sort_downloads.py` と `_v4_backup.py`（md5一致・cron未使用）を退避し、
+  `_v5.py` を `sort_downloads.py` へ改名＋crontab書き換え／`~/.claude.json.backup`・`.tmp.19316…` を退避
+- ② A8 symlink化: `~/.claude/{agents,skills,output-styles,projects/…/memory}` を
+  `_archive/claude-pre-migration-2026-08-13/` へ退避してから repo への symlink を張る
+- ③ 他cwdの memory 原本は**動かさない**（動かすとそのcwdで起動時にメモリが消えるため、重複を許容）
