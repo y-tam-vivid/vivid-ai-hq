@@ -140,12 +140,32 @@ Output Style は「口調」だけに縮小し、組織ルールを一切持た�
 - [ ] **B3** `git remote add` → `git push -u origin main`
 - [ ] **B4** claude.ai/code で当該リポジトリを選択しセッション作成
 
-### Phase C ─ クラウド実測（10分）
+### Phase C ─ クラウド実測（**完了**・2026-08-13）
 
-- [ ] **C1** クラウドセッションで `/mcp` → Notion/Gmail/Drive コネクタの可否を確認
-      ★ここが×だと ビビ/ナミ/センゴク はWebで機能しない（全員Notion依存）
-- [ ] **C2** 10体の呼び出しテスト（`@secretary` 等）
-- [ ] **C3** スマホのClaudeアプリからセッション操作を確認
+実測環境: repo `vivid-ai-hq` / branch `main` / 環境 Default / Opus 4.8
+セッション: https://claude.ai/code/session_01Gr5b5bVCE8QCPGFrBDg3Yt
+
+- [x] **C1** コネクタ → **手動有効化すら不要。既定で全ONで載る**
+      入力欄の「＋ → コネクタ」に Canva / Figma / Gamma / Gmail / Google Calendar /
+      Google Drive / Notion / Slack の8つがトグルONで並ぶ。セッション内から見えるMCPは
+      10件（上記＋ github / Claude_Code_Remote）。
+      **宣言だけでなく実疎通も確認**：ビビ（secretary）に読み取り専用でNotionを引かせ、
+      `notion-fetch` → `notion-query-data-sources` で ⑥ディスカッションログDBの直近1件を取得
+      （「AI設定ファイルの正本化（core/ ＋ sync-agents.sh）と2台のMacのズレ」/
+      last_edited 2026-08-12 14:51Z）。書き込み・作業ログ記録は明示的に禁じ、未実施。
+      → **「C1が×ならビビ/ナミ/センゴクはWebで機能しない」というリスクは消滅。**
+- [x] **C2** 10体の呼び出し＋**参照方式の成立**を実測
+      合格条件はエージェント名の列挙ではなく「**規範の中身を答えられること**」に置いた。
+      10体すべてを agent type として認識。ナミ（cfo）が『公開レベル』3区分＝内部限定／
+      メンバー共有可／外部公開可、「ファイルを動かすか」＝動かさない（保留にする）を
+      原文どおり回答。一方 `.claude/agents/cfo.md` は55行で当該文言のヒット0、
+      5-6行目に `skills: - fukuchi-core` のみ。
+      → **clone 経路でも `skills: [fukuchi-core]` の注入が成立。コピー配布廃止の前提が保たれた。**
+- [x] **C3** スマホのClaudeアプリからセッション操作 → **OK**（2026-08-13 ユーザー実機）
+      セッションが表示され、続きのメッセージ送信ができることを確認。
+      ※ スマホの**通常チャット**ではサブエージェントは使えない（§5参照）。
+
+**→ ターミナル（MacBook / Mac mini）・claude.ai/code・スマホの3面が揃った。**
 
 ---
 
@@ -165,11 +185,17 @@ Output Style は「口調」だけに縮小し、組織ルールを一切持た�
 | agents優先順位 | `.claude/agents/`(3) > `~/.claude/agents/`(4) > plugin(5) |
 | 別スレッドの手順書 | 3〜5項（ブランチ取り込み／既存5エージェント／フォーク配布）は別案件の文脈。1・2・6〜8のみ有効 |
 
-## 5. 未確定（Phase Cで解消）
+## 5. 未確定
 
-- クラウドセッションで claude.ai コネクタ（Notion/Gmail/Drive/Calendar）が使えるか。
-  コネクタはマシンでなくアカウントに紐づくため通る見込みだが、公式明言なし。
+- ~~クラウドセッションで claude.ai コネクタが使えるか~~ → **C1で解消（2026-08-13）**。
+  公式にも記載あり（cloud-environments「Network access」節：コネクタ通信はセッションの
+  ネットワークではなく Anthropic 経由を通るため、**Allowed domains への追加は不要**）。
+  実疎通もC1で確認済み。ただし**セッション単位の設定**である点は変わらないので、
+  リポジトリ側のファイルで自動化はできない。
 - スマホの**通常チャット**ではサブエージェントは使えない。使えるのは Claude Code クラウドセッションの操作・監視。
+- **クローバー博士（研究・産学連携）が名鑑には存在するが agent type として未登録**
+  （`.claude/agents/` に定義ファイルが無い）。今回の移行での欠落ではなく元から。
+  名鑑と実体のズレとして要判断。
 
 ## 6. 再開方法（圧縮された場合）
 
