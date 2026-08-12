@@ -1,0 +1,23 @@
+---
+name: reference_kintone_customer_master
+description: 顧客マスターの正本はkintone。Notion顧客DBは中間ミラー。結合キーは法人番号
+metadata: 
+  node_type: memory
+  type: reference
+  originSessionId: a5c258b1-21a4-4d70-8a4d-916760150ede
+---
+
+ふくち。グループの**顧客マスターの正本（SSOT）は kintone**（松本さん構築）。Notionに顧客のフル台帳は作らない（「顧客管理＝Notion＋スプシ＋kintoneの4系統分散」を増やさないため）。[[reference_notion_knowledge_hub]] の議事録DB設計と接続する。
+
+**データの流れ（一方向）**: Excel追記シート → kintone(正本) → Notion顧客DB(中間ミラー)。**Notion側で顧客属性は編集しない**（編集はkintone一択）。
+**結合キー = 法人番号**（Notion・kintone双方で重複禁止）。README既定の重複判定キー〈①法人番号 ②インボイス番号 ③屋号+代表者+電話〉を全レイヤーの結合キーに流用。
+
+**参照Excel**: `~/Downloads/[松本]顧客情報kintone反映csv.xlsx`（実体は.xlsx）。シート構成=README(運用手順)／マスター(全顧客一覧・現在14件・62項目, A列「kintone反映」未/済)／追記_YYYYMMDD(日次入力・雛形あり)。62項目に住所・代表者・事業内容・経営課題・労務・**銀行口座**等を含む。運用: 追記シート入力→Claudeが重複判定してマスター転記(新規のみ,kintone反映=未)→kintone投入→済に更新。
+
+**Notion顧客DB=中間ミラー（会議準備に効く分まで／機微は除外）**: 見出し(顧客名/法人番号unique/カスタマーID/種別/kintoneレコードURL/kintone反映)＋自社側relation(自社取引担当者→担当者マスター, 担当事業→Company/Division, 流入経路)＋会議準備用ミラー(代表者/先方担当連絡先/事業内容要約/課題/強み/規模感)。**Notionに載せない=kintone留置**: 銀行口座一式・労働保険/雇用保険/最低賃金/雇用区分別人数 等の機微。
+
+**議事録DBとの接続**: 議事録DBの「相手/会社」＝この顧客DBへのrelation（表記ゆれ解消・ビビが会社名で前回議事録を引ける）。未登録会社は「未登録」仮置き→Excel追記へ回して抜け漏れ検知。
+
+**Notion顧客DB 新設完了（2026-07-12）**: 「🏢 顧客DB（kintoneミラー・法人番号キー）」を新設＝https://app.notion.com/p/0b5455629ea6487e8dee218599587e89 (ds `collection://f506787d-4e72-4c7f-a1f4-0c657f54afc8`, ハブ配下)。ミラー項目のみ(顧客名/法人番号/カスタマーID/kintoneレコードURL/kintone反映/種別/取引ステージ/自社取引担当者→担当者マスターrelation/Company/流入経路/代表者/先方担当・連絡先/事業内容要約/課題/強み/規模感/メモ)。**機微(銀行口座・労務等)は非搭載＝kintone留置**。🌐全社議事録DB「顧客」relation ⇄ 顧客DB「関連議事録」で接続済。**14社シード投入済(2026-07-12)**: 取込元はDriveのGoogle Sheet(fileId `10_dehQxEwm7MQ0TI7258d_5H5ikfjtom`, 松本さん)。マスター14社をミラー項目のみ投入(全て種別=見込み客/ステージ=リード/kintone反映=未/自社取引担当者=田村)。**注意**: Drive→Notion転記時に稀な漢字が化けた(滝→滄/邊→邑/町→甧等)→コードポイント指定(\uXXXX)で修正済。以後、稀漢字はエスケープ入力推奨。銀行口座列はこのシートでは空。
+
+確定案ページ: https://app.notion.com/p/3987b1568b5781a09bffefce45435b60 （議事録DB統合スキーマ確定案・by ロビン）。関連 [[project_local_memo_cleanup]]

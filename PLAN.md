@@ -309,3 +309,52 @@ _archive/           旧方式の実物（11/20原本・sync-agents.sh・mini CLA
 **参照方式は成立。** ただしこれはローカル（cwd=リポジトリ）での実証であり、
 クラウドの clone 経路でも同じに効くかは C2 で別途確認する（合格条件はエージェント名の
 一覧化ではなく「規範の中身を答えられること」）。
+
+---
+
+## 11. 実行完了記録（2026-08-13）
+
+ユーザー承認: ①②実行可（既存の動きに影響がない前提）／③ Skill正本は**案1＝リポジトリ**。
+
+### Phase B 完了
+```
+GitHub    git@github.com:y-tam-vivid/vivid-ai-hq.git （private）
+認証      SSH（既存の id_ed25519 を登録。gh / brew / PAT いずれも不要だった）
+push      main → 受領確認済み
+```
+
+### ① 版の並存を解消
+| 移動元 | 移動先 | 根拠 |
+|---|---|---|
+| `~/bin/sort_downloads.py` | `_archive/bin/sort_downloads_v3.py` | v4とmd5一致・cron未使用 |
+| `~/bin/sort_downloads_v4_backup.py` | `_archive/bin/sort_downloads_v4.py` | 同上 |
+| `~/bin/sort_downloads_v5.py` | → `~/bin/sort_downloads.py` へ改名 | crontab も同時に書き換え・py_compile 通過 |
+| `~/.claude.json.backup` / `.tmp.19316…` | `_archive/claude-json/` | 6/23・7/11 の残骸 |
+
+### ② symlink 化（MacBook / Mac mini 両機）
+```
+~/.claude/agents        → ~/vivid-ai-hq/.claude/agents
+~/.claude/skills        → ~/vivid-ai-hq/.claude/skills
+~/.claude/output-styles → ~/vivid-ai-hq/.claude/output-styles
+~/.claude/projects/<cwd>/memory → ~/vivid-ai-hq/memory
+~/.claude/CLAUDE.md     実ファイル（本文なし・絶対パスの @import 2行のみ）
+```
+退避先: MacBook=`_archive/claude-pre-migration-2026-08-13/` ／ mini=`~/.claude-backup-2026-08-13/`
+（mini の `core/` と旧 `CLAUDE.md` もここへ。削除していない）
+
+### 実証
+| 検証 | 結果 |
+|---|---|
+| symlink 越しの注入（cwd=~） | ✓ `~/.claude/skills/fukuchi-core/SKILL.md` を引用して正答 |
+| リポジトリ外cwd（`~/Downloads`）から規範が届くか | ✓ エージェント指定なしで「要承認」と正答＝cwd依存の欠落を解消 |
+| クラウド C1 コネクタ | ✓ 手動有効化すら不要。8コネクタが最初からON。Notion実疎通も確認 |
+| クラウド C2 参照方式 | ✓ 10体を認識・cfoが原文どおり回答・cfo.mdは55行で当該文言ヒット0 |
+| check.sh 全7項目 | ✓ ズレなし |
+
+### 残件
+- **C3 スマホ実機確認**（ユーザー手番）
+- mini に GitHub SSH鍵が無く `git pull` できない。現状は MacBook からの rsync で同期。
+  mini を自走させるなら mini で鍵を作り GitHub へ登録する（任意）
+- Drive `マイドライブ/AI資産_正本/` を「人が読む写し」へ降格する明記（案1の反映・Notion台帳側）
+- Notion「🗺️ AI設定ファイルの地図」を全文写し → リポジトリへのポインタ＋要約へ縮小
+- 名鑑にある「クローバー博士」は agent 定義ファイルが存在しない（元からのズレ・要判断）
