@@ -77,9 +77,10 @@
   - 状態: 実物の確認のみ。**書き込みはしない**
   - 依頼元: 本人（2026-08-13「議事録の整理とかルールを進めたい。自動化したい」）
 
-- **議事録DB→顧客DB relation 付与バッチ** … 停止中（Notionインテグレーション未接続で実行不可）
-  - 対象: `~/.vivid-relay/notion_meeting_customer_link.py` ／ 🔒個人議事録DB ／ 🏢顧客DB
-  - スプレッドシート・kintoneには触らない
+- **議事録DB→顧客DB relation 付与バッチ** … **稼働開始（2026-08-13・完了）**
+  - mini cron `35 7 * * *` 登録済。初回 --apply で9件付与（321→312件）
+  - 自社5社は突合対象から除外済。要確認CSV = mini の
+    `~/.vivid-relay/meeting_customer_link_report.csv`（115件・多くは顧客でない相手）
 
 ### ★ MacBook側で1行だけ必要な作業（mini からは実施できない）
 

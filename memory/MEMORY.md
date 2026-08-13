@@ -1,6 +1,7 @@
 - [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — MacBookから`ssh mini`(yuji_macmini@mac-mini/Tailscale)で操作する主作業機。~/.claude資産移植済・残りはmini側ログイン認証
 - [Mac miniの実行環境](reference_mac_mini_execution_env.md) — **裏側のメイン実行機。定期実行はここ**。Python3.9系(3.10構文は本番でだけ落ちる)／claude CLIはPATH外で`~/.npm-global/bin/claude`／GitHub鍵はmini専用／規範の到達確認は肯定形で聞く(否定形だと偽陰性)
 - [Language: Japanese](feedback_language_japanese.md) — ユーザーへの応答は常に日本語で行う
+- [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — **「本人」「田村さん」は使わない**。複数セッション・複数エージェントでは"本人"が誰か判別できなくなるため。出力すべて(チャット/Notion/memory/他セッションへの連絡)に適用
 - [大きなSheetsはgviz経由で読む](reference_gviz_large_sheet_access.md) — ブラウザ自動化下はDL不可・localhostもPNAで遮断。同一オリジンのページ内fetchで`gviz/tq?tq=select 列`。**ただしgvizは黙って嘘をつく**（シート名不一致→1枚目／型推定でテキスト数値→null）。数値状文字列は`export?format=csv&gid=`で読む
 - [kintoneエクスポートは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーにならず別レコードを読む
 - [モデル使い分けルール](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印(指名時のみ)＋別モデルが適する時は能動的に推奨
@@ -58,7 +59,7 @@
 - [営業案件管理ワークブック(3層)](project_sales_pipeline_workbook.md) — スプレッドシート=案件層/kintone=確定層/Notion=参照。**層の役割分担は語彙統一より優先**。2026-08-03に統合完了(企業マスタ387⇄kintone384が1対1・鍵は社内顧客ID)。週次手順書＋GAS10本。buildWorkbookは実行禁止
 - [営業ワークブックは列移動してよい](reference_sales_workbook_column_moves.md) — マスタ2枚は全GASが見出し名で引く(37本実測)。「追加は末尾」は旧前提。受付シートは例外／apply_schema_v3.gsは実行禁止(旧10値に巻き戻る)
 - [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」で指定/ユーザー選択はログイン名/日付はyyyy-MM-dd/**書き出しはUTF-8**(Shift_JISで髙﨑É〜が化ける)/取り込んだら必ず突合し直す
-- [kintone顧客マスター](reference_kintone_customer_master.md) — 顧客の正本はkintone(松本構築)。Notion顧客DBは中間ミラー、結合キー=法人番号。Excel追記→kintone→Notionの一方向。機微(口座等)はkintone留置。議事録DBの相手/会社はこのDBへrelation
+- [kintone顧客マスター](reference_kintone_customer_master.md) — 顧客の正本はkintone。**構築=高橋／改編・運用=有璽氏**(松本はExcel受け渡しの作成者。2026-08-13訂正)。Notion顧客DBは中間ミラー、結合キー=法人番号。Excel追記→kintone→Notionの一方向。機微(口座等)はkintone留置。議事録DBの相手/会社はこのDBへrelation
 - [名刺→kintone反映パイプライン](project_meishi_to_kintone_pipeline.md) — 名刺OCR(raw.csv)を1顧客に統合→kintone61列転記→GBizINFO等でWEB厚め補完(10社刻み並列)→黄色フラグ付xlsx別名反映。資本金/従業員はWEB必須・登記簿は不足社のみ
 - [コミュニケーションログ基盤](project_communication_log_hub.md) — LINE/Messenger/メール等のやり取りを📨ログDB(collection 1d129663…)へ格納し顧客DB/kintone/議事録と相互リンク。スキルcustomer-db-syncに④入口として統合済・どのClaudeでも同処理可
 - [顧客ファイルのDrive格納先](feedback_customer_files_drive_location.md) — 顧客情報・kintone反映系は財務(03)でなく取引先・人物別(11)/顧客情報kintone反映csv へ。2026-07-16ユーザー指示・申し送り徹底
@@ -66,9 +67,10 @@
 - [AIエージェント体制＋Notion蓄積で進める](working-via-ai-agents-and-notion-hub.md) — 今後の作業はビビ中央窓口経由＋AIナレッジハブ参照で継続する方針
 - [カレンダー テンプレ自動挿入GAS](project_calendar_template_autofill.md) — 会議準備テンプレをGASで自動挿入。タイトル【種別】で振り分け(商談/面談/社内/定例/セミナー=入れる)。空保存→10分後反映。命名ルール(【】=種別)徹底が前提
 - [自動処理レジスタ(心拍)](project_automation_register.md) — **「自動と言っているものが動いていない」を検知**。成功/失敗どちらでも心拍を書き、来なければ🔴。設置し忘れは初日から🔴。`~/.vivid-relay/heartbeat.py`。12件登録済/心拍接続は3件。**残=GAS4本・routine3本(要承認)＋3DBへのインテグレーション接続(田村さん)**
-- [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — 詰まり①の担い手＝ローカルスクリプト(毎朝07:35)に決定・実装済。対象320件。**残=Notionインテグレーションを2DBへ「接続」する1操作(田村さん)**
+- [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — **2026-08-13稼働開始**(mini cron 毎朝07:35)。初回9件付与・321→312件。**自社5社は突合から除外**(相手と自社の併記欄で自社を先に掴む事故を実測)。残115件は顧客DB未登録だが多くは本人/社内/行政＝顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — SQLはワークスペース上限あり/viewモードは無制限だがSHOWが効かず全列返る。大量処理は内部インテグレーション＋ローカルスクリプトへ
 - [議事録自動整理GAS 復旧＋Notion基盤移行](project_giji_automation_gas.md) — notta/Meet議事録の自動整理GAS。停止真因=廃止モデルnot_found→復旧済。オーナー区分ルーティング(田村個人=個人ゲート/社員=自動全社)設計中・バックログ停止中。Driveフォルダ構造(事業部門分類)の議論は現行作業完了後に併せて。ビジョン=まず自分で確立→社員展開、社員のタスク可視化＋商談事前準備まで
+- [議事録の整理ルール](project_giji_organizing_rules.md) — **区分は議事録でなく台帳(顧客DB種別=multi-select)が持つ／突合先は区分で絞らない(社外=顧客DB・社内=担当者マスター)／相手・会社は「台帳と同じ表記」(正式名称ではない。法人は少数派)／行政・研究も台帳へ入れる(案A)**。指標は未紐付でなく社外会議の紐付率(2026-08-13承認)
 - [Apps Script生成時のAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを検出しない。Sheet/Range/Spreadsheetの所属クラス突合が必須。onOpenメニューはバインド時のみ
 - [Sheets書き込みの暗黙挙動4点](reference_sheets_number_format_order.md) — ①書式はsetValuesより前②getLastRowは数式セルを非空と数える③既存スキップは冪等性を壊す④入力規則違反のsetValuesは部分書き込みして落ち、例外は次の読み取り行で出る
 - [Drive上の.gsは開けない](reference_drive_gs_file_not_previewable.md) — 拡張子なし/.gsはoctet-stream固定でプレビュー不可。リネームでは直らずGoogleドキュメントとして作り直す
