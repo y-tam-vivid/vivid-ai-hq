@@ -14,6 +14,8 @@
 
 @memory/MEMORY.md
 
+@WORKING.md
+
 ## 編集のルール（これを破るとズレが再発する）
 
 - **共通規範の本文は `.claude/skills/fukuchi-core/SKILL.md` にしか書かない。**
@@ -22,12 +24,16 @@
   口調だけを書く。共通規範は frontmatter の `skills: [fukuchi-core]` で自動注入される。
 - 出力スタイル（`.claude/output-styles/fable-mode.md`）は口調のみ。組織ルールを持たせない。
 - 変更したら `./check.sh` を通してから commit する。
+- **作業に着手する前に `WORKING.md` の自分のブロックへ1行足す。終わったら消す。**
+  他セッションのブロックは書き換えない。同じ対象が既に載っていたら着手せず先に相談する。
+  ここには進行中のものだけを置く（履歴を溜めた瞬間に読まれなくなる）。
 
 ## 構成
 
 ```
 vivid-ai-hq/
 ├── CLAUDE.md                          このファイル（全cwd・全面で読まれる）
+├── WORKING.md                         いま誰が何を触っているか（毎ターン読まれる・進行中だけ）
 ├── PLAN.md                            移行作業の正本（完了後はNotionへ降格）
 ├── check.sh                           規範の複製・ズレを検出
 ├── memory/                            ローカル記憶（MEMORY.md が索引）
