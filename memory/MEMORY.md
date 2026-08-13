@@ -51,7 +51,7 @@
 - [レコード統合の手順](reference_record_merge_protocol.md) — 全列突合→移送→集計列を空に→削除。廃止した選択肢はリネームでなく上書きで始末
 - [ベタ書きの選択肢リストは黙って腐る](reference_hardcoded_option_lists.md) — **書き込み系5本(update_channel_master/merge_channel_detail/apply_schema_v3/import_ledgers/fill_form_detail)が旧10値のまま＝マスタを巻き戻す力がある**。弾かれた値は空欄になり備考へ退避、例外は出ない。直し方=90_選択肢マスタから読む(見出しは2行目・E列)
 - [営業案件管理：現在地と起点](project_sales_workbook_read_first.md) — 起点は🧭全体像1枚(3b47b156…)9章の索引から辿る。**入口の正は「名刺フォルダ毎朝07:00→00_企業マスタ」(7/29設計確定・未実装)＋営業の直接入力。受付フォームは本体未開放の間の暫定で入口の1つに降格**／毎朝07:30 Notion upsertも未実装／層は並走させない／A案=本体を営業へ開放(2026-08-12)
-- [営業ワークブックは触る前に戻せる状態を作る](feedback_sales_workbook_hands_off.md) — 禁止を撤回(2026-08-13本人)。**変更は①バックアップ→②diff→③承認→④実行**。バックアップは99_バックアップへ`_バックアップ_YYYYMMDD-HHMM`で1作業1本・原本はIDで見分ける。buildWorkbook・applySchemaV3のみ実行禁止のまま。週次自動バックアップは日曜19:54に正常稼働中(2026-08-13実測)
+- [営業ワークブックは触る前に戻せる状態を作る](feedback_sales_workbook_hands_off.md) — **バックアップはAIが書くときだけ必須。有璽氏が自分で触るときは不要**(2026-08-13)。AIの変更は①バックアップ→②diff→③承認→④実行。**定期バックアップはweekly_backup.gsが日曜19:54に稼働中・8世代で頭打ち・あふれは_旧世代へ移動(削除しない)＝新設しない**。buildWorkbook・applySchemaV3のみ実行禁止のまま
 - [読むもの一覧は地図ではない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る。再発防止策が出力側に偏っていないか数える
 - [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 文書・図・レイアウトは作る前に3〜5行で形を見せる。スクリプトのドライランと同じ。抽象語（図/整理/分かりやすく）が出たら合図
 - [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — 打ち切られた書き出し・gsのコメント・過去の要約を根拠に「無い/未実施」と断定しない
