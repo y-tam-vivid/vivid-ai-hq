@@ -34,3 +34,16 @@ def ck(n):
 **書き込むスクリプト側でも検査数字を計算し直す。** 手元の計算だけを信じない。1件でも通らなければ何も書かずに止める作りにする（`~/data/houjin_bangou/fix_corp_numbers_6.gs`）。
 
 関連: [[project_sales_pipeline_workbook]] [[reference_kintone_customer_master]] [[reference_kintone_csv_import_landmines]]
+
+## ⚠️ 単純な丸め戻しは禁止（2026-08-13・`match_kintone.gs` 実物に記載）
+
+**`toFixed(0)` で戻してはいけない。**「13桁で**検査数字も通るが別法人を指す値**」ができる。
+**実測: 壊れた4件のうち1件が検査数字を素通りした。検査数字では止められない。**
+
+上の「復元できる」は **国税庁の全件データと突き合わせて1社に絞れる場合のみ**成立する話であって、
+値だけを計算で戻してよいという意味ではない。索引の1行だけを見て「復元できる」と判断すると事故る。
+
+- 可: 国税庁全件データ＋丸め戻し一致＋社名等の複数条件で**1社に絞れたとき**
+- 不可: 指数表記の値を計算で戻して、そのまま正しい法人番号として使う（検査数字は防波堤にならない）
+
+関連: [[reference_dangerous_entrypoints]] [[reference_kintone_csv_import_landmines]]
