@@ -23,3 +23,5 @@ metadata:
 ユーザー（田村さん）はmac miniのローカルを直接触れないため、**Driveで開けない形式で置くことは「渡していない」のと同じ。**
 
 関連: [[project_sales_pipeline_workbook]] [[reference_sales_workbook_column_moves]] [[feedback_generated_files_attach_notion]]
+
+**AIからの読み取りは別問題（2026-08-13 追記）。** ブラウザでプレビューできないだけで、`.gs.txt`（mimeType `text/plain`）として置かれた原本は `read_file_content` で読める。営業ワークブックのGAS 6本は Drive フォルダ `1phKsApqIzTYmNTeMewUGFfkDjMz8He7V` にこの形で在り、実物検証が可能。「プレビュー不可＝AIも読めない」と早合点しない。[[reference_dangerous_entrypoints]]

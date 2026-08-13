@@ -33,3 +33,5 @@ protect_master.gs   head.indexOf(colName)         保護対象も列名で決め
 **`apply_schema_v3.gs` は実行禁止。** 旧10値の流入経路（`フォーム営業/テレアポ/名刺/紹介/交流会/イベント/SNS/Web問い合わせ/セミナー/その他`）が固定で書かれており、再実行すると選択肢マスタが16値から巻き戻る。廃止した「イベント」も復活する。`buildWorkbook`（`sh.clear()` で始まる）と同じ扱いにする。
 
 関連: [[project_sales_pipeline_workbook]] [[reference_sheets_number_format_order]] [[reference_apps_script_api_verification]]
+
+**例外が1つ判明（2026-08-13 実ファイル読了）。** `apply_schema_v3.gs` の `applyValidationsV3_()` は**見出し名で引かず列番号をハードコード**している（`00_企業マスタ` の 12/13/14/17/18/22 等）。列を動かした状態でこれを実行すると**別の列に入力規則が当たる**。「マスタ2枚は全GASが見出し名で引く（37本実測）」はこのファイルには当てはまらない。なお同ファイルは元から実行禁止。→ [[reference_dangerous_entrypoints]]
