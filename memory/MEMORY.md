@@ -1,4 +1,5 @@
 - [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — MacBookから`ssh mini`(yuji_macmini@mac-mini/Tailscale)で操作する主作業機。~/.claude資産移植済・残りはmini側ログイン認証
+- [Mac miniの実行環境](reference_mac_mini_execution_env.md) — **裏側のメイン実行機。定期実行はここ**。Python3.9系(3.10構文は本番でだけ落ちる)／claude CLIはPATH外で`~/.npm-global/bin/claude`／GitHub鍵はmini専用／規範の到達確認は肯定形で聞く(否定形だと偽陰性)
 - [Language: Japanese](feedback_language_japanese.md) — ユーザーへの応答は常に日本語で行う
 - [大きなSheetsはgviz経由で読む](reference_gviz_large_sheet_access.md) — ブラウザ自動化下はDL不可・localhostもPNAで遮断。同一オリジンのページ内fetchで`gviz/tq?tq=select 列`。**ただしgvizは黙って嘘をつく**（シート名不一致→1枚目／型推定でテキスト数値→null）。数値状文字列は`export?format=csv&gid=`で読む
 - [kintoneエクスポートは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーにならず別レコードを読む
