@@ -64,6 +64,7 @@
 - [kintoneCSV→Notion顧客DBミラー反映](project_kintone_csv_to_notion_mirror.md) — kintone顧客管理エクスポートを61列整形しNotion🏢顧客DB(中間ミラー・法人番号キー collection f506787d…)へ直接書込。地雷=Excel経由で法人番号指数表記化(WEB再取得・社名照合)/サブテーブル継続行/プレースホルダ実値/cp932化け/手転記の漢字化け→作成後SELECT突合検証必須
 - [AIエージェント体制＋Notion蓄積で進める](working-via-ai-agents-and-notion-hub.md) — 今後の作業はビビ中央窓口経由＋AIナレッジハブ参照で継続する方針
 - [カレンダー テンプレ自動挿入GAS](project_calendar_template_autofill.md) — 会議準備テンプレをGASで自動挿入。タイトル【種別】で振り分け(商談/面談/社内/定例/セミナー=入れる)。空保存→10分後反映。命名ルール(【】=種別)徹底が前提
+- [自動処理レジスタ(心拍)](project_automation_register.md) — **「自動と言っているものが動いていない」を検知**。成功/失敗どちらでも心拍を書き、来なければ🔴。設置し忘れは初日から🔴。`~/.vivid-relay/heartbeat.py`。12件登録済/心拍接続は3件。**残=GAS4本・routine3本(要承認)＋3DBへのインテグレーション接続(田村さん)**
 - [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — 詰まり①の担い手＝ローカルスクリプト(毎朝07:35)に決定・実装済。対象320件。**残=Notionインテグレーションを2DBへ「接続」する1操作(田村さん)**
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — SQLはワークスペース上限あり/viewモードは無制限だがSHOWが効かず全列返る。大量処理は内部インテグレーション＋ローカルスクリプトへ
 - [議事録自動整理GAS 復旧＋Notion基盤移行](project_giji_automation_gas.md) — notta/Meet議事録の自動整理GAS。停止真因=廃止モデルnot_found→復旧済。オーナー区分ルーティング(田村個人=個人ゲート/社員=自動全社)設計中・バックログ停止中。Driveフォルダ構造(事業部門分類)の議論は現行作業完了後に併せて。ビジョン=まず自分で確立→社員展開、社員のタスク可視化＋商談事前準備まで
