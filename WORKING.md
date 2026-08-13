@@ -29,10 +29,17 @@
     シート名 `05_フォーム営業リスト` / 受付フォームの選択肢1つ
   - 内容: 流入経路「フォーム営業」→「問い合わせ営業」へ**リネーム**（意味は変えない）
   - 承認: 2026-08-13 本人（`feedback_sales_workbook_hands_off` の要確認を満たした）
-  - 進行: ①㉓ドライラン → ②㉓本実行 → ③㉔フォーム → ④kintoneアプリ設定（本人）
-    → ⑤Notion🧭3-2章 と `import_kintone_orphans.gs` の追随（Claude）
-  - Drive: `㉓次に実行 rename_channel_form_sales.gs`
+  - 進行: ①㉓v2ドライラン **済** → ②㉓v2本実行 **済（2026-08-13 11:56）**
+    → ③㉔フォーム **本実行待ち** → ④kintoneアプリ設定（本人・未）
+    → ⑤Notion🧭3-2章 **済** ／ `import_kintone_orphans.gs` **済（ローカルのみ・Drive未反映）**
+  - Drive: `㉓v2 これを実行 …` ／ `㉔ 新規プロジェクトにこれだけ貼る …`
   - **案件シート（10/20/30）・40_活動ログ・09/98/99・受付シートの列には触らない**
+  - ★㉔は **FormApp を含むため必ず別プロジェクト**。㉓と同居させると㉓まで落ちる（実測）
+
+- **旧値ベタ書きのGAS 7本** … 発見のみ・**未修正**
+  - `update_channel_master.gs` / `merge_channel_detail.gs` は選択肢マスタを
+    **巻き戻す力がある**。`apply_schema_v3.gs` と同じ危険度として扱う
+  - → `memory/reference_hardcoded_option_lists.md`
 
 - **`WORKING.md` の新設と運用検証** … 完了（往復を実測確認）
 

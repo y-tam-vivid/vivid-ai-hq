@@ -48,6 +48,7 @@
 - [空行が汚れる2つの経路](reference_sheet_scan_range_pollution.md) — 書式の継承だけでなく走査範囲の広さでも空行に値が入る。実データが離れた行にあると手前が全部巻き込まれる
 - [Sheetsチェックボックス書式の侵食](reference_sheets_checkbox_format_creep.md) — 空行のfalseは「実害なし」ではない。後から行が入った瞬間にキーが壊れる。CSVはキーの形を必ず検査
 - [レコード統合の手順](reference_record_merge_protocol.md) — 全列突合→移送→集計列を空に→削除。廃止した選択肢はリネームでなく上書きで始末
+- [ベタ書きの選択肢リストは黙って腐る](reference_hardcoded_option_lists.md) — **書き込み系5本(update_channel_master/merge_channel_detail/apply_schema_v3/import_ledgers/fill_form_detail)が旧10値のまま＝マスタを巻き戻す力がある**。弾かれた値は空欄になり備考へ退避、例外は出ない。直し方=90_選択肢マスタから読む(見出しは2行目・E列)
 - [営業案件管理：現在地と起点](project_sales_workbook_read_first.md) — 起点は🧭全体像1枚(3b47b156…)9章の索引から辿る。**入口の正は「名刺フォルダ毎朝07:00→00_企業マスタ」(7/29設計確定・未実装)＋営業の直接入力。受付フォームは本体未開放の間の暫定で入口の1つに降格**／毎朝07:30 Notion upsertも未実装／層は並走させない／A案=本体を営業へ開放(2026-08-12)
 - [営業ワークブックは触る前に戻せる状態を作る](feedback_sales_workbook_hands_off.md) — 禁止を撤回(2026-08-13本人)。**変更は①バックアップ→②diff→③承認→④実行**。バックアップは99_バックアップへ`_バックアップ_YYYYMMDD-HHMM`で1作業1本・原本はIDで見分ける。buildWorkbook・applySchemaV3のみ実行禁止のまま。週次自動バックアップは日曜19:54に正常稼働中(2026-08-13実測)
 - [読むもの一覧は地図ではない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る。再発防止策が出力側に偏っていないか数える
