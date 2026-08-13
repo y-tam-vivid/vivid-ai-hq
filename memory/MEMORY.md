@@ -49,6 +49,7 @@
 - [Sheetsチェックボックス書式の侵食](reference_sheets_checkbox_format_creep.md) — 空行のfalseは「実害なし」ではない。後から行が入った瞬間にキーが壊れる。CSVはキーの形を必ず検査
 - [レコード統合の手順](reference_record_merge_protocol.md) — 全列突合→移送→集計列を空に→削除。廃止した選択肢はリネームでなく上書きで始末
 - [営業案件管理：現在地と起点](project_sales_workbook_read_first.md) — 起点は🧭全体像1枚(3b47b156…)9章の索引から辿る。**入口の正は「名刺フォルダ毎朝07:00→00_企業マスタ」(7/29設計確定・未実装)＋営業の直接入力。受付フォームは本体未開放の間の暫定で入口の1つに降格**／毎朝07:30 Notion upsertも未実装／層は並走させない／A案=本体を営業へ開放(2026-08-12)
+- [営業ワークブックは勝手に触らない](feedback_sales_workbook_hands_off.md) — **書き込み禁止／GASは読む場合も着手前に確認**。buildWorkbook・applySchemaV3は検証目的でも実行しない(壊れることが実測確定)。matchKintoneRunも確認なしで回さない(2026-08-13本人指示)
 - [読むもの一覧は地図ではない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る。再発防止策が出力側に偏っていないか数える
 - [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 文書・図・レイアウトは作る前に3〜5行で形を見せる。スクリプトのドライランと同じ。抽象語（図/整理/分かりやすく）が出たら合図
 - [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — 打ち切られた書き出し・gsのコメント・過去の要約を根拠に「無い/未実施」と断定しない
