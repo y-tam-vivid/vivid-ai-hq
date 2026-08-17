@@ -66,7 +66,10 @@ while IFS= read -r f; do
 done < <(find "$HOME/.claude" -name "*.md" \
            -not -path "*/paste-cache/*" -not -path "*/file-history/*" \
            -not -path "*/plugins/*" -not -path "*/sessions/*" -not -path "*/tasks/*" \
-           -not -path "*/cache/*" -not -path "*/plans/*" 2>/dev/null)
+           -not -path "*/cache/*" -not -path "*/plans/*" \
+           -not -name "SYNC_STATUS.md" 2>/dev/null)
+# SYNC_STATUS.md は repo に入れない。機械ごとに中身が違い、機械が15分ごとに上書きするため
+# （git に入れると毎回コンフリクトする）。実体は bin/vivid-sync.sh が書く
 [ $missing -eq 0 ] && ok "~/.claude 配下の .md はすべて repo に存在する"
 
 say "── 7. バージョン違いの散乱"

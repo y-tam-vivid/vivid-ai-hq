@@ -67,6 +67,7 @@
 - [kintoneCSV→Notion顧客DBミラー反映](project_kintone_csv_to_notion_mirror.md) — kintone顧客管理エクスポートを61列整形しNotion🏢顧客DB(中間ミラー・法人番号キー collection f506787d…)へ直接書込。地雷=Excel経由で法人番号指数表記化(WEB再取得・社名照合)/サブテーブル継続行/プレースホルダ実値/cp932化け/手転記の漢字化け→作成後SELECT突合検証必須
 - [AIエージェント体制＋Notion蓄積で進める](working-via-ai-agents-and-notion-hub.md) — 今後の作業はビビ中央窓口経由＋AIナレッジハブ参照で継続する方針
 - [カレンダー テンプレ自動挿入GAS](project_calendar_template_autofill.md) — 会議準備テンプレをGASで自動挿入。タイトル【種別】で振り分け(商談/面談/社内/定例/セミナー=入れる)。空保存→10分後反映。命名ルール(【】=種別)徹底が前提
+- [自動同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — **cronから`git pull --ff-only`を直呼びしない**。作業すれば必ず汚れて必ず失敗＝いちばん困る時だけ受信が止まる(153回連続を実測)。**ログは届く場所ではない**。fetch(必ず通す)とmerge(失敗してよい)を分け、遅れ／未pushを`~/.claude/SYNC_STATUS.md`(@import済=毎ターン届く)へ書く。実体=`bin/vivid-sync.sh`
 - [自動処理レジスタ(心拍)](project_automation_register.md) — **「自動と言っているものが動いていない」を検知**。成功/失敗どちらでも心拍を書き、来なければ🔴。設置し忘れは初日から🔴。`~/.vivid-relay/heartbeat.py`。12件登録済/心拍接続は3件。**残=GAS4本・routine3本(要承認)＋3DBへのインテグレーション接続(田村さん)**
 - [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — **2026-08-13稼働開始**(mini cron 毎朝07:35)。初回9件付与・321→312件。**自社5社は突合から除外**(相手と自社の併記欄で自社を先に掴む事故を実測)。残115件は顧客DB未登録だが多くは本人/社内/行政＝顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — SQLはワークスペース上限あり/viewモードは無制限だがSHOWが効かず全列返る。大量処理は内部インテグレーション＋ローカルスクリプトへ

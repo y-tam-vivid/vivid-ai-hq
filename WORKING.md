@@ -73,6 +73,26 @@
 
 ### 進行中（MacBookセッション記入）
 
+- **受信同期の作り直し** … **完了（2026-08-17）／mini側の cron 差し替えだけ残**
+  - 事故: MacBookの `git pull --ff-only`（cron */15）が**153回連続で失敗**していた。
+    作業中はワーキングツリーが汚れて ff-only が必ず失敗する＝**作業している間だけ受信が止まる**構造。
+    エラーはログ463行のみ。**古い WORKING.md を最新と思って現在地を答えた**（2026-08-17 実害）
+  - 直し: `bin/vivid-sync.sh` を新設し cron を差し替え。fetch は必ず通し、遅れ／未push を
+    `~/.claude/SYNC_STATUS.md` へ書く（`~/.claude/CLAUDE.md` が @import 済＝毎ターン届く）。
+    ⚙️レジスタに「vivid-ai-hq の同期（MacBook / Mac mini）」2行を新設し心拍を接続
+  - 実測済: 🟢最新 ／ 🔴遅れ＋汚れ ／ 🟡未push の3ケースを隔離クローンで確認。心拍の着弾も確認
+  - **★ mini 側で1回だけ必要**: `crontab -e` で `git pull --ff-only` の行を
+    `*/15 * * * * $HOME/vivid-ai-hq/bin/vivid-sync.sh >> $HOME/Library/Logs/vivid-ai-hq-pull.log 2>&1` へ、
+    `~/.claude/CLAUDE.md` の先頭へ `@/Users/yuji_macmini/.claude/SYNC_STATUS.md` を追記
+  - 型 → `memory/reference_silent_sync_failure.md`／規範反映済（fukuchi-core「届いたものがいつの版か」）
+
+- **【mini への申し送り】`08_関係フォロー` の㉚（実物確認）は当方が読みで済ませた** … **異常なし**
+  - ⑤ブロック: 実在。08が0件なので「対応が要る関係フォローはありません」を1行出している（正常）
+  - `#REF!`: 0件 ／ A83: 「④ 問い合わせ営業からの反応」で文字化けなし
+  - シートは19枚・`08_関係フォロー` は14列で実在
+  - **★08は器だけで中身0件。** 次の一手はデータ投入（誰を入れるかの判断が要る）
+  - 残っているのは v1 `addRelationViews_` の掃除／95の1セル文言／反応スコア設計（SB回答待ち）
+
 - **⚙️自動処理レジスタの新設** … DB・心拍部品は完了。**残りは要承認分のみ**
   - 済: Notion DB＋Formula＋🔴ビュー／12件登録／`~/.vivid-relay/heartbeat.py`（両機配布）／
     心拍接続3本（議事録relationバッチ・Chatworkリレー・Downloads整理）

@@ -1,0 +1,127 @@
+#!/bin/bash
+#
+# vivid-ai-hq の受信同期（両機共通・cron から15分ごとに呼ぶ）
+#
+# ─────────────────────────────────────────────────────────────
+# なぜこれがあるか（2026-08-17 実地）
+#
+#   旧: cron */15  git pull --ff-only  >> ログ
+#
+#   作業をすればワーキングツリーは必ず汚れる。--ff-only は汚れていると必ず失敗する。
+#   つまり「作業している間は受信が止まる」構造だった。しかも失敗はログにしか出ず、
+#   153回連続で失敗しても誰も気づかなかった。読む側は古い WORKING.md を最新だと
+#   信じて答えた。
+#
+# 設計の要点 ── 「取り込む」と「知る」を分ける
+#
+#   取り込み（merge）は失敗してよい。作業中に他機の変更が勝手に乗る方が危ない。
+#   だが「遅れている」という事実は、失敗してはいけない。必ず手元に届ける。
+#
+#     git fetch          常に実行する（マージしないので作業中でも成功する）
+#     遅れ／進みを数える  behind = 読んでいるものが古い／ahead = 他機へ届いていない
+#     SYNC_STATUS.md     ~/.claude/CLAUDE.md が @import する＝毎ターン必ず読まれる
+#     心拍                ⚙️自動処理レジスタへ。沈黙すれば🔴になる
+#
+#   ★ ログは「見に行かないと分からない場所」。届く場所ではない。
+#     だからログではなく、毎ターン読まれるファイルへ書く。
+# ─────────────────────────────────────────────────────────────
+
+set -u
+
+# 既定値は本番。テスト時だけ環境変数で差し替える（挙動を実測で確かめられるようにするため）
+REPO="${VIVID_REPO:-$HOME/vivid-ai-hq}"
+STATUS="${VIVID_STATUS:-$HOME/.claude/SYNC_STATUS.md}"
+HEARTBEAT="${VIVID_HEARTBEAT:-$HOME/.vivid-relay/heartbeat.py}"
+NOW=$(date "+%Y-%m-%d %H:%M")
+HOST=$(scutil --get ComputerName 2>/dev/null || hostname)
+
+# 心拍は処理名の完全一致で行を探す。同名が2つあると更新されないので、機械ごとに分ける
+case "$HOST" in
+  *mini*|*Mini*|*MINI*) NAME="vivid-ai-hq の同期（Mac mini）" ;;
+  *)                    NAME="vivid-ai-hq の同期（MacBook）" ;;
+esac
+
+cd "$REPO" || exit 1
+
+# ① 取りに行く。マージはしないので、作業中でも成功する
+FETCH_ERR=$(git fetch origin 2>&1)
+FETCH_RC=$?
+
+BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
+AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+DIRTY=$(git status --porcelain | wc -l | tr -d " ")
+
+# ② 取り込めるときだけ取り込む（汚れていたら触らない）
+MERGED="no"
+if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -gt 0 ] && [ "$DIRTY" -eq 0 ]; then
+  if git merge --ff-only origin/main >/dev/null 2>&1; then
+    MERGED="yes"
+    BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
+  fi
+fi
+
+# ③ 状態を決める
+if [ "$FETCH_RC" -ne 0 ]; then
+  RESULT="失敗"
+  HEAD_LINE="🔴 リモートに繋がっていない（$NOW 時点）"
+  DETAIL="git fetch が失敗した。ネットワークか鍵の問題。ここが直るまで受信も送信もできない。
+
+\`\`\`
+$FETCH_ERR
+\`\`\`"
+elif [ "$BEHIND" -gt 0 ]; then
+  RESULT="警告"
+  HEAD_LINE="🔴 いま読んでいる WORKING.md / MEMORY.md は古い（$NOW 時点・未取込 ${BEHIND}件）"
+  DETAIL="**この機は他機の変更を取り込めていない。過去の状態を最新だと思って答えないこと。**
+原因はほぼ常に「ローカルに未コミットの変更があり、ff-only マージができない」。
+
+未取込の内容:
+
+\`\`\`
+$(git log --oneline HEAD..origin/main --pretty='%h %ad %s' --date=short 2>/dev/null | head -10)
+\`\`\`
+
+取り込み方（作業中の変更を捨てずに）:
+
+\`\`\`
+cd ~/vivid-ai-hq && git status        # 何を書きかけているか見る
+git add -A && git commit              # 自分の変更を確定させる
+git merge origin/main                 # 両方のブロックを残してマージ
+\`\`\`"
+elif [ "$AHEAD" -gt 0 ] || [ "$DIRTY" -gt 0 ]; then
+  RESULT="警告"
+  HEAD_LINE="🟡 この機の変更が他機へ届いていない（$NOW 時点・未push ${AHEAD}件／未コミット ${DIRTY}件）"
+  DETAIL="受信は最新。ただし**こちらで書いたものが他の面から見えていない**。
+他セッションは古い前提で動くので、区切りがついたら push する。
+
+\`\`\`
+cd ~/vivid-ai-hq && git status
+git add -A && git commit && git push
+\`\`\`"
+else
+  RESULT="成功"
+  HEAD_LINE="🟢 最新（$NOW 時点・未取込 0件）"
+  DETAIL="規範・記憶・WORKING.md は他の面と一致している。"
+fi
+
+# ④ 毎ターン届く場所へ書く（ログではなく）
+mkdir -p "$HOME/.claude"
+cat > "$STATUS" <<EOF
+# 同期の鮮度（${HOST}）
+
+> **機械が書く。手で編集しない。** \`bin/vivid-sync.sh\` が15分ごとに上書きする。
+> このファイルは \`~/.claude/CLAUDE.md\` が @import しているので毎ターン読まれる。
+> 目的は1つ ── **古いものを最新だと思って答えるのを防ぐこと。**
+
+$HEAD_LINE
+
+$DETAIL
+EOF
+
+# ⑤ 心拍（失敗しても本体は落とさない）
+if [ -f "$HEARTBEAT" ]; then
+  MSG="未取込${BEHIND}件 / 未push${AHEAD}件 / 未コミット${DIRTY}件 / 取込=${MERGED}"
+  /usr/bin/python3 "$HEARTBEAT" "$NAME" "$RESULT" "$MSG" >/dev/null 2>&1 || true
+fi
+
+exit 0
