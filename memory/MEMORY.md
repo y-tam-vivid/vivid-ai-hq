@@ -70,7 +70,11 @@
 - [自動処理レジスタ(心拍)](project_automation_register.md) — **「自動と言っているものが動いていない」を検知**。成功/失敗どちらでも心拍を書き、来なければ🔴。設置し忘れは初日から🔴。`~/.vivid-relay/heartbeat.py`。12件登録済/心拍接続は3件。**残=GAS4本・routine3本(要承認)＋3DBへのインテグレーション接続(田村さん)**
 - [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — **2026-08-13稼働開始**(mini cron 毎朝07:35)。初回9件付与・321→312件。**自社5社は突合から除外**(相手と自社の併記欄で自社を先に掴む事故を実測)。残115件は顧客DB未登録だが多くは本人/社内/行政＝顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — SQLはワークスペース上限あり/viewモードは無制限だがSHOWが効かず全列返る。大量処理は内部インテグレーション＋ローカルスクリプトへ
-- [議事録自動整理GAS 復旧＋Notion基盤移行](project_giji_automation_gas.md) — notta/Meet議事録の自動整理GAS。停止真因=廃止モデルnot_found→復旧済。オーナー区分ルーティング(田村個人=個人ゲート/社員=自動全社)設計中・バックログ停止中。Driveフォルダ構造(事業部門分類)の議論は現行作業完了後に併せて。ビジョン=まず自分で確立→社員展開、社員のタスク可視化＋商談事前準備まで
+- [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — **1つしか選べない置き場に判断を置かない**。分からない回まで選ばされ1つに集中する(実測36%)。分類先の分布を数え3割超の偏りは既定値と疑う。議事録Driveは年月平置きへ・部門はNotionが持つ(2026-08-15)
+- [AIの精度を疑う前に入力と出力先を見る](reference_ai_output_blamed_before_inputs.md) — 議事録タスクの担当者が全員1人に倒れていた真因は**選択肢6名ベタ書き＋「不明なら◯◯」＋書き込み側が捨てていた**の2段。フォールバックは誤りを正解の顔で量産する。検証は答えを先に決めてから走らせる
+- [却下は永続的な取りこぼしを作る](reference_silent_rejection_backlog.md) — 承認フローの却下=処理済み扱いで二度と拾われない。**エラーも心拍も出ない**。日付別件数の「連続0件」で探す。2026-08-14に87件・23日分を実測
+- [議事録自動整理GAS 復旧＋Notion基盤移行](project_giji_automation_gas.md) — notta/Meet議事録の自動整理GAS。停止真因=廃止モデルnot_found→復旧済。**2026-08-14に却下87件を再処理し6/21〜7/13の空白を解消／TASK_DATE_CUTOFF=2026-07-14**。オーナー区分ルーティング(有璽氏個人=個人ゲート/社員=自動全社)設計中・バックログ停止中。Driveフォルダ構造(事業部門分類)の議論は現行作業完了後に併せて。ビジョン=まず自分で確立→社員展開、社員のタスク可視化＋商談事前準備まで
+- [議事録の隔離運用](project_minutes_quarantine.md) — **空・機微・重複はNotionに入れずDriveの`_要確認`へ移す。移動のみ・削除は有璽氏**。空判定は本文50字の関門を素通りしていた／07-24は閉会後20分の私的会話が残っていた／07-22は同一会議が2本とも昇格。判定と移動はGAS側(Drive MCPに移動手段が無い)
 - [議事録の整理ルール](project_giji_organizing_rules.md) — **区分は議事録でなく台帳(顧客DB種別=multi-select)が持つ／突合先は区分で絞らない(社外=顧客DB・社内=担当者マスター)／相手・会社は「台帳と同じ表記」(正式名称ではない。法人は少数派)／行政・研究も台帳へ入れる(案A)**。指標は未紐付でなく社外会議の紐付率(2026-08-13承認)
 - [Apps Script生成時のAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを検出しない。Sheet/Range/Spreadsheetの所属クラス突合が必須。onOpenメニューはバインド時のみ
 - [Sheets書き込みの暗黙挙動4点](reference_sheets_number_format_order.md) — ①書式はsetValuesより前②getLastRowは数式セルを非空と数える③既存スキップは冪等性を壊す④入力規則違反のsetValuesは部分書き込みして落ち、例外は次の読み取り行で出る
