@@ -43,5 +43,10 @@ dry-run で `Operation not permitted: '/Users/yujimac/Downloads'` を出して e
 ## 関連する判断
 
 MacBook の cron は「予定時刻に寝ていた回を捨てる」（実測29%欠落）。launchd なら復帰後に
-取り戻せる ―― が、**それはTCCに触れない仕事に限る**。飛ぶこと自体は
-[[project_automation_register]] の心拍が🔴で検知するので、cron のまま残す判断も成り立つ。
+取り戻せる ―― が、**それはTCCに触れない仕事に限る**。
+
+**2026-08-18 決着: Downloads整理は cron のまま据え置く**（有璽氏の判断）。飛ぶこと自体は
+[[project_automation_register]] の心拍が🔴で検知しており、移動のみ・削除なしで緊急性も低い。
+python3 にフルディスクアクセスを与える案は、**全pythonスクリプトが全ファイルを読めるように
+なる**という代償が、取り戻せる29%に見合わないとして採らなかった。
+→ [[project_downloads_archive_system]]
