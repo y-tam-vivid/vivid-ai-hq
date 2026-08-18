@@ -44,7 +44,15 @@
   - 取れるもの: `click_count` ／ `deal_context.status` ／ `call_status` ／
     `unresolved` ／ `follow_up_candidates`（＝通知メールのホットリードそのもの）／
     絞り込み `min_clicks` `follow_up_only` `include_timeline`
-  - 残る不明: `latest_clicked_at` は `{}` のまま。→ `include_timeline:true` を㉜で試す
+  - **母数は19社**（過去30日にクリックした全社・has_more なし）。うちホットリード6社
+  - **★19社すべて `status="未設定"` `call_status=null` `unresolved=true`**
+    ＝先方側は一度も運用されていない。**ステータスの正本はこちら側に置くのが素直**
+  - `latest_clicked_at` は `{}` のまま。**理由判明＝不具合ではない**。時系列を持つ源
+    `web_tracking_logs` を先方がまだ有効化していない（警告 `engagement_sources_deferred`）。
+    → 検知日はこちら側で持つ。開いたら差し替える
+  - **突合キーも解決**: `target_key`＝会社単位／`deal_id`＝送信単位。
+    `target_rollups` が会社単位で集約済み＝08の「会社ごと1行」がそのまま作れる
+  - 型 → `memory/reference_salesbreaker_engagement_api.md`
   - **口の性質**: `read_only:true` ／ `db_written` `send_executed` `csv_generated` すべて false。
     エラー本文が直し方まで教えてくる（`pagination.limit is required` 等）＝**叩いて聞ける**
   - プローブ: ㉛v2 `12fW35GoV9Z0BC8smlMUvj5TPZyFm_NkoHwVyK8kPfW4`
