@@ -82,7 +82,7 @@
 - [議事録の整理ルール](project_giji_organizing_rules.md) — **区分は議事録でなく台帳(顧客DB種別=multi-select)が持つ／突合先は区分で絞らない(社外=顧客DB・社内=担当者マスター)／相手・会社は「台帳と同じ表記」(正式名称ではない。法人は少数派)／行政・研究も台帳へ入れる(案A)**。指標は未紐付でなく社外会議の紐付率(2026-08-13承認)
 - [Apps Script生成時のAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを検出しない。Sheet/Range/Spreadsheetの所属クラス突合が必須。onOpenメニューはバインド時のみ
 - [Apps Scriptは同名定義が後勝ち](reference_apps_script_name_collision.md) — **新版を貼っても旧版が動く。しかも混在する(共通名は旧版が勝ち、新版固有の定数だけ生きる)＝画面では絶対に分からない**。`関数名.toString()`でランタイムの実体を読む／新版には必ず自分を名乗る目印を入れる／数往復探して見つからないなら識別子を全改名して衝突ごと断つ
-- [Sheets書き込みの暗黙挙動4点](reference_sheets_number_format_order.md) — ①書式はsetValuesより前②getLastRowは数式セルを非空と数える③既存スキップは冪等性を壊す④入力規則違反のsetValuesは部分書き込みして落ち、例外は次の読み取り行で出る
+- [Sheets書き込みの暗黙挙動8点](reference_sheets_number_format_order.md) — ①書式はsetValuesより前②getLastRowは数式セルを非空と数える③既存スキップは冪等性を壊す④入力規則違反のsetValuesは部分書き込みして落ち例外は次の読み取り行で出る⑧**「値が無い」と「行が無い」は別物＝getMaxRowsを見ずに書き先を決めない。copyToは範囲外でも無言で何もしない。読むだけのドライランは「書けるか」を検証していない**
 - [Drive上の.gsは開けない](reference_drive_gs_file_not_previewable.md) — 拡張子なし/.gsはoctet-stream固定でプレビュー不可。リネームでは直らずGoogleドキュメントとして作り直す
 - [AI資産カタログ](ai-asset-catalog.md) — Skill/GAS/MCP/主要MDの台帳化。**Drive `マイドライブ/AI資産_正本/` を正本と宣言済(2026-07-07)＝vivid-ai-hqの設計と要調整**。旧版は`_旧版/`へ・Notion台帳の現行バージョン列が単一の真実
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1=17分類へ機械振り分け(自動化OK)／Stage2=事業部・個人へは人＋AI協業で、**いきなり自動振り分けは誤配リスクのため禁止**
