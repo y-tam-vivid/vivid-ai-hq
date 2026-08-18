@@ -37,17 +37,22 @@
   - **★v2 は使わない。** v1と識別子が衝突し、貼っても v1 が動いた（`toString()` で実測）
     → `memory/reference_apps_script_name_collision.md`
 
-- **SalesBreaker** … 先方からの回答は**まだ来ていない**。質問も未送付（2026-08-18 再確認）
-  - **★ホットリード6件が9日連続で凍結**（8/10〜8/18・毎朝9時の通知が同一内容）。
-    ワンゲーム高槻7回・最終クリック 8/10 5:09。**対応はしている。先方のステータスを
-    変えていないので通知が鳴り止まない**（2026-08-15 有璽氏）＝検知の問題ではない
-  - 未送付の理由は**送付ルートが未定**だから（案内メールへは送らない方針）。ここが律速
-  - **★クリック回数と最終クリック日時は先方が持っている**（毎朝9時の通知メールに
-    「7回のクリック (最終: 2026/8/10 5:09:01)」と出る）。取れないのは Operator API v0 だけ
-  - よって質問は「回数を返すAPIはあるか」ではなく
-    **「画面と通知には出ているのに API では返らない理由」**に書き直した
-  - **案内メール（info@salesbreaker.jp）へは送らない**（2026-08-14 有璽氏）。別ルートで確認
+- **SalesBreaker** … **★2026-08-18 前提が覆った。聞かずに取れる**
+  - **`engagement/search` が実在し、`click_count` が返る**（実測8）。
+    9日間「APIでは取れないから先方に聞くしかない」と思っていたのは誤り。
+    **`deals/search` しか見ていなかった**だけ
+  - 取れるもの: `click_count` ／ `deal_context.status` ／ `call_status` ／
+    `unresolved` ／ `follow_up_candidates`（＝通知メールのホットリードそのもの）／
+    絞り込み `min_clicks` `follow_up_only` `include_timeline`
+  - 残る不明: `latest_clicked_at` は `{}` のまま。→ `include_timeline:true` を㉜で試す
+  - **口の性質**: `read_only:true` ／ `db_written` `send_executed` `csv_generated` すべて false。
+    エラー本文が直し方まで教えてくる（`pagination.limit is required` 等）＝**叩いて聞ける**
+  - プローブ: ㉛v2 `12fW35GoV9Z0BC8smlMUvj5TPZyFm_NkoHwVyK8kPfW4`
+    ㉜ `16-Sa7Z9WhpVIypjNmWOG5L2OJMootI3u1ZhhshF1Lx0`（実行待ち）
+  - **ホットリード6件は9日連続で同一**（8/10〜8/18）。**対応はしている。先方のステータスを
+    変えていないので鳴り止まない**（2026-08-15 有璽氏）＝検知でなく運用の問題
   - 未決: ステータスの正本をどちらに置くか（先方の架電ステータス ⇄ 05リストのR列）
+  - **先方の人とはやり取りしない**（2026-08-18 有璽氏）。案内メールへも送らない
   - 器 → Notion⑥ `3bb7b1568b57815b8d8cc9e03fbb4f3d`
 
 - **シート番号のルール** … 規則を提示・**適用は影響範囲の実測後**
