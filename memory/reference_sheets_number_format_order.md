@@ -1,6 +1,6 @@
 ---
 name: reference_sheets_number_format_order
-description: Apps ScriptでSheetsを読み書きするときの暗黙挙動7点（書式順序・getLastRow・既存スキップ・入力規則違反・指数表記の復元不可・フォーム連携列・新列へのチェックボックス継承）。どれもエラーにならず静かに壊れる
+description: Apps ScriptでSheetsを読み書きするときの暗黙挙動8点（書式順序・getLastRow・既存スキップ・入力規則違反・指数表記の復元不可・フォーム連携列・新列へのチェックボックス継承・getMaxRowsを見ずに書けない）。どれもエラーにならず静かに壊れる
 metadata: 
   node_type: memory
   type: reference
@@ -8,7 +8,7 @@ metadata:
   modified: 2026-08-10T01:46:43.901Z
 ---
 
-Apps Scriptでシートを書くときに踏んだ地雷。**3つともエラーにならず、静かに間違った結果を出す。実行が通ったことを成功の根拠にしてはいけない。必ず実物の値と位置を読んで確認する。**
+Apps Scriptでシートを書くときに踏んだ地雷。**どれもエラーにならず、静かに間違った結果を出す。実行が通ったことを成功の根拠にしてはいけない。必ず実物の値と位置を読んで確認する。**
 
 **① 書式指定は書き込みより前でないと無意味。** 書式が標準のまま数字だけの文字列を `setValues` すると数値化され先頭0が消える。後から `setNumberFormat('@')` を当てても復元されない。
 
@@ -58,4 +58,17 @@ function lastDataRow_(sh, col) {
 if (v === true || v === false) { /* 未入力とみなす */ }
 ```
 
-関連: [[reference_apps_script_api_verification]] [[project_kintone_csv_to_notion_mirror]] [[reference_kintone_customer_master]] [[reference_shared_drive_form_upload]]
+**⑧ 「値が無い」と「行が無い」は別物。`getLastRow()` で書き込み先を決めてはいけない。** `getLastRow()` は値がある最後の行、`getMaxRows()` は**シートが物理的に持っている行数**。両者が一致しているシートでは、その次の行は存在しない。2026-08-18に `00_企業マスタ`（getLastRow=779 / getMaxRows=779）へ780行目から17行を書こうとして
+`対象の範囲の座標がシートのサイズから外れています` で落ちた（`08_関係フォロー` は getMaxRows=1000 で余裕があり、こちらは通っていた）。
+
+```javascript
+var need = 書き出し開始行 + 件数 - 1;
+if (sh.getMaxRows() < need) { sh.insertRowsAfter(sh.getMaxRows(), need - sh.getMaxRows()); }
+```
+
+**★このとき `copyTo()` は範囲外でも例外を投げず、何もしない。** 数式の複製を先に走らせていたが、無言で失敗し、次の `setValue` で初めて落ちた。**「例外が出ていない＝実行された」ではない。**
+
+**そしてこれは、ドライランでは絶対に検出できない。** 読むだけのドライランは「書けるかどうか」を検証していない。
+**ドライランに「書き込み先の行数が足りているか」を数えさせる**まで、それは本実行の予行演習になっていない。
+
+関連: [[reference_apps_script_api_verification]] [[project_kintone_csv_to_notion_mirror]] [[reference_kintone_customer_master]] [[reference_shared_drive_form_upload]] [[reference_dangerous_entrypoints]]
