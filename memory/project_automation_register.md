@@ -22,10 +22,22 @@ metadata:
 
 | 済 | `notion_meeting_customer_link.py` ／ `chatwork_relay.py` ／ `~/bin/sort_downloads.py` |
 |---|---|
+| 済 | **GAS「SalesBreakerの反応を 08_関係フォロー へ取り込む」**（2026-08-18）。**GASからNotion APIへ直接打つ**部品 `beatHB_()` を新設（Drive ㊶ `18J5NQHd6TbVS4zFFjHIMBwviq9CTMSNz_Cqmh2fapt0`）。ScriptProperties に `NOTION_TOKEN` を置く。★外形監視は使えない ── 証拠がGoogleスプレッドシート側にあり、mini に Google 認証が無いため |
 | 未 | GAS 4本（議事録GAS・週次バックアップ・週次スナップショット・カレンダーテンプレ）＝**要承認**（バックアップ→diff→承認→実行） |
 | 未 | クラウドroutine 3本（ビビ朝・ロビン会議準備・ビビ週次）＝プロンプト改修・**要承認** |
 | 未 | ビビ朝ブリーフィングへの🔴集約（既存の締切ダッシュボード導線に1系統足す。**新規cronは作らない**） |
 
-**ブロッカー**：Notionインテグレーション「Chatworkリレー」を **3DB**（🏢顧客DB `0b5455629ea6487e8dee218599587e89` ／ 🔒個人議事録DB `3026fc88c17b4420974156638eea4830` ／ ⚙️レジスタ `b4e9609d99d14626a71226c84f9c6d76`）へ「⋯→接続」する田村さんの操作。未実施だと全部 `object_not_found`。
+**ブロッカー**：Notionインテグレーション「Chatworkリレー」を **3DB**（🏢顧客DB `0b5455629ea6487e8dee218599587e89` ／ 🔒個人議事録DB `3026fc88c17b4420974156638eea4830` ／ ⚙️レジスタ `b4e9609d99d14626a71226c84f9c6d76`）へ「⋯→接続」する操作。未実施だと全部 `object_not_found`。**⚙️レジスタは接続済み**（2026-08-18に GAS から HTTP 200 を実測）。
+
+**心拍の打ち方は2通りある。相手の居場所で決まる。**
+
+```
+自分で打てる      python なら heartbeat.py の beat()
+                  GAS なら beatHB_()（Notion API を直接叩く・要 NOTION_TOKEN）
+自分で打てない    外形監視 watch_external.py が代理で打つ（毎朝07:20・mini）
+                  ★ただし見られるのは Notion のページ/DBだけ。
+                    証拠が Google スプレッドシート側にあるものは代理できない
+                    （mini に Google 認証が無い）＝その場合は相手自身が打つしかない
+```
 
 関連 [[reference_dangerous_entrypoints]] [[reference_mac_mini_execution_env]] [[project_meeting_customer_relation_linker]] [[feedback_sales_workbook_hands_off]]
