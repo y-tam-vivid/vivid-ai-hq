@@ -68,6 +68,8 @@
 - [AIエージェント体制＋Notion蓄積で進める](working-via-ai-agents-and-notion-hub.md) — 今後の作業はビビ中央窓口経由＋AIナレッジハブ参照で継続する方針
 - [カレンダー テンプレ自動挿入GAS](project_calendar_template_autofill.md) — 会議準備テンプレをGASで自動挿入。タイトル【種別】で振り分け(商談/面談/社内/定例/セミナー=入れる)。空保存→10分後反映。命名ルール(【】=種別)徹底が前提
 - [自動同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — **cronから`git pull --ff-only`を直呼びしない**。作業すれば必ず汚れて必ず失敗＝いちばん困る時だけ受信が止まる(153回連続を実測)。**ログは届く場所ではない**。fetch(必ず通す)とmerge(失敗してよい)を分け、遅れ／未pushを`~/.claude/SYNC_STATUS.md`(@import済=毎ターン届く)へ書く。実体=`bin/vivid-sync.sh`
+- [cron→launchdでファイルアクセス権が消える](reference_launchd_loses_file_access.md) — **TCCは「誰が起動したか」で判定する**。cronにフルディスクアクセスがあってもlaunchd経由の`/usr/bin/python3`には無い。sort_downloads.pyが`Operation not permitted: ~/Downloads`で落ちた(2026-08-18実測)＝移していたら29%欠落が100%停止に。**~/Library配下だけなら移してよい**(browser_hygiene.pyは動いた)。移す前にlaunchd経由でdry-runを1回
+- [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は**型で見る**([A]全ページ注入=タブ数と掛け算/[B]待機/[C]押した時だけ)。ルールは文章でなく**構造と既定値**に埋める。`bin/browser_hygiene.py`が毎週月曜09:30(MacBook launchd)。判定は閾値超え🔴と先週からの変化🟡の2本立て＝**慢性的な黄色を出さない**
 - [自動処理レジスタ(心拍)](project_automation_register.md) — **「自動と言っているものが動いていない」を検知**。成功/失敗どちらでも心拍を書き、来なければ🔴。設置し忘れは初日から🔴。`~/.vivid-relay/heartbeat.py`。12件登録済/心拍接続は3件。**残=GAS4本・routine3本(要承認)＋3DBへのインテグレーション接続(田村さん)**
 - [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — **2026-08-13稼働開始**(mini cron 毎朝07:35)。初回9件付与・321→312件。**自社5社は突合から除外**(相手と自社の併記欄で自社を先に掴む事故を実測)。残115件は顧客DB未登録だが多くは本人/社内/行政＝顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — SQLはワークスペース上限あり/viewモードは無制限だがSHOWが効かず全列返る。大量処理は内部インテグレーション＋ローカルスクリプトへ

@@ -73,6 +73,17 @@
 
 ### 進行中（MacBookセッション記入）
 
+- **Downloads整理の launchd 移行** … **実測して中止（2026-08-18）。cron のまま据え置き**
+  - 移す動機: 月曜9時 cron が **7回中2回・29%飛んでいた**（7/13・8/10）
+  - **中止の理由**: launchd 経由の dry-run で `Operation not permitted: ~/Downloads`（exit 1）。
+    TCC は「誰が起動したか」で判定する。cron には FDA があるが launchd 経由の
+    `/usr/bin/python3` には無い。**移していたら 29%欠落が 100%停止になっていた**
+  - crontab は一行も触っていない。バックアップ `~/.vivid-relay/crontab.backup.20260818-1141`
+  - 型 → `memory/reference_launchd_loses_file_access.md`
+  - **残る選択肢（有璽氏の判断待ち）**: ①cronのまま（飛びは⚙️レジスタの🔴で検知済み）
+    ②python3 にフルディスクアクセスを与える（全pythonが全ファイルを読めるので影響が広い）
+    ③cron を週2回にして取りこぼしを薄める
+
 - **受信同期の作り直し** … **完了（2026-08-17）／mini側の cron 差し替えだけ残**
   - 事故: MacBookの `git pull --ff-only`（cron */15）が**153回連続で失敗**していた。
     作業中はワーキングツリーが汚れて ff-only が必ず失敗する＝**作業している間だけ受信が止まる**構造。
