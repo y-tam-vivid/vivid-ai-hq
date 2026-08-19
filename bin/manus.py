@@ -170,8 +170,14 @@ def task_confirm_action(task_id, event_id, approve=True, text=None):
 #   ★agent_status はトップレベルに無い。status_update の中にだけ入っている
 
 def extract_status(res):
-    """最も新しい status_update の agent_status を返す。order に依存しない。"""
-    best_ts, best = -1, None
+    """最も新しい status_update の (agent_status, brief) を返す。order に依存しない。
+
+    ★stopped は「完了」と「人が止めた」の両方を指す。agent_status だけでは区別できない。
+      brief = "Manus finished working" → 完了
+      brief = "Manus has stopped"      → 人が Manus Web 側で止めた
+    2026-08-20 実測。状態だけ見て「完了」と報告して誤った。
+    """
+    best_ts, best, brief = -1, None, None
     for m in res.get("messages") or []:
         if m.get("type") == "status_update":
             su = m.get("status_update") or {}
@@ -179,8 +185,18 @@ def extract_status(res):
             if st:
                 ts = to_epoch_sec(m.get("timestamp")) or 0
                 if ts >= best_ts:
-                    best_ts, best = ts, st
-    return best
+                    best_ts, best, brief = ts, st, su.get("brief")
+    return best, brief
+
+
+def status_label(st, brief):
+    if st != "stopped":
+        return st or "(status_update なし)"
+    if brief and "finished" in brief.lower():
+        return "stopped（完了）"
+    if brief and "stopped" in brief.lower():
+        return "stopped（★人が止めた）"
+    return "stopped（完了か中断か不明・briefなし）"
 
 
 def message_text(m):
@@ -221,8 +237,8 @@ LABEL = {"user_message": "有璽氏→Manus", "assistant_message": "Manus", "sta
 
 def summarize(res, max_chars=8000):
     ms = res.get("messages") or []
-    status = extract_status(res) or "(status_update なし)"
-    head = "agent_status: %s ／ messages: %d件" % (status, len(ms))
+    status, brief = extract_status(res)
+    head = "agent_status: %s ／ messages: %d件" % (status_label(status, brief), len(ms))
     if res.get("has_more"):
         head += "（さらに続きあり）"
     if status == "waiting":
@@ -246,7 +262,7 @@ def wait_until_done(task_id, timeout_sec=120, interval=5):
     deadline = time.time() + timeout_sec
     while True:
         last = task_list_messages(task_id, limit=50, order="desc")
-        st = extract_status(last)
+        st, _brief = extract_status(last)
         if st in ("stopped", "error", "waiting"):
             return st, last
         if time.time() >= deadline:
