@@ -43,6 +43,25 @@ esac
 
 cd "$REPO" || exit 1
 
+# ★ いま手がついているものを、実態（git）から書き出す
+#
+#   WORKING.md は「着手前に自分で1行足す」申告制だが、忘れられる。しかも
+#   忘れたこと自体は検知できない（2026-08-19 に mini・MacBook の両方で実際に起きた）。
+#   未コミットのファイルは、誰かが今まさに触っている実態そのもの。
+#   申告を待たずに機械が書けば、書き忘れても見える。
+dirty_block() {
+  [ "$DIRTY" -eq 0 ] && return 0
+  echo "## いま手がついているもの（機械が git から書き出した実態）"
+  echo
+  echo "**着手宣言の有無に関わらず出る。** \`WORKING.md\` に載っていないものがここにあれば、"
+  echo "誰かが宣言せずに触っている（＝他セッションと二重に手をつける恐れ）。"
+  echo
+  echo '```'
+  git status --porcelain | sed 's/^/  /' | head -30
+  [ "$DIRTY" -gt 30 ] && echo "  …ほか $((DIRTY - 30)) 件"
+  echo '```'
+}
+
 # ① 取りに行く。マージはしないので、作業中でも成功する
 FETCH_ERR=$(git fetch origin 2>&1)
 FETCH_RC=$?
@@ -98,7 +117,9 @@ $(git log --oneline HEAD..origin/main --pretty='%h %ad %s' --date=short 2>/dev/n
 cd ~/vivid-ai-hq && git status        # 何を書きかけているか見る
 git add -A && git commit              # 自分の変更を確定させる
 git merge origin/main                 # 両方のブロックを残してマージ
-\`\`\`"
+\`\`\`
+
+$(dirty_block)"
 elif [ "$AHEAD" -gt 0 ] || [ "$DIRTY" -gt 0 ]; then
   RESULT="警告"
   HEAD_LINE="🟡 まだ確定していない変更がある（$NOW 時点・未push ${AHEAD}件／未コミット ${DIRTY}件）"
@@ -108,7 +129,9 @@ elif [ "$AHEAD" -gt 0 ] || [ "$DIRTY" -gt 0 ]; then
 
 \`\`\`
 cd ~/vivid-ai-hq && git add -A && git commit    # push は自動
-\`\`\`"
+\`\`\`
+
+$(dirty_block)"
 else
   RESULT="成功"
   HEAD_LINE="🟢 最新（$NOW 時点・未取込 0件）"
