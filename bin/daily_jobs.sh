@@ -29,7 +29,27 @@ STATE_DIR="${VIVID_DAILY_JOBS_STATE:-$HOME/.vivid-relay/daily_jobs_state}"
 LOCK_DIR="${VIVID_DAILY_JOBS_LOCK:-$HOME/.vivid-relay/daily_jobs.lock}"
 LOG="${VIVID_DAILY_JOBS_LOG:-$HOME/Library/Logs/vivid-daily-jobs.log}"
 HEARTBEAT="${VIVID_HEARTBEAT:-$HOME/.vivid-relay/heartbeat.py}"
+NOTIFY_DIR="${VIVID_NOTIFY_DIR:-$HOME/.vivid-relay}"
 BEAT_NAME="日次ジョブのディスパッチ（daily_jobs.sh）"
+# 同じ日に何回までリトライするか（一時エラーのときだけ。恒久エラーは即あきらめる）
+MAX_RETRIES="${VIVID_DAILY_JOBS_MAX_RETRIES:-3}"
+# 一時エラーの目印（大小無視）。ここに当たらなければ「恒久エラー」扱いで即あきらめる
+TRANSIENT_PATTERN='(^|[^0-9])(503|502|500|429)([^0-9]|$)|timed? ?out|temporarily unavailable|service unavailable|connection reset|econnreset|network is unreachable|try again|rate limit|backend error|deadline exceeded'
+
+# ★通知は「報告のみ・返信不要」の tell() を使う（判断を仰ぐものではないため ask() は使わない）
+notify_tell() {
+  local title="$1" body="$2"
+  [ -f "$NOTIFY_DIR/notify.py" ] || return 0
+  /usr/bin/python3 -c "
+import sys
+sys.path.insert(0, '$NOTIFY_DIR')
+try:
+    from notify import tell
+    tell('$title', '''$body''')
+except Exception as e:
+    sys.stderr.write('[notify] 送れず: %r\n' % e)
+" >/dev/null 2>&1 || true
+}
 
 # ★テスト用に「いま」を差し替えられるようにする（実測で①②③④を確かめるため）。
 #   本番では常に実システム時刻。
@@ -104,8 +124,15 @@ while IFS=$'\t' read -r hhmm name cmd; do
   fi
 
   DONE_FILE="$STATE_DIR/$name.done"
-  # ② 今日すでに走っていればスキップ
+  GAVEUP_FILE="$STATE_DIR/$name.gaveup"
+  ATTEMPTS_FILE="$STATE_DIR/$name.attempts"
+
+  # ② 今日すでに成功していればスキップ
   if [ -f "$DONE_FILE" ] && [ "$(cat "$DONE_FILE" 2>/dev/null)" = "$TODAY" ]; then
+    continue
+  fi
+  # ★今日すでに上限まで再試行して諦めていれば、それ以上叩かない（通知は諦めた瞬間に1回だけ出した）
+  if [ -f "$GAVEUP_FILE" ] && [ "$(cat "$GAVEUP_FILE" 2>/dev/null)" = "$TODAY" ]; then
     continue
   fi
 
@@ -115,25 +142,63 @@ while IFS=$'\t' read -r hhmm name cmd; do
     log "★定義が壊れている（時刻を解釈できない）: $hhmm ${name}"
     continue
   fi
-  # ④ 定刻前なら待つ。定刻後なら（取りこぼしを拾って）ここで走る
+  # ④ 定刻前なら待つ。定刻後なら（取りこぼしを拾って・前回の一時エラーの再試行として）ここで走る
   if [ "$NOW_TS" -lt "$SCHED_TS" ]; then
     continue
   fi
 
+  # 今日これまでの試行回数（日付が変わっていれば0扱い＝日をまたいだリトライ引き継ぎはしない）
+  PREV_ATTEMPT_RAW=""
+  [ -f "$ATTEMPTS_FILE" ] && PREV_ATTEMPT_RAW=$(cat "$ATTEMPTS_FILE" 2>/dev/null)
+  PREV_DATE="${PREV_ATTEMPT_RAW%%:*}"
+  PREV_COUNT="${PREV_ATTEMPT_RAW##*:}"
+  if [ "$PREV_DATE" != "$TODAY" ] || ! echo "$PREV_COUNT" | grep -qE '^[0-9]+$'; then
+    PREV_COUNT=0
+  fi
+
   # ★bash 3.2(macOS標準)は `set -u` 下で「変数名の直後に全角文字」を変数名の一部と
   #   誤認し unbound variable で落ちる実バグがある（2026-08-20実測）。${} で必ず区切る。
-  log "起動: ${name}（定刻 ${hhmm}・実行時刻 $(date -r "$NOW_TS" '+%H:%M')）"
-  # ⑤ このジョブが失敗しても他のジョブ・呼び出し元を止めない
-  ( bash -c "$cmd" ) >> "$LOG" 2>&1
+  log "起動: ${name}（定刻 ${hhmm}・実行時刻 $(date -r "$NOW_TS" '+%H:%M')・試行 $((PREV_COUNT + 1))/${MAX_RETRIES}）"
+
+  # ⑤ このジョブが失敗しても他のジョブ・呼び出し元を止めない。
+  #   出力は一旦テンポラリへ取り、一時/恒久の判定に使ってからログへまとめて追記する
+  JOB_OUT=$(mktemp "${TMPDIR:-/tmp}/daily_jobs_out.XXXXXX")
+  ( bash -c "$cmd" ) > "$JOB_OUT" 2>&1
   RC=$?
-  echo "$TODAY" > "$DONE_FILE"
+  cat "$JOB_OUT" >> "$LOG"
+
   if [ $RC -eq 0 ]; then
+    echo "$TODAY" > "$DONE_FILE"
+    rm -f "$ATTEMPTS_FILE" "$GAVEUP_FILE"
     log "完了: ${name} (rc=0)"
     FIRED="${FIRED}${name} "
-  else
-    log "★失敗: ${name} (rc=${RC})。他のジョブは続行する"
-    FAILED="${FAILED}${name}(rc=${RC}) "
+    rm -f "$JOB_OUT"
+    continue
   fi
+
+  NEW_COUNT=$((PREV_COUNT + 1))
+  echo "${TODAY}:${NEW_COUNT}" > "$ATTEMPTS_FILE"
+
+  # ③一時／恒久エラーの判別。★.done はここでは絶対に書かない（実行した＝済んだ、にしない）
+  if grep -qiE "$TRANSIENT_PATTERN" "$JOB_OUT" 2>/dev/null; then
+    if [ "$NEW_COUNT" -lt "$MAX_RETRIES" ]; then
+      log "★一時エラー: ${name} (rc=${RC})。${NEW_COUNT}/${MAX_RETRIES}回目・次のサイクルで再試行する"
+      FAILED="${FAILED}${name}(一時・${NEW_COUNT}/${MAX_RETRIES}) "
+    else
+      echo "$TODAY" > "$GAVEUP_FILE"
+      log "★一時エラーが${MAX_RETRIES}回続いたので本日は諦める: ${name} (rc=${RC})"
+      notify_tell "日次ジョブ「${name}」を本日は諦めました" \
+        "一時エラー（503等）が${MAX_RETRIES}回続いたため、今日はこれ以上再試行しません。明日また試します。ログ: ${LOG}"
+      FAILED="${FAILED}${name}(諦め・一時エラー${MAX_RETRIES}回) "
+    fi
+  else
+    echo "$TODAY" > "$GAVEUP_FILE"
+    log "★恒久エラーと判定・即座に諦める: ${name} (rc=${RC})"
+    notify_tell "日次ジョブ「${name}」が失敗しました（恒久エラーの可能性）" \
+      "一時エラーの型に当てはまらないため再試行せず、本日は諦めました。中身の確認をお願いします。ログ: ${LOG}"
+    FAILED="${FAILED}${name}(恒久・rc=${RC}) "
+  fi
+  rm -f "$JOB_OUT"
 done < "$CONF"
 
 if [ -n "$FAILED" ]; then
