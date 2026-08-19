@@ -15,3 +15,4 @@
 #       cron から起動された処理は書ける。だから cron 自身に入れさせる。
 
 00 8 * * * /usr/bin/python3 $HOME/.vivid-relay/notion_customer_upsert.py --run --beat >> $HOME/.vivid-relay/notion_customer_upsert.log 2>&1
+25 7 * * * /usr/bin/python3 $HOME/.vivid-relay/intake_register.py --run --beat >> $HOME/.vivid-relay/intake_register.log 2>&1
