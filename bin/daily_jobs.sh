@@ -89,7 +89,9 @@ while IFS=$'\t' read -r hhmm name cmd; do
     continue
   fi
 
-  log "起動: $name（定刻 $hhmm・実行時刻 $(date -r "$NOW_TS" '+%H:%M')）"
+  # ★bash 3.2(macOS標準)は `set -u` 下で「変数名の直後に全角文字」を変数名の一部と
+  #   誤認し unbound variable で落ちる実バグがある（2026-08-20実測）。${} で必ず区切る。
+  log "起動: ${name}（定刻 ${hhmm}・実行時刻 $(date -r "$NOW_TS" '+%H:%M')）"
   # ⑤ このジョブが失敗しても他のジョブ・呼び出し元を止めない
   ( bash -c "$cmd" ) >> "$LOG" 2>&1
   RC=$?
