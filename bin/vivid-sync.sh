@@ -179,6 +179,13 @@ if [ -x "$SETUP" ]; then
   fi
 fi
 
+# ④'' cron の投函口（★AIが自分で crontab を書けないときの経路）
+#     2026-08-20 実測: Claude のセッションから crontab を書くと無応答のまま返らない。
+#     cron から起動されたこの処理なら書ける。bin/cron/<機械>.cron に置かれた行のうち
+#     まだ入っていないものだけを入れる（追加のみ・冪等・番人つき）。
+CRON_APPLY="$HOME/vivid-ai-hq/bin/cron_apply.sh"
+[ -f "$CRON_APPLY" ] && bash "$CRON_APPLY" >/dev/null 2>&1 || true
+
 # ⑤ 心拍（失敗しても本体は落とさない）
 if [ -f "$HEARTBEAT" ]; then
   MSG="未取込${BEHIND}件 / 未push${AHEAD}件 / 未コミット${DIRTY}件 / 取込=${MERGED} / 送信=${PUSHED}"

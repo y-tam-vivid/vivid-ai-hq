@@ -1,0 +1,17 @@
+# Mac mini の cron に「入っているべき行」
+#
+# ★これは正本ではない。正本は crontab 本体。ここは**投函口**。
+#   AI がその場で crontab を書けないときに、ここへ置けば
+#   bin/cron_apply.sh（vivid-sync.sh が15分ごとに呼ぶ）が入れる。
+#
+# 規則
+#   - 1行1ジョブ。crontab とまったく同じ書式で書く（$HOME は使ってよい）
+#   - **追加しかしない。** ここから消しても crontab からは消えない（消すのは人）
+#   - 既に同じ行があれば何もしない（冪等）
+#   - ★実測でドライラン／本実行を1回通したものだけ置く。未検証のものを置かない
+#
+# 経緯: 2026-08-20、Claude のセッションからは crontab への書き込みが
+#       無応答のまま返らなかった（2経路・sandbox有無の両方で実測）。
+#       cron から起動された処理は書ける。だから cron 自身に入れさせる。
+
+00 8 * * * /usr/bin/python3 $HOME/.vivid-relay/notion_customer_upsert.py --run --beat >> $HOME/.vivid-relay/notion_customer_upsert.log 2>&1
