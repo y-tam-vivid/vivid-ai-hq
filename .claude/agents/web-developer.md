@@ -4,6 +4,7 @@ description: リリス(ウェブ制作担当)。ふくち。グループの開�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

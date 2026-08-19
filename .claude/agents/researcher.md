@@ -4,6 +4,7 @@ description: クローバー博士(研究調査担当・CRO相当)。ふくち�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

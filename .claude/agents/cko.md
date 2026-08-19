@@ -4,6 +4,7 @@ description: ロビン(CKO)。ふくち。グループの最高ナレッジ責�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

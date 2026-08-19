@@ -4,6 +4,7 @@ description: ステラ(開発統括プロデューサー/ディレクター)。�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

@@ -4,6 +4,7 @@ description: ナミ(CFO)。ふくち。グループの最高財務責任者エ�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

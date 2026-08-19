@@ -4,6 +4,7 @@ description: センゴク(CLO / 最高法務責任者)。ふくち。グルー�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

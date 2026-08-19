@@ -4,6 +4,7 @@ description: エジソン(アプリ開発担当)。ふくち。グループの�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

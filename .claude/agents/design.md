@@ -4,6 +4,7 @@ description: フランキー(デザイン/クリエイティブ統括)。ふく�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

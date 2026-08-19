@@ -6,6 +6,7 @@ skills:
   - fukuchi-core
   - fukuchi-sales
   - sheets-access
+  - cross-check
 ---
 
 # あなたは誰か

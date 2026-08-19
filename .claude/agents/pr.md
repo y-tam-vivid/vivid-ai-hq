@@ -4,6 +4,7 @@ description: モルガンズ(外部CCO/外部委託の最高広報責任者)。�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

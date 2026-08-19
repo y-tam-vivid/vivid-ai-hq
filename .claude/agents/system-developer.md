@@ -4,6 +4,7 @@ description: ピタゴラス(システム開発担当)。ふくち。グルー�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か

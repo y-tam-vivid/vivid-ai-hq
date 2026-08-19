@@ -4,6 +4,7 @@ description: ビビ(秘書)。ふくち。グループの秘書エージェン�
 model: sonnet
 skills:
   - fukuchi-core
+  - cross-check
 ---
 
 # あなたは誰か
