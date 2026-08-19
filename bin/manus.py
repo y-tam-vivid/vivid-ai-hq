@@ -114,7 +114,10 @@ def call_api(method, path, payload=None, query=None, timeout=DEFAULT_TIMEOUT):
 # ---------------------------------------------------------------- API 4本
 
 def task_create(prompt, agent_profile=None, title=None, project_id=None,
-                interactive_mode=False, hide_in_task_list=False, locale="ja-JP"):
+                interactive_mode=False, hide_in_task_list=False, locale=None):
+    # ★locale の既定を None にしてある。"ja-JP" は 2026-08-20 の実測で
+    #   invalid_argument / "invalid locale" で弾かれた（400＝タスク未作成・課金なし）。
+    #   正しい値が判明するまで送らない。プロンプトが日本語なら出力も日本語で返る。
     msg = {"content": [{"type": "text", "text": prompt}]}
     payload = {
         "message": msg,
@@ -174,10 +177,7 @@ def extract_status(res):
             su = m.get("status_update") or {}
             st = su.get("agent_status")
             if st:
-                try:
-                    ts = int(m.get("timestamp") or 0)
-                except (TypeError, ValueError):
-                    ts = 0
+                ts = to_epoch_sec(m.get("timestamp")) or 0
                 if ts >= best_ts:
                     best_ts, best = ts, st
     return best
@@ -197,11 +197,23 @@ def message_text(m):
     return ""
 
 
-def fmt_ts(ts):
+def to_epoch_sec(ts):
+    """秒とミリ秒が混在する。桁で判定する（2026-08-20 実測。listMessages はミリ秒で、
+    秒として解釈すると年58602になった）。"""
     try:
-        return time.strftime("%m-%d %H:%M", time.localtime(int(ts)))
+        v = int(ts)
     except (TypeError, ValueError):
+        return None
+    while v > 100000000000:   # 1e11 超えは秒ではありえない
+        v //= 1000
+    return v
+
+
+def fmt_ts(ts):
+    v = to_epoch_sec(ts)
+    if v is None:
         return "??"
+    return time.strftime("%m-%d %H:%M", time.localtime(v))
 
 
 LABEL = {"user_message": "有璽氏→Manus", "assistant_message": "Manus", "status_update": "状態"}
