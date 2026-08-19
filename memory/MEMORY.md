@@ -7,7 +7,7 @@
 - [モデル使い分けルール](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印(指名時のみ)＋別モデルが適する時は能動的に推奨
 - [思考OS Skill(thinking-os)](project_thinking_os_skill.md) — NewsPicks記事発の「思考OS」10レンズ＋6要素骨格をモデル非依存ローカルSkill化。/thinking-osで全モデル共通利用。④DB正本登録済
 - [Fable Style改善ループ](project_fable_style_improvement_loop.md) — 規範を週次×ハイブリッドで自己改善。**ユーザーの訂正/やり直しは改善ログDBに種を記録**／「改善ログを適用して」で軽微=自動・構造=承認で反映
-- [AI活用→発信ネタ化パイプライン](project_ai_usage_to_content_pipeline.md) — **実務の区切りごとに⑥ディスカッションログへ作業記録を残す(=モルガンズ週次巡回のネタ源)。都度確認せず自動記録=全エージェント+Fable Styleに埋込済の全AI共通ルール(2026-07-11)**／発信価値ある事例は学習ログDBに発信候補✓も。週次モルガンズが素材化(自動公開なし)。案A整合・Phase2(モルガンズ付替)は保留
+- [AI活用→発信ネタ化パイプライン](project_ai_usage_to_content_pipeline.md) — **実務の区切りごとに⑥ディスカッションログへ作業記録を残す(=モルガンズ週次巡回のネタ源)。都度確認せず自動記録=全AI共通ルール(2026-07-11)**／**正本は「AI活用 発信ネタDB」1つ。📣発信ネタボードは2026-08-19に⛔廃止・統合済／⑥はページ単位でなく「📅セッション」単位で拾う(ページ単位だと1度拾ったページを永久に取りこぼす=実測13件中1件)／公開可否の既定は「公開可」でぼかして出す／迷ったら拾う**。旧routine trig_01GtVoVWQzEKPwbDSeNRQYwL は無効化(二重稼働していた)
 - [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — claude.ai各Project(約15本)の議論ログを新規📚プロジェクト・ナレッジDB(collection 894c592f…)へ構造化移行。3層+発信ネタ型/④登記簿は不変で一方向Relation。パイロット=ふくち事業構想の空ページ作成済、エクスポートJSON流し込み待ち
 - [AI活用ログDB統合方針(案A)](project_ai_log_db_consolidation.md) — 学習ログを単一台帳化し発信は発信候補フラグ＋📣発信ネタボードで運用。Phase1完了/Phase2(発信ネタDB統合・モルガンズ参照付替・投稿生成Skill)保留
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はローカルに無く claude.ai Project「SNS有璽個人投稿用」内。参照は投稿アーカイブDBのみ＝発信ネタ一元化しても影響なし(付替えは routine/ビュー/docの3点だけ)
@@ -72,6 +72,7 @@
 - [自動同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — **cronから`git pull --ff-only`を直呼びしない**。作業すれば必ず汚れて必ず失敗＝いちばん困る時だけ受信が止まる(153回連続を実測)。**ログは届く場所ではない**。fetch(必ず通す)とmerge(失敗してよい)を分け、遅れ／未pushを`~/.claude/SYNC_STATUS.md`(@import済=毎ターン届く)へ書く。実体=`bin/vivid-sync.sh`
 - [cron→launchdでファイルアクセス権が消える](reference_launchd_loses_file_access.md) — **TCCは「誰が起動したか」で判定する**。cronにフルディスクアクセスがあってもlaunchd経由の`/usr/bin/python3`には無い。sort_downloads.pyが`Operation not permitted: ~/Downloads`で落ちた(2026-08-18実測)＝移していたら29%欠落が100%停止に。**~/Library配下だけなら移してよい**(browser_hygiene.pyは動いた)。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は**型で見る**([A]全ページ注入=タブ数と掛け算/[B]待機/[C]押した時だけ)。ルールは文章でなく**構造と既定値**に埋める。`bin/browser_hygiene.py`が毎週月曜09:30(MacBook launchd)。判定は閾値超え🔴と先週からの変化🟡の2本立て＝**慢性的な黄色を出さない**
+- [記録は出口を数える](reference_log_needs_an_exit.md) — **器を作ったら出口を書き出す。0本なら「記録のための記録」になり形骸化する**。⑥は出口が発信1本だけで、③への回収は1ヶ月半止まっても誰も気づかなかった。出口は人の目に入る場所へ着地させ、器と確認先は増やさない／追記型の器は追記の単位で拾う
 - [自動処理レジスタ(心拍)](project_automation_register.md) — **「自動と言っているものが動いていない」を検知**。成功/失敗どちらでも心拍を書き、来なければ🔴。**2026-08-19に「台帳と実体の突合」を新設**＝cron/launchdの実体とレジスタを突き合わせ、**心拍では絶対に見つからない「そもそも登録されていない」を拾う**(自分のマシンの分だけを見る／毎週月曜09:20／両機ズレ0で稼働)。残=ビビ朝への🔴集約・GASトリガー列挙
 - [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — **2026-08-13稼働開始**(mini cron 毎朝07:35)。初回9件付与・321→312件。**自社5社は突合から除外**(相手と自社の併記欄で自社を先に掴む事故を実測)。残115件は顧客DB未登録だが多くは本人/社内/行政＝顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — SQLはワークスペース上限あり/viewモードは無制限だがSHOWが効かず全列返る。大量処理は内部インテグレーション＋ローカルスクリプトへ
