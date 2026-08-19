@@ -10,6 +10,7 @@
 - [AI活用→発信ネタ化パイプライン](project_ai_usage_to_content_pipeline.md) — **実務の区切りごとに⑥ディスカッションログへ作業記録を残す(=モルガンズ週次巡回のネタ源)。都度確認せず自動記録=全AI共通ルール(2026-07-11)**／**正本は「AI活用 発信ネタDB」1つ。📣発信ネタボードは2026-08-19に⛔廃止・統合済／⑥はページ単位でなく「📅セッション」単位で拾う(ページ単位だと1度拾ったページを永久に取りこぼす=実測13件中1件)／公開可否の既定は「公開可」でぼかして出す／迷ったら拾う**。旧routine trig_01GtVoVWQzEKPwbDSeNRQYwL は無効化(二重稼働していた)
 - [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — claude.ai各Project(約15本)の議論ログを新規📚プロジェクト・ナレッジDB(collection 894c592f…)へ構造化移行。3層+発信ネタ型/④登記簿は不変で一方向Relation。パイロット=ふくち事業構想の空ページ作成済、エクスポートJSON流し込み待ち
 - [AI活用ログDB統合方針(案A)](project_ai_log_db_consolidation.md) — 学習ログを単一台帳化し発信は発信候補フラグ＋📣発信ネタボードで運用。Phase1完了/Phase2(発信ネタDB統合・モルガンズ参照付替・投稿生成Skill)保留
+- [型を作る前にアーカイブを数える](feedback_check_the_archive_first.md) — **正本ファイルが無い＝フォーマットが無い、ではない**。2026-08-20にビビッド法人IGで「型が無い」と判断しゼロから4案を提案させたが、法人IG投稿アーカイブDBとDrive「ビビッドInstagram投稿」(031〜050)が実在した（検索結果で見ていたのに使わなかった）。**新しい型を作らせる前にアーカイブ件数と実ファイル置き場を数える。1件でもあれば型を起こす側に回る**
 - [Manus APIの実測挙動](reference_manus_api_behaviors.md) — **`stopped`は「完了」と「人が止めた」を区別しない（briefを見る）／Manus WebとAPIから同じタスクを同時に触れる＝状態だけ見て現在地を答えない**。agent_statusはstatus_updateの中／timestampはミリ秒／localeは送らない／成果物はattachmentsの署名付きURL（期限ありですぐ落とす）／project.getとcredit残高の口は無い／読み取り系は無料
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はローカルに無く claude.ai Project「SNS有璽個人投稿用」内。参照は投稿アーカイブDBのみ＝発信ネタ一元化しても影響なし(付替えは routine/ビュー/docの3点だけ)
 - [Secretary agent「ビビ」](project_secretary_agent.md) — ふくち。グループの秘書ビビ:サブエージェント(~/.claude/agents/secretary.md)+ 毎朝8時の自動ブリーフィングroutine
