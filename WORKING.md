@@ -163,6 +163,14 @@
 
 ### 進行中（MacBookセッション記入）
 
+- **Manus AI 接続** … MacBook は繋がった（`claude mcp list` で ✔Connected）。**残2つ**
+  - 実体 `bin/manus.py`（MCPサーバ兼CLI・依存なし・3.9互換）／モルガンズ `pr.md` に外注節
+  - **残① APIキー未発行**（有璽氏の操作。Manus Web → 設定 → API Integration → Create API Key）
+    置き場は `~/.config/manus/api_key`（キーだけ1行・chmod 600）。**API本体は未実測**
+  - **残② mini へ未登録**。mini の `git pull` が他セッションの未コミット変更で止まっており
+    `bin/manus.py` が届いていない。**当方は stash も discard もしない**。commit されれば自動で届く
+  - 記録 → Notion⑥ https://app.notion.com/p/3c17b1568b5781d1a7c6e17e6053bec2
+
 - **受信同期の作り直し** … **完了（2026-08-17）／mini側の cron 差し替えだけ残**
   - 事故: MacBookの `git pull --ff-only`（cron */15）が**153回連続で失敗**していた。
     作業中はワーキングツリーが汚れて ff-only が必ず失敗する＝**作業している間だけ受信が止まる**構造。
