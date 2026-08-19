@@ -10,7 +10,8 @@
 - [AI活用→発信ネタ化パイプライン](project_ai_usage_to_content_pipeline.md) — **実務の区切りごとに⑥ディスカッションログへ作業記録を残す(=モルガンズ週次巡回のネタ源)。都度確認せず自動記録=全AI共通ルール(2026-07-11)**／**正本は「AI活用 発信ネタDB」1つ。📣発信ネタボードは2026-08-19に⛔廃止・統合済／⑥はページ単位でなく「📅セッション」単位で拾う(ページ単位だと1度拾ったページを永久に取りこぼす=実測13件中1件)／公開可否の既定は「公開可」でぼかして出す／迷ったら拾う**。旧routine trig_01GtVoVWQzEKPwbDSeNRQYwL は無効化(二重稼働していた)
 - [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — claude.ai各Project(約15本)の議論ログを新規📚プロジェクト・ナレッジDB(collection 894c592f…)へ構造化移行。3層+発信ネタ型/④登記簿は不変で一方向Relation。パイロット=ふくち事業構想の空ページ作成済、エクスポートJSON流し込み待ち
 - [AI活用ログDB統合方針(案A)](project_ai_log_db_consolidation.md) — 学習ログを単一台帳化し発信は発信候補フラグ＋📣発信ネタボードで運用。Phase1完了/Phase2(発信ネタDB統合・モルガンズ参照付替・投稿生成Skill)保留
-- [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はローカルに無く claude.ai Project「SNS有璽個人投稿用」内。参照は投稿アーカイブDBのみ＝発信ネタ一元化しても影響なし(付替えは routine/ビュー/docの3点だけ)
+- [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はローカルに無く claude.ai Project「SNS有璽個人投稿用」内。参照は投稿アーカイブDBのみ＝発信ネタ一元化しても影響なし(付替えは routine/ビュー/docの3点だけ)。**★2026-08-19にManusと生成系が二重になった＝どちらを正かは未決・寄せない**
+- [Manus AIへの外注](project_manus_outsourcing.md) — 社外の手足としてMCP接続(manus_ask等5本・実体bin/manus.py)。**★個人IGは投稿実行までManusへ委任済＝「対外発信は人が押す」の例外／Manus側に品質ゲートが既にあり重ねない／Manusは社外＝未公表・顧客名を渡さない／ask,replyはクレジット消費＝要承認**。いまAPIキー未発行・mini未登録で本体未実測
 - [Secretary agent「ビビ」](project_secretary_agent.md) — ふくち。グループの秘書ビビ:サブエージェント(~/.claude/agents/secretary.md)+ 毎朝8時の自動ブリーフィングroutine
 - [CFO agent「ナミ」](project_cfo_agent.md) — ふくち。グループのCFOナミ:サブエージェント(~/.claude/agents/cfo.md)+ Notion財務ハブ + 月次/週次routine
 - [CLO agent「センゴク」](project_legal_agent.md) — ふくち。グループのCLO(法務)センゴク:サブエージェント(~/.claude/agents/legal.md)+ Claude for Legalプラグイン二層(commercial/privacy/corporate)。日本法ラッパー。Notion法務ハブ(契約レビュー/期日管理DB)構築済・名鑑稼働中。プラグイン導入はユーザー未実行
