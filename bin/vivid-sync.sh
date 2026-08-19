@@ -60,6 +60,17 @@ if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -gt 0 ] && [ "$DIRTY" -eq 0 ]; then
   fi
 fi
 
+# ②' 送信する（コミット済みのみ。書きかけ＝未コミットは git push の対象外なので飛ばない）
+#     behind=0（受信済み）のときだけ送る。behind>0 のまま push すると reject されるので、
+#     先に受信が要る＝次の同期で merge されてから自動的に送られる。
+PUSHED="no"
+if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -eq 0 ] && [ "$AHEAD" -gt 0 ]; then
+  if git push origin main >/dev/null 2>&1; then
+    PUSHED="yes"
+    AHEAD=0
+  fi
+fi
+
 # ③ 状態を決める
 if [ "$FETCH_RC" -ne 0 ]; then
   RESULT="失敗"
@@ -90,13 +101,13 @@ git merge origin/main                 # 両方のブロックを残してマー�
 \`\`\`"
 elif [ "$AHEAD" -gt 0 ] || [ "$DIRTY" -gt 0 ]; then
   RESULT="警告"
-  HEAD_LINE="🟡 この機の変更が他機へ届いていない（$NOW 時点・未push ${AHEAD}件／未コミット ${DIRTY}件）"
-  DETAIL="受信は最新。ただし**こちらで書いたものが他の面から見えていない**。
-他セッションは古い前提で動くので、区切りがついたら push する。
+  HEAD_LINE="🟡 まだ確定していない変更がある（$NOW 時点・未push ${AHEAD}件／未コミット ${DIRTY}件）"
+  DETAIL="**コミット済みの変更は vivid-sync.sh が自動で push する（次の同期で全機へ配送）。**
+残っているのは、まだ commit していない変更か、他機が先に進んでいて保留された push。
+区切りがついたら commit すれば、あとは自動で届く。
 
 \`\`\`
-cd ~/vivid-ai-hq && git status
-git add -A && git commit && git push
+cd ~/vivid-ai-hq && git add -A && git commit    # push は自動
 \`\`\`"
 else
   RESULT="成功"
@@ -120,7 +131,7 @@ EOF
 
 # ⑤ 心拍（失敗しても本体は落とさない）
 if [ -f "$HEARTBEAT" ]; then
-  MSG="未取込${BEHIND}件 / 未push${AHEAD}件 / 未コミット${DIRTY}件 / 取込=${MERGED}"
+  MSG="未取込${BEHIND}件 / 未push${AHEAD}件 / 未コミット${DIRTY}件 / 取込=${MERGED} / 送信=${PUSHED}"
   /usr/bin/python3 "$HEARTBEAT" "$NAME" "$RESULT" "$MSG" >/dev/null 2>&1 || true
 fi
 

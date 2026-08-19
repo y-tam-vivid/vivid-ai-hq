@@ -19,3 +19,5 @@ metadata:
 **前提＝命名ルール徹底**：【】＝**種別**（手段=オンライン/電話は説明欄「■手段」へ）。確定版ルールは Phase B要件書A節 https://app.notion.com/p/3957b1568b5781679355e365a9029e26 。種別9種=商談/定例/社内/面談/現場/イベント/セミナー/私用/その他。テンプレ本文はこのルールのA-2と一致。挿入先の説明欄は🌐全社議事録DB連携（相手/会社は顧客DB表記に統一）。
 
 **コード**：scratchpad `calendar_template_autofill.gs`（セッション限り）。関数=insertTemplateIntoEmptyEvents / setupTrigger(10分トリガー) / extractType_。設置は田村さんのGoogleアカウントのApps Script。関連 [[reference_notion_knowledge_hub]] [[reference_kintone_customer_master]]。
+
+**語彙の統一（2026-08-19 実測で照合）**: カレンダーと議事録の**種別9種は完全一致**。**手段は Teams がカレンダーにだけ有り議事録が受けられなかった → GAS3箇所(SHUDAN_6/プロンプト/回答形式)とNotion2DBへ追加**。`notta` は議事録側だけ＝会議の手段でなく記録の取り方だが実害薄く放置。ステータスは議事録に持たせない（案件の進み具合は営業ワークブックが持つ＝二重管理を避ける）。**括弧は `[種別]`→`【種別】` に統一**（議事録側に合わせた）。社員向けの正本は「📝 会議の記録の残し方（全社共通）」`3c17b1568b57811784a2c8f2cec07501`。

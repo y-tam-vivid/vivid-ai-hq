@@ -7,7 +7,7 @@
 - [モデル使い分けルール](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印(指名時のみ)＋別モデルが適する時は能動的に推奨
 - [思考OS Skill(thinking-os)](project_thinking_os_skill.md) — NewsPicks記事発の「思考OS」10レンズ＋6要素骨格をモデル非依存ローカルSkill化。/thinking-osで全モデル共通利用。④DB正本登録済
 - [Fable Style改善ループ](project_fable_style_improvement_loop.md) — 規範を週次×ハイブリッドで自己改善。**ユーザーの訂正/やり直しは改善ログDBに種を記録**／「改善ログを適用して」で軽微=自動・構造=承認で反映
-- [AI活用→発信ネタ化パイプライン](project_ai_usage_to_content_pipeline.md) — **実務の区切りごとに⑥ディスカッションログへ作業記録を残す(=モルガンズ週次巡回のネタ源)。都度確認せず自動記録=全エージェント+Fable Styleに埋込済の全AI共通ルール(2026-07-11)**／発信価値ある事例は学習ログDBに発信候補✓も。週次モルガンズが素材化(自動公開なし)。案A整合・Phase2(モルガンズ付替)は保留
+- [AI活用→発信ネタ化パイプライン](project_ai_usage_to_content_pipeline.md) — **実務の区切りごとに⑥ディスカッションログへ作業記録を残す(=モルガンズ週次巡回のネタ源)。都度確認せず自動記録=全AI共通ルール(2026-07-11)**／**正本は「AI活用 発信ネタDB」1つ。📣発信ネタボードは2026-08-19に⛔廃止・統合済／⑥はページ単位でなく「📅セッション」単位で拾う(ページ単位だと1度拾ったページを永久に取りこぼす=実測13件中1件)／公開可否の既定は「公開可」でぼかして出す／迷ったら拾う**。旧routine trig_01GtVoVWQzEKPwbDSeNRQYwL は無効化(二重稼働していた)
 - [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — claude.ai各Project(約15本)の議論ログを新規📚プロジェクト・ナレッジDB(collection 894c592f…)へ構造化移行。3層+発信ネタ型/④登記簿は不変で一方向Relation。パイロット=ふくち事業構想の空ページ作成済、エクスポートJSON流し込み待ち
 - [AI活用ログDB統合方針(案A)](project_ai_log_db_consolidation.md) — 学習ログを単一台帳化し発信は発信候補フラグ＋📣発信ネタボードで運用。Phase1完了/Phase2(発信ネタDB統合・モルガンズ参照付替・投稿生成Skill)保留
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はローカルに無く claude.ai Project「SNS有璽個人投稿用」内。参照は投稿アーカイブDBのみ＝発信ネタ一元化しても影響なし(付替えは routine/ビュー/docの3点だけ)
@@ -41,6 +41,7 @@
 - [機微の二層管理ルール](feedback_confidential_two_layer_rule.md) — フォルダは原則共有・機微だけ`_機微`サブフォルダで本人限定(本人+代表+管理部門長)。経理=部署ごと本人限定/労務法務採用=共有+_機微。sort_downloads.pyで自動隔離
 - [デザイン方針: 図解ファースト＋絵文字抑制](feedback_design_diagram_first_minimal_emoji.md) — 流れ/関係/階層は言葉でなく図式(矢印フロー・分岐・マトリクス)で主に見せ言葉は補足。図を1行に潰すのは改悪。絵文字は機能的最小限に抑制。2026-07-16フランキーレビューで確定
 - [生成ファイルはNotionに添付](feedback_generated_files_attach_notion.md) — 生成/発行したMD/Skill/HTML/資料は該当Notionページに実ファイル添付(DL可)。テキスト=全文+`<file>`原本、動くHTML=`<embed>`ライブ描画+Artifact併記。一時領域に放置しない。2026-07-16全AI標準
+- [Notionページを消してよい線](reference_notion_archive_line.md) — **配った/リンクされた/参照されている が1つでもあれば消さない**。消してよいのは作業層のまま吸収されたものだけ。**消す前にページIDで被リンク検索して0件を確認**。アーカイブ履歴はAPIで取れない＝事後検知は作れないので「消す前に止める」しかない
 - [Notion運用ルール正本](project_notion_operating_rules.md) — **全AIが読み書き前に必ず参照**。4層モデル(正本/参照/記録/作業)＋要約は鮮度ヘッダー必須＋参照層ブリーフィング型。ローカル11ファイルにポインタ埋込済(2026-07-20)
 - [【廃止】Notion最新版を最上部ルール](feedback_notion_latest_version_top.md) — 2026-07-21廃止。📌最新版インデックス方式は規律依存で破綻。後継=[Notion運用ルール正本]。「旧版を消さない」原則のみ継承
 - [Notionナレッジ設計ページ](reference_notion_knowledge_design.md) — 【設計】ナレッジホーム設計ページ=Drive住み分け/命名(事業×法人)§9を追記した協議ハブ。[[reference_notion_knowledge_hub]]の組織体系に整合させる
@@ -72,13 +73,17 @@
 - [自動同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — **cronから`git pull --ff-only`を直呼びしない**。作業すれば必ず汚れて必ず失敗＝いちばん困る時だけ受信が止まる(153回連続を実測)。**ログは届く場所ではない**。fetch(必ず通す)とmerge(失敗してよい)を分け、遅れ／未pushを`~/.claude/SYNC_STATUS.md`(@import済=毎ターン届く)へ書く。実体=`bin/vivid-sync.sh`
 - [cron→launchdでファイルアクセス権が消える](reference_launchd_loses_file_access.md) — **TCCは「誰が起動したか」で判定する**。cronにフルディスクアクセスがあってもlaunchd経由の`/usr/bin/python3`には無い。sort_downloads.pyが`Operation not permitted: ~/Downloads`で落ちた(2026-08-18実測)＝移していたら29%欠落が100%停止に。**~/Library配下だけなら移してよい**(browser_hygiene.pyは動いた)。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は**型で見る**([A]全ページ注入=タブ数と掛け算/[B]待機/[C]押した時だけ)。ルールは文章でなく**構造と既定値**に埋める。`bin/browser_hygiene.py`が毎週月曜09:30(MacBook launchd)。判定は閾値超え🔴と先週からの変化🟡の2本立て＝**慢性的な黄色を出さない**
-- [自動処理レジスタ(心拍)](project_automation_register.md) — **「自動と言っているものが動いていない」を検知**。成功/失敗どちらでも心拍を書き、来なければ🔴。設置し忘れは初日から🔴。`~/.vivid-relay/heartbeat.py`。12件登録済/心拍接続は3件。**残=GAS4本・routine3本(要承認)＋3DBへのインテグレーション接続(田村さん)**
+- [記録は出口を数える](reference_log_needs_an_exit.md) — **器を作ったら出口を書き出す。0本なら「記録のための記録」になり形骸化する**。⑥は出口が発信1本だけで、③への回収は1ヶ月半止まっても誰も気づかなかった。出口は人の目に入る場所へ着地させ、器と確認先は増やさない／追記型の器は追記の単位で拾う
+- [自動処理レジスタ(心拍)](project_automation_register.md) — **「自動と言っているものが動いていない」を検知**。成功/失敗どちらでも心拍を書き、来なければ🔴。**2026-08-19に「台帳と実体の突合」を新設**＝cron/launchdの実体とレジスタを突き合わせ、**心拍では絶対に見つからない「そもそも登録されていない」を拾う**(自分のマシンの分だけを見る／毎週月曜09:20／両機ズレ0で稼働)。残=ビビ朝への🔴集約・GASトリガー列挙
 - [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — **2026-08-13稼働開始**(mini cron 毎朝07:35)。初回9件付与・321→312件。**自社5社は突合から除外**(相手と自社の併記欄で自社を先に掴む事故を実測)。残115件は顧客DB未登録だが多くは本人/社内/行政＝顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — SQLはワークスペース上限あり/viewモードは無制限だがSHOWが効かず全列返る。大量処理は内部インテグレーション＋ローカルスクリプトへ
+- [リンク共有は1か所で全部に効く](reference_link_sharing_inherits_everywhere.md) — **機微を置く場所こそ共有設定を見る**。議事録ルートが「リンクを知っている全員」で751件が読める状態だった(2026-08-18)。**`0A`始まりはマイドライブのルートでもある**＝共有ドライブの判別に使えない(オーナー欄の有無で見る)
 - [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — **1つしか選べない置き場に判断を置かない**。分からない回まで選ばされ1つに集中する(実測36%)。分類先の分布を数え3割超の偏りは既定値と疑う。議事録Driveは年月平置きへ・部門はNotionが持つ(2026-08-15)
 - [AIの精度を疑う前に入力と出力先を見る](reference_ai_output_blamed_before_inputs.md) — 議事録タスクの担当者が全員1人に倒れていた真因は**選択肢6名ベタ書き＋「不明なら◯◯」＋書き込み側が捨てていた**の2段。フォールバックは誤りを正解の顔で量産する。検証は答えを先に決めてから走らせる
+- [処理済みの印を消すだけでは戻らない](reference_processed_flag_is_not_enough.md) — **元データが取得元フォルダにあるか**を見る。承認済み=移動済みなので行を消しても拾われない(2026-08-18に4件/128件で実測)。監査の条件は原因でなく「結果として入っているか」＋**隔離配下は対象外**(でないと隔離するそばから戻す)
 - [却下は永続的な取りこぼしを作る](reference_silent_rejection_backlog.md) — 承認フローの却下=処理済み扱いで二度と拾われない。**エラーも心拍も出ない**。日付別件数の「連続0件」で探す。2026-08-14に87件・23日分を実測
 - [議事録自動整理GAS 復旧＋Notion基盤移行](project_giji_automation_gas.md) — notta/Meet議事録の自動整理GAS。停止真因=廃止モデルnot_found→復旧済。**2026-08-14に却下87件を再処理し6/21〜7/13の空白を解消／TASK_DATE_CUTOFF=2026-07-14**。オーナー区分ルーティング(有璽氏個人=個人ゲート/社員=自動全社)設計中・バックログ停止中。Driveフォルダ構造(事業部門分類)の議論は現行作業完了後に併せて。ビジョン=まず自分で確立→社員展開、社員のタスク可視化＋商談事前準備まで
+- [議事録の社員展開（パイロット5名）](project_minutes_employee_rollout.md) — **2026-08-19に入口を開いた**。社員ごとの受付フォルダ＋共有区分＋機微判定まで稼働、**全社への自動昇格は意図的に未実装**（1〜2週間データを見てから）。カレンダーと議事録の語彙(種別9/手段6)を統一・括弧は【】
 - [議事録の隔離運用](project_minutes_quarantine.md) — **空・機微・重複はNotionに入れずDriveの`_要確認`へ移す。移動のみ・削除は有璽氏**。空判定は本文50字の関門を素通りしていた／07-24は閉会後20分の私的会話が残っていた／07-22は同一会議が2本とも昇格。判定と移動はGAS側(Drive MCPに移動手段が無い)
 - [議事録の整理ルール](project_giji_organizing_rules.md) — **区分は議事録でなく台帳(顧客DB種別=multi-select)が持つ／突合先は区分で絞らない(社外=顧客DB・社内=担当者マスター)／相手・会社は「台帳と同じ表記」(正式名称ではない。法人は少数派)／行政・研究も台帳へ入れる(案A)**。指標は未紐付でなく社外会議の紐付率(2026-08-13承認)
 - [Apps Script生成時のAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを検出しない。Sheet/Range/Spreadsheetの所属クラス突合が必須。onOpenメニューはバインド時のみ
@@ -88,5 +93,7 @@
 - [Drive上の.gsは開けない](reference_drive_gs_file_not_previewable.md) — 拡張子なし/.gsはoctet-stream固定でプレビュー不可。リネームでは直らずGoogleドキュメントとして作り直す
 - [AI資産カタログ](ai-asset-catalog.md) — Skill/GAS/MCP/主要MDの台帳化。**Drive `マイドライブ/AI資産_正本/` を正本と宣言済(2026-07-07)＝vivid-ai-hqの設計と要調整**。旧版は`_旧版/`へ・Notion台帳の現行バージョン列が単一の真実
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1=17分類へ機械振り分け(自動化OK)／Stage2=事業部・個人へは人＋AI協業で、**いきなり自動振り分けは誤配リスクのため禁止**
+- [確認は溜めて1回にする](feedback_batch_the_checks.md) — **一手ごとに承認を求めない。既定は自分で進める**(可逆なものはバックアップ→実行→照合まで自分で回す)。承認が要るのは6項目だけ＝外へ出る/お金/正本の削除/規範の変更/人に配る/大きな分岐。**ローカルに入れたものはその場でminiにも入れる**(非対話sshは/usr/local/binがPATHに無い)
+- [「できない」と言う前に試す](feedback_verify_before_declining.md) — **憶測で断らない**。実際に試すか仕様を確認し、「できる/できない」を事実として述べる。**できるが望ましくない場合は理由を明示して「やりますか」まで出す**（望ましくないで止めると選択肢が消える）。入力できるものは基本的に入力していく
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — **ファイル作成/編集の前に変更内容をdiffで提示し、同時に触る全ファイルを一覧化して承認を待つ**。サプライズ書き込みは禁忌
 - [ふくち。アンブレラサイトv2.0](project_handoff_bundle.md) — `~/Downloads/サイト改修2026/…(Remix)/` はClaude Designのハンドオフ束。静的HTML+shared.css・ビルド無し。旧vivid-global.comのリブランド
