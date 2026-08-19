@@ -110,4 +110,5 @@
 - [miniのターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — **チャットにコードやURLを貼っても渡したことにならない。触れない**。渡し方は Slack DM／Drive・Notionのリンク／★そもそも人の手を要らなくする の3つだけ。2026-08-20に1日3回踏んだ(App Home「探して」／認証URL貼付／setup_hooks.shの1行)。★3回目はフックが目の前に警告を出していたのに踏んだ＝出すだけでは足りない。**渡す手段そのものを自動化する**(vivid-sync.shが15分ごとにフックを自動導入するようにした)
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — **ファイル作成/編集の前に変更内容をdiffで提示し、同時に触る全ファイルを一覧化して承認を待つ**。サプライズ書き込みは禁忌
 - [ふくち。アンブレラサイトv2.0](project_handoff_bundle.md) — `~/Downloads/サイト改修2026/…(Remix)/` はClaude Designのハンドオフ束。静的HTML+shared.css・ビルド無し。旧vivid-global.comのリブランド
+- [穴を探す起点を人の指摘に置かない](feedback_find_holes_without_being_told.md) — **毎朝08:40 `self_audit.py` がつるを起動し、cron/レジスタ/フック/ログを自分で検査する**（有璽氏 2026-08-20「なんで俺が指摘しなきゃ穴を探さないんだ」）。★検査役の「直さない」は台帳・顧客DB・kintoneに対しての原則。**自分たちの仕組み（cron登録・レジスタ・ログ・設定）は可逆なら直す**。出し方=直した／★人が要る／異常なし の3ブロック
 - [リレーは積み上がり、人のせいにした](reference_relay_piles_up_and_blames_the_user.md) — **cron5分×1回15分＝同じ指示が3本同時に走り「承りました」が4回届いた**。打ち切りを「指示が大きすぎる」と書いていた＝原因はこちらの持ち時間。**周期より長い自動処理はロック必須／「読んだ」の確定は実行の前／打ち切っても途中経過を返す**。slack_inbox.py 修正済(ロック・1800秒・状態を先に確定・partial出力)

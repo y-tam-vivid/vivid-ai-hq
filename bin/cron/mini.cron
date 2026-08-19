@@ -21,4 +21,8 @@
 #   ★このファイルへ戻す／二重に置くと、crontab 書き込みが将来直った瞬間に
 #     同じジョブが2経路（本物のcron ＋ daily_jobs.sh）で二重起動する。移すなら片方から消す。
 
-00 8 * * * /usr/bin/python3 $HOME/.vivid-relay/notion_customer_upsert.py --run --beat >> $HOME/.vivid-relay/notion_customer_upsert.log 2>&1
+# 2026-08-20 つる（自己監査）── notion_customer_upsert をここから外した。
+#   理由: crontab への書き込みが塞がっている間、この行は永久に入らない。
+#         レジスタは「有効✓・毎朝08:00・🟢正常」と申告していたが実体はどこにも無かった＝申告倒れ。
+#         daily_jobs.conf（いま実際に回る経路）へ移した。上の規則どおり片方からは消す。
+# ★いま投函中の行は無い。

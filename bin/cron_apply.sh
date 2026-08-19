@@ -52,8 +52,17 @@ done < "$WANTED"
 [ -z "$MISSING" ] && exit 0
 
 # 退避してから書く
-STAMP=$(date "+%Y%m%d-%H%M%S")
-printf '%s\n' "$CURRENT" > "$BACKUP_DIR/crontab_backup_$STAMP.txt" 2>/dev/null
+# ★2026-08-20 つる：crontab への書き込みが塞がっている間、15分ごとに再試行→毎回退避で
+#   同じ内容のバックアップが1日96本たまっていた（8/20だけで24本を実測）。
+#   ① 直前の退避と中身が同じなら取り直さない ② 20世代を超えた古い分は落とす
+LAST=$(ls -t "$BACKUP_DIR"/crontab_backup_*.txt 2>/dev/null | head -1)
+if [ -z "$LAST" ] || ! printf '%s\n' "$CURRENT" | cmp -s - "$LAST"; then
+  STAMP=$(date "+%Y%m%d-%H%M%S")
+  printf '%s\n' "$CURRENT" > "$BACKUP_DIR/crontab_backup_$STAMP.txt" 2>/dev/null
+fi
+ls -t "$BACKUP_DIR"/crontab_backup_*.txt 2>/dev/null | tail -n +21 | while read -r old; do
+  rm -f "$old"
+done
 
 NEW=$(mktemp /tmp/vivid_cron.XXXXXX)
 printf '%s\n' "$CURRENT" > "$NEW"
