@@ -111,15 +111,44 @@ def from_memory(blob):
         return []
     tops = [t for t, hints in TOPIC_HINTS.items()
             if any(h in blob for h in hints)]
-    out = []
-    for t in tops[:2]:                       # トピックは2つまで
-        for e in idx.get(t, [])[:3]:         # 1トピック3本まで
+
+    def relevant_first(entries):
+        """★常設枠は本数が多い。重み順の上位だけを出すと毎回同じ2本になる。
+        いまの作業に語が一致するものを先に出し、残りを重み順で埋める。"""
+        def score(e):
+            text = (e.get('desc', '') + ' ' + ' '.join(e.get('points') or []))
+            words = [w for w in re.findall(r'[一-龯ぁ-んァ-ヶA-Za-z_]{3,}', text)]
+            return sum(1 for w in set(words) if w in blob)
+        return sorted(entries, key=lambda e: -score(e))
+
+    def take(topic, n):
+        got = []
+        src = idx.get(topic, [])
+        if topic == 'always':
+            src = relevant_first(src)
+        for e in src[:n]:
             pts = e.get('points') or []
             if not pts:
                 continue
-            out.append('【%s】\n%s' % (e['file'].replace('.md', ''),
+            got.append('【%s】\n%s' % (e['file'].replace('.md', ''),
                                        '\n'.join('・' + p for p in pts[:3])))
-    return out[:3]
+        return got
+
+    # ★常設枠を必ず先に出す（2026-08-20 に発見した穴）
+    #   「有璽氏に言われたこと」と汎用の地雷は always に集めてあるのに、
+    #   ここがトピック枠しか読んでおらず **1度も出ていなかった**。
+    #   索引を作る側を直しても、読む側を直さなければ届かない。
+    out = take('always', 2)
+    for t in tops[:2]:                       # トピックは2つまで
+        out += take(t, 3)                    # 1トピック3本まで
+    # 同じファイルが二度出ないように潰す（常設枠とトピック枠は重ならない作りだが念のため）
+    seen, uniq = set(), []
+    for x in out:
+        if x in seen:
+            continue
+        seen.add(x)
+        uniq.append(x)
+    return uniq[:5]
 
 
 def main():
@@ -144,13 +173,19 @@ def main():
                 hits.append(msg)
         except Exception:
             pass
+    # ★memory由来を必ず先に引く（2026-08-20 に発見した、この仕組み最大の穴）
+    #   以前はここが `if not hits: return` で、**ハードコードの RULES が1つも当たらないと
+    #   memory を1行も見ずに終了していた**。
+    #   ＝「memory に書けば次の作業から自動で突きつけられる」という、この仕組みの中心の主張が、
+    #     ハードコードに載っている作業のときしか成り立っていなかった。
+    #   索引を作る側・読む側・出す側の3か所とも直さないと届かない。
+    hits += from_memory(blob)
     if not hits:
         print(json.dumps({}))
         return
 
-    hits += from_memory(blob)               # ★memory由来（自動生成・書けば次から効く）
     text = ('★これから触るものは、過去に事故を起こした場所です。'
-            '**下は全部、実際に踏んだものだけ**です。\n\n' + '\n\n'.join(hits[:4]))
+            '**下は全部、実際に踏んだものだけ**です。\n\n' + '\n\n'.join(hits[:5]))
     print(json.dumps({
         'hookSpecificOutput': {
             'hookEventName': 'PreToolUse',

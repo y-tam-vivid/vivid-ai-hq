@@ -45,6 +45,7 @@
 - [Notion運用ルール正本](project_notion_operating_rules.md) — **全AIが読み書き前に必ず参照**。4層モデル(正本/参照/記録/作業)＋要約は鮮度ヘッダー必須＋参照層ブリーフィング型。ローカル11ファイルにポインタ埋込済(2026-07-20)
 - [【廃止】Notion最新版を最上部ルール](feedback_notion_latest_version_top.md) — 2026-07-21廃止。📌最新版インデックス方式は規律依存で破綻。後継=[Notion運用ルール正本]。「旧版を消さない」原則のみ継承
 - [Notionナレッジ設計ページ](reference_notion_knowledge_design.md) — 【設計】ナレッジホーム設計ページ=Drive住み分け/命名(事業×法人)§9を追記した協議ハブ。[[reference_notion_knowledge_hub]]の組織体系に整合させる
+- [法人番号は申請なしで全件が取れる](reference_corp_number_bulk_download.md) — **Web-APIのアプリケーションIDは発行に2週間〜1か月。だが全件ダウンロードは申請不要で今日から使える**（2026-08-20実測・ログイン無しで200）。一括は経路B／受付フォームの即時埋めだけ経路A
 - [指数表記の法人番号は計算で戻さない](reference_recover_exponential_corp_number.md) — **`toFixed(0)`での復元は禁止。検査数字を通るのに別法人を指す値ができる(実測4件中1件が素通り)**。国税庁全件データと突合して1社に絞れたときだけ確定してよい
 - [kintoneルックアップはコピー](reference_kintone_lookup_is_a_copy.md) — コピー元を直しても自動追随しない。マスタ更新→参照アプリで取り直しまでが1作業。参照側に選択肢は存在しない
 - [空行が汚れる2つの経路](reference_sheet_scan_range_pollution.md) — 書式の継承だけでなく走査範囲の広さでも空行に値が入る。実データが離れた行にあると手前が全部巻き込まれる
