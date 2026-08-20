@@ -69,7 +69,7 @@
 - [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 文書・図・レイアウトは作る前に3〜5行で形を見せる。スクリプトのドライランと同じ。抽象語（図/整理/分かりやすく）が出たら合図
 - [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — 打ち切られた書き出し・gsのコメント・過去の要約を根拠に「無い/未実施」と断定しない
 - [実行の入口は名前で判断しない](reference_dangerous_entrypoints.md) — **cron/メニュー/手順書に載せる前に「書くのか・書かないのか・壊すのか」を実測で1回確かめる**。①既定dry-runで何もしない ②名前は普通なのに全消去する ③順序を飛ばすと重複を作る、の3型。.gsはローカルに無く未再検証の項目あり
-- [営業案件管理ワークブック(3層)](project_sales_pipeline_workbook.md) — スプレッドシート=案件層/kintone=確定層/Notion=参照。**層の役割分担は語彙統一より優先**。2026-08-03に統合完了(企業マスタ387⇄kintone384が1対1・鍵は社内顧客ID)。週次手順書＋GAS10本。buildWorkbookは実行禁止
+- [営業案件管理ワークブック(3層)](project_sales_pipeline_workbook.md) — スプレッドシート=案件層/kintone=確定層/Notion=参照。**層の役割分担は語彙統一より優先**。2026-08-03に統合完了(企業マスタ387⇄kintone384が1対1・鍵は社内顧客ID)。週次手順書＋GAS10本。buildWorkbookは実行禁止／**★人に渡すときの障害はデータの正しさではなく「入力の手数」＝記録が重いと誰も書かず台帳が死ぬ**(2026-08-20実測 ── 40_活動ログの社内顧客IDは手入力・入力規則ゼロ・誤入力の警告なしで実質5手)／**★手順書は実態から腐る**(94の「グレーの列」は保護4列中1列だけがグレー・「08はA/D/I/L」は実際A/D/E/F/G/N)／**★開いた瞬間の着地点が00の生台帳＝使い方ガイドが届かない**
 - [SalesBreakerはengagement/searchを使う](reference_salesbreaker_engagement_api.md) — **クリック回数・ホットリード・会社単位キー(target_key)・先方ステータスは全部取れる**。`deals/search`しか見ずに「取れない」と9日止めた。limitは`pagination`の下／deal_id=送信単位でなく`target_rollups`で会社単位に集約／最終クリック日時は先方が源(web_tracking_logs)を未開放＝不具合でない。**エラー本文が直し方を教えるので叩けば分かる**。書き込み口(activity.log/task.create)は未実測
 - [営業ワークブックは列移動してよい](reference_sales_workbook_column_moves.md) — マスタ2枚は全GASが見出し名で引く(37本実測)。「追加は末尾」は旧前提。受付シートは例外／apply_schema_v3.gsは実行禁止(旧10値に巻き戻る)
 - [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」で指定/ユーザー選択はログイン名/日付はyyyy-MM-dd/**書き出しはUTF-8**(Shift_JISで髙﨑É〜が化ける)/取り込んだら必ず突合し直す
