@@ -49,11 +49,28 @@ while IFS= read -r line; do
   fi
 done < "$WANTED"
 
+# ★2026-08-20 つる：crontab への書き込みが塞がっている間、15分ごとに再試行→毎回退避で
+#   同じ内容のバックアップが1日96本たまっていた（8/20だけで24本を実測）。20世代で頭打ちにする。
+#   ★この整理は「投函が無いので何もしない」より**前**に置く。
+#     後ろに置いたら、投函が空の日は一度も整理されない（実測で1回踏んだ）。
+#   ★本数で切ってはいけない（2026-08-20 実地。20本で切ったら 8/18・8/19 の
+#     「その日ただ1本の版」が落ち、今日の同一内容の重複だけが残った）。
+#     残すのは **日ごとに最新の1本**。同じ日の中の重複だけを落とす。
+for day in $(ls "$BACKUP_DIR"/crontab_backup_*.txt 2>/dev/null \
+             | sed -E 's/.*crontab_backup_([0-9]{8}).*/\1/' | sort -u); do
+  ls -t "$BACKUP_DIR"/crontab_backup_"$day"*.txt 2>/dev/null | tail -n +2 | while read -r old; do
+    rm -f "$old"
+  done
+done
+
 [ -z "$MISSING" ] && exit 0
 
-# 退避してから書く
-STAMP=$(date "+%Y%m%d-%H%M%S")
-printf '%s\n' "$CURRENT" > "$BACKUP_DIR/crontab_backup_$STAMP.txt" 2>/dev/null
+# 退避してから書く（直前の退避と中身が同じなら取り直さない）
+LAST=$(ls -t "$BACKUP_DIR"/crontab_backup_*.txt 2>/dev/null | head -1)
+if [ -z "$LAST" ] || ! printf '%s\n' "$CURRENT" | cmp -s - "$LAST"; then
+  STAMP=$(date "+%Y%m%d-%H%M%S")
+  printf '%s\n' "$CURRENT" > "$BACKUP_DIR/crontab_backup_$STAMP.txt" 2>/dev/null
+fi
 
 NEW=$(mktemp /tmp/vivid_cron.XXXXXX)
 printf '%s\n' "$CURRENT" > "$NEW"

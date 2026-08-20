@@ -186,6 +186,14 @@ fi
 CRON_APPLY="$HOME/vivid-ai-hq/bin/cron_apply.sh"
 [ -f "$CRON_APPLY" ] && bash "$CRON_APPLY" >/dev/null 2>&1 || true
 
+# ④''' 日次ジョブの配布口（★crontab 書き込みが直る見込みが立たない間の代替経路）
+#      2026-08-20: crontab への書き込みが4経路すべてで無応答のまま返らない状態が続いている。
+#      crontab を増やさず、この vivid-sync.sh（*/15・既に稼働中）から日次ジョブを配る。
+#      定義は bin/daily_jobs.conf（正本）。1日1回・定刻管理・ロック付き。
+#      失敗しても本体（この後の心拍）を止めない。
+DAILY_JOBS="$HOME/vivid-ai-hq/bin/daily_jobs.sh"
+[ -x "$DAILY_JOBS" ] && "$DAILY_JOBS" >/dev/null 2>&1 || true
+
 # ⑤ 心拍（失敗しても本体は落とさない）
 if [ -f "$HEARTBEAT" ]; then
   MSG="未取込${BEHIND}件 / 未push${AHEAD}件 / 未コミット${DIRTY}件 / 取込=${MERGED} / 送信=${PUSHED}"

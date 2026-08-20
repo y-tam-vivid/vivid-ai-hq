@@ -13,5 +13,19 @@
 # 経緯: 2026-08-20、Claude のセッションからは crontab への書き込みが
 #       無応答のまま返らなかった（2経路・sandbox有無の両方で実測）。
 #       cron から起動された処理は書ける。だから cron 自身に入れさせる。
+#
+# ★2026-08-20 追記: crontab への書き込みが直る見込みが立たないため、
+#   日次ジョブは bin/daily_jobs.conf 側の正本へ一本化した
+#   （vivid-sync.sh(*/15) → bin/daily_jobs.sh が定刻管理・1日1回・ロック付きで実行する）。
+#   intake_register はそちらへ移したので、ここには置かない。
+#   ★このファイルへ戻す／二重に置くと、crontab 書き込みが将来直った瞬間に
+#     同じジョブが2経路（本物のcron ＋ daily_jobs.sh）で二重起動する。移すなら片方から消す。
 
-00 8 * * * /usr/bin/python3 $HOME/.vivid-relay/notion_customer_upsert.py --run --beat >> $HOME/.vivid-relay/notion_customer_upsert.log 2>&1
+# 2026-08-20 つる（自己監査）── notion_customer_upsert をここから外した。★移設ではなく保留。
+#   ① crontab への書き込みが塞がっている間、この行は永久に入らない。
+#      レジスタは「有効✓・毎朝08:00・🟢正常」と申告していたが実体はどこにも無かった＝申告倒れ。
+#   ② 一度 daily_jobs.conf へ移したが、同日 08:46 に差し戻された。理由 ──
+#      `notion_customer_upsert.py --restore`（戻す側）の実地検証がまだ終わっていない。
+#      **戻せる保証が無いものを自動実行に載せない。**
+#   ★戻す条件: --restore の実地検証が完了したら daily_jobs.conf へ置く（ここへは戻さない）。
+# ★いま投函中の行は無い。

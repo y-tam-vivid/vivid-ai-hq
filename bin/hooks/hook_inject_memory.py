@@ -101,6 +101,48 @@ TOPIC_HINTS = {
 }
 
 
+WORKING = os.path.expanduser('~/vivid-ai-hq/WORKING.md')
+
+
+def already_in_progress(blob):
+    """★担当を起動する直前に、WORKING.md の該当行を突きつける（2026-08-20）
+
+    WORKING.md は毎ターン読まれている。それでも読み落とした。
+    「法人番号の一括補完」が着手中と書いてあるのに、同じ作業を担当へ投げた。
+    ＝ **長い文書は、届いていても読まれない。**
+       memory の「1プロジェクトにつき5〜7項目まで。全部書けば全部届かない」と同じ形。
+
+    直し：届けるのをやめて、**その作業に関係する行だけ**を起動の直前に出す。
+    """
+    if not os.path.exists(WORKING):
+        return []
+    try:
+        lines = open(WORKING, encoding='utf-8').read().split('\n')
+    except Exception:
+        return []
+    # 依頼文から特徴語を拾う（2文字以上の漢字カタカナ語と、.py などの識別子）
+    words = set(re.findall(r'[一-龯]{2,}|[ァ-ヶー]{3,}|[A-Za-z_][A-Za-z0-9_]{3,}\.py', blob))
+    if not words:
+        return []
+    hits = []
+    for i, ln in enumerate(lines):
+        t = ln.strip()
+        if len(t) < 8:
+            continue
+        n = sum(1 for w in words if w in t)
+        # 着手宣言・進行中の印がある行は弱いヒットでも拾う
+        strong = ('着手中' in t) or ('進行中' in t) or ('★' in t and 'まだ' in t)
+        if n >= 3 or (strong and n >= 2):
+            hits.append(t if len(t) <= 180 else t[:180] + '…')
+        if len(hits) >= 4:
+            break
+    if not hits:
+        return []
+    return ['【★WORKING.md に同じ話が載っています】\n'
+            '**同じ対象が既に載っていたら、着手せず先に相談する。**\n'
+            + '\n'.join('・' + h for h in hits)]
+
+
 def from_memory(blob):
     """memory由来の索引から、いまの作業に関係するものを拾う"""
     if not os.path.exists(LANDMINES):
@@ -179,6 +221,11 @@ def main():
     #   ＝「memory に書けば次の作業から自動で突きつけられる」という、この仕組みの中心の主張が、
     #     ハードコードに載っている作業のときしか成り立っていなかった。
     #   索引を作る側・読む側・出す側の3か所とも直さないと届かない。
+    # ★担当を起動する直前は、WORKING.md の該当行を最優先で出す
+    #   （二重に手をつけるのを、着手する前に止める ── それがあのファイルの唯一の目的）
+    if tool in ('Agent', 'Task'):
+        hits = already_in_progress(blob) + hits
+
     hits += from_memory(blob)
     if not hits:
         print(json.dumps({}))
