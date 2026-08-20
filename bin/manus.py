@@ -170,8 +170,14 @@ def task_confirm_action(task_id, event_id, approve=True, text=None):
 #   ★agent_status はトップレベルに無い。status_update の中にだけ入っている
 
 def extract_status(res):
-    """最も新しい status_update の agent_status を返す。order に依存しない。"""
-    best_ts, best = -1, None
+    """最も新しい status_update の (agent_status, brief) を返す。order に依存しない。
+
+    ★stopped は「完了」と「人が止めた」の両方を指す。agent_status だけでは区別できない。
+      brief = "Manus finished working" → 完了
+      brief = "Manus has stopped"      → 人が Manus Web 側で止めた
+    2026-08-20 実測。状態だけ見て「完了」と報告して誤った。
+    """
+    best_ts, best, brief = -1, None, None
     for m in res.get("messages") or []:
         if m.get("type") == "status_update":
             su = m.get("status_update") or {}
@@ -179,8 +185,18 @@ def extract_status(res):
             if st:
                 ts = to_epoch_sec(m.get("timestamp")) or 0
                 if ts >= best_ts:
-                    best_ts, best = ts, st
-    return best
+                    best_ts, best, brief = ts, st, su.get("brief")
+    return best, brief
+
+
+def status_label(st, brief):
+    if st != "stopped":
+        return st or "(status_update なし)"
+    if brief and "finished" in brief.lower():
+        return "stopped（完了）"
+    if brief and "stopped" in brief.lower():
+        return "stopped（★人が止めた）"
+    return "stopped（完了か中断か不明・briefなし）"
 
 
 def message_text(m):
@@ -221,8 +237,8 @@ LABEL = {"user_message": "有璽氏→Manus", "assistant_message": "Manus", "sta
 
 def summarize(res, max_chars=8000):
     ms = res.get("messages") or []
-    status = extract_status(res) or "(status_update なし)"
-    head = "agent_status: %s ／ messages: %d件" % (status, len(ms))
+    status, brief = extract_status(res)
+    head = "agent_status: %s ／ messages: %d件" % (status_label(status, brief), len(ms))
     if res.get("has_more"):
         head += "（さらに続きあり）"
     if status == "waiting":
@@ -246,12 +262,117 @@ def wait_until_done(task_id, timeout_sec=120, interval=5):
     deadline = time.time() + timeout_sec
     while True:
         last = task_list_messages(task_id, limit=50, order="desc")
-        st = extract_status(last)
+        st, _brief = extract_status(last)
         if st in ("stopped", "error", "waiting"):
             return st, last
         if time.time() >= deadline:
             return st or "running", last
         time.sleep(interval)
+
+
+
+# ---------------------------------------------------------------- 監視（Slack通知）
+# ★通知の仕組みは作らない。既に動いている ~/.vivid-relay/notify.py の tell() を呼ぶだけ。
+#   チャンネルへは投げない（DMのみ）。報告には「返信不要」が付く ── notify.py 側の作法。
+
+WATCH_STATE = os.path.expanduser("~/.vivid-relay/manus_watch.json")
+RELAY_DIR = os.path.expanduser("~/.vivid-relay")
+
+
+def _notify():
+    """notify.py を読み込む。無い環境では黙って None を返す（落とさない）。"""
+    if RELAY_DIR not in sys.path:
+        sys.path.insert(0, RELAY_DIR)
+    try:
+        import notify
+        return notify
+    except Exception:
+        return None
+
+
+def _load_state():
+    if os.path.exists(WATCH_STATE):
+        try:
+            with open(WATCH_STATE) as f:
+                return json.load(f)
+        except ValueError:
+            pass
+    return {}
+
+
+def _save_state(st):
+    with open(WATCH_STATE, "w") as f:
+        json.dump(st, f, ensure_ascii=False, indent=1)
+
+
+LABEL_JA = {
+    "stopped": "完了",
+    "error": "エラーで止まった",
+    "waiting": "★確認待ち（Manusが人の返事を待っている）",
+    "running": "実行中",
+}
+
+
+def watch(dry_run=False, limit=40):
+    """タスク一覧を見て、前回から状態が変わったものだけ Slack へ知らせる。
+
+    ★冪等。同じ完了を二度通知しない（前回状態と突き合わせて、変化した分だけ出す）。
+    ★task.list は読むだけなので課金されない。
+    """
+    res = task_list(limit=limit)
+    rows = res.get("data") or []
+    prev = _load_state()
+    now, changed = {}, []
+
+    for r in rows:
+        tid = r.get("id")
+        if not tid:
+            continue
+        st = r.get("status")
+        now[tid] = st
+        before = prev.get(tid)
+        if before is None:
+            continue                      # 初回に見たものは通知しない（過去分が一斉に鳴る）
+        if before == st:
+            continue
+        if st == "running":
+            continue                      # 走り出しは知らせない。終わりだけ知らせる
+        changed.append((tid, before, st, r))
+
+    lines = []
+    for tid, before, st, r in changed:
+        title = (r.get("title") or "").strip() or "(無題)"
+        detail = ""
+        if st == "stopped":
+            # ★stopped は「完了」と「人が止めた」の両方を指す。brief を見ないと分からない
+            try:
+                _s, brief = extract_status(task_list_messages(tid, limit=20, order="desc"))
+                if brief and "finished" not in brief.lower():
+                    detail = "（人が止めました）"
+            except ManusError:
+                pass
+        lines.append("• *%s*\n  %s%s\n  %s"
+                     % (title, LABEL_JA.get(st, st), detail,
+                        r.get("task_url") or ("https://manus.im/app/" + tid)))
+
+    if lines and not dry_run:
+        n = _notify()
+        if n:
+            n.tell("Manus のタスクが %d件 状態変化しました" % len(lines), "\n".join(lines))
+        else:
+            sys.stderr.write("notify.py が読めないので通知を送れませんでした\n")
+
+    if not dry_run:
+        _save_state(now)
+        try:                              # 心拍（⚙️自動処理レジスタ用）。無ければ黙って飛ばす
+            sys.path.insert(0, RELAY_DIR)
+            import heartbeat
+            heartbeat.beat("Manus タスク監視", "成功",
+                           "%d件を確認／%d件が変化" % (len(rows), len(lines)))
+        except Exception:
+            pass
+
+    return len(rows), len(changed), lines
 
 
 # ---------------------------------------------------------------- MCP サーバ
@@ -467,6 +588,7 @@ USAGE = """使い方:
   manus.py --mcp                      MCPサーバとして起動（Claude Code がこれを呼ぶ）
   manus.py check                      APIキーの在り処と疎通を確認（書き込みなし）
   manus.py ask "指示" [--wait 180] [--title X]   タスクを投げる ★課金
+  manus.py watch [--dry-run]          状態が変わったタスクをSlackへ通知（読むだけ・冪等）
   manus.py projects                   プロジェクト一覧（読むだけ）
   manus.py tasks [--limit 30]         タスク一覧（読むだけ）
   manus.py status <task_id> [--raw]   状態と発話を読む
@@ -523,6 +645,13 @@ def main():
             if w and res.get("task_id"):
                 st, last = wait_until_done(res["task_id"], timeout_sec=min(w, 600))
                 print("\n" + summarize(last))
+            return 0
+
+        if cmd == "watch":
+            total, n, lines = watch(dry_run=("--dry-run" in argv))
+            print("%d件を確認／%d件が変化" % (total, n))
+            for l in lines:
+                print(l.replace("*", "").replace("\\n", " "))
             return 0
 
         if cmd == "projects":
