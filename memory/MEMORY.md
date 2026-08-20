@@ -87,10 +87,10 @@
 - [セッションからcrontabは書けない](reference_cron_write_blocked_in_session.md) — bin/cron/へ投函→cron_apply.shが入れる。★投函≠登録・最大15分後／ssh越しなら書ける
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
-- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告が出ている≠異常。本物/止めてある/対応保留を分けて出す
+- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く。失敗ログは日付で絞る
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ済みの印／閾値は全体の合算も置く／守った方向だけ堅くなる
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す。人が手で書く欄を機械の判定条件にしない
-- [自動処理レジスタ(心拍)](project_automation_register.md) — ★1行=1処理(相乗り禁止)／心拍は起動元を区別しない＝判定はcrontab等との突合のみ。登録漏れ0/申告倒れ3
+- [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は両機で共有＝後勝ちで成功が失敗に化ける／実体はcron・launchd・daily_jobs.confの3経路
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — ★fetchの表示はレンダリング済＝実データはview mode(テーブルクエリ)で見る
 - [リンク共有は配下に効く](reference_link_sharing_inherits_everywhere.md) — 機微を置く場所こそ共有設定を見る。`0A`始まりは判別に使えない
@@ -110,7 +110,7 @@
 - [AI資産カタログ](ai-asset-catalog.md) — Drive`AI資産_正本/`を正本と宣言済＝vivid-ai-hqの設計と要調整
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
 - [確認は溜めて1回](feedback_batch_the_checks.md) — 承認が要るのは6項目だけ。入れたものはその場でminiにも入れる
-- [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。望ましくないなら理由＋「やりますか」まで出す
+- [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。理由＋やりますかまで。★人の判断も候補を挙げて渡す
 - [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — 既定は自分で進める。規範でなくsettings.jsonのpermissionsで担保／検査待ちも停止
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路で一致を見る。行数と件数は別物。検査は別の主体へ
 - [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — SendMessageは同じマシン内だけ。連携はWORKING.md/相手のローカル/Notion
@@ -118,7 +118,7 @@
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — 知っていても適用しないから繰り返す。miniは4点導入済・MacBookは未実施
-- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/そもそも人の手を要らなくする
+- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/人の手を無くす。★返事は出した経路へ
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [アンブレラサイトv2.0](project_handoff_bundle.md) — ~/Downloads配下のハンドオフ束。静的HTML+shared.css・ビルド無し
 - [本数で切ると希少な版が消える](reference_retention_by_count_deletes_the_wrong_ones.md) — 残す単位は日ごと最新1本。第一の対策は内容が変わった時だけ取る
