@@ -44,5 +44,32 @@ metadata:
 ⑦ 検証ページをアーカイブ
 ```
 
+## ★2026-08-20 `notion_customer_upsert.py --restore` の実地検証を完了（cron投函の唯一の残条件が解消）
+
+**検証専用ページ1件・RESTORE_PROPS 9列＋同期メモの計10列で実測。全列1文字ずつ完全一致で戻った。**
+CLIをsubprocessとして実物のコマンドライン（`python3 notion_customer_upsert.py --restore <path>`）
+で叩いた。本番486件・`notion_upsert_snapshots/`（本番スナップショット置き場）には無傷。
+
+**つる（data-auditor）の1回目の検査で「止める」判定が出た。** 理由 ──
+検証スクリプトが `save_before_snapshot()`（本番と同一関数）を素朴に呼ぶと、
+**本番のスナップショット置き場（`notion_upsert_snapshots/`）へ検証用の1件が書き込まれる。**
+`--restore`（引数なし＝緊急復旧で叩く形）はこのディレクトリの**ファイル名が一番新しいものを
+無条件に拾う**（`latest_snapshot()` は中身の件数を見ない）。検証を走らせた直後に本番復旧を
+実行すると、**本物の直近スナップショットではなく検証用1件だけが復元対象になり、
+returncode=0・件数1件で正常終了する＝復旧が空振りしたことに気づけない。**
+
+**★検証行為そのものが、検証対象（復帰経路）を壊す構造だった。**
+
+**直し方**: `save_before_snapshot()` を呼ぶ前に、対象モジュールの `SNAP_DIR` 定数を
+このプロセス内だけ検証専用ディレクトリ（例 `notion_upsert_snapshots_VERIFY_ONLY/`）へ
+一時的に差し替える。呼び終えたら元に戻す。検証後はそのディレクトリのファイル自体も削除する
+（finally節・失敗しても実害が無い設計にする）。
+
+**教訓**: `save_before_snapshot()` / `latest_snapshot()` のような「同じ関数を検証にも本番にも使う」
+設計は、検証が**書き込み先を共有する**限り安全ではない。**検証で本番の状態（この場合は
+"直近スナップショットはどれか"）を書き換えてはいけない**。読むだけの検証と、
+副作用を持つ検証（ファイルを作る・DBへ書く）は同じ「触れない」扱いにしない。
+
 関連 → [[reference_notion_archive_line]]（消してよい線）／
-[[project_kintone_csv_to_notion_mirror]]（顧客DBミラーの本体）
+[[project_kintone_csv_to_notion_mirror]]（顧客DBミラーの本体）／
+`~/.vivid-relay/restore_verify.py`（検証スクリプト本体・mini）
