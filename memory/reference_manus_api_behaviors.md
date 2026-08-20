@@ -77,11 +77,17 @@ API 側からは「誰が何をしたか」は `user_message` と `brief` で見
 `tell()` を呼ぶだけ。チャンネルへ投げずDMのみ、報告に「返信不要」が付くのも notify.py 側の作法。
 
 ```
-実体      bin/manus.py watch
-起動      launchd com.vivid.manus-watch（15分ごと・MacBook）
-状態      ~/.vivid-relay/manus_watch.json
-レジスタ  ⚙️自動処理レジスタ「Manus タスク監視」。心拍の着弾を実測済み
+実体      bin/manus.py watch                          ★両機に入っている
+状態      ~/.vivid-relay/manus_watch.json             機ごとに別（共有していない）
+定期実行  ★Mac mini のみ  cron */15
+          MacBook は ~/Library/LaunchAgents/com.vivid.manus-watch.plist.disabled
+          （消さずに残してある。主を入れ替えるときは拡張子を戻すだけ）
+レジスタ  ⚙️自動処理レジスタ「Manus タスク監視」・実行機=Mac mini。心拍の着弾を両機で実測済み
 ```
+
+**★両機で定期実行してはいけない。** 状態ファイルが機ごとに別なので、
+両方が独立に「変化した」と判断し、**同じ完了が2回 Slack に届く**。
+手で `manus.py watch` を叩くのはどちらからでもよい（規範「両機を同じ環境にする」）。
 
 - **冪等**。前回状態と突き合わせ、変化した分だけ出す。同じ完了を二度鳴らさない
 - **初回は通知しない**（状態を記録するだけ。でないと過去分が一斉に鳴る）
@@ -89,9 +95,9 @@ API 側からは「誰が何をしたか」は `user_message` と `brief` で見
 - `stopped` は brief を引いて「完了」と「人が止めた」を書き分ける（→ 1節）
 - `task.list` は読むだけなので**課金されない**。15分ごとに叩いてよい
 
-**★MacBookは閉じている間は動かない。** 裏側で常時動かすなら mini へ移すが、
-mini には Manus APIキーも `bin/manus.py` も無い（他セッションの未コミットで pull が止まっている）。
-移すときは `~/.config/manus/api_key` の配置と launchd/cron 登録が要る。
+**2026-08-20 に mini へ移設済み。** MacBook は閉じている間は動かないため。
+移設で必要だったもの: `~/.config/manus/api_key` の配置／`bin/manus.py` の pull／cron 登録。
+**cron 相当の最小環境（`env -i PATH=/usr/bin:/bin`）で実測してから載せた。**
 
 **★SLACK_BOT_TOKEN は MacBook の config.env に無かった**（miniにはあった）。
 2026-08-20 に mini から移送。両機で hooks を動かす前提なら、片方にしか無い状態は事故のもと。
