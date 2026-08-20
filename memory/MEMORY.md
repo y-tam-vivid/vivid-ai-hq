@@ -71,6 +71,7 @@
 - [SalesBreakerはengagement/searchを使う](reference_salesbreaker_engagement_api.md) — **クリック回数・ホットリード・会社単位キー(target_key)・先方ステータスは全部取れる**。`deals/search`しか見ずに「取れない」と9日止めた。limitは`pagination`の下／deal_id=送信単位でなく`target_rollups`で会社単位に集約／最終クリック日時は先方が源(web_tracking_logs)を未開放＝不具合でない。**エラー本文が直し方を教えるので叩けば分かる**。書き込み口(activity.log/task.create)は未実測
 - [営業ワークブックは列移動してよい](reference_sales_workbook_column_moves.md) — マスタ2枚は全GASが見出し名で引く(37本実測)。「追加は末尾」は旧前提。受付シートは例外／apply_schema_v3.gsは実行禁止(旧10値に巻き戻る)
 - [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」で指定/ユーザー選択はログイン名/日付はyyyy-MM-dd/**書き出しはUTF-8**(Shift_JISで髙﨑É〜が化ける)/取り込んだら必ず突合し直す
+- [施設と運営法人はずれる](reference_facility_vs_corporation.md) — **営業先は施設・法人番号は運営法人のもの**(MIKKE HOUSE=大阪の施設／株式会社wakoku=東京の法人)。**営業台帳は営業のためのもの＝会社名は施設名のまま・法人番号は運営法人・備考に運営法人名**。★ただし同じ法人が複数施設を持つと法人番号が重複する。Notion同期はID第一キーで無事だが**kintoneの結合キー(法人番号)は未確認**。いまの実測=269行中ユニーク268・重複1件(タイポ)＝一意前提で運用中。当面は重複しないので検知を仕込んで受け止める
 - [kintone顧客マスター](reference_kintone_customer_master.md) — 顧客の正本はkintone。**構築=高橋／改編・運用=有璽氏**(松本はExcel受け渡しの作成者。2026-08-13訂正)。Notion顧客DBは中間ミラー、結合キー=法人番号。Excel追記→kintone→Notionの一方向。機微(口座等)はkintone留置。議事録DBの相手/会社はこのDBへrelation
 - [名刺→kintone反映パイプライン](project_meishi_to_kintone_pipeline.md) — 名刺OCR(raw.csv)を1顧客に統合→kintone61列転記→GBizINFO等でWEB厚め補完(10社刻み並列)→黄色フラグ付xlsx別名反映。資本金/従業員はWEB必須・登記簿は不足社のみ
 - [コミュニケーションログ基盤](project_communication_log_hub.md) — LINE/Messenger/メール等のやり取りを📨ログDB(collection 1d129663…)へ格納し顧客DB/kintone/議事録と相互リンク。スキルcustomer-db-syncに④入口として統合済・どのClaudeでも同処理可

@@ -28,6 +28,19 @@ PENDING = os.path.join(HERE, 'slack_pending.json')
 _TOK = None
 
 
+import os as _os
+
+def _muted():
+    """★検査・テスト中は本物のSlackへ飛ばさない（2026-08-20 実地）
+
+    つるの検査が本番のNotionへは1文字も書かなかった一方、
+    **Slack通知だけは本物の有璽氏のDMへ飛んでいた**（09:30〜09:32に8件）。
+    「書き込みを止めた」と「副作用を全部止めた」は別。
+    検査ハーネスは VIVID_NOTIFY_OFF=1 を立てること。
+    """
+    return _os.environ.get('VIVID_NOTIFY_OFF') == '1'
+
+
 def _tok():
     global _TOK
     if _TOK is None:
@@ -52,6 +65,8 @@ def _post(text, unfurl=False):
 
 
 def tell(title, body='', link=''):
+    if _muted():
+        import sys as _s; _s.stderr.write("[notify] ★検査中のため送らない\n"); return
     """報告するだけ。返事は要らない。
     ★冒頭に「返信不要」を必ず付ける。付けないと有璽氏が
       「これは答えないといけないのか」と迷う（2026-08-20 実地）"""
@@ -64,6 +79,8 @@ def tell(title, body='', link=''):
 
 
 def ask(topic, options, detail='', link=''):
+    if _muted():
+        import sys as _s; _s.stderr.write("[notify] ★検査中のため送らない\n"); return
     """判断を仰ぐ。options = {'1': '説明', '2': '説明'}
     ★これを呼んだら、返事が来るまで処理は進まない。
       進まないことを本人が知っている状態にするのが、この関数の役目
