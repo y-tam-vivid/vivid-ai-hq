@@ -54,3 +54,41 @@ Manus の発信ラインを個人IGから他アカウントへ広げる作業で
 
 関連 → [[feedback_read_the_artifact_not_the_copy]]（写しでなく実物を読む）
       [[reference_manus_api_behaviors]] ／ [[project_ai_usage_to_content_pipeline]]
+
+## ★正本ファイルの置き場は Drive に統一する（2026-08-20 決定）
+
+有璽氏から「tane. にはInstagramのガイドラインがある。Notionで共有するかDriveで共有するか」
+と問われた。**Drive に統一する。**
+
+```
+実体（デザイン正本・ガイドライン）
+    Google Drive「Instagram_Manus MDファイル」
+    https://drive.google.com/drive/folders/1jeCwDVuQnhwMPo-39mDLKDoYRKZC2Ry_
+    ★Manus が直接読める（個人IGの正本4本を実際に参照した実績がある）
+
+索引（どのアカウントの正本がどこにあるか）
+    Notion「📱 発信アカウント台帳」の `デザイン正本` 列にリンクを置く
+    ★Notion は実体を持たない。ミラーでもなく、リンクだけ
+```
+
+**なぜ Drive か**
+1. **個人IGの正本4本が既にそこにある。** アカウントごとに置き場を変えると、
+   次に見るとき「どっちを見ればいいか」が分からなくなる（正本が2系統に割れる）
+2. **Manus が読めることを実測済み。** Notion を Manus が読めるかは未検証
+3. 画像・動画などの素材と同じ場所に置ける
+
+**ファイル名の付け方**（個人IGに合わせる）
+`<アカウント名> 投稿デザイン正本 v1.0` ／ 曜日別があるなら `<曜日>「<テーマ>」投稿デザイン正本 v1.0`
+
+**やってはいけないこと**
+- Notion のページ本文に正本を書き写す（＝二重管理。Drive を直した時に腐る）
+- アカウントごとに置き場を変える
+
+## 各アカウントの正本・アーカイブの現在地（2026-08-20 実測）
+
+| アカウント | デザイン正本 | 過去アーカイブ |
+|---|---|---|
+| 有璽個人IG | Drive に4本（曜日別＋リール） | Notion 103件／Drive `12-101A_Instagram(有璽個人アカウント)投稿画像` |
+| ビビッド法人 | **無い→アーカイブから起こす**（Manusへ依頼済み） | Drive「ビビッドInstagram投稿」★実体／Notion は2件だけ |
+| tane. | **有璽氏が保有。Drive へ置く**（未実施） | Notion `tane. Instagram 投稿アーカイブ`／Drive `tane_reel_cover.png` |
+| 福祉施設の110番 | 未確認 | 未確認。**Notion台帳にすら載っていなかった** |
