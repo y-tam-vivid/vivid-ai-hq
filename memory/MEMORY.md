@@ -77,7 +77,7 @@
 - [施設と運営法人はずれる](reference_facility_vs_corporation.md) — **営業先は施設・法人番号は運営法人のもの**(MIKKE HOUSE=大阪の施設／株式会社wakoku=東京の法人)。**営業台帳は営業のためのもの＝会社名は施設名のまま・法人番号は運営法人・備考に運営法人名**。★ただし同じ法人が複数施設を持つと法人番号が重複する。Notion同期はID第一キーで無事だが**kintoneの結合キー(法人番号)は未確認**。いまの実測=269行中ユニーク268・重複1件(タイポ)＝一意前提で運用中。当面は重複しないので検知を仕込んで受け止める
 - [kintone顧客マスター](reference_kintone_customer_master.md) — 顧客の正本はkintone。**構築=高橋／改編・運用=有璽氏**(松本はExcel受け渡しの作成者。2026-08-13訂正)。Notion顧客DBは中間ミラー、結合キー=法人番号。Excel追記→kintone→Notionの一方向。機微(口座等)はkintone留置。議事録DBの相手/会社はこのDBへrelation
 - [名刺→kintone反映パイプライン](project_meishi_to_kintone_pipeline.md) — 名刺OCR(raw.csv)を1顧客に統合→kintone61列転記→GBizINFO等でWEB厚め補完(10社刻み並列)→黄色フラグ付xlsx別名反映。資本金/従業員はWEB必須・登記簿は不足社のみ
-- [コミュニケーションログ基盤](project_communication_log_hub.md) — LINE/Messenger/メール等のやり取りを📨ログDB(collection 1d129663…)へ格納し顧客DB/kintone/議事録と相互リンク。スキルcustomer-db-syncに④入口として統合済・どのClaudeでも同処理可
+- [コミュニケーションログ基盤](project_communication_log_hub.md) — LINE/Messenger/メール等のやり取りを📨ログDB(collection 1d129663…)へ格納し顧客DB/kintone/議事録と相互リンク。スキルcustomer-db-syncに④入口として統合済・どのClaudeでも同処理可／**★2026-08-20 実測＝議事録→顧客DB→営業台帳を1本道で辿れたのは3件中1件。★逆向きは辿れない（顧客DBの「関連議事録」relationは🌐全社議事録DB向けで、🔒個人議事録DBの顧客relationと非連動）＝営業が会社から過去の会話を引く経路は無い**／**★「対象外445件」に見込み客が混ざっていた**(ミケハウス・福本様ほか。15件サンプル)
 - [顧客ファイルのDrive格納先](feedback_customer_files_drive_location.md) — 顧客情報・kintone反映系は財務(03)でなく取引先・人物別(11)/顧客情報kintone反映csv へ。2026-07-16ユーザー指示・申し送り徹底
 - [kintoneCSV→Notion顧客DBミラー反映](project_kintone_csv_to_notion_mirror.md) — kintone顧客管理エクスポートを61列整形しNotion🏢顧客DB(中間ミラー・法人番号キー collection f506787d…)へ直接書込。地雷=Excel経由で法人番号指数表記化(WEB再取得・社名照合)/サブテーブル継続行/プレースホルダ実値/cp932化け/手転記の漢字化け→作成後SELECT突合検証必須
 - [AIエージェント体制＋Notion蓄積で進める](working-via-ai-agents-and-notion-hub.md) — 今後の作業はビビ中央窓口経由＋AIナレッジハブ参照で継続する方針
