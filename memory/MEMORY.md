@@ -1,129 +1,131 @@
-- [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — MacBookから`ssh mini`(yuji_macmini@mac-mini/Tailscale)で操作する主作業機。~/.claude資産移植済・残りはmini側ログイン認証
-- [両機は同じ環境にする](fukuchi-core の「マシンと実行の置き場」) — **2026-08-20 有璽氏。今後の作業はmini/MacBookそれぞれで行う。道具(鍵・トークン・スクリプト)は両機に入れ、手作業はどちらからでもできる状態にする。★ただし定期実行は片方だけ(両方で回すと二重に動く)。もう一方は消さず.disabledで残す**
-- [Mac miniの実行環境](reference_mac_mini_execution_env.md) — **裏側のメイン実行機。定期実行はここ**。Python3.9系(3.10構文は本番でだけ落ちる)／claude CLIはPATH外で`~/.npm-global/bin/claude`／GitHub鍵はmini専用／規範の到達確認は肯定形で聞く(否定形だと偽陰性)
-- [Language: Japanese](feedback_language_japanese.md) — ユーザーへの応答は常に日本語で行う
-- [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — **「本人」「田村さん」は使わない**。複数セッション・複数エージェントでは"本人"が誰か判別できなくなるため。出力すべて(チャット/Notion/memory/他セッションへの連絡)に適用
-- [大きなSheetsはgviz経由で読む](reference_gviz_large_sheet_access.md) — ブラウザ自動化下はDL不可・localhostもPNAで遮断。同一オリジンのページ内fetchで`gviz/tq?tq=select 列`。**ただしgvizは黙って嘘をつく**（シート名不一致→1枚目／型推定でテキスト数値→null）。数値状文字列は`export?format=csv&gid=`で読む
-- [kintoneエクスポートは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーにならず別レコードを読む
-- [モデル使い分けルール](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印(指名時のみ)＋別モデルが適する時は能動的に推奨
-- [思考OS Skill(thinking-os)](project_thinking_os_skill.md) — NewsPicks記事発の「思考OS」10レンズ＋6要素骨格をモデル非依存ローカルSkill化。/thinking-osで全モデル共通利用。④DB正本登録済
-- [Fable Style改善ループ](project_fable_style_improvement_loop.md) — 規範を週次×ハイブリッドで自己改善。**ユーザーの訂正/やり直しは改善ログDBに種を記録**／「改善ログを適用して」で軽微=自動・構造=承認で反映
-- [AI活用→発信ネタ化パイプライン](project_ai_usage_to_content_pipeline.md) — **実務の区切りごとに⑥ディスカッションログへ作業記録を残す(=モルガンズ週次巡回のネタ源)。都度確認せず自動記録=全AI共通ルール(2026-07-11)**／**正本は「AI活用 発信ネタDB」1つ。📣発信ネタボードは2026-08-19に⛔廃止・統合済／⑥はページ単位でなく「📅セッション」単位で拾う(ページ単位だと1度拾ったページを永久に取りこぼす=実測13件中1件)／公開可否の既定は「公開可」でぼかして出す／迷ったら拾う**。旧routine trig_01GtVoVWQzEKPwbDSeNRQYwL は無効化(二重稼働していた)
-- [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — claude.ai各Project(約15本)の議論ログを新規📚プロジェクト・ナレッジDB(collection 894c592f…)へ構造化移行。3層+発信ネタ型/④登記簿は不変で一方向Relation。パイロット=ふくち事業構想の空ページ作成済、エクスポートJSON流し込み待ち
-- [AI活用ログDB統合方針(案A)](project_ai_log_db_consolidation.md) — 学習ログを単一台帳化し発信は発信候補フラグ＋📣発信ネタボードで運用。Phase1完了/Phase2(発信ネタDB統合・モルガンズ参照付替・投稿生成Skill)保留
-- [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はローカルに無く claude.ai Project「SNS有璽個人投稿用」内。参照は投稿アーカイブDBのみ＝発信ネタ一元化しても影響なし(付替えは routine/ビュー/docの3点だけ)。**★2026-08-19にManusと生成系が二重になった＝どちらを正かは未決・寄せない**
-- [Manus AIへの外注](project_manus_outsourcing.md) — 社外の手足としてMCP接続(manus_ask等5本・実体bin/manus.py)。**★個人IGは投稿実行までManusへ委任済＝「対外発信は人が押す」の例外／Manus側に品質ゲートが既にあり重ねない／Manusは社外＝未公表・顧客名を渡さない／ask,replyはクレジット消費＝要承認**。いまAPIキー未発行・mini未登録で本体未実測
-- [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — **実測データは現在の正ではなく過去の写し**。2026-08-20、Manusのプロジェクト名と@fukushi_110banを根拠に有璽氏の「119番」を誤記と指摘したが、**119番が正式名称に改称済み**でシステム側が追随していなかった。食い違いは「誤記では」でなく「システムは△△・こちらは◯◯、どちらが正か」と並べて聞く／**福祉施設の119番＝新。Manusプロジェクト名とNotion台帳は旧110番のまま（要張り替え）**
-- [「良い」と言われたものを作り直さない](feedback_dont_remake_what_was_approved.md) — **「テイストは良い」は採用の意思表示。褒め言葉として流して作り直させた**（2026-08-20 119番のA/B/Dデザイン）。★変えるのは名指しされた要素だけ（この件では色とロゴの2つ）／**「不採用」「過去」のラベルを自分の判断で貼らない。次に読む人の判断を固定する**／変更対象を復唱して範囲を確定してから動く／**★「採用」は「もう見なくていい」ではない。採用を軸に置いたまま別テイストの候補を出し続ける。「全部同じトーン」と言われたら振れ幅不足のサイン＝明確に別方向を1本混ぜる**
-- [型を作る前にアーカイブを数える](feedback_check_the_archive_first.md) — **正本ファイルが無い＝フォーマットが無い、ではない**。2026-08-20にビビッド法人IGで「型が無い」と判断しゼロから4案を提案させたが、法人IG投稿アーカイブDBとDrive「ビビッドInstagram投稿」(031〜050)が実在した（検索結果で見ていたのに使わなかった）。**新しい型を作らせる前にアーカイブ件数と実ファイル置き場を数える。1件でもあれば型を起こす側に回る**／★2026-08-20実測で**4アカウントとも型は既に存在していた**(ビビッド=過去投稿/119番=営業資料一式/tane.=tane_guide.pdf)。無かったのは明文化だけ／営業資料は社内数字が混ざるのでManusへは「迷ったら質問せよ」付きで渡す／Driveのショートカットは実体が別＝開けない可能性／**★複数案は「1つ選ぶ」ではなく「使い分ける」ことがある(119番=A/B/D併用・tane.=4種併用)。そのとき★ブランドは1つ・型は複数へ整理し直す＋「どの型を使うか」の選び方の基準を作る。素材が無いと嘘になる型はルーティンに入れない**／**★実績を他へ横滑りさせない。「個人IGが週3だから他も週3で曜日をずらす」は誤り＝週3は個人IGの事情。頻度は目的・ネタ供給量・読者の接触リズムから決め、止めても崩れない下限から始める**／**★「揃えろ」は危険な指示。揃えるのはブランド(色・ロゴ・書体)、揃えないのはレイアウトの型。2026-08-20に「AI-131と構図を揃えろ」と書いて全部同じフォーマットにした。量産では「全部を同じ型にするな」を明示し型の一覧を書き出す**／**正本ファイルの実体はDrive「Instagram_Manus MDファイル」に統一・Notion台帳はリンクだけ持つ（2026-08-20決定。Manusが読めるのはDrive）**
-- [Manus APIの実測挙動](reference_manus_api_behaviors.md) — **`stopped`は「完了」と「人が止めた」を区別しない（briefを見る）／Manus WebとAPIから同じタスクを同時に触れる＝状態だけ見て現在地を答えない**。agent_statusはstatus_updateの中／timestampはミリ秒／localeは送らない／成果物はattachmentsの署名付きURL（期限ありですぐ落とす）／project.getとcredit残高の口は無い（★ただし**プロジェクト指示は有璽氏にWebで見せてもらえば取れる。APIに口が無い＝取得手段が無い、ではない**。知らずに独自設計を送り指示が二重になった）／読み取り系は無料／**Slack通知は`manus.py watch`(★Mac mini cron */15・MacBookは.disabledで待機＝両機で回すと同じ完了が2回鳴る)。通知の仕組みは作らずnotify.pyのtell()を呼ぶだけ・冪等・初回は鳴らさない。SLACK_BOT_TOKENはMacBookに無かったのでminiから移送(2026-08-20)**
-- [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はローカルに無く claude.ai Project「SNS有璽個人投稿用」内。参照は投稿アーカイブDBのみ＝発信ネタ一元化しても影響なし(付替えは routine/ビュー/docの3点だけ)
-- [有璽氏への進捗報告](project_secretary_agent.md) — **2026-08-20 指示。2層で出す＝機械(progress_report.py・毎日12:00/18:00・Slack DM・★変化が無ければ送らない)＋ビビが区切りごとに手で出す分**。朝のブリーフィング(08:00=これからやること)と中身を分ける／「報告が増えるのが嫌」と言われているので器を増やさず中身で分ける／スマホで読むので本文は短く・詳細はリンク
-- [Secretary agent「ビビ」](project_secretary_agent.md) — ふくち。グループの秘書ビビ:サブエージェント(~/.claude/agents/secretary.md)+ 毎朝8時の自動ブリーフィングroutine
-- [CFO agent「ナミ」](project_cfo_agent.md) — ふくち。グループのCFOナミ:サブエージェント(~/.claude/agents/cfo.md)+ Notion財務ハブ + 月次/週次routine
-- [CLO agent「センゴク」](project_legal_agent.md) — ふくち。グループのCLO(法務)センゴク:サブエージェント(~/.claude/agents/legal.md)+ Claude for Legalプラグイン二層(commercial/privacy/corporate)。日本法ラッパー。Notion法務ハブ(契約レビュー/期日管理DB)構築済・名鑑稼働中。プラグイン導入はユーザー未実行
-- [CKO agent「ロビン」](project_cko_agent.md) — ナレッジ統括ロビン(~/.claude/agents/cko.md)。会議準備を裏方で作りビビへ受け渡し(毎朝7:40 routine)。Phase B=議事録DB連携待ち
-- [広報PR agent「モルガンズ」](project_pr_agent.md) — ふくち。グループの外部CCO(広報PR)モルガンズ:サブエージェント(~/.claude/agents/pr.md)。プレスリリースは提供資料(Drive/Notion)ベースで設計・配信設計(実送信は承認後)。メディア露出モードは研修プレイブック準拠(~/.claude/agents/pr-playbook.md)
-- [親子向けAI体験イベントPR](project_ai_kids_event_pr.md) — モルガンズ初の実案件。2026/7/25-26 グランフロント大阪。NPO名義PR TIMES(企業ID184772)にテスト下書き投入済。配信は案件確定・SB承認・Roblox商標確認後
-- [締切ダッシュボード](project_deadline_dashboard.md) — タスクDB(62c7fadf…)+法務期日DB(498d4f2e…)に🚦信号Formula列、📆締切ダッシュボードpageで横断把握、ビビ朝ブリーフィングに🔴🟡集約(2026-07-17)。将来は各人向け配信へ
-- [デザイン統括「フランキー」](project_design_agent.md) — デザイン/クリエイティブ統括(~/.claude/agents/design.md)。NotionのUI・情報設計・成果物の見せ方(embed/Artifact)・社内外ビジュアル制作(Figma/Canva/Gamma)。ロビン=中身/モルガンズ=対外/リリス=web実装と棲み分け。Notionはフォント自由化不可→テンプレ/ビュー/IA/埋め込みの4レバー
-- [開発エージェント群「ステラ＋サテライト」](project_dev_agents.md) — 開発ライン(ベガパンク命名):ステラ(統括/dev-producer)＋エジソン(アプリ)/ピタゴラス(システム)/リリス(ウェブ)+ Notion開発ハブ + 週次routine
-- [いろどり／IRODORI(美容診断アプリ)](project_irodori_app.md) — 開発第一号:女性向けパーソナルカラー＋肌診断。端末内処理・実年齢オプトイン・クチュールモード。プロトタイプ稼働中、次は精度向上(要 本番ホスティング)
-- [イベントAIアプリ集約ポータル](project_ai_event_portal.md) — 来場者向けランチャー。/Users/yujimac/fukuchi-ai-event/(**MacBook側のみ**)をVercel公開予定。いろどり公開・他8本は準備中。フォルダ追加で拡張
-- [子ども向けイベントミニAIアプリ シリーズ](project_kids_event_apps.md) — 開発第二ライン:キオスク設置・お金リテラシー知育。~/fukuchi-kids-apps に共通キット確立。13本量産・全公開済(ポータル15タイトル・準備中0)、以降もオリジナル案で量産可
-- [アプリ量産モード](feedback_app_mass_production_mode.md) — 子どもアプリはステラ+エジソンで自律量産。確認は致命的5項目(公開/コスト/プライバシー/既存破壊/大分岐)のみ
-- [Agent naming](project_agent_naming.md) — AIエージェント群はONE PIECEで統一。麦わらの一味=CXO/サポート、ベガパンク(ステラ＋分身)=開発ライン
-- [AI組織図・名鑑](reference_ai_org_chart.md) — 全AIエージェントの役割/成果ハブをNotion名鑑DBで一覧化(ビビが会社把握で参照する正の索引)／**★名鑑は台帳。実体(.claude/agents/*.md)との突合が要る＝ずれてもエラーは出ず静かにずれる。とくに「実体があるが名鑑に無い」が高くつく(次に誰かが同じ役を二重に作る)。エージェントを作ったら名鑑へ登録するまでが1作業。登録=ロビン／検査=つる で分ける**。page 3957b156-8b57-81b4-a9dc-ffa26382e48c
-- [CXO build playbook](project_cxo_build_playbook.md) — CXO/秘書エージェントを1体作る標準手順(別タブでも同構成で作るため)。**新規サブエージェントは「行動規範(Fable Style)」＋「モデル運用」節の埋め込みが必須**
-- [Downloads整理→Drive本棚システム](project_downloads_archive_system.md) — Downloads=受け皿/マイドライブ=17分類の本棚。~/bin/sort_downloads.pyで週次自動振り分け(cron月9時)。要フルディスクアクセス許可
-- [toC顧客台帳(資産形成・投資商材)](project_toc_customer_ledger.md) — toB顧客DB(kintoneミラー)と別にNotion完結で構築。①個人顧客マスター+②提案商談。関連法人relでtoB×toCクロスセル。将来=人物マスター中心。BI=Notion簡易+Claude
-- [組織マスター4DB](reference_org_master_4db.md) — 全社の組織軸の正本。部門/法人/部署/プロジェクトをRelation連結(2026-07-16構築)。スタッフ・議事録・顧客・タスク・月報が参照する。担当者マスターのselect→Relation張替は未実施
-- [組織マスターのNotion所在とコード体系](reference_org_master_notion.md) — 4DBのdata source ID一覧＋部門は機能軸10-15のみ/法人はCompanyタグで分離。施設運営は15-300(LSU)・15-400(オレンジワークス)へ再コード化済(旧20-100/30-100は解消)。30=リアンライフ(旧SWELL)
-- [Notion Relation双方向化の地雷](reference_notion_relation_dual_landmine.md) — one-way→DUAL変換で既存Relation値が全件消失。新規列は最初からDUALで作る／変換前に全行エクスポート必須(2026-07-21実地)
-- [案B タスクDB→組織マスターRelation付替え](project_task_db_relation_migration.md) — Step1-5＋双方向化まで完了(2026-07-21)。旧select列は非破壊で並走。残件=ビュー実在確認・Step7降格処理
-- [Notionナレッジハブ・組織マスター](reference_notion_knowledge_hub.md) — ビビッド業務管理Notion+組織マスター(Company10ビビッド/20ILIFE/30SWELL × Division10-15/LSU/OW × Dept5桁)。全ナレッジ整理の整合性の軸。別タブClaude Code会話は読めない
-- [ローカルメモ棚卸しプロジェクト](project_local_memo_cleanup.md) — テキストエディットの.rtf/.txt約1,004件を20カテゴリに自動分類(未移動)。最終形は事業部×種類の2軸。商談/文字起こし約300件は03議事録DB原資
-- [bundler HTML→Figma数値化移行の定型手順](project_html_to_figma_pipeline.md) — 配布用bundler形式HTMLをフォント剥がし→1440px数値化→Figma MCPで直接構築。福地/スタンドアップ/プライバシーポリシー変換済
-- [共有ドライブのフォームはファイル添付不可](reference_shared_drive_form_upload.md) — 「ファイルのアップロード」がグレーアウト。親ルートが`0A`始まり=共有ドライブ。フォーム本体だけマイドライブへ移す(戻すと回答受付が壊れる)。GASに`addFileUploadItem()`は無い
-- [共有ドライブは権限を狭められない](reference_shared_drive_permission_floor.md) — メンバー権限は配下に継承され個別に外せない。`_機微`サブフォルダは共有ドライブ内では無効＝別ドライブへ出すしかない
-- [機微の二層管理ルール](feedback_confidential_two_layer_rule.md) — フォルダは原則共有・機微だけ`_機微`サブフォルダで本人限定(本人+代表+管理部門長)。経理=部署ごと本人限定/労務法務採用=共有+_機微。sort_downloads.pyで自動隔離
-- [Artifactは積む・作り替えない](feedback_artifact_accumulate_dont_replace.md) — **更新のたびにページを作り替えると過去分がバージョン履歴に沈んで見づらい**（2026-08-20 有璽氏の指摘）。★同じ1ページに積み、過去分は折りたたんで残す／不採用案も「【過去】」の見出しで中に残す／すべて開く・閉じるを付ける／**手で組み直さず成果物から再生成するスクリプトを持つ**(build_board.py)／**★2026-08-20に2回「反映して」と言わせた＝運用の誤り。Manusへ依頼を出したら「状態確認→回収→サムネ化→build_board.py→同じURLへ再公開」までを1セットにし、言われる前に反映する**／**★Artifactの上限は16MB。176枚でも実測5.1MBで余裕あり＝枚数上限ではない。制約は実測値で言う（「上限に近い」と確認せず言った）**
-- [デザイン方針: 図解ファースト＋絵文字抑制](feedback_design_diagram_first_minimal_emoji.md) — 流れ/関係/階層は言葉でなく図式(矢印フロー・分岐・マトリクス)で主に見せ言葉は補足。図を1行に潰すのは改悪。絵文字は機能的最小限に抑制。2026-07-16フランキーレビューで確定
-- [生成ファイルはNotionに添付](feedback_generated_files_attach_notion.md) — 生成/発行したMD/Skill/HTML/資料は該当Notionページに実ファイル添付(DL可)。テキスト=全文+`<file>`原本、動くHTML=`<embed>`ライブ描画+Artifact併記。一時領域に放置しない。2026-07-16全AI標準
-- [Notionは戻せる。ただし作れば](reference_notion_restore_path.md) — **「元に戻す」機能は無いが復元経路は作れる。GET形式の生プロパティをそのままPATCHへ送れば戻る**。★「取った」と「戻せる」は別物＝snapshot.jsonは実在したが中身は台帳のID集合だけで戻せなかった。**復元を1度も実行していないバックアップはバックアップではない**／検証は本番を触らず専用ページで／**★2026-08-20 `notion_customer_upsert.py --restore` の実地検証完了＝cron投函(毎朝08:00)を保留していた唯一の条件が解消。検証専用ページ1件・10列で全列1文字ずつ完全一致。つる1回目「止める」判定→検証が本番スナップショット置き場を汚染し緊急復旧を空振りさせる穴を修正して再実行し通った。cron投函自体はピタゴラス側では未実施（有璽氏の判断待ち）**
-- [Notionページを消してよい線](reference_notion_archive_line.md) — **配った/リンクされた/参照されている が1つでもあれば消さない**。消してよいのは作業層のまま吸収されたものだけ。**消す前にページIDで被リンク検索して0件を確認**。アーカイブ履歴はAPIで取れない＝事後検知は作れないので「消す前に止める」しかない
-- [Notion運用ルール正本](project_notion_operating_rules.md) — **全AIが読み書き前に必ず参照**。4層モデル(正本/参照/記録/作業)＋要約は鮮度ヘッダー必須＋参照層ブリーフィング型。ローカル11ファイルにポインタ埋込済(2026-07-20)
-- [【廃止】Notion最新版を最上部ルール](feedback_notion_latest_version_top.md) — 2026-07-21廃止。📌最新版インデックス方式は規律依存で破綻。後継=[Notion運用ルール正本]。「旧版を消さない」原則のみ継承
-- [Notionナレッジ設計ページ](reference_notion_knowledge_design.md) — 【設計】ナレッジホーム設計ページ=Drive住み分け/命名(事業×法人)§9を追記した協議ハブ。[[reference_notion_knowledge_hub]]の組織体系に整合させる
-- [法人番号は申請なしで全件が取れる](reference_corp_number_bulk_download.md) — **Web-APIのアプリケーションIDは発行に2週間〜1か月。だが全件ダウンロードは申請不要で今日から使える**（2026-08-20実測・ログイン無しで200）。一括は経路B／受付フォームの即時埋めだけ経路A
-- [法人番号が埋まらない真因は台帳の社名欄](reference_ledger_name_blocks_corp_match.md) — **151件の空欄のうち書けたのは6件**。国税庁側に無いのではなく①法人名＋施設名を1セルに同居（医療法人幸人会 田島クリニック）②社名の誤記（ジブラルタ**ル**生命＝実在は「ジブラルタ生命」）③2社をスラッシュ連結、で突合が死ぬ。★社名完全一致でも都道府県が食い違えば別法人／**★`if len(候補)>1` を連ねると1件に絞れた瞬間に後段の検査が全部飛ぶ＝解散済み法人番号を確定しかけた**（絞り込みと適格性検査を混ぜない）。**★欠損は3種類。候補ゼロ50件を1件ずつ見た実測＝Ａ個人事業主22件(法人番号が存在しない)／Ｂ社名欄の汚れ6件(実在確認済・直せば埋まる)／Ｃ分からない22件。★当初「約30件が汚れ」と見積もったが実測は6件**(概観を確定数として扱った)／**★同じ判断を2経路でやると片方だけ基準が緩くなる＝手で分類した6件はdecide()の「所在地の裏付けが無ければ確定しない」を通しておらず2件を誤って通しかけた。「実在する」と「その行が指す法人だ」は別**／つるの検査で 書いてよい5件・要フラグ1件・書くな2件・人の判断2件。実体=`~/.vivid-relay/corp_number_fill.py`（既定は読むだけを実測済・確定4件/要判断79件が再現）
-- [指数表記の法人番号は計算で戻さない](reference_recover_exponential_corp_number.md) — **`toFixed(0)`での復元は禁止。検査数字を通るのに別法人を指す値ができる(実測4件中1件が素通り)**。国税庁全件データと突合して1社に絞れたときだけ確定してよい
-- [kintoneルックアップはコピー](reference_kintone_lookup_is_a_copy.md) — コピー元を直しても自動追随しない。マスタ更新→参照アプリで取り直しまでが1作業。参照側に選択肢は存在しない
-- [空行が汚れる2つの経路](reference_sheet_scan_range_pollution.md) — 書式の継承だけでなく走査範囲の広さでも空行に値が入る。実データが離れた行にあると手前が全部巻き込まれる
-- [Sheetsチェックボックス書式の侵食](reference_sheets_checkbox_format_creep.md) — 空行のfalseは「実害なし」ではない。後から行が入った瞬間にキーが壊れる。CSVはキーの形を必ず検査
-- [レコード統合の手順](reference_record_merge_protocol.md) — 全列突合→移送→集計列を空に→削除。廃止した選択肢はリネームでなく上書きで始末
-- [ベタ書きの選択肢リストは黙って腐る](reference_hardcoded_option_lists.md) — **書き込み系5本(update_channel_master/merge_channel_detail/apply_schema_v3/import_ledgers/fill_form_detail)が旧10値のまま＝マスタを巻き戻す力がある**。弾かれた値は空欄になり備考へ退避、例外は出ない。直し方=90_選択肢マスタから読む(見出しは2行目・E列)
-- [\uエスケープで日本語が別の漢字に化ける](reference_unicode_escape_kanji_swap.md) — **日本語はliteralで書く**。有璽→有璞/曜→٣/溜→溢/㉓→⑓と静かにすり替わり、化けた先が実在字なので見た目が自然。**固有名詞を含む書き込みは書いた後fetchして1文字ずつ突合**
-- [営業案件管理：現在地と起点](project_sales_workbook_read_first.md) — 起点は🧭全体像1枚(3b47b156…)9章の索引から辿る。**★台帳へIDを新規発番する前に必ず人の確認を挟む。機械が「新規」と判定して書いてはいけない**／**★検査役の「載せてよい」は実行の承認ではない。件数が変わる操作は件数を先に出す**(2026-08-20、つるの条件「初回の本実行“結果”を目視」を「実行してよい」と読み替え、28件を無断で発番した)(2026-08-19。会社名だけで突合しB-0050小川晃代とC-0072を二重に作った)。**突合は01_顧客詳細のD代表者名/G先方担当者名/I電話/Jメールも見る**／入口の主は受付フォーム／10/20/30案件へは自動で作らない／**★「移送54v3の毎朝トリガー化」は⛔やってはいけない残件だった**(機械が新規と判定して書く経路＝二重作成の元凶。後継はintake_match/intake_register)／**★導線は人の1手で止まる＝自動化10本が全部動いても、受付シートで人の判断が要る7行に○が付いておらず④が空転していた(2026-08-20)。★当初「23行が放置」と報告したが誤り＝25行は全部IDが埋まっており、IDがある行は照合不要の仕様だった。**空欄には「まだやっていない」と「そもそも要らない」がある**／★受付フォームを使っているのは田村有璽4件・松本21件のみで**鈴木・柴田は0件**。「自動化が何本動いているか」は導線が流れている証拠にならない／人が要る工程は誰がやるかを決めるまでが設計／★機械は「対象0件」を正常として通すので、人の工程の停滞はエラーにならない**／残＝名刺07:00・Notion upsert07:30
-- [台帳の作業はAIが実行できない構造だった](reference_sheets_no_credentials_on_mini.md) — **miniにGoogle認証が無いので毎回GASを人が貼って実行していた**。Drive MCPで読めるのは各シート先頭88行まで。サービスアカウント1つで解消する
-- [営業ワークブックは触る前に戻せる状態を作る](feedback_sales_workbook_hands_off.md) — **バックアップはAIが書くときだけ必須。有璽氏が自分で触るときは不要**(2026-08-13)。AIの変更は①バックアップ→②diff→③承認→④実行。**定期バックアップはweekly_backup.gsが日曜19:54に稼働中・8世代で頭打ち・あふれは_旧世代へ移動(削除しない)＝新設しない**。buildWorkbook・applySchemaV3のみ実行禁止のまま
-- [読むもの一覧は地図ではない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る。再発防止策が出力側に偏っていないか数える
-- [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 文書・図・レイアウトは作る前に3〜5行で形を見せる。スクリプトのドライランと同じ。抽象語（図/整理/分かりやすく）が出たら合図
-- [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — 打ち切られた書き出し・gsのコメント・過去の要約を根拠に「無い/未実施」と断定しない
-- [実行の入口は名前で判断しない](reference_dangerous_entrypoints.md) — **cron/メニュー/手順書に載せる前に「書くのか・書かないのか・壊すのか」を実測で1回確かめる**。①既定dry-runで何もしない ②名前は普通なのに全消去する ③順序を飛ばすと重複を作る、の3型。.gsはローカルに無く未再検証の項目あり
-- [営業案件管理ワークブック(3層)](project_sales_pipeline_workbook.md) — スプレッドシート=案件層/kintone=確定層/Notion=参照。**層の役割分担は語彙統一より優先**。2026-08-03に統合完了(企業マスタ387⇄kintone384が1対1・鍵は社内顧客ID)。週次手順書＋GAS10本。buildWorkbookは実行禁止／**★人に渡すときの障害はデータの正しさではなく「入力の手数」＝記録が重いと誰も書かず台帳が死ぬ**(2026-08-20実測 ── 40_活動ログの社内顧客IDは手入力・入力規則ゼロ・誤入力の警告なしで実質5手)／**★手順書は実態から腐る**(94の「グレーの列」は保護4列中1列だけがグレー・「08はA/D/I/L」は実際A/D/E/F/G/N)／**★開いた瞬間の着地点が00の生台帳＝使い方ガイドが届かない**
-- [SalesBreakerはengagement/searchを使う](reference_salesbreaker_engagement_api.md) — **クリック回数・ホットリード・会社単位キー(target_key)・先方ステータスは全部取れる**。`deals/search`しか見ずに「取れない」と9日止めた。limitは`pagination`の下／deal_id=送信単位でなく`target_rollups`で会社単位に集約／最終クリック日時は先方が源(web_tracking_logs)を未開放＝不具合でない。**エラー本文が直し方を教えるので叩けば分かる**。書き込み口(activity.log/task.create)は未実測
-- [営業ワークブックは列移動してよい](reference_sales_workbook_column_moves.md) — マスタ2枚は全GASが見出し名で引く(37本実測)。「追加は末尾」は旧前提。受付シートは例外／apply_schema_v3.gsは実行禁止(旧10値に巻き戻る)
-- [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」で指定/ユーザー選択はログイン名/日付はyyyy-MM-dd/**書き出しはUTF-8**(Shift_JISで髙﨑É〜が化ける)/取り込んだら必ず突合し直す
-- [施設と運営法人はずれる](reference_facility_vs_corporation.md) — **営業先は施設・法人番号は運営法人のもの**(MIKKE HOUSE=大阪の施設／株式会社wakoku=東京の法人)。**営業台帳は営業のためのもの＝会社名は施設名のまま・法人番号は運営法人・備考に運営法人名**。★ただし同じ法人が複数施設を持つと法人番号が重複する。Notion同期はID第一キーで無事だが**kintoneの結合キー(法人番号)は未確認**。いまの実測=269行中ユニーク268・重複1件(タイポ)＝一意前提で運用中。当面は重複しないので検知を仕込んで受け止める
-- [kintone顧客マスター](reference_kintone_customer_master.md) — 顧客の正本はkintone。**構築=高橋／改編・運用=有璽氏**(松本はExcel受け渡しの作成者。2026-08-13訂正)。Notion顧客DBは中間ミラー、結合キー=法人番号。Excel追記→kintone→Notionの一方向。機微(口座等)はkintone留置。議事録DBの相手/会社はこのDBへrelation
-- [名刺→kintone反映パイプライン](project_meishi_to_kintone_pipeline.md) — 名刺OCR(raw.csv)を1顧客に統合→kintone61列転記→GBizINFO等でWEB厚め補完(10社刻み並列)→黄色フラグ付xlsx別名反映。資本金/従業員はWEB必須・登記簿は不足社のみ
-- [コミュニケーションログ基盤](project_communication_log_hub.md) — LINE/Messenger/メール等のやり取りを📨ログDB(collection 1d129663…)へ格納し顧客DB/kintone/議事録と相互リンク。スキルcustomer-db-syncに④入口として統合済・どのClaudeでも同処理可／**★2026-08-20 実測＝議事録→顧客DB→営業台帳を1本道で辿れたのは3件中1件。★逆向きは辿れない（顧客DBの「関連議事録」relationは🌐全社議事録DB向けで、🔒個人議事録DBの顧客relationと非連動）＝営業が会社から過去の会話を引く経路は無い**／**★「対象外445件」に見込み客が混ざっていた**(ミケハウス・福本様ほか。15件サンプル)
-- [顧客ファイルのDrive格納先](feedback_customer_files_drive_location.md) — 顧客情報・kintone反映系は財務(03)でなく取引先・人物別(11)/顧客情報kintone反映csv へ。2026-07-16ユーザー指示・申し送り徹底
-- [kintoneCSV→Notion顧客DBミラー反映](project_kintone_csv_to_notion_mirror.md) — kintone顧客管理エクスポートを61列整形しNotion🏢顧客DB(中間ミラー・法人番号キー collection f506787d…)へ直接書込。地雷=Excel経由で法人番号指数表記化(WEB再取得・社名照合)/サブテーブル継続行/プレースホルダ実値/cp932化け/手転記の漢字化け→作成後SELECT突合検証必須
-- [AIエージェント体制＋Notion蓄積で進める](working-via-ai-agents-and-notion-hub.md) — 今後の作業はビビ中央窓口経由＋AIナレッジハブ参照で継続する方針
-- [カレンダー テンプレ自動挿入GAS](project_calendar_template_autofill.md) — 会議準備テンプレをGASで自動挿入。タイトル【種別】で振り分け(商談/面談/社内/定例/セミナー=入れる)。空保存→10分後反映。命名ルール(【】=種別)徹底が前提
-- [git add -A は他人の作業を飲み込む](reference_git_add_all_swallows_others.md) — **mini上でビビ＋サブエージェント3〜4体が同じ作業ツリーを同時編集している。`git add -A`で他体の書きかけが無関係なコミットに入った(2026-08-20実測2回)**。触ったファイルを明示する／`git status --short`で混入を見る／★サブエージェントにcommitさせず束ねる側が把握して打つ
-- [自動同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — **cronから`git pull --ff-only`を直呼びしない**。作業すれば必ず汚れて必ず失敗＝いちばん困る時だけ受信が止まる(153回連続を実測)。**ログは届く場所ではない**。fetch(必ず通す)とmerge(失敗してよい)を分け、遅れ／未pushを`~/.claude/SYNC_STATUS.md`(@import済=毎ターン届く)へ書く。実体=`bin/vivid-sync.sh`
-- [セッションからcrontabは書けない](reference_cron_write_blocked_in_session.md) — **AIのセッションから`crontab file`／`crontab -`は無応答のまま返らない**(パイプ/ファイル×sandbox有無の4通りで実測)。入れ方=`bin/cron/<機械>.cron`へ投函→`bin/cron_apply.sh`(vivid-sync.shが15分ごとに呼ぶ)が追加のみ・冪等で入れる。**★投函≠登録。反映は最大15分後・`crontab -l`で実測して確かめる**／**★別マシンから ssh 越しなら書ける（2026-08-20実測・照合一致）＝「AI側に解決策なし」と結論する前に ssh を試す**
-- [cron→launchdでファイルアクセス権が消える](reference_launchd_loses_file_access.md) — **TCCは「誰が起動したか」で判定する**。cronにフルディスクアクセスがあってもlaunchd経由の`/usr/bin/python3`には無い。sort_downloads.pyが`Operation not permitted: ~/Downloads`で落ちた(2026-08-18実測)＝移していたら29%欠落が100%停止に。**~/Library配下だけなら移してよい**(browser_hygiene.pyは動いた)。移す前にlaunchd経由でdry-runを1回
-- [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は**型で見る**([A]全ページ注入=タブ数と掛け算/[B]待機/[C]押した時だけ)。ルールは文章でなく**構造と既定値**に埋める。`bin/browser_hygiene.py`が毎週月曜09:30(MacBook launchd)。判定は閾値超え🔴と先週からの変化🟡の2本立て＝**慢性的な黄色を出さない**
-- [監視は止めてあるものを警告に混ぜない](reference_monitor_must_exclude_parked.md) — **警告が出ている≠異常がある**。台帳と実体の突合が「有効=OFF」「既知=対応保留」の行まで申告倒れに数え、ズレ4件のうち本物は2件だった(2026-08-20実測・修正済)。**フラグを足したら読む側を同時に直す**。①本物=警告 ②止めてある ③対応保留 は分けて出す(消さずに参考表示)
-- [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — **失敗しても.doneが書かれ、一時的な503で丸1日ぶんの処理が黙って飛ぶ(2026-08-20実測)**。成功したときだけ済みの印を書く／一時(503/429/500)は再試行・恒久(認証/権限/構文)は即人へ／★「諦めた」を「済んだ」と同じ印にしない。**同日に3回出た型＝スナップショットは実在したが戻せない／ガードは実装済みだが一度も発火していない／完了記録が失敗を吸収**。共通点は作った側が1度も発火させていないこと／**★守りを足した方向だけ堅くなる＝更新は過敏(率の分母が「変更が生じた社数」で平常時ほど発火)・新規作成は無防備(ガードが無く書き込み直前まで到達)。止めたい事故だけでなく「止めてはいけない正常な運用」でも試す**／**★閾値を単位ごとに置くと割れば通る＝4列に14件ずつ(各列は上限15未満)で計56件が素通り。必ず「全体の合算」を1本置く**／★3周とも「実測しました」と申告されていた。嘘ではなく試したパターンの外に穴があった
-- [記録は出口を数える](reference_log_needs_an_exit.md) — **器を作ったら出口を書き出す。0本なら「記録のための記録」になり形骸化する**。⑥は出口が発信1本だけで、③への回収は1ヶ月半止まっても誰も気づかなかった。出口は人の目に入る場所へ着地させ、器と確認先は増やさない／**★人が手で書くプロパティ（最終追記日など）を機械の判定条件に使わない。書き忘れた瞬間に対象から消え、棚卸しが静かに空振りする**(2026-08-20実測＝プロパティは7/30のままだが実際の更新は8/19。last_edited_time で拾い直して発見)／追記型の器は追記の単位で拾う
-- [自動処理レジスタ(心拍)](project_automation_register.md) — **「自動と言っているものが動いていない」を検知**。成功/失敗どちらでも心拍を書き、来なければ🔴。**2026-08-19に「台帳と実体の突合」を新設**＝cron/launchdの実体とレジスタを突き合わせ、**心拍では絶対に見つからない「そもそも登録されていない」を拾う**(自分のマシンの分だけを見る／毎週月曜09:20)。**★心拍を打つコードを書いたら同じ作業でレジスタの行を作るまでが1作業**（★2026-08-20 当方が違反 ── gas_outside_watch を既存行「外形監視」へ相乗りさせた。**相乗りは行を作ったことにならない。1行=1処理。片方の生存がもう片方を隠す**）／**★心拍は行が無いとき本体を止めず警告だけ＝動いたのに実行記録が黙って欠落する**(2026-08-20 corp_number_fill.py を本実行したが記録なし)。**行を作るのはcron登録とは別。手で実行するものでも行があれば記録が残る**／**★「N件」と書くとき全部が同じ扱いか確かめる**(登録漏れ4件と報告したが実際は3件＋正常1件)(2026-08-20にAI指示箱が5分ごとに「行が無い」とログへ出し続けていた＝ログは届く場所ではない)。**★「有効✓・成功」の表示で稼働を判定しない**＝`notion_customer_upsert.py`は成功表示なのにcron無し。**★逆向きの食い違いもある＝実体は動いているのにレジスタが「無効」＝監視されていない(2026-08-20実測3件)。申告倒れは実体を作るかレジスタから外す／逆向きはレジスタを実体に合わせる。どちらが正かは判断の履歴で決める**／cronではなくdaily_jobs.sh経由のものを「経路=cron」と書かない／いま①登録漏れ0件／②申告倒れ3件。残=ビビ朝への🔴集約・GASトリガー列挙／**★心拍は起動元を区別しない＝人が手で叩いた1回でも🟢に見える**（2026-08-20実測: notion_customer_upsert.py はcronに1行も入らず16回失敗し続けたのにレジスタは「成功」表示）。判定手段は crontab/launchd/routine との突合ただ1つ。**クラウドroutineとGASトリガーは突合の対象外**
-- [議事録→顧客relation自動付与バッチ](project_meeting_customer_relation_linker.md) — **2026-08-13稼働開始**(mini cron 毎朝07:35)。初回9件付与・321→312件。**自社5社は突合から除外**(相手と自社の併記欄で自社を先に掴む事故を実測)。残115件は顧客DB未登録だが多くは本人/社内/行政＝顧客でない
-- [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — SQLはワークスペース上限あり/viewモードは無制限だがSHOWが効かず全列返る。大量処理は内部インテグレーション＋ローカルスクリプトへ／**★fetchのページ表示はレンダリングされる＝プレーンテキストがリンクに見える。実データはview mode(テーブルクエリ)で見る**(2026-08-20、名鑑で「Markdownリンクに化けた」と誤検知。既存メンバー全員が同じ表示だった)
-- [リンク共有は1か所で全部に効く](reference_link_sharing_inherits_everywhere.md) — **機微を置く場所こそ共有設定を見る**。議事録ルートが「リンクを知っている全員」で751件が読める状態だった(2026-08-18)。**`0A`始まりはマイドライブのルートでもある**＝共有ドライブの判別に使えない(オーナー欄の有無で見る)
-- [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — **1つしか選べない置き場に判断を置かない**。分からない回まで選ばされ1つに集中する(実測36%)。分類先の分布を数え3割超の偏りは既定値と疑う。議事録Driveは年月平置きへ・部門はNotionが持つ(2026-08-15)
-- [AIの精度を疑う前に入力と出力先を見る](reference_ai_output_blamed_before_inputs.md) — 議事録タスクの担当者が全員1人に倒れていた真因は**選択肢6名ベタ書き＋「不明なら◯◯」＋書き込み側が捨てていた**の2段。フォールバックは誤りを正解の顔で量産する。検証は答えを先に決めてから走らせる
-- [処理済みの印を消すだけでは戻らない](reference_processed_flag_is_not_enough.md) — **元データが取得元フォルダにあるか**を見る。承認済み=移動済みなので行を消しても拾われない(2026-08-18に4件/128件で実測)。監査の条件は原因でなく「結果として入っているか」＋**隔離配下は対象外**(でないと隔離するそばから戻す)
-- [却下は永続的な取りこぼしを作る](reference_silent_rejection_backlog.md) — 承認フローの却下=処理済み扱いで二度と拾われない。**エラーも心拍も出ない**。日付別件数の「連続0件」で探す。2026-08-14に87件・23日分を実測
-- [議事録自動整理GAS 復旧＋Notion基盤移行](project_giji_automation_gas.md) — notta/Meet議事録の自動整理GAS。停止真因=廃止モデルnot_found→復旧済。**2026-08-14に却下87件を再処理し6/21〜7/13の空白を解消／TASK_DATE_CUTOFF=2026-07-14**。オーナー区分ルーティング(有璽氏個人=個人ゲート/社員=自動全社)設計中・バックログ停止中。Driveフォルダ構造(事業部門分類)の議論は現行作業完了後に併せて。ビジョン=まず自分で確立→社員展開、社員のタスク可視化＋商談事前準備まで
-- [議事録の社員展開（パイロット5名）](project_minutes_employee_rollout.md) — **2026-08-19に入口を開いた**。社員ごとの受付フォルダ＋共有区分＋機微判定まで稼働、**全社への自動昇格は意図的に未実装**（1〜2週間データを見てから）。カレンダーと議事録の語彙(種別9/手段6)を統一・括弧は【】
-- [議事録の隔離運用](project_minutes_quarantine.md) — **空・機微・重複はNotionに入れずDriveの`_要確認`へ移す。移動のみ・削除は有璽氏**。空判定は本文50字の関門を素通りしていた／07-24は閉会後20分の私的会話が残っていた／07-22は同一会議が2本とも昇格。判定と移動はGAS側(Drive MCPに移動手段が無い)
-- [議事録の整理ルール](project_giji_organizing_rules.md) — **区分は議事録でなく台帳(顧客DB種別=multi-select)が持つ／突合先は区分で絞らない(社外=顧客DB・社内=担当者マスター)／相手・会社は「台帳と同じ表記」(正式名称ではない。法人は少数派)／行政・研究も台帳へ入れる(案A)**。指標は未紐付でなく社外会議の紐付率(2026-08-13承認)
-- [Apps Script生成時のAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを検出しない。Sheet/Range/Spreadsheetの所属クラス突合が必須。onOpenメニューはバインド時のみ
-- [参照を洗う検査が偽陰性を出す](reference_reference_audit_false_negative.md) — **「検査した」と「正しく検査できた」は別**。関数だけ集めて`.toString()`し、`var RF_IO='08_関係フォロー'`のような**定数経由の参照を全部落とした**（13本を1本と誤判定）。トップレベルで`this`を捕まえ文字列定数も集める／照合の正規表現は使う前に数ケースで検証／シート改名で危ないのはGASの文字列だけ(数式と入力規則は自動追随)
-- [Apps Scriptは同名定義が後勝ち](reference_apps_script_name_collision.md) — **新版を貼っても旧版が動く。しかも混在する(共通名は旧版が勝ち、新版固有の定数だけ生きる)＝画面では絶対に分からない**。`関数名.toString()`でランタイムの実体を読む／新版には必ず自分を名乗る目印を入れる／数往復探して見つからないなら識別子を全改名して衝突ごと断つ
-- [Sheets書き込みの暗黙挙動8点](reference_sheets_number_format_order.md) — ①書式はsetValuesより前②getLastRowは数式セルを非空と数える③既存スキップは冪等性を壊す④入力規則違反のsetValuesは部分書き込みして落ち例外は次の読み取り行で出る⑧**「値が無い」と「行が無い」は別物＝getMaxRowsを見ずに書き先を決めない。copyToは範囲外でも無言で何もしない。読むだけのドライランは「書けるか」を検証していない**⑨**★器を増やしても守りは付いてこない**(00の保護4本・D列条件付き書式はendRowIndex:807固定＝新規808行目に及ばない。08にある自動延長が00には無い)⑩**★会社名は.gsにベタ書きされていることがある**(ジブラルタルの改名でmatch_toc_corps.gs:48のTARGETSが静かに外れる。正規化では吸収されない)⑪**★入力規則(dataValidation)も器の行数に追随させる必要がある**(2026-08-20 つる指摘。`ledger_guard_extend.py`は範囲保護のみが対象で入力規則は対象外＝40_活動ログC列の実在チェックがC3:C1000固定。器が伸びても規則は伸びない。延長は別関数で持つ)
-- [Drive上の.gsは開けない](reference_drive_gs_file_not_previewable.md) — 拡張子なし/.gsはoctet-stream固定でプレビュー不可。リネームでは直らずGoogleドキュメントとして作り直す
-- [AI資産カタログ](ai-asset-catalog.md) — Skill/GAS/MCP/主要MDの台帳化。**Drive `マイドライブ/AI資産_正本/` を正本と宣言済(2026-07-07)＝vivid-ai-hqの設計と要調整**。旧版は`_旧版/`へ・Notion台帳の現行バージョン列が単一の真実
-- [Downloads整理の2段設計](downloads-archive-system.md) — Stage1=17分類へ機械振り分け(自動化OK)／Stage2=事業部・個人へは人＋AI協業で、**いきなり自動振り分けは誤配リスクのため禁止**
-- [確認は溜めて1回にする](feedback_batch_the_checks.md) — **一手ごとに承認を求めない。既定は自分で進める**(可逆なものはバックアップ→実行→照合まで自分で回す)。承認が要るのは6項目だけ＝外へ出る/お金/正本の削除/規範の変更/人に配る/大きな分岐。**ローカルに入れたものはその場でminiにも入れる**(非対話sshは/usr/local/binがPATHに無い)
-- [「できない」と言う前に試す](feedback_verify_before_declining.md) — **憶測で断らない**。実際に試すか仕様を確認し、「できる/できない」を事実として述べる。**できるが望ましくない場合は理由を明示して「やりますか」まで出す**（望ましくないで止めると選択肢が消える）。入力できるものは基本的に入力していく／**★「自分にはできない」で止めない。人が1行貼れば済むならその1行を渡す**(2026-08-20 MacBookへのフック導入で実地)
-- [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — **既定は自分で進める。承認が要るのは6つだけ**(外へ出る/お金/正本の削除/規範の変更/人に配る/大きな分岐)。★規範だけ直しても止まらない＝`~/.claude/settings.json` の permissions で担保する(2026-08-20 dontAsk+allow58/ask11/deny6)。止まったらSlackへ通知(PermissionRequestフック)。**★「検査待ち」も停止＝つるへ投げたら待たずに別の残件を進め、返ったら合流して書く**(2026-08-20「止まらずに進めろ」)
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — **数・存在・状態は2経路で一致を見てから報告する**。2026-08-20に1日9回の誤り(404→未接続と即断/392件→実は486/40が2行→実は25行/805件→実は416社)。★行数と件数は別物・A列がキーとは限らない・打ち切られた書き出しを根拠にしない。検査は別の主体(つる)へ
-- [別マシンのセッションとは直接やり取りできない](reference_two_sessions_built_the_same_thing.md) — **SendMessage は同じマシンにしか届かない**。2026-08-20にMacBookとminiが同じupsertを二重実装（実害ゼロは冪等に作ってあったから。設計で防いだのではない）。連携は①WORKING.md→commit ②相手のローカルへ直接ファイル ③Notion。**相手がpull停止中なら①は届かない**
-- [1セッションで両方回す。分けるのは担当](feedback_one_session_split_by_owner.md) — **営業案件管理と自動化の修理はセッションを分けない**(2026-08-20 有璽氏の問いへの答え)。営業=ビビが持つ(有璽氏の判断が要る往復が多い)／自動化=担当が自分のroutineを直す。**★セッションを分けると二重作業を止める役がいなくなる**(実測=MacBookと同じupsertを二重実装・WORKING.mdの着手宣言を読み落として重複投入)。同時4体まで回る／git add -Aを使わない／有璽氏へは1本にまとめて出す
-- [一人で抱えるな](feedback_use_the_team_not_alone.md) — **ビビは集約係。手を動かす役ではない**(2026-08-20に★3回念押し。それでも当方は台帳へ書き・スクリプト2本を書き・⑥へ記録し・routineを直した)／判断の順序＝①誰の領域か②担当がいなければ作る③道具を持っているか④投げる⑤束ねて1本で出す。**窓口が自分でやってよいのは「担当へ渡すための実測」だけ**。2026-08-20実証＝一人で書いた7本に3体を並列で当てたら24件の不備(単独では1件も見つけられず)。★台帳へ書く前は必ず つる(data-auditor)の検査を通す。足りない役は作ってよい／**★投げる前にその担当が道具を持っているか数える。無い担当は黙って止まらず推測で埋める**(2026-08-20 クラウドroutineはRemoteTriggerを持つビビしか読めないのにナミ・ステラへ投げ、2体とも「心拍の指示が入っていない設計」と誤報告。実際は8/19追加済み。ステラが誤って「対応保留」を付けた)／**★窓口はビビ一人。メインセッション＝ビビ（2026-08-20決着）。別名を付けると窓口が2人に見えるため畳んだ。secretaryをサブエージェントとして別途起動しない／担当(ロビン・つる・ピタゴラス等)はビビが直接起動する／クラウドroutine(RemoteTrigger)はビビ＝メインセッションしか操作できない**
-- [セッションからcrontabは書けない](reference_cron_write_blocked_in_session.md) — **`crontab file` も `| crontab -` も無応答のまま返らない(2経路×sandbox有無で実測・2026-08-20)**。＝AIは自動実行を作れるのに登録できない。直し=`bin/cron/<機械>.cron` へ投函→`bin/cron_apply.sh` が不足行だけ入れる(追加のみ・冪等・番人20秒)→`vivid-sync.sh`(cron */15)が呼ぶ＝**cron自身に入れさせる**。★反映は最大15分後・入ったかは`crontab -l`とログの2経路で見る
-- [届いていても読まれない](reference_delivered_but_unread.md) — **WORKING.mdは毎ターン届くのに500行超で着手宣言が埋もれ、同じ作業を二重に投げた(2026-08-20)**。長い文書は届いていても読まれない／「必ず読む」を対策にしない／直し=担当を起動する直前にその作業に関係する行だけ4行出す(hook_inject_memory.already_in_progress・失敗の再現で実測済)
-- [同じ失敗を止めるのは3つのフック](reference_hooks_enforce_what_discipline_cannot.md) — **繰り返す理由は知らないからではなく、知っているのに適用しないから**(自分で書いた「A列がキーとは限らない」を2時間後に踏んだ)。①作業の直前に地雷を突きつける(PreToolUse・memoryから自動生成) ②指摘を待たず記録(UserPromptSubmit) ③毎朝ロビンが棚卸し ④毎朝つるが自分たちの仕組みを監査し直せるものは直す。**★~/.claude と ~/.vivid-relay は git管理外＝他機へ配られない。`bin/setup_hooks.sh` を1回実行する**。**いまの現在地＝mini は①〜④(実体5本/settings.json登録/landmines.json/cron2行)すべて導入済み・selfcheck正常／MacBook は未実施**。「入っている」の判定はファイルの存在ではなく4点そろいで見る
-- [miniのターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — **チャットにコードやURLを貼っても渡したことにならない。触れない**。渡し方は Slack DM／Drive・Notionのリンク／★そもそも人の手を要らなくする の3つだけ。2026-08-20に1日3回踏んだ(App Home「探して」／認証URL貼付／setup_hooks.shの1行)。★3回目はフックが目の前に警告を出していたのに踏んだ＝出すだけでは足りない。**渡す手段そのものを自動化する**(vivid-sync.shが15分ごとにフックを自動導入するようにした)
-- [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — **ファイル作成/編集の前に変更内容をdiffで提示し、同時に触る全ファイルを一覧化して承認を待つ**。サプライズ書き込みは禁忌
-- [ふくち。アンブレラサイトv2.0](project_handoff_bundle.md) — `~/Downloads/サイト改修2026/…(Remix)/` はClaude Designのハンドオフ束。静的HTML+shared.css・ビルド無し。旧vivid-global.comのリブランド
-- [世代管理を本数で切ると希少な版から消える](reference_retention_by_count_deletes_the_wrong_ones.md) — **2026-08-20 実地。crontab退避を20世代で切ったら、8/18・8/19の「その日ただ1本の版」が落ち、同一内容の重複20本だけが残った**。頻度が高い時期ほど保護され希少な版が消える＝逆。定期退避で残す単位は**日ごとに最新1本**／第一の対策は**内容が変わったときだけ取る**。本数で切ってよいのは1実行1本のものだけ（weekly_backup.gsは8世代＋あふれは移動＝正しい形）
-- [穴を探す起点を人の指摘に置かない](feedback_find_holes_without_being_told.md) — **毎朝08:40 `self_audit.py` がつるを起動し、cron/レジスタ/フック/ログを自分で検査する**（有璽氏 2026-08-20「なんで俺が指摘しなきゃ穴を探さないんだ」）。★検査役の「直さない」は台帳・顧客DB・kintoneに対しての原則。**自分たちの仕組み（cron登録・レジスタ・ログ・設定）は可逆なら直す**。出し方=直した／★人が要る／異常なし の3ブロック
-- [リレーは積み上がり、人のせいにした](reference_relay_piles_up_and_blames_the_user.md) — **cron5分×1回15分＝同じ指示が3本同時に走り「承りました」が4回届いた**。打ち切りを「指示が大きすぎる」と書いていた＝原因はこちらの持ち時間。**周期より長い自動処理はロック必須／「読んだ」の確定は実行の前／打ち切っても途中経過を返す**。slack_inbox.py 修正済(ロック・1800秒・状態を先に確定・partial出力)
-- [bash 3.2の全角文字直後unbound variable](reference_bash32_multibyte_unbound_var.md) — **mini/MacBookの`/bin/bash`は3.2系(Apple凍結版)。`set -u`下で`$変数（`のように変数展開の直後に全角文字が続くと変数名の一部と誤認して落ちる**(2026-08-20、`bin/daily_jobs.sh`初版で実測)。対策=`${var}`と必ずブレースで区切る。検出=`grep -n '\$[A-Za-z_][A-Za-z_0-9]*[^ -~]' script.sh`。新規シェルスクリプトを書くたび要検査
+- [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — `ssh mini`で操作する主作業機。~/.claude資産は移植済／残=mini側ログイン認証
+- [両機は同じ環境にする](fukuchi-core「マシンと実行の置き場」) — 道具(鍵・トークン・スクリプト)は両機へ。★定期実行は片方だけ・もう一方は.disabledで残す
+- [Mac miniの実行環境](reference_mac_mini_execution_env.md) — 裏側の実行機。Python3.9系／claudeは`~/.npm-global/bin/claude`／到達確認は肯定形で聞く
+- [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語
+- [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人」「田村さん」は使わない。全出力に適用
+- [大きなSheetsはgviz経由](reference_gviz_large_sheet_access.md) — ★gvizは黙って嘘をつく(シート名不一致→1枚目/テキスト数値→null)。数値状文字列はCSV出力で読む
+- [kintoneは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーは出ない
+- [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨する
+- [思考OS Skill](project_thinking_os_skill.md) — 10レンズ＋6要素骨格をローカルSkill化。/thinking-osで全モデル共通
+- [Fable Style改善ループ](project_fable_style_improvement_loop.md) — 規範を週次で自己改善。訂正・やり直しは改善ログDBへ種を記録する
+- [AI活用→発信ネタ化](project_ai_usage_to_content_pipeline.md) — 区切りごとに⑥へ自動記録(=発信の種)。正本は発信ネタDB1つ／⑥は📅セッション単位で拾う／迷ったら拾う
+- [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — 約15Projectの議論ログを📚ナレッジDBへ。パイロットの空ページ作成済・流し込み待ち
+- [AI活用ログDB統合(案A)](project_ai_log_db_consolidation.md) — 単一台帳化。Phase1完了／Phase2(発信ネタDB統合・投稿生成)は保留
+- [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
+- [Manus AIへの外注](project_manus_outsourcing.md) — 社外の手足(MCP5本)。個人IGは投稿実行まで委任＝人が押すの例外／顧客名を渡さない／ask,replyは要承認
+- [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。「システムは△△・こちらは◯◯、どちらが正か」と並べて聞く
+- [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 採用の意思表示。変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
+- [型を作る前に数える](feedback_check_the_archive_first.md) — アーカイブ件数と実ファイル置き場を先に数える。ブランドは1つ・型は複数／実績を他へ横滑りさせない
+- [Manus APIの実測挙動](reference_manus_api_behaviors.md) — `stopped`は完了と中断を区別しない(briefを見る)／成果物は期限付きURL／watchはmini cronのみ
+- [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
+- [CFOナミ](project_cfo_agent.md) — agents/cfo.md＋Notion財務ハブ＋月次/週次routine
+- [CLOセンゴク](project_legal_agent.md) — agents/legal.md。日本法ラッパー。法務ハブ構築済／プラグイン導入は未実行
+- [CKOロビン](project_cko_agent.md) — agents/cko.md。会議準備を裏方で作る(毎朝7:40)。Phase B=議事録DB連携待ち
+- [広報PRモルガンズ](project_pr_agent.md) — agents/pr.md。資料ベースで設計・実送信は承認後。露出モードはpr-playbook.md準拠
+- [親子向けAI体験イベント](project_ai_kids_event_pr.md) — 7/25-26の一次資料・統計・団体情報の置き場。★第1回リリースは未配信のまま
+- [締切ダッシュボード](project_deadline_dashboard.md) — タスク/法務期日DBに🚦Formula、📆で横断。ビビ朝に🔴🟡集約
+- [デザイン統括フランキー](project_design_agent.md) — agents/design.md。Notionはフォント不可→テンプレ/ビュー/IA/埋込の4レバー
+- [開発ライン ステラ＋3体](project_dev_agents.md) — ステラ(統括)＋エジソン/ピタゴラス/リリス＋開発ハブ＋週次routine
+- [いろどり(美容診断)](project_irodori_app.md) — 端末内処理。プロトタイプ稼働中・次は精度向上(要 本番ホスティング)
+- [イベントAIアプリ ポータル](project_ai_event_portal.md) — ~/fukuchi-ai-event(MacBookのみ)をVercel公開予定
+- [子ども向けミニAIアプリ](project_kids_event_apps.md) — ~/fukuchi-kids-appsに共通キット。13本量産・全公開済
+- [アプリ量産モード](feedback_app_mass_production_mode.md) — 子どもアプリは自律量産。確認は致命的5項目のみ
+- [Agent naming](project_agent_naming.md) — ONE PIECEで統一。一味=CXO／ベガパンク=開発ライン
+- [AI組織図・名鑑](reference_ai_org_chart.md) — 名鑑DBが正の索引。★台帳と実体(agents/*.md)は静かにずれる。作ったら登録まで1作業(登録=ロビン/検査=つる)
+- [CXO build playbook](project_cxo_build_playbook.md) — 1体作る標準手順。新規は行動規範＋モデル運用節の埋込が必須
+- [Downloads→Drive本棚](project_downloads_archive_system.md) — 受け皿17分類。sort_downloads.pyが週次(要フルディスクアクセス)
+- [toC顧客台帳](project_toc_customer_ledger.md) — Notion完結。個人顧客マスター＋提案商談。将来=人物マスター中心
+- [組織マスター4DB](reference_org_master_4db.md) — 組織軸の正本(部門/法人/部署/PJ)。担当者マスターのRelation張替は未実施
+- [組織マスターの所在とコード](reference_org_master_notion.md) — 4DBのdata source ID。施設運営は15-300/15-400へ再コード化済
+- [Relation双方向化の地雷](reference_notion_relation_dual_landmine.md) — one-way→DUAL変換で既存値が全件消失。新規列は最初からDUALで作る
+- [タスクDB Relation付替](project_task_db_relation_migration.md) — Step1-5＋双方向化まで完了。残=ビュー実在確認・Step7降格処理
+- [Notionナレッジハブ](reference_notion_knowledge_hub.md) — 業務管理Notion＋組織マスターの体系。別タブの会話は読めない
+- [ローカルメモ棚卸し](project_local_memo_cleanup.md) — 約1,004件を20分類(未移動)。商談約300件は議事録DBの原資
+- [HTML→Figma移行手順](project_html_to_figma_pipeline.md) — フォント剥がし→1440px数値化→Figma MCPで直接構築
+- [共有ドライブのフォーム](reference_shared_drive_form_upload.md) — ファイル添付不可。フォーム本体だけマイドライブへ移す
+- [共有ドライブの権限の床](reference_shared_drive_permission_floor.md) — 配下の権限を狭められない。`_機微`は無効＝別ドライブへ出す
+- [機微の二層管理](feedback_confidential_two_layer_rule.md) — 原則共有・機微だけ`_機微`で本人限定。sort_downloads.pyで自動隔離
+- [Artifactは積む](feedback_artifact_accumulate_dont_replace.md) — 作り替えず同じ1ページへ積む。過去分は折りたたみ／依頼を出したら反映まで1セット
+- [図解ファースト](feedback_design_diagram_first_minimal_emoji.md) — 流れ・関係・階層は図で見せ言葉は補足。図を1行に潰すのは改悪。絵文字は最小限
+- [生成物はNotionへ添付](feedback_generated_files_attach_notion.md) — 該当ページへ実ファイル添付(DL可)。一時領域に放置しない
+- [Notionは戻せる](reference_notion_restore_path.md) — GETの生プロパティをPATCHで復元。★復元を1度も実行していないバックアップはバックアップでない
+- [Notionを消してよい線](reference_notion_archive_line.md) — 配った/リンクされた/参照された が1つでもあれば消さない。消す前に被リンク0件を確認
+- [Notion運用ルール正本](project_notion_operating_rules.md) — 読み書き前に必ず参照。4層モデル＋要約は鮮度ヘッダー必須
+- [【廃止】最新版を最上部](feedback_notion_latest_version_top.md) — 規律依存で破綻し廃止。後継=Notion運用ルール正本
+- [ナレッジ設計ページ](reference_notion_knowledge_design.md) — Drive住み分け・命名(事業×法人)の協議ハブ
+- [法人番号は申請不要で取れる](reference_corp_number_bulk_download.md) — 全件DLは申請なしで今日から使える。Web-API IDだけが2週間〜1か月
+- [法人番号の真因は社名欄](reference_ledger_name_blocks_corp_match.md) — 施設名同居/誤記/連結で突合が死ぬ。★絞り込みと適格性検査を混ぜない
+- [指数表記は計算で戻さない](reference_recover_exponential_corp_number.md) — toFixedでの復元は禁止。全件データで1社に絞れたときだけ確定
+- [kintoneルックアップはコピー](reference_kintone_lookup_is_a_copy.md) — マスタ更新→参照アプリで取り直しまでが1作業
+- [空行が汚れる2経路](reference_sheet_scan_range_pollution.md) — 書式継承と走査範囲。件数は「会社名がある行」で数える
+- [チェックボックス書式の侵食](reference_sheets_checkbox_format_creep.md) — 空行のfalseは後から行が入るとキーを壊す。CSVはキーの形を検査
+- [レコード統合の手順](reference_record_merge_protocol.md) — 全列突合→移送→集計列を空に→削除。廃止選択肢は上書きで始末
+- [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す。90_選択肢マスタから読む
+- [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
+- [営業案件管理：現在地](project_sales_workbook_read_first.md) — 起点は🧭全体像1枚。★機械が新規と判定して台帳へ書かない／検査役の「載せてよい」は実行承認ではない
+- [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — 【解消】miniにGoogle認証が無くGASを人が貼っていた。いまはOAuthで直接読み書きできる
+- [営業ワークブックは戻せる状態に](feedback_sales_workbook_hands_off.md) — AIが書くときだけ①BU→②diff→③承認→④実行。定期BUは日曜19:54稼働＝新設しない
+- [読むもの一覧は地図でない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る
+- [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 作る前に3〜5行で形を出す。抽象語(図/整理)が出たら合図
+- [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — 打ち切られた書き出しや過去の要約で「無い」と断定しない
+- [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測で1回確かめる
+- [営業ワークブック(3層)](project_sales_pipeline_workbook.md) — シート/kintone/Notion。★障害はデータでなく入力の手数／手順書は実態から腐る
+- [SalesBreakerの口](reference_salesbreaker_engagement_api.md) — engagement/searchでクリック数・会社単位キーまで取れる。叩けば分かる
+- [営業ワークブックは列移動可](reference_sales_workbook_column_moves.md) — 全GASが見出し名で引く。受付シートは例外／apply_schema_v3は実行禁止
+- [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」／ユーザーはログイン名／書き出しはUTF-8／必ず突合
+- [施設と運営法人はずれる](reference_facility_vs_corporation.md) — 営業先は施設・番号は運営法人。複数施設で番号が重複しうる(kintone側は未確認)
+- [kintone顧客マスター](reference_kintone_customer_master.md) — 顧客の正本。Notion顧客DBは中間ミラー(鍵=法人番号)。機微はkintone留置
+- [名刺→kintoneパイプライン](project_meishi_to_kintone_pipeline.md) — OCR→61列転記→WEB補完→黄色フラグ付xlsx。資本金/従業員はWEB必須
+- [コミュニケーションログ基盤](project_communication_log_hub.md) — 📨ログDBへ格納し相互リンク。★逆向き(会社→過去の会話)は辿れない
+- [顧客ファイルのDrive格納先](feedback_customer_files_drive_location.md) — 財務(03)でなく取引先・人物別(11)へ
+- [kintone CSV→Notionミラー](project_kintone_csv_to_notion_mirror.md) — 地雷=指数表記/継続行/cp932化け→作成後にSELECT突合で検証
+- [体制はビビ窓口＋ハブ参照](working-via-ai-agents-and-notion-hub.md) — 作業はビビ中央窓口経由＋AIナレッジハブ参照で進める
+- [カレンダー テンプレ挿入](project_calendar_template_autofill.md) — GASで自動挿入。タイトル【種別】で振り分け＝命名ルールが前提
+- [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入する。触ったファイルを明示・commitは束ねる側が打つ
+- [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない。遅れはSYNC_STATUS.mdへ書く
+- [セッションからcrontabは書けない](reference_cron_write_blocked_in_session.md) — bin/cron/へ投函→cron_apply.shが入れる。★投函≠登録・最大15分後／ssh越しなら書ける
+- [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
+- [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
+- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告が出ている≠異常。本物/止めてある/対応保留を分けて出す
+- [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ済みの印／閾値は全体の合算も置く／守った方向だけ堅くなる
+- [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す。人が手で書く欄を機械の判定条件にしない
+- [自動処理レジスタ(心拍)](project_automation_register.md) — ★1行=1処理(相乗り禁止)／心拍は起動元を区別しない＝判定はcrontab等との突合のみ。登録漏れ0/申告倒れ3
+- [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
+- [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — ★fetchの表示はレンダリング済＝実データはview mode(テーブルクエリ)で見る
+- [リンク共有は配下に効く](reference_link_sharing_inherits_everywhere.md) — 機微を置く場所こそ共有設定を見る。`0A`始まりは判別に使えない
+- [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — 1つしか選べない置き場に判断を置かない。3割超の偏りは既定値と疑う
+- [入力と出力先を先に見る](reference_ai_output_blamed_before_inputs.md) — AIの精度を疑う前に。フォールバックは誤りを正解の顔で量産する
+- [印を消すだけでは戻らない](reference_processed_flag_is_not_enough.md) — 元データが取得元にあるかを見る／隔離配下は対象外にする
+- [却下は永続的な取りこぼし](reference_silent_rejection_backlog.md) — 却下=処理済み扱いで二度と拾われない。連続0件の日で探す
+- [議事録自動整理GAS](project_giji_automation_gas.md) — 復旧済・空白解消済。オーナー区分ルーティングは設計中でバックログ停止
+- [議事録の社員展開](project_minutes_employee_rollout.md) — パイロット5名で入口を開いた。全社への自動昇格は意図的に未実装
+- [議事録の隔離運用](project_minutes_quarantine.md) — 空・機微・重複はDrive`_要確認`へ移す。移動のみ・削除は有璽氏
+- [議事録の整理ルール](project_giji_organizing_rules.md) — 区分は台帳が持つ／表記は台帳と同じ／指標は社外会議の紐付率
+- [Apps ScriptのAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを見逃す。所属クラスの突合が必須
+- [検査が偽陰性を出す](reference_reference_audit_false_negative.md) — 定数経由の参照を落とし13本を1本と誤判定。「検査した」と「正しく検査できた」は別
+- [同名定義は後勝ち](reference_apps_script_name_collision.md) — 新版を貼っても旧版が動き混在する。`関数名.toString()`で実体を読む
+- [Sheets書き込みの暗黙挙動11点](reference_sheets_number_format_order.md) — 器を増やしても保護・入力規則は付いてこない／会社名は.gsにベタ書きされている
+- [Drive上の.gsは開けない](reference_drive_gs_file_not_previewable.md) — octet-stream固定。Googleドキュメントとして作り直す
+- [AI資産カタログ](ai-asset-catalog.md) — Drive`AI資産_正本/`を正本と宣言済＝vivid-ai-hqの設計と要調整
+- [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
+- [確認は溜めて1回](feedback_batch_the_checks.md) — 承認が要るのは6項目だけ。入れたものはその場でminiにも入れる
+- [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。望ましくないなら理由＋「やりますか」まで出す
+- [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — 既定は自分で進める。規範でなくsettings.jsonのpermissionsで担保／検査待ちも停止
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路で一致を見る。行数と件数は別物。検査は別の主体へ
+- [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — SendMessageは同じマシン内だけ。連携はWORKING.md/相手のローカル/Notion
+- [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 分けると二重作業を止める役がいなくなる。有璽氏へは1本にまとめて出す
+- [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える
+- [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す
+- [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — 知っていても適用しないから繰り返す。miniは4点導入済・MacBookは未実施
+- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/そもそも人の手を要らなくする
+- [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
+- [アンブレラサイトv2.0](project_handoff_bundle.md) — ~/Downloads配下のハンドオフ束。静的HTML+shared.css・ビルド無し
+- [本数で切ると希少な版が消える](reference_retention_by_count_deletes_the_wrong_ones.md) — 残す単位は日ごと最新1本。第一の対策は内容が変わった時だけ取る
+- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動。自分たちの仕組みは可逆なら直す
+- [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
+- [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
+- [PR TIMESはNPO名義の契約](feedback_prtimes_npo_account_scope.md) — 主語は必ずNPO(企業ID184772)。営利法人は事実の範囲のみ。読めないものは別経路へ
+- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 「PR動画」1語で動画を作り込んだ。形式/本数/出口を先に確定する
+- [NPO名義リリース2本(2026-08)](project_npo_press_releases_202608.md) — 8/25午前=ウェビナー報告／8/26午前=イベント報告で配信予定。ドラフト済・未配信。残=7月の実績数・写真許諾
+- [Robloxイベントの表記規約](reference_roblox_event_naming_rules.md) — ★イベント名・見出しに「Roblox」を入れない／ロゴ不可／公開しない／無料が前提。告知物が最も事故る
+- [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — 超えるとMEMORY.mdは一部しか届かない(2026-08-21に61,671バイト＝上限2.5倍を実測)。詳細は各ファイル本文へ
