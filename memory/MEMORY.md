@@ -14,7 +14,7 @@
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
 - [Manus AIへの外注](project_manus_outsourcing.md) — 社外の手足(MCP5本)。個人IGは投稿実行まで委任＝人が押すの例外／顧客名を渡さない／ask,replyは要承認
 - [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。「システムは△△・こちらは◯◯、どちらが正か」と並べて聞く
-- [型を分けても構図は変わらない](feedback_type_is_not_layout.md) — **「型を使い分けろ」だけでは単調さは消えない**（2026-08-20〜21に金曜・水曜で同じ指摘）。枚の役割が固定だと型は「何を描くか」しか変えず、文字配置・主役の位置・大小の緩急・余白・視線の流れは同じまま。★単調と言われたら型でなく**構図のレバー**を増やす／検算は**全点を並べて**見る
+- [型を分けても構図は変わらない](feedback_type_is_not_layout.md) — **「型を使い分けろ」だけでは単調さは消えない**（2026-08-20〜21に金曜・水曜で同じ指摘）。枚の役割が固定だと型は「何を描くか」しか変えず、文字配置・主役の位置・大小の緩急・余白・視線の流れは同じまま。★単調と言われたら型でなく**構図のレバー**を増やす／検算は**全点を並べて**見る／**★「外してよい」も「揃えろ」と同じく対象を列挙する。2026-08-21にtane.へ「テンプレートにこだわらず構成から考え直せ」と伝え、世界観ごと外れる危険を作った（有璽氏の補足で判明）**
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 採用の意思表示。変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — アーカイブ件数と実ファイル置き場を先に数える。ブランドは1つ・型は複数／実績を他へ横滑りさせない
 - [Manus APIの実測挙動](reference_manus_api_behaviors.md) — `stopped`は完了と中断を区別しない(briefを見る)／成果物は期限付きURL／watchはmini cronのみ
@@ -130,3 +130,4 @@
 - [NPO名義リリース2本(2026-08)](project_npo_press_releases_202608.md) — 8/25午前=ウェビナー報告／8/26午前=イベント報告で配信予定。ドラフト済・未配信。残=7月の実績数・写真許諾
 - [Robloxイベントの表記規約](reference_roblox_event_naming_rules.md) — ★イベント名・見出しに「Roblox」を入れない／ロゴ不可／公開しない／無料が前提。告知物が最も事故る
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — 超えるとMEMORY.mdは一部しか届かない(2026-08-21に61,671バイト＝上限2.5倍を実測)。詳細は各ファイル本文へ
+- [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — **assets機能は当環境で使えない・外部URLはCSPで不可**。sipsで縮小→base64で本文へ。tpl.htmlを直して焼き直す運用
