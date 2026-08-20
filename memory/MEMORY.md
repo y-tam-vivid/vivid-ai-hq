@@ -31,7 +31,7 @@
 - [子ども向けイベントミニAIアプリ シリーズ](project_kids_event_apps.md) — 開発第二ライン:キオスク設置・お金リテラシー知育。~/fukuchi-kids-apps に共通キット確立。13本量産・全公開済(ポータル15タイトル・準備中0)、以降もオリジナル案で量産可
 - [アプリ量産モード](feedback_app_mass_production_mode.md) — 子どもアプリはステラ+エジソンで自律量産。確認は致命的5項目(公開/コスト/プライバシー/既存破壊/大分岐)のみ
 - [Agent naming](project_agent_naming.md) — AIエージェント群はONE PIECEで統一。麦わらの一味=CXO/サポート、ベガパンク(ステラ＋分身)=開発ライン
-- [AI組織図・名鑑](reference_ai_org_chart.md) — 全AIエージェントの役割/成果ハブをNotion名鑑DBで一覧化(ビビが会社把握で参照する正の索引)。page 3957b156-8b57-81b4-a9dc-ffa26382e48c
+- [AI組織図・名鑑](reference_ai_org_chart.md) — 全AIエージェントの役割/成果ハブをNotion名鑑DBで一覧化(ビビが会社把握で参照する正の索引)／**★名鑑は台帳。実体(.claude/agents/*.md)との突合が要る＝ずれてもエラーは出ず静かにずれる。とくに「実体があるが名鑑に無い」が高くつく(次に誰かが同じ役を二重に作る)。エージェントを作ったら名鑑へ登録するまでが1作業。登録=ロビン／検査=つる で分ける**。page 3957b156-8b57-81b4-a9dc-ffa26382e48c
 - [CXO build playbook](project_cxo_build_playbook.md) — CXO/秘書エージェントを1体作る標準手順(別タブでも同構成で作るため)。**新規サブエージェントは「行動規範(Fable Style)」＋「モデル運用」節の埋め込みが必須**
 - [Downloads整理→Drive本棚システム](project_downloads_archive_system.md) — Downloads=受け皿/マイドライブ=17分類の本棚。~/bin/sort_downloads.pyで週次自動振り分け(cron月9時)。要フルディスクアクセス許可
 - [toC顧客台帳(資産形成・投資商材)](project_toc_customer_ledger.md) — toB顧客DB(kintoneミラー)と別にNotion完結で構築。①個人顧客マスター+②提案商談。関連法人relでtoB×toCクロスセル。将来=人物マスター中心。BI=Notion簡易+Claude
