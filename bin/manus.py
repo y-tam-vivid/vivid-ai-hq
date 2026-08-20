@@ -367,8 +367,8 @@ def watch(dry_run=False, limit=40):
         try:                              # 心拍（⚙️自動処理レジスタ用）。無ければ黙って飛ばす
             sys.path.insert(0, RELAY_DIR)
             import heartbeat
-            heartbeat.beat("Manus タスク監視", ok=True,
-                           note="%d件を確認／%d件が変化" % (len(rows), len(lines)))
+            heartbeat.beat("Manus タスク監視", "成功",
+                           "%d件を確認／%d件が変化" % (len(rows), len(lines)))
         except Exception:
             pass
 

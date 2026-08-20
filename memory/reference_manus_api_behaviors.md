@@ -70,3 +70,28 @@ API 側からは「誰が何をしたか」は `user_message` と `brief` で見
 - 過去実績は1タスク 500〜3,500クレジット。画像生成はさらに重い
 
 関連 → [[reference_salesbreaker_engagement_api]]（同じく「叩けば分かる」型）
+
+## 7. Slack通知（2026-08-20 開通）
+
+**通知の仕組みは作らない。** 議事録ラインで既に動いている `~/.vivid-relay/notify.py` の
+`tell()` を呼ぶだけ。チャンネルへ投げずDMのみ、報告に「返信不要」が付くのも notify.py 側の作法。
+
+```
+実体      bin/manus.py watch
+起動      launchd com.vivid.manus-watch（15分ごと・MacBook）
+状態      ~/.vivid-relay/manus_watch.json
+レジスタ  ⚙️自動処理レジスタ「Manus タスク監視」。心拍の着弾を実測済み
+```
+
+- **冪等**。前回状態と突き合わせ、変化した分だけ出す。同じ完了を二度鳴らさない
+- **初回は通知しない**（状態を記録するだけ。でないと過去分が一斉に鳴る）
+- **走り出し(running)は知らせない。** 終わり・エラー・確認待ちだけ
+- `stopped` は brief を引いて「完了」と「人が止めた」を書き分ける（→ 1節）
+- `task.list` は読むだけなので**課金されない**。15分ごとに叩いてよい
+
+**★MacBookは閉じている間は動かない。** 裏側で常時動かすなら mini へ移すが、
+mini には Manus APIキーも `bin/manus.py` も無い（他セッションの未コミットで pull が止まっている）。
+移すときは `~/.config/manus/api_key` の配置と launchd/cron 登録が要る。
+
+**★SLACK_BOT_TOKEN は MacBook の config.env に無かった**（miniにはあった）。
+2026-08-20 に mini から移送。両機で hooks を動かす前提なら、片方にしか無い状態は事故のもと。
