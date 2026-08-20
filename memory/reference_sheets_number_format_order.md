@@ -109,3 +109,24 @@ if (sh.getMaxRows() < need) { sh.insertRowsAfter(sh.getMaxRows(), need - sh.getM
 → [[reference_hardcoded_option_lists]]（選択肢リストと同じ型。会社名でも起きる）
 
 **社名を直す前に、その社名を文字列で持っているコードを検索する。**
+
+## ⑪ ★入力規則も器の行数に追随させる必要がある（2026-08-20 つる指摘）
+
+⑨は範囲保護（`protectedRanges`）の自動延長を扱ったが、**入力規則（`dataValidation`）は別物で、
+`ledger_guard_extend.py` の対象に入っていない。**
+
+```
+ledger_guard_extend.py が見ているもの   protectedRanges のみ（00/01/02/08/40）
+入力規則(dataValidation)               ★対象外。器がadd_rowsで伸びても規則は伸びない
+```
+
+2026-08-20、`40_活動ログ` C列（社内顧客ID）へ実在チェックのカスタム数式入力規則を
+C3:C1000で設定した。器が1000行を超えて拡張されたとき、規則の範囲を同時に広げないと、
+新しく足された行だけ誤入力チェックが効かない**穴になる**（既存行は守られているように見えるが、
+新規行だけ無防備＝⑨と同じ「守りは器に自動で付いてこない」型）。
+
+対策は⑨と同じ発想（足した分だけ延長・冪等・読むだけ既定）だが、**保護と入力規則は別のAPI
+（`protectedRanges` と `setDataValidation`）なので、延長スクリプトも別立てが必要**。
+既存の `ledger_guard_extend.py` に相乗りさせず、対応範囲を明示して別関数として持つこと。
+
+関連: [[project_sales_pipeline_workbook]]
