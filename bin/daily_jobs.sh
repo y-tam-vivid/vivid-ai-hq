@@ -56,6 +56,25 @@ except Exception as e:
 NOW_TS="${VIVID_DAILY_JOBS_NOW:-$(date +%s)}"
 TODAY="$(date -r "$NOW_TS" +%Y-%m-%d 2>/dev/null)"
 
+# ── ★実行機ガード（2026-08-21 つる）─────────────────────────
+#   このファイルは git で両機へ配られ、両機の vivid-sync.sh（*/15）から呼ばれる。
+#   だが daily_jobs.conf のジョブは全部 Mac mini 前提（レジスタの実行機＝Mac mini）。
+#   規範「定期実行は片方だけに置く。両方に置くと二重に動く」に反していた。
+#
+#   実害（2026-08-21 08:33 実測）: MacBook 側の daily_jobs.sh が
+#   ledger_guard_extend / gas_outside_watch を rc=2 で叩き落とし、
+#   同じ心拍名でレジスタへ「失敗」を書き込んだ。mini 側は同じ朝 rc=0 で成功していた。
+#   ＝**成功した心拍が、別マシンの失敗で上書きされて🔴になっていた。**
+#   MacBook にスクリプトが無かったから空振りで済んだだけで、在れば二重に走っていた。
+#
+#   目印ファイルが在る機械でだけ配る。無ければ心拍も打たずに黙って抜ける
+#   （＝もう一方には仕組みを残したまま自動起動だけ止める＝規範の .disabled と同じ形）。
+#   ★mini で目印を消せば配布が止まり、24時間後にレジスタが🔴になる＝黙って死なない。
+ENABLE_FLAG="${VIVID_DAILY_JOBS_ENABLE_FLAG:-$HOME/.vivid-relay/daily_jobs.enabled}"
+if [ ! -f "$ENABLE_FLAG" ]; then
+  exit 0
+fi
+
 mkdir -p "$STATE_DIR" "$(dirname "$LOG")" 2>/dev/null
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M')] $1" >> "$LOG"; }
