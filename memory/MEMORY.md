@@ -125,9 +125,11 @@
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動。自分たちの仕組みは可逆なら直す
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
-- [PR TIMESはNPO名義の契約](feedback_prtimes_npo_account_scope.md) — 主語は必ずNPO(企業ID184772)。営利法人は事実の範囲のみ。読めないものは別経路へ
+- [PR TIMESはNPO名義の契約](feedback_prtimes_npo_account_scope.md) — **主語は必ずNPO(企業ID184772)／営利法人は事実の範囲のみ**。★活動は事実の列挙で終わらせず「世界観→活動→将来設計」の順で書く
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 「PR動画」1語で動画を作り込んだ。形式/本数/出口を先に確定する
 - [NPO名義リリース2本(2026-08)](project_npo_press_releases_202608.md) — 8/25午前=ウェビナー報告／8/26午前=イベント報告で配信予定。ドラフト済・未配信。残=7月の実績数・写真許諾
 - [Robloxイベントの表記規約](reference_roblox_event_naming_rules.md) — ★イベント名・見出しに「Roblox」を入れない／ロゴ不可／公開しない／無料が前提。告知物が最も事故る
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — 超えるとMEMORY.mdは一部しか届かない(2026-08-21に61,671バイト＝上限2.5倍を実測)。詳細は各ファイル本文へ
 - [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — **assets機能は当環境で使えない・外部URLはCSPで不可**。sipsで縮小→base64で本文へ。tpl.htmlを直して焼き直す運用
+- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **2026-08-21に両機 allow58 で揃えた（解消済）**。dontAskは許可リストが空だと全部落ちる。機械を足したら鍵と一緒にpermissionsもそろえる
+- [お薬手帳の画像](reference_okusuri_techo_images.md) — 人名_01.png・人ごと連番・医療機微はローカル完結

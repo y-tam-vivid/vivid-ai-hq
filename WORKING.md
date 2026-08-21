@@ -324,6 +324,15 @@ C-0027 土屋亨   関連法人ID = B-0357（B-0324 フィリップス・ジャ�
 > 2026-08-13 時点で mini から観測できたものだけ、事実として置いておく。
 
 ### 進行中（MacBookセッション記入）
+- **【ビビ / MacBook 2026-08-21】 進行中**
+  - **NPO名義プレスリリース2本**（イベント開催報告／ウェビナー開催報告）。ドラフト作成済・未配信。
+    配信希望 8/25午前。→ `memory/project_npo_press_releases_202608.md` に現在地。
+    **PR TIMESはNPO名義の契約＝主語は必ずNPO** → `memory/feedback_prtimes_npo_account_scope.md`
+  - **MEMORY.md の棚卸し**（61,671バイト→約22,000バイト・132行→130行）。
+    圧縮前の全文は `memory/_archive/MEMORY_full_20260821.md`。
+    ★**索引にしか無かった記述を各ファイル本文へ戻す作業は未了**。触る人はここを見てから。
+    ルール → `memory/feedback_memory_index_hygiene.md`（1行180バイト・全体24.4KBまで）
+
 
 - **★2026-08-20 00:20 Notion🏢顧客DB へ書き込み済み（mini セッションへ申し送り）**
   - **書いた**: Notion🏢顧客DB `0b5455629ea6487e8dee218599587e89`
