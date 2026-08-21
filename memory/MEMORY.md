@@ -14,7 +14,7 @@
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
 - [Manus AIへの外注](project_manus_outsourcing.md) — 社外の手足(MCP5本)。個人IGは投稿実行まで委任＝人が押すの例外／顧客名を渡さない／ask,replyは要承認
 - [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。「システムは△△・こちらは◯◯、どちらが正か」と並べて聞く
-- [型を分けても構図は変わらない](feedback_type_is_not_layout.md) — **「型を使い分けろ」だけでは単調さは消えない**（2026-08-20〜21に金曜・水曜で同じ指摘）。枚の役割が固定だと型は「何を描くか」しか変えず、文字配置・主役の位置・大小の緩急・余白・視線の流れは同じまま。★単調と言われたら型でなく**構図のレバー**を増やす／検算は**全点を並べて**見る／**★「外してよい」も「揃えろ」と同じく対象を列挙する。2026-08-21にtane.へ「テンプレートにこだわらず構成から考え直せ」と伝え、世界観ごと外れる危険を作った（有璽氏の補足で判明）**
+- [型でなく構図](feedback_type_is_not_layout.md) — 単調なら構図のレバーを増やす／検算は全点並べる／「外してよい」も対象を列挙
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 採用の意思表示。変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — アーカイブ件数と実ファイル置き場を先に数える。ブランドは1つ・型は複数／実績を他へ横滑りさせない
 - [Manus APIの実測挙動](reference_manus_api_behaviors.md) — `stopped`は完了と中断を区別しない(briefを見る)／成果物は期限付きURL／watchはmini cronのみ
@@ -84,6 +84,7 @@
 - [カレンダー テンプレ挿入](project_calendar_template_autofill.md) — GASで自動挿入。タイトル【種別】で振り分け＝命名ルールが前提
 - [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入する。触ったファイルを明示・commitは束ねる側が打つ
 - [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない。遅れはSYNC_STATUS.mdへ書く
+- [直した所は配られるか](reference_fix_where_git_reaches.md) — git配下は両機へ自動／~/.vivid-relayは手作業。★届かない側は偽陽性を出す
 - [セッションからcrontabは書けない](reference_cron_write_blocked_in_session.md) — bin/cron/へ投函→cron_apply.shが入れる。★投函≠登録・最大15分後／ssh越しなら書ける
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
