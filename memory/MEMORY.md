@@ -18,6 +18,7 @@
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 採用の意思表示。変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — アーカイブ件数と実ファイル置き場を先に数える。ブランドは1つ・型は複数／実績を他へ横滑りさせない
 - [Manus APIの実測挙動](reference_manus_api_behaviors.md) — `stopped`は完了と中断を区別しない(briefを見る)／成果物は期限付きURL／watchはmini cronのみ
+- [朝の要対応に切る口が無い](feedback_briefing_needs_an_off_switch.md) — 47日まで積んだ。正本をタスクDBへ移す／14日は消さず畳む／複業クラウドは往復が始まった人だけ
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
 - [CFOナミ](project_cfo_agent.md) — agents/cfo.md＋Notion財務ハブ＋月次/週次routine
 - [CLOセンゴク](project_legal_agent.md) — agents/legal.md。日本法ラッパー。法務ハブ構築済／プラグイン導入は未実行
