@@ -18,6 +18,7 @@
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 採用の意思表示。変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — アーカイブ件数と実ファイル置き場を先に数える。ブランドは1つ・型は複数／実績を他へ横滑りさせない
 - [Manus APIの実測挙動](reference_manus_api_behaviors.md) — `stopped`は完了と中断を区別しない(briefを見る)／成果物は期限付きURL／watchはmini cronのみ
+- [朝の要対応に切る口が無い](feedback_briefing_needs_an_off_switch.md) — 47日まで積んだ。正本をタスクDBへ移す／14日は消さず畳む／複業クラウドは往復が始まった人だけ
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
 - [CFOナミ](project_cfo_agent.md) — agents/cfo.md＋Notion財務ハブ＋月次/週次routine
 - [CLOセンゴク](project_legal_agent.md) — agents/legal.md。日本法ラッパー。法務ハブ構築済／プラグイン導入は未実行
@@ -46,7 +47,7 @@
 - [共有ドライブのフォーム](reference_shared_drive_form_upload.md) — ファイル添付不可。フォーム本体だけマイドライブへ移す
 - [共有ドライブの権限の床](reference_shared_drive_permission_floor.md) — 配下の権限を狭められない。`_機微`は無効＝別ドライブへ出す
 - [機微の二層管理](feedback_confidential_two_layer_rule.md) — 原則共有・機微だけ`_機微`で本人限定。sort_downloads.pyで自動隔離
-- [Artifactは積む](feedback_artifact_accumulate_dont_replace.md) — 作り替えず同じ1ページへ積む。過去分は折りたたみ／依頼を出したら反映まで1セット
+- [Artifactは積む](feedback_artifact_accumulate_dont_replace.md) — 作り替えず同じ1ページへ積む。過去分は折りたたみ／依頼を出したら反映まで1セット／**★縮小版を見せるときは「これは縮小版・原寸は◯◯」と必ず言う（2026-08-21に330px圧縮のまま品質評価をさせ「画質が悪い、僕の画面のせい？」と言わせた）。「画質が悪い」と言われたらまず自分の圧縮を疑う**
 - [図解ファースト](feedback_design_diagram_first_minimal_emoji.md) — 流れ・関係・階層は図で見せ言葉は補足。図を1行に潰すのは改悪。絵文字は最小限
 - [生成物はNotionへ添付](feedback_generated_files_attach_notion.md) — 該当ページへ実ファイル添付(DL可)。一時領域に放置しない
 - [Notionは戻せる](reference_notion_restore_path.md) — GETの生プロパティをPATCHで復元。★復元を1度も実行していないバックアップはバックアップでない
@@ -126,9 +127,11 @@
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動。自分たちの仕組みは可逆なら直す
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
-- [PR TIMESはNPO名義の契約](feedback_prtimes_npo_account_scope.md) — 主語は必ずNPO(企業ID184772)。営利法人は事実の範囲のみ。読めないものは別経路へ
+- [PR TIMESはNPO名義の契約](feedback_prtimes_npo_account_scope.md) — **主語は必ずNPO(企業ID184772)／営利法人は事実の範囲のみ**。★活動は事実の列挙で終わらせず「世界観→活動→将来設計」の順で書く
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 「PR動画」1語で動画を作り込んだ。形式/本数/出口を先に確定する
 - [NPO名義リリース2本(2026-08)](project_npo_press_releases_202608.md) — 8/25午前=ウェビナー報告／8/26午前=イベント報告で配信予定。ドラフト済・未配信。残=7月の実績数・写真許諾
 - [Robloxイベントの表記規約](reference_roblox_event_naming_rules.md) — ★イベント名・見出しに「Roblox」を入れない／ロゴ不可／公開しない／無料が前提。告知物が最も事故る
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — 超えるとMEMORY.mdは一部しか届かない(2026-08-21に61,671バイト＝上限2.5倍を実測)。詳細は各ファイル本文へ
 - [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — **assets機能は当環境で使えない・外部URLはCSPで不可**。sipsで縮小→base64で本文へ。tpl.htmlを直して焼き直す運用
+- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **2026-08-21に両機 allow58 で揃えた（解消済）**。dontAskは許可リストが空だと全部落ちる。機械を足したら鍵と一緒にpermissionsもそろえる
+- [お薬手帳の画像](reference_okusuri_techo_images.md) — 人名_01.png・人ごと連番・医療機微はローカル完結
