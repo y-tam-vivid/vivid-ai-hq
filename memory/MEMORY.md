@@ -65,7 +65,7 @@
 - [レコード統合の手順](reference_record_merge_protocol.md) — 全列突合→移送→集計列を空に→削除。廃止選択肢は上書きで始末
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す。90_選択肢マスタから読む
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
-- [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 有璽氏が全論点へ回答。結合キーは社内顧客IDへ／全社へ昇格した議事録だけ営業に見せる／★promote_minutesは載せれば動く（対象0件）**
+- [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
 - [営業案件管理：現在地](project_sales_workbook_read_first.md) — 起点は🧭全体像1枚。★機械が新規と判定して台帳へ書かない／検査役の「載せてよい」は実行承認ではない
 - [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — 【解消】miniにGoogle認証が無くGASを人が貼っていた。いまはOAuthで直接読み書きできる
 - [営業ワークブックは戻せる状態に](feedback_sales_workbook_hands_off.md) — AIが書くときだけ①BU→②diff→③承認→④実行。定期BUは日曜19:54稼働＝新設しない
