@@ -14,6 +14,7 @@
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
 - [Manus AIへの外注](project_manus_outsourcing.md) — 社外の手足(MCP5本)。個人IGは投稿実行まで委任＝人が押すの例外／顧客名を渡さない／ask,replyは要承認
 - [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。「システムは△△・こちらは◯◯、どちらが正か」と並べて聞く
+- [テイストは素材ではない](feedback_taste_is_not_a_sticker.md) — **「型×テイストを組み合わせて」だけでは採用案の画像が貼り込まれる**（2026-08-22 119番）。E〜Jは`_表紙.png`＝表紙1枚の案なのに画風のつもりで渡し、表紙へ貼り込み＋2枚目以降はテイスト未適用／内部コード「A×E」が印字されたまま／**表紙案を採用したら2枚目以降も同時に決める。完成後は1本を全枚めくる**
 - [型でなく構図](feedback_type_is_not_layout.md) — 単調なら構図のレバーを増やす／検算は全点並べる／「外してよい」も対象を列挙
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 採用の意思表示。変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — アーカイブ件数と実ファイル置き場を先に数える。ブランドは1つ・型は複数／実績を他へ横滑りさせない
