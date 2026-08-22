@@ -140,3 +140,27 @@ Google Sheets API が **503 The service is currently unavailable** を返して�
 
 **★検査を作ったら3つとも踏む。** ①鳴るべきときに鳴る ②鳴るべきでないときに鳴らない
 ③後片付けしたら元に戻る。
+
+### ★共通部品が SystemExit を投げると、except Exception は素通りする（2026-08-22 実測）
+
+「失敗したら心拍に『失敗』を残す」ため `main()` を `try/except Exception` で包んだ。
+**★この修正は機能していなかった。**
+
+```
+共通部品 api()   エラー時に ★raise SystemExit(...) する作り
+SystemExit       ★BaseException 直下。**Exception では捕まらない**
+→ 例外は素通りし、心拍は打たれないまま落ちる
+→ except BaseException にして初めて効いた（実測で確認）
+```
+
+**★同じ穴が別の場所にもあった。** `notion_customer_upsert.py` でも
+「SystemExit が呼び出し元の `except Exception` を素通りして無言で落ちる」問題が出て、
+`NotionSyncError`（Exception派生）へ変える形で直した（2026-08-20）。
+
+- **★共通部品が何を投げるかを、包む前に確かめる。**
+  `except Exception` は「全部拾う」ではない
+- **★「try/except を付けた」で終えない。わざと失敗させて、心拍が残るかを見る**
+  今回はそれで「付けたのに効いていない」が見つかった
+- 直し方は2つ ── ①包む側を `except BaseException` にする
+  ②共通部品が `SystemExit` ではなく Exception派生を投げるようにする
+  **★②のほうが筋が良い。** ①は包む側ごとに忘れる
