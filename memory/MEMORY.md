@@ -18,7 +18,7 @@
 - [型でなく構図](feedback_type_is_not_layout.md) — 単調なら構図のレバーを増やす／検算は全点並べる／「外してよい」も対象を列挙
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 採用の意思表示。変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — アーカイブ件数と実ファイル置き場を先に数える。ブランドは1つ・型は複数／実績を他へ横滑りさせない
-- [Manus APIの実測挙動](reference_manus_api_behaviors.md) — `stopped`は完了と中断を区別しない(briefを見る)／成果物は期限付きURL／watchはmini cronのみ
+- [Manus APIの実測挙動](reference_manus_api_behaviors.md) — ★添付機能なし＝素材はDriveへ置きリンクで渡す／`stopped`は完了と中断を区別しない／★繋がっていないと別アカウントを見て報告する
 - [朝の要対応に切る口が無い](feedback_briefing_needs_an_off_switch.md) — 47日まで積んだ。正本をタスクDBへ移す／14日は消さず畳む／複業クラウドは往復が始まった人だけ
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
 - [CFOナミ](project_cfo_agent.md) — agents/cfo.md＋Notion財務ハブ＋月次/週次routine
@@ -47,7 +47,7 @@
 - [HTML→Figma移行手順](project_html_to_figma_pipeline.md) — フォント剥がし→1440px数値化→Figma MCPで直接構築
 - [共有ドライブのフォーム](reference_shared_drive_form_upload.md) — ファイル添付不可。フォーム本体だけマイドライブへ移す
 - [共有ドライブの権限の床](reference_shared_drive_permission_floor.md) — 配下の権限を狭められない。`_機微`は無効＝別ドライブへ出す
-- [機微の二層管理](feedback_confidential_two_layer_rule.md) — 原則共有・機微だけ`_機微`で本人限定。sort_downloads.pyで自動隔離
+- [機微の二層管理](feedback_confidential_two_layer_rule.md) — 原則共有・機微だけ`_機微`。★AIが「機微そう」で隔離を確定しない(2回目)。聞き方は「置いてよいか」
 - [Artifactは積む](feedback_artifact_accumulate_dont_replace.md) — 作り替えず同じ1ページへ積む。過去分は折りたたみ／依頼を出したら反映まで1セット／**★縮小版を見せるときは「これは縮小版・原寸は◯◯」と必ず言う（2026-08-21に330px圧縮のまま品質評価をさせ「画質が悪い、僕の画面のせい？」と言わせた）。「画質が悪い」と言われたらまず自分の圧縮を疑う**
 - [図解ファースト](feedback_design_diagram_first_minimal_emoji.md) — 流れ・関係・階層は図で見せ言葉は補足。図を1行に潰すのは改悪。絵文字は最小限
 - [生成物はNotionへ添付](feedback_generated_files_attach_notion.md) — 該当ページへ実ファイル添付(DL可)。一時領域に放置しない
@@ -136,3 +136,5 @@
 - [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — **assets機能は当環境で使えない・外部URLはCSPで不可**。sipsで縮小→base64で本文へ。tpl.htmlを直して焼き直す運用
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **2026-08-21に両機 allow58 で揃えた（解消済）**。dontAskは許可リストが空だと全部落ちる。機械を足したら鍵と一緒にpermissionsもそろえる
 - [お薬手帳の画像](reference_okusuri_techo_images.md) — 人名_01.png・人ごと連番・医療機微はローカル完結
+- [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ビビッド名義。★訴求A/B/Cでテスト(0円/リピート/新手段)。送信操作は人の手
+- [営業の連絡先は共通](reference_vivid_sales_contact.md) — 対外文面は sales-consulting@。個人メールと電話は載せない（119番資料もTBDのまま）
