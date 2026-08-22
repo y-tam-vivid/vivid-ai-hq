@@ -164,3 +164,45 @@ SystemExit       ★BaseException 直下。**Exception では捕まらない**
 - 直し方は2つ ── ①包む側を `except BaseException` にする
   ②共通部品が `SystemExit` ではなく Exception派生を投げるようにする
   **★②のほうが筋が良い。** ①は包む側ごとに忘れる
+
+#### ★「共通部品」だと思っていたものが、コピペされた別物だった（2026-08-22 実測）
+
+当方は「共通部品 `api()` を直せば全部に効く」と考えた。**前提が間違っていた。**
+
+```
+api() は共通モジュールではない
+   notion_backfill.py / notion_customer_upsert.py /
+   notion_meeting_customer_link.py / notion_memo_dedupe_20260820.py
+   ★4本とも **それぞれ別々に定義されている**（コピペ）
+→ 1か所直しても他へ効かない
+```
+
+**★「共通部品」と呼ぶ前に、本当に1か所にあるかを grep で数える。**
+名前が同じで中身がコピーされているだけのものは、**直したつもりが1本しか直らない。**
+
+### 実測の結果（5本中1本だけ残っていた）
+
+```
+intake_register.py              対象外（Notionのapi()を呼ばない。Sheetsのみ）
+notion_backfill.py              直っている（except SystemExit で e.code を見て心拍）
+notion_customer_upsert.py       直っている（api() 自体が Exception派生を投げる方式）
+promote_minutes.py              直っている（except BaseException）
+★notion_meeting_customer_link.py  ★残っている
+                                __main__ に例外処理が一切無く main() を素で呼ぶだけ
+                                実測 ── 壊れたIDで404 → SystemExit → **心拍0回**
+```
+
+**★4本は「直っている」ことも実測で確かめた。** grep だけでは判定できない。
+
+## ★保留（着手トリガーつき）── api() を1つの共通モジュールへ統合する
+
+いまは**各スクリプトが自前の `api()` を持っている**。同じ穴が新しいスクリプトのたびに開く。
+
+```
+やること     api() を1つのモジュールへ統合し、そこで Exception派生を投げるようにする
+             → 呼び出し側の規律に依存しなくなる
+やらない理由 いま営業の導線を固めている最中。★範囲が広がる
+着手トリガー 営業へ渡す作業が一段落したとき
+            ／または新しくNotionを叩くスクリプトを作るとき（そこで統合する）
+暫定         呼び出し側を except BaseException で個別に塞ぐ
+```
