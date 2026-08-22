@@ -14,7 +14,7 @@
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
 - [Manus AIへの外注](project_manus_outsourcing.md) — 社外の手足(MCP5本)。個人IGは投稿実行まで委任＝人が押すの例外／顧客名を渡さない／ask,replyは要承認
 - [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。「システムは△△・こちらは◯◯、どちらが正か」と並べて聞く
-- [テイストは素材ではない](feedback_taste_is_not_a_sticker.md) — **「型×テイストを組み合わせて」だけでは採用案の画像が貼り込まれる**（2026-08-22 119番）。E〜Jは`_表紙.png`＝表紙1枚の案なのに画風のつもりで渡し、表紙へ貼り込み＋2枚目以降はテイスト未適用／内部コード「A×E」が印字されたまま／**表紙案を採用したら2枚目以降も同時に決める。完成後は1本を全枚めくる**
+- [テイストは素材ではない](feedback_taste_is_not_a_sticker.md) — 「型×テイスト」だけでは採用案の画像が貼り込まれる。表紙案を採ったら2枚目以降も同時に決める／完成後は全枚めくる
 - [型でなく構図](feedback_type_is_not_layout.md) — 単調なら構図のレバーを増やす／検算は全点並べる／「外してよい」も対象を列挙
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 採用の意思表示。変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — アーカイブ件数と実ファイル置き場を先に数える。ブランドは1つ・型は複数／実績を他へ横滑りさせない
@@ -48,7 +48,7 @@
 - [共有ドライブのフォーム](reference_shared_drive_form_upload.md) — ファイル添付不可。フォーム本体だけマイドライブへ移す
 - [共有ドライブの権限の床](reference_shared_drive_permission_floor.md) — 配下の権限を狭められない。`_機微`は無効＝別ドライブへ出す
 - [機微の二層管理](feedback_confidential_two_layer_rule.md) — 原則共有・機微だけ`_機微`で本人限定。sort_downloads.pyで自動隔離
-- [Artifactは積む](feedback_artifact_accumulate_dont_replace.md) — 作り替えず同じ1ページへ積む。過去分は折りたたみ／依頼を出したら反映まで1セット／**★縮小版を見せるときは「これは縮小版・原寸は◯◯」と必ず言う（2026-08-21に330px圧縮のまま品質評価をさせ「画質が悪い、僕の画面のせい？」と言わせた）。「画質が悪い」と言われたらまず自分の圧縮を疑う**
+- [Artifactは積む](feedback_artifact_accumulate_dont_replace.md) — 作り替えず同じ1ページへ積む／★縮小版は「縮小版・原寸は◯◯」と必ず言う。画質が悪いと言われたらまず自分の圧縮を疑う
 - [図解ファースト](feedback_design_diagram_first_minimal_emoji.md) — 流れ・関係・階層は図で見せ言葉は補足。図を1行に潰すのは改悪。絵文字は最小限
 - [生成物はNotionへ添付](feedback_generated_files_attach_notion.md) — 該当ページへ実ファイル添付(DL可)。一時領域に放置しない
 - [Notionは戻せる](reference_notion_restore_path.md) — GETの生プロパティをPATCHで復元。★復元を1度も実行していないバックアップはバックアップでない
@@ -66,6 +66,7 @@
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す。90_選択肢マスタから読む
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
+- [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体
 - [営業案件管理：現在地](project_sales_workbook_read_first.md) — 起点は🧭全体像1枚。★機械が新規と判定して台帳へ書かない／検査役の「載せてよい」は実行承認ではない
 - [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — 【解消】miniにGoogle認証が無くGASを人が貼っていた。いまはOAuthで直接読み書きできる
 - [営業ワークブックは戻せる状態に](feedback_sales_workbook_hands_off.md) — AIが書くときだけ①BU→②diff→③承認→④実行。定期BUは日曜19:54稼働＝新設しない

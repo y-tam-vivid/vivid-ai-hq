@@ -470,8 +470,9 @@ mini側は 2026-08-13 に投入済み。リポジトリ外の cwd で新規セ�
 
 ### 観測できた進行状況
 
-- `check.sh` が赤 … 項目6のみ。`core/_MOVED.md` と `plans/polymorphic-hopping-taco.md` が repo未収録
-  （mini側は触っていません。commit 時点でも赤のままです）
+- ~~`check.sh` が赤 … 項目6のみ~~ → **✅解消（2026-08-23 つる）。いま全緑。**
+  `~/.claude/core/{_MOVED,_FROM_MACBOOK}.md` を `_archive/claude-local-2026-08-13/` へ収録した
+  （消していない・mini の実体もそのまま）。★10日間ずっと赤で、慢性化した赤はゲートにならない
 - クローバー博士（researcher）を11体目として追加済み（コミット `5253d32`）
 
 ---
