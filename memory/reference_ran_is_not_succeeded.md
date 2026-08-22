@@ -187,9 +187,9 @@ intake_register.py              対象外（Notionのapi()を呼ばない。Shee
 notion_backfill.py              直っている（except SystemExit で e.code を見て心拍）
 notion_customer_upsert.py       直っている（api() 自体が Exception派生を投げる方式）
 promote_minutes.py              直っている（except BaseException）
-★notion_meeting_customer_link.py  ★残っている
-                                __main__ に例外処理が一切無く main() を素で呼ぶだけ
-                                実測 ── 壊れたIDで404 → SystemExit → **心拍0回**
+notion_meeting_customer_link.py ★2026-08-22 に塞いだ（LinkError＝Exception派生へ）
+                                検査役が別の壊し方（config.env欠落）で発火を確認
+                                正常時も dry-run が従来どおり動くことを実測
 ```
 
 **★4本は「直っている」ことも実測で確かめた。** grep だけでは判定できない。
