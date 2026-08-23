@@ -28,6 +28,22 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ビビ 2026-08-23】稼働ダッシュボード ── 画面まで完成・**定期生成は未登録**
+
+有璽氏の依頼「エージェント/AIがどう動いているかを一元で、ブラウザで見に行けるように」。
+
+```
+データ層   ~/.vivid-relay/dashboard_data.py    リリス作成（09:21・読むだけ）
+画面       ~/.vivid-relay/dashboard_build.py   ビビ作成 → dashboard.html（51KB・実測描画OK）
+開く       python3 ~/.vivid-relay/dashboard_build.py
+```
+
+**読むだけ。台帳・Notion・kintoneへは1文字も書かない。外部CDNも使わない。**
+
+- **残①** 定期生成（daily_jobs.conf ＋⚙️レジスタ登録＋ドーベルマン検査）＝有璽氏の判断待ち
+- **残②** MacBook へ2本をコピー（`~/.vivid-relay/` は git 管理外＝自動で届かない）
+- 詳細 → `memory/project_ops_dashboard.md`
+
 ### ★AIがスプレッドシートを直接触れるようになった（2026-08-19）
 
 **OAuthで繋がった。GASを人が貼る運用は終わり。** 認証は `~/.vivid-relay/google_token.json`
