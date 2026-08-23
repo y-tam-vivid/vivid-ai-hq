@@ -92,7 +92,7 @@
 - [セッションからcrontabは書けない](reference_cron_write_blocked_in_session.md) — bin/cron/へ投函→cron_apply.shが入れる。★投函≠登録・最大15分後／ssh越しなら書ける
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
-- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く。失敗ログは日付で絞る
+- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ済みの印／閾値は全体の合算も置く／守った方向だけ堅くなる
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す。人が手で書く欄を機械の判定条件にしない
 - [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は両機で共有＝後勝ちで成功が失敗に化ける／実体はcron・launchd・daily_jobs.confの3経路
