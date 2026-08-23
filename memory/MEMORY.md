@@ -72,9 +72,9 @@
 - [営業ワークブックは戻せる状態に](feedback_sales_workbook_hands_off.md) — AIが書くときだけ①BU→②diff→③承認→④実行。定期BUは日曜19:54稼働＝新設しない
 - [読むもの一覧は地図でない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る
 - [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 作る前に3〜5行で形を出す。抽象語(図/整理)が出たら合図
-- [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(実物は隣列)／★安全弁は行番号を添えて数える
+- [実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(隣列を見る)／★渡すのは行でなくセル(94の21行目→B21)
 - [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測で1回確かめる／★止めたあとにドライランを通すと実害の中身が分かる(54v3は既存21件を二重に書くところだった)／**日付・IDの突合は正規化してから数える。同じ列で書式が混在し偽陰性が出る**
-- [営業ワークブック(3層)](project_sales_pipeline_workbook.md) — シート/kintone/Notion。★障害はデータでなく入力の手数／手順書は実態から腐る／**★手順書が2つある(94と受付シートの使い方)＝営業は矛盾した説明を読む。どちらを正本にするか先に決める**
+- [営業ワークブック](project_sales_pipeline_workbook.md) — ★営業ルールの正本はNotion公開ページへ寄せる(2026-08-23)。94・受付シートは入口1行に落とす
 - [SalesBreakerの口](reference_salesbreaker_engagement_api.md) — engagement/searchでクリック数・会社単位キーまで取れる。叩けば分かる
 - [営業ワークブックは列移動可](reference_sales_workbook_column_moves.md) — 全GASが見出し名で引く。受付シートは例外／apply_schema_v3は実行禁止
 - [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」／ユーザーはログイン名／書き出しはUTF-8／必ず突合
@@ -93,7 +93,7 @@
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
 - [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**
-- [無言の失敗が仕組みを殺す](reference_silent_failure_kills_adoption.md) — **人が押す仕組みは失敗時こそ必ず返す。無言だと「壊れている」と見なされ二度と使われない**(2026-08-23 Slackボタン初実測)。失敗時は理由＋★逃げ道(シートで直接記入)を添える／テスト専用の印を最初から持たせる
+- [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ済みの印／閾値は全体の合算も置く／守った方向だけ堅くなる
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す。人が手で書く欄を機械の判定条件にしない
 - [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
@@ -118,7 +118,9 @@
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
 - [確認は溜めて1回](feedback_batch_the_checks.md) — 承認が要るのは6項目だけ。入れたものはその場でminiにも入れる
 - [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。理由＋やりますかまで／★人へ渡す手順は「挿入位置」でなく置き換え後の全文で。実物が1行に収まっており「次の行に」が構文エラーを生んだ(2026-08-23)
-- [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — 既定は自分で進める。検査待ちも停止／★4段フロー宣言後は可否を聞かない
+- [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — 既定は自分で進める／★進める分を判断待ちに積むと停滞が人のせいに見える
+- [読む人の言葉で書く](feedback_write_for_the_reader.md) — 配る文書に実装名を出さない。読む側は節ごと飛ばす＝届かない
+- [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — **真因は速さのために確かさを落としていること(記憶から数字を埋める)**。数える/揃えるを部品に固め呼ぶだけにする／日付はnorm_date()を通した値だけ／件数は「443社(会社名がある行)」と数え方を添える／**★有璽氏の設計＝毎回数えず1か所(dashboard_data.json・読み口facts.py)へ集約し読むだけにする。別々に数えると人ごとに違う答えが出る**／★変種＝APIの`ok:false`を見ず空配列を「0件」と読み、権限があるのに「無い」と報告した(条件を欲張ると権限のある方まで落ちる)／**★部品を置いただけでは既存経路は変わらない。書き込む側から先に置換する（読む側だけ直すと揃って見えて汚れは増える）**
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路で一致を見る。行数と件数は別物。検査は別の主体へ
 - [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — SendMessageは同じマシン内だけ。連携はWORKING.md/相手のローカル/Notion
