@@ -72,7 +72,7 @@
 - [営業ワークブックは戻せる状態に](feedback_sales_workbook_hands_off.md) — AIが書くときだけ①BU→②diff→③承認→④実行。定期BUは日曜19:54稼働＝新設しない
 - [読むもの一覧は地図でない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る
 - [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 作る前に3〜5行で形を出す。抽象語(図/整理)が出たら合図
-- [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — 要約で断定しない／★欄名が無いは入口。値で全セル探す(実物は隣列)
+- [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(実物は隣列)／★安全弁は行番号を添えて数える
 - [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測で1回確かめる／★止めたあとにドライランを通すと実害の中身が分かる(54v3は既存21件を二重に書くところだった)／**日付・IDの突合は正規化してから数える。同じ列で書式が混在し偽陰性が出る**
 - [営業ワークブック(3層)](project_sales_pipeline_workbook.md) — シート/kintone/Notion。★障害はデータでなく入力の手数／手順書は実態から腐る
 - [SalesBreakerの口](reference_salesbreaker_engagement_api.md) — engagement/searchでクリック数・会社単位キーまで取れる。叩けば分かる
@@ -93,6 +93,7 @@
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
 - [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**
+- [無言の失敗が仕組みを殺す](reference_silent_failure_kills_adoption.md) — **人が押す仕組みは失敗時こそ必ず返す。無言だと「壊れている」と見なされ二度と使われない**(2026-08-23 Slackボタン初実測)。失敗時は理由＋★逃げ道(シートで直接記入)を添える／テスト専用の印を最初から持たせる
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ済みの印／閾値は全体の合算も置く／守った方向だけ堅くなる
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す。人が手で書く欄を機械の判定条件にしない
 - [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
@@ -138,6 +139,6 @@
 - [Robloxイベントの表記規約](reference_roblox_event_naming_rules.md) — ★イベント名・見出しに「Roblox」を入れない／ロゴ不可／公開しない／無料が前提。告知物が最も事故る
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — 超えるとMEMORY.mdは一部しか届かない(2026-08-21に61,671バイト＝上限2.5倍を実測)。詳細は各ファイル本文へ
 - [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — **assets機能は当環境で使えない・外部URLはCSPで不可**。sipsで縮小→base64で本文へ。tpl.htmlを直して焼き直す運用
-- [Slackの鍵は2種類](reference_slack_tokens_and_socket_mode.md) — xoxb=送信/xapp=Socket Mode受信。★miniに両方あるが読むコードは0本・MacBook未配布
+- [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — 稼働中(cron */5)。Socket Modeは置換／★貼った鍵がlogに平文残留＝revoke不足
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — 両機allow58で解消済。機械を足したら鍵と一緒にpermissionsも揃える
 - [お薬手帳の画像](reference_okusuri_techo_images.md) — 人名_01.png・人ごと連番・医療機微はローカル完結
