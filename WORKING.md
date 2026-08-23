@@ -88,6 +88,36 @@ ID `19w4hqMOBVxKopvOZNNoSSQajcMQNkJboZSa2-PZjuKvO_4txKhDz6Vjzm6Y7X-PZNNlQoNou`�
 開く       python3 ~/.vivid-relay/dashboard_build.py
 ```
 
+**【ピタゴラス 2026-08-23 12:16】数字の正本へ格上げ ── 実装・実測済み。HTML側は未着手**
+
+有璽氏の設計指示「各エージェントが数字をどこか統一した場所へ集約し、読むだけにする」を受け、
+新しい器は作らず dashboard_data.py / dashboard_data.json を格上げした。
+
+```
+date_utils.py   ~/.vivid-relay/ 新設。norm_date()/date_pattern() の共通部品
+                 ★置き場所はminiの~/.vivid-relay/（理由はdocstring参照。Sheets認証もmini限定のため）
+                 既存3本(ledger_report.py/intake_register.py/watch_external.py)は
+                 スコープ外につき未置換（後方互換）。次に触る人はここへ寄せること
+facts.py        ~/.vivid-relay/ 新設。共通の読み口。from facts import get; get('ledger.companies')
+                 dashboard_data.json の generated_at から24h超で stale:true を返す
+dashboard_data.py  build_ledger() を追加（読むだけ・書き込み一切なし）。
+                 companies/customer_detail/individuals/relation_follow/activity_log/
+                 deals(welfare/subsidy/toc)/companies_with_corp_no・without/
+                 date_format_variants/intake_needs_confirmation の10項目を
+                 {"value","how","as_of"} の3点セットで格納。実測値は本文参照
+```
+
+実測（2026-08-23 12:16）：会社437社（法人番号あり270・なし167）／01=383／02=75／
+08=40／40=27／10=1・20=0・30=0／受付の確認待ち3行／日付書式は3種類混在
+（作成日に "YYYY/M/D" "YYYY/M/D+時刻" "YYYY-MM-DD+時刻" が同居）。
+
+**★残 1点**：`dashboard_data.py --beat` 実行時「レジスタに行が無く新規作成しない」の警告あり
+（既存仕様どおり・元から未登録）。定期生成・レジスタ登録は上のビビのブロックと同じ「未登録」。
+**★MEMORY.md `feedback_never_write_an_unmeasured_number.md` は器の名前を「facts.json」と
+書いているが、実装した正本は dashboard_data.json（facts.py は読み口のみ）。次に読む人は注意。**
+**★コード検査はステラ（dev-producer）配下へ未依頼。cross-check型に従い、自分（作った本人）
+では検査していない。**
+
 **読むだけ。台帳・Notion・kintoneへは1文字も書かない。外部CDNも使わない。**
 
 - **残①** 定期生成（daily_jobs.conf ＋⚙️レジスタ登録＋ドーベルマン検査）＝有璽氏の判断待ち
