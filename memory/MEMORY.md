@@ -2,6 +2,7 @@
 - [両機は同じ環境にする](fukuchi-core「マシンと実行の置き場」) — 道具(鍵・トークン・スクリプト)は両機へ。★定期実行は片方だけ・もう一方は.disabledで残す
 - [Mac miniの実行環境](reference_mac_mini_execution_env.md) — 裏側の実行機。Python3.9系／claudeは`~/.npm-global/bin/claude`／到達確認は肯定形で聞く
 - [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語
+- [名乗る](feedback_say_who_you_are.md) — ★有璽氏は誰と話しているか分からなくなる。区切りで名乗り直す／自分がビビなら外へ回さない
 - [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人」「田村さん」は使わない。全出力に適用
 - [大きなSheetsはgviz経由](reference_gviz_large_sheet_access.md) — ★gvizは黙って嘘をつく(シート名不一致→1枚目/テキスト数値→null)。数値状文字列はCSV出力で読む
 - [kintoneは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーは出ない
