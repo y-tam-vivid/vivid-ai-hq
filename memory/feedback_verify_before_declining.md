@@ -78,3 +78,35 @@ MacBookで貼り付けたらいいんじゃないの？ 違うの？」
   （実際にこの形で出し直したところ、MIKKE HOUSE は1件に絞れた
   → [[reference_facility_vs_corporation]]）
 - 同じ型 → [[feedback_batch_the_checks]]（確認は溜めて1回）
+
+## ★手順を渡す前に、渡す先の実物の形を見る（2026-08-23 実地）
+
+GAS 54v3 を止めてもらうため、有璽氏へこう渡した ──
+「`function intakeMigrateRun2() {` の**次の行**に `return;` と打ってください」。
+
+**実物はこうだった。**
+
+```javascript
+function intakeMigrateDry2() { intakeMigrate2_(true); }
+function intakeMigrateRun2() { intakeMigrate2_(false); }   ← ★1行に収まっている
+```
+
+「次の行」という指示に忠実に従うと、`return;` が**関数の外**に置かれる。
+トップレベルの `return` は構文エラーで、**そのプロジェクトのGASが全部動かなくなる**
+（同じプロジェクトに毎朝7〜8時のSalesBreaker取り込みが同居している）。
+
+```
+渡したもの   押す場所・関数名・打つ文字 ── ここまでは特定できていた
+見ていない   ★その関数が何行で書かれているか
+結果         正しく従うほど壊れる手順になった
+```
+
+- **★「押す場所まで特定する」は、実物の形を見るところまで含む。**
+  関数名が分かっただけでは、まだ渡せる状態ではない
+- **人が打つ手順は「挿入位置」でなく「置き換えたあとの1行の全文」で渡す。**
+  ★有璽氏はコピーできないので、打ち替える文字数が最小になる形を選ぶ
+  （今回の正解は `{` の直後へ `return; ` の9文字）
+- **★実行して確かめる手順を必ずセットで渡す。** それも**書かない方**で。
+  今回は `intakeMigrateDry2`（ドライラン）を実行すれば、書き込みなしで構文を検証できた
+
+関連 → [[feedback_cannot_copy_from_terminal]]／[[reference_dangerous_entrypoints]]
