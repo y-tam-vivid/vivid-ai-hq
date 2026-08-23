@@ -80,7 +80,7 @@
 - [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」／ユーザーはログイン名／書き出しはUTF-8／必ず突合
 - [施設と運営法人はずれる](reference_facility_vs_corporation.md) — 営業先は施設・番号は運営法人。複数施設で番号が重複しうる(kintone側は未確認)
 - [kintone顧客マスター](reference_kintone_customer_master.md) — 顧客の正本。Notion顧客DBは中間ミラー(鍵=法人番号)。機微はkintone留置
-- [名刺→kintoneパイプライン](project_meishi_to_kintone_pipeline.md) — OCR→61列転記→WEB補完→黄色フラグ付xlsx。資本金/従業員はWEB必須
+- [名刺→kintone](project_meishi_to_kintone_pipeline.md) — ★取得元フォルダは既に在る(受付フォーム自動生成・0件)。残はバッチ本体
 - [コミュニケーションログ基盤](project_communication_log_hub.md) — 📨ログDBへ格納し相互リンク。★逆向き(会社→過去の会話)は辿れない
 - [顧客ファイルのDrive格納先](feedback_customer_files_drive_location.md) — 財務(03)でなく取引先・人物別(11)へ
 - [kintone CSV→Notionミラー](project_kintone_csv_to_notion_mirror.md) — 地雷=指数表記/継続行/cp932化け→作成後にSELECT突合で検証
@@ -89,7 +89,7 @@
 - [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入する。触ったファイルを明示・commitは束ねる側が打つ
 - [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない。遅れはSYNC_STATUS.mdへ書く
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — git配下は両機へ自動／~/.vivid-relayは手作業。★届かない側は偽陽性を出す
-- [セッションからcrontabは書けない](reference_cron_write_blocked_in_session.md) — bin/cron/へ投函→cron_apply.shが入れる。★投函≠登録・最大15分後／ssh越しなら書ける
+- [crontabは書けない](reference_cron_write_blocked_in_session.md) — ★日次ジョブの正本はbin/daily_jobs.conf。8/23も未解消／ssh越しなら書ける
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
 - [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**

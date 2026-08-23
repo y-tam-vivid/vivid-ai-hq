@@ -79,6 +79,38 @@ metadata:
 
 関連: [[project_sales_pipeline_workbook]] [[reference_record_merge_protocol]] [[reference_sheet_scan_range_pollution]] [[project_notion_operating_rules]]
 
+## 有璽氏の確定判断（2026-08-23）
+
+```
+個人事業主22件      顧客種別を「個人（事業主）」へ変える＝法人番号の突合対象から恒久的に外す
+notion_backfill.py  初回本実行28件の目視は済んだ。毎朝のcronへ載せてよい（GO）
+SWELL SOCITY        ★B-0008 を正とし、B-0380 の情報を B-0008 へ統合する
+                    ただし社名のタイポは B-0008 側（SOCITY）。正しい表記は SOCIETY
+                    ＝「IDはB-0008を残す。中身は正しい方へ直す」の意
+④⑤ の人の手        有璽氏が自分で行う。★こちらは「押す場所」まで特定して渡す
+```
+
+## ★54v3 を止めるときに押す場所（2026-08-23 実測で特定）
+
+「GAS 54v3 の無効化」は長く *Apps Script 側＝当方から操作不可* とだけ書かれていたが、
+**何という関数を止めるのかが書かれていなかった**。渡す前に特定する。
+
+```
+原本（Drive・Googleドキュメント）  1mmJiOYQ9ZxYtdCmjqInu9e7CTiCIQ7whz9AQFpx6i6Y
+                                   マイドライブ「スクリプト原本」1phKsApqIzTYmNTeMewUGFfkDjMz8He7V 内
+Apps Script 側の関数               intakeMigrateRun2()  ← ★これが台帳へ書く。止める対象
+                                   intakeMigrateDry2()  ← ドライラン。1バイトも書かない＝残してよい
+                                   intakeMigrate2_(dryRun) ← 実体
+識別子サフィックス                 _M2（WB_ID_M2 / INTAKE_ID_M2 / I_COL_M2 …）
+書き込み先5つ                      00_企業マスタ・02_個人マスタ・40_活動ログ・08_関係フォロー・受付シート
+```
+
+- **消さずに `intakeMigrateRun2()` の先頭へ `throw` を1行置く**のが正しい止め方
+  （規範「消さずに状態で表す」／1行コメントアウトで戻せる＝可逆）。関数ごと削除しない。
+- **ドライランは残す。** 読むだけなので害がなく、後継 `intake_match.py` との突合に使える。
+- ★同じプロジェクトに SalesBreaker 取り込み（㊷・毎朝7〜8時トリガー）が同居している。
+  **プロジェクトごと止めると稼働中のトリガーまで殺す。** 関数単位で止めること。
+
 ## ★残件表そのものが規範と矛盾していることがある（2026-08-20）
 
 「移送54v3の毎朝トリガー化」は残件表の**筆頭**にあり、「これを入れるまで有璽氏が手で実行する
