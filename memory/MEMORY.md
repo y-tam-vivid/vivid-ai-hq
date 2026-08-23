@@ -14,10 +14,11 @@
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
 - [Manus AIへの外注](project_manus_outsourcing.md) — 社外の手足(MCP5本)。個人IGは投稿実行まで委任＝人が押すの例外／顧客名を渡さない／ask,replyは要承認
 - [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。「システムは△△・こちらは◯◯、どちらが正か」と並べて聞く
+- [119番の投稿標準型](project_f119_post_standard.md) — ★Manus停止中(〜8/25 08:00)。差し戻し送信済で復旧待ち／見本はI-03/01とI-04/05
 - [テイストは素材ではない](feedback_taste_is_not_a_sticker.md) — **「型×テイストを組み合わせて」だけでは採用案の画像が貼り込まれる**（2026-08-22 119番）。E〜Jは`_表紙.png`＝表紙1枚の案なのに画風のつもりで渡し、表紙へ貼り込み＋2枚目以降はテイスト未適用／内部コード「A×E」が印字されたまま／**表紙案を採用したら2枚目以降も同時に決める。完成後は1本を全枚めくる**
 - [型でなく構図](feedback_type_is_not_layout.md) — 単調なら構図のレバーを増やす／検算は全点並べる／「外してよい」も対象を列挙
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 採用の意思表示。変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
-- [型を作る前に数える](feedback_check_the_archive_first.md) — アーカイブ件数と実ファイル置き場を先に数える。ブランドは1つ・型は複数／実績を他へ横滑りさせない
+- [型を作る前に数える](feedback_check_the_archive_first.md) — ★「揃えろ/合わせて」は作り直しの許可になる(2回目)。触らない対象を列挙
 - [Manus APIの実測挙動](reference_manus_api_behaviors.md) — ★添付機能なし＝素材はDriveへ置きリンクで渡す／`stopped`は完了と中断を区別しない／★繋がっていないと別アカウントを見て報告する
 - [朝の要対応に切る口が無い](feedback_briefing_needs_an_off_switch.md) — 47日まで積んだ。正本をタスクDBへ移す／14日は消さず畳む／複業クラウドは往復が始まった人だけ
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
@@ -95,7 +96,7 @@
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す。人が手で書く欄を機械の判定条件にしない
 - [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は両機で共有＝後勝ちで成功が失敗に化ける／実体はcron・launchd・daily_jobs.confの3経路
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
-- [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — ★fetchの表示はレンダリング済＝実データはview mode(テーブルクエリ)で見る
+- [Notion MCPの制約](reference_notion_mcp_read_limits.md) — ★fetchはレンダリング済→view modeで見る／添付はupload_url不可(CF)
 - [リンク共有は配下に効く](reference_link_sharing_inherits_everywhere.md) — 機微を置く場所こそ共有設定を見る。`0A`始まりは判別に使えない
 - [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — 1つしか選べない置き場に判断を置かない。3割超の偏りは既定値と疑う
 - [入力と出力先を先に見る](reference_ai_output_blamed_before_inputs.md) — AIの精度を疑う前に。フォールバックは誤りを正解の顔で量産する
@@ -136,5 +137,5 @@
 - [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — **assets機能は当環境で使えない・外部URLはCSPで不可**。sipsで縮小→base64で本文へ。tpl.htmlを直して焼き直す運用
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **2026-08-21に両機 allow58 で揃えた（解消済）**。dontAskは許可リストが空だと全部落ちる。機械を足したら鍵と一緒にpermissionsもそろえる
 - [お薬手帳の画像](reference_okusuri_techo_images.md) — 人名_01.png・人ごと連番・医療機微はローカル完結
-- [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ビビッド名義。★訴求A/B/Cでテスト(0円/リピート/新手段)。送信操作は人の手
-- [営業の連絡先は共通](reference_vivid_sales_contact.md) — 対外文面は sales-consulting@。個人メールと電話は載せない（119番資料もTBDのまま）
+- [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ★商材名は出さない。訴求A/B/Cテスト・0円が引き／LP作成済・ホスト先未定
+- [平文の認証情報の扱い](reference_plaintext_credentials_handling.md) — 中身は読まず削除はパス指定1件のみ・破棄ごとに横断調査必須

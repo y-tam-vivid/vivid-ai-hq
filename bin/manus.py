@@ -319,7 +319,23 @@ def watch(dry_run=False, limit=40):
     ★冪等。同じ完了を二度通知しない（前回状態と突き合わせて、変化した分だけ出す）。
     ★task.list は読むだけなので課金されない。
     """
-    res = task_list(limit=limit)
+    try:
+        res = task_list(limit=limit)
+    except ManusError as e:
+        # ★Manus 側が落ちている／保守中でも、この監視を「失敗」にしない。
+        #   叩けないことは異常ではなく、こちらに打つ手が無い状態。
+        #   ただし黙って成功にもしない（「動いた」と「成功した」は別）。
+        #   Slack は鳴らさない。復旧まで毎回鳴っても、人にできることが無いため。
+        try:
+            sys.path.insert(0, RELAY_DIR)
+            import heartbeat
+            heartbeat.beat("Manus タスク監視", "警告",
+                           "Manus API に到達できず確認できていない: %s" % str(e)[:200])
+        except Exception:
+            pass
+        sys.stderr.write("Manus API に到達できないので今回は確認を飛ばした: %s\n" % str(e)[:300])
+        return 0, 0, []
+
     rows = res.get("data") or []
     prev = _load_state()
     now, changed = {}, []
