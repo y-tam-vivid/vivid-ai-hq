@@ -74,7 +74,7 @@
 - [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 作る前に3〜5行で形を出す。抽象語(図/整理)が出たら合図
 - [写しでなく実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(実物は隣列)／★安全弁は行番号を添えて数える
 - [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測で1回確かめる／★止めたあとにドライランを通すと実害の中身が分かる(54v3は既存21件を二重に書くところだった)／**日付・IDの突合は正規化してから数える。同じ列で書式が混在し偽陰性が出る**
-- [営業ワークブック(3層)](project_sales_pipeline_workbook.md) — シート/kintone/Notion。★障害はデータでなく入力の手数／手順書は実態から腐る
+- [営業ワークブック(3層)](project_sales_pipeline_workbook.md) — シート/kintone/Notion。★障害はデータでなく入力の手数／手順書は実態から腐る／**★手順書が2つある(94と受付シートの使い方)＝営業は矛盾した説明を読む。どちらを正本にするか先に決める**
 - [SalesBreakerの口](reference_salesbreaker_engagement_api.md) — engagement/searchでクリック数・会社単位キーまで取れる。叩けば分かる
 - [営業ワークブックは列移動可](reference_sales_workbook_column_moves.md) — 全GASが見出し名で引く。受付シートは例外／apply_schema_v3は実行禁止
 - [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」／ユーザーはログイン名／書き出しはUTF-8／必ず突合
