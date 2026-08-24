@@ -94,7 +94,7 @@
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
 - [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**
 - [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
-- [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ心拍＝障害が「沈黙」で出る／代理心拍が同値なら遺影
+- [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ心拍＝障害が「沈黙」で出る／代理心拍が同値なら遺影／**★常駐は一定間隔で打ち続ける。「起動時に1回」では起動した瞬間しか分からない(2026-08-24 manus.pyとslack_socket.pyで同型2件)**
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)
 - [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
 - [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は両機で共有＝後勝ちで成功が失敗に化ける／実体はcron・launchd・daily_jobs.confの3経路
