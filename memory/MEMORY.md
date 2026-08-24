@@ -74,7 +74,7 @@
 - [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 作る前に3〜5行で形を出す。抽象語(図/整理)が出たら合図
 - [実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(隣列を見る)／★渡すのは行でなくセル(94の21行目→B21)
 - [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測で1回確かめる／★止めたあとにドライランを通すと実害の中身が分かる(54v3は既存21件を二重に書くところだった)／**日付・IDの突合は正規化してから数える。同じ列で書式が混在し偽陰性が出る**
-- [営業ワークブック](project_sales_pipeline_workbook.md) — ★営業ルールの正本はNotion公開ページへ寄せる(2026-08-23)。94・受付シートは入口1行に落とす
+- [営業ワークブック](project_sales_pipeline_workbook.md) — ★営業は一度も触っていない＝開かせる1回が要る／投稿側intake_notify.pyは未実行
 - [SalesBreakerの口](reference_salesbreaker_engagement_api.md) — engagement/searchでクリック数・会社単位キーまで取れる。叩けば分かる
 - [営業ワークブックは列移動可](reference_sales_workbook_column_moves.md) — 全GASが見出し名で引く。受付シートは例外／apply_schema_v3は実行禁止
 - [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」／ユーザーはログイン名／書き出しはUTF-8／必ず突合
@@ -94,13 +94,13 @@
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
 - [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**
 - [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
-- [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ心拍＝障害が「沈黙」で出る／代理心拍が同値なら遺影／**★常駐は一定間隔で打ち続ける。「起動時に1回」では起動した瞬間しか分からない(2026-08-24 manus.pyとslack_socket.pyで同型2件)**
+- [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 常駐は一定間隔で心拍／心拍はmain()の外で包む。末尾は例外が素通り
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)／**★手順書に「まだ無い機能」を書いた。決着済みの設計を在るものとして扱った。人が読む文書の前に動線を1回自分で通す(2026-08-24)**
 - [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
 - [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は両機で共有＝後勝ち／**★名前が1文字違うと黙って失敗する。「--beatを付けた」は「届いた」ではない(2026-08-24 dashboard_data.pyが毎回サイレント失敗)**／実体はcron・launchd・daily_jobsの3経路＋手動
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — ★fetchの表示はレンダリング済＝実データはview mode(テーブルクエリ)で見る
-- [リンク共有は配下に効く](reference_link_sharing_inherits_everywhere.md) — 機微を置く場所こそ共有設定を見る。`0A`始まりは判別に使えない
+- [リンク共有は配下に効く](reference_link_sharing_inherits_everywhere.md) — 機微の置き場は共有設定／Notion公開はpublic_urlで数えられる(現在0件)
 - [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — 1つしか選べない置き場に判断を置かない。3割超の偏りは既定値と疑う
 - [入力と出力先を先に見る](reference_ai_output_blamed_before_inputs.md) — ★フォールバックは工程ごとに散る(議事録で7個)。1本直しても潰れない
 - [印を消すだけでは戻らない](reference_processed_flag_is_not_enough.md) — 元データが取得元にあるかを見る／隔離配下は対象外にする
@@ -119,10 +119,10 @@
 - [確認は溜めて1回](feedback_batch_the_checks.md) — 承認が要るのは6項目だけ。入れたものはその場でminiにも入れる
 - [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。理由＋やりますかまで／★人へ渡す手順は「挿入位置」でなく置き換え後の全文で。実物が1行に収まっており「次の行に」が構文エラーを生んだ(2026-08-23)
 - [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — 既定は自分で進める／★進める分を判断待ちに積むと停滞が人のせいに見える
-- [読む人の言葉で書く](feedback_write_for_the_reader.md) — 配る文書に実装名を出さない。読む側は節ごと飛ばす＝届かない
+- [読む人の言葉で書く](feedback_write_for_the_reader.md) — 配る文書に実装名を出さない／公開ページに人名も書かない=権限構造が漏れる
 - [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — **真因は速さのために確かさを落としていること(記憶から数字を埋める)**。数える/揃えるを部品に固め呼ぶだけにする／日付はnorm_date()を通した値だけ／件数は「443社(会社名がある行)」と数え方を添える／**★有璽氏の設計＝毎回数えず1か所(dashboard_data.json・読み口facts.py)へ集約し読むだけにする。別々に数えると人ごとに違う答えが出る**／★変種＝APIの`ok:false`を見ず空配列を「0件」と読み、権限があるのに「無い」と報告した(条件を欲張ると権限のある方まで落ちる)／**★部品を置いただけでは既存経路は変わらない。書き込む側から先に置換する（読む側だけ直すと揃って見えて汚れは増える）**
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路で一致を見る。行数と件数は別物。検査は別の主体へ
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／道具を外す判断も2経路。権限が無い≠届かない
 - [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — SendMessageは同じマシン内だけ。連携はWORKING.md/相手のローカル/Notion
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 分けると二重作業を止める役がいなくなる。有璽氏へは1本にまとめて出す
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える
