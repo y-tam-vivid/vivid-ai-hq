@@ -7,7 +7,7 @@
 - [kintoneは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーは出ない
 - [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨する
 - [思考OS Skill](project_thinking_os_skill.md) — 10レンズ＋6要素骨格をローカルSkill化。/thinking-osで全モデル共通
-- [Fable Style改善ループ](project_fable_style_improvement_loop.md) — 規範を週次で自己改善。訂正・やり直しは改善ログDBへ種を記録する
+- [Fable Style改善ループ](project_fable_style_improvement_loop.md) — 週次で自己改善／★種の入口が汚い＝corrections.logの28%は起動プロンプト
 - [AI活用→発信ネタ化](project_ai_usage_to_content_pipeline.md) — 区切りごとに⑥へ自動記録(=発信の種)。正本は発信ネタDB1つ／⑥は📅セッション単位で拾う／迷ったら拾う
 - [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — 約15Projectの議論ログを📚ナレッジDBへ。パイロットの空ページ作成済・流し込み待ち
 - [AI活用ログDB統合(案A)](project_ai_log_db_consolidation.md) — 単一台帳化。Phase1完了／Phase2(発信ネタDB統合・投稿生成)は保留
@@ -97,7 +97,7 @@
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 常駐は一定間隔で心拍／心拍はmain()の外で包む。末尾は例外が素通り
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)／**★手順書に「まだ無い機能」を書いた。決着済みの設計を在るものとして扱った。人が読む文書の前に動線を1回自分で通す(2026-08-24)**
 - [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
-- [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は両機で共有＝後勝ち／**★名前が1文字違うと黙って失敗する。「--beatを付けた」は「届いた」ではない(2026-08-24 dashboard_data.pyが毎回サイレント失敗)**／実体はcron・launchd・daily_jobsの3経路＋手動
+- [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は1文字違うと黙って失敗／★miniのlaunchdは0本＝plistが在るのは常駐の証拠でない
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — ★fetchの表示はレンダリング済＝実データはview mode(テーブルクエリ)で見る
 - [リンク共有は配下に効く](reference_link_sharing_inherits_everywhere.md) — 機微の置き場は共有設定／Notion公開はpublic_urlで数えられる(現在0件)
