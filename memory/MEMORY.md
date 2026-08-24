@@ -12,7 +12,7 @@
 - [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — 約15Projectの議論ログを📚ナレッジDBへ。パイロットの空ページ作成済・流し込み待ち
 - [AI活用ログDB統合(案A)](project_ai_log_db_consolidation.md) — 単一台帳化。Phase1完了／Phase2(発信ネタDB統合・投稿生成)は保留
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
-- [Manus AIへの外注](project_manus_outsourcing.md) — 社外の手足(MCP5本)。個人IGは投稿実行まで委任＝人が押すの例外／顧客名を渡さない／ask,replyは要承認
+- [Manus AIへの外注](project_manus_outsourcing.md) — ★2026-08-24 APIキー失効で停止中(401・要再発行)／個人IGは投稿実行まで委任＝人が押すの例外
 - [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。「システムは△△・こちらは◯◯、どちらが正か」と並べて聞く
 - [テイストは素材ではない](feedback_taste_is_not_a_sticker.md) — 「型×テイスト」だけでは採用案の画像が貼り込まれる。表紙案を採ったら2枚目以降も同時に決める／完成後は全枚めくる
 - [型でなく構図](feedback_type_is_not_layout.md) — 単調なら構図のレバーを増やす／検算は全点並べる／「外してよい」も対象を列挙
@@ -94,7 +94,7 @@
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
 - [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**
 - [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
-- [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ済みの印／閾値は全体の合算も置く／守った方向だけ堅くなる
+- [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ心拍＝障害が「沈黙」で出る／代理心拍が同値なら遺影
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す。人が手で書く欄を機械の判定条件にしない
 - [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
 - [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は両機で共有＝後勝ちで成功が失敗に化ける／実体はcron・launchd・daily_jobs.confの3経路

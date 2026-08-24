@@ -10,6 +10,17 @@ metadata:
 **社外の手足**。使うのはモルガンズ（広報PR）。関連: [[project_pr_agent]] /
 [[reference_sns_skills_location]] / [[project_ai_usage_to_content_pipeline]]
 
+# 🔴 現在地（2026-08-24）── APIキーが失効し、監視が止まっている
+
+`manus_watch.log` に **15分ごとに `HTTP 401 api key has been deleted or does not exist`**
+が積み上がっている（連続・直近24時間）。cron の `*/15 manus.py watch` は動いている。
+死んでいるのは Manus 側の認証。**★人が要る**：Manus Web → 設定 → API Integration で
+キーを再発行し `~/.config/manus/api_key` を差し替える。
+
+**あわせて構造の穴**：`bin/manus.py:369` は成功時にしか `heartbeat.beat()` を呼ばない。
+401で落ちた回は心拍が1本も出ないので、レジスタには「失敗」ではなく「沈黙」として現れた
+（＝🔴の理由が cron 停止と区別できない）。→ [[reference_ran_is_not_succeeded]]
+
 # 現在地（2026-08-20 時点）
 
 ```

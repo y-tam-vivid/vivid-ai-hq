@@ -28,6 +28,31 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ピタゴラス 2026-08-23】Slack Socket Mode 常駐（受付シート確認ボタン受信）── 実装・接続実測まで完了
+
+有璽氏依頼「Slackのボタンを受ける常駐プロセスを作る」。#01_営業部門-ai確認依頼
+（`C0BRYFKG153`）で押されたボタンを受け、受付シートの「確認」欄へ書く仕組み。
+
+```
+成果物   ~/.vivid-relay/slack_socket.py            標準ライブラリのみ（RFC6455自前実装）
+          ~/.vivid-relay/com.vivid.slack-socket.plist  launchd常駐設定・★未load
+実測     apps.connections.open → wss URL取得 OK／自前WebSocketでhello受信 OK
+          launchd経由のdry-run（テスト用ラベルで1回・削除済み）でもTCC問題なし
+```
+
+★指示文は確認欄を「Y列」としていたが、実測（受付シートのヘッダー行）は Z列
+（Y列＝照合結果）。見出し名で位置を探すので列移動があっても壊れない
+（intake_register.py と同じ流儀に合わせた）。
+
+★本番投稿・launchctl load はまだしていない。実物のボタンが無く受信テストができない、
+かつ⚙️レジスタ未登録・ステラ（コード検査役）のレビュー未実施のため。
+ビビが投稿の承認を取ったあと、①ステラのコードレビュー②レジスタ登録③launchctl load
+の順を推奨。
+
+★slack_inbox.py（DM経由・5分ポーリング・claude CLIへ指示を流す）とは別プロセス・
+別用途（ボタンinteractivity専用）。`reference_slack_tokens_and_socket_mode.md` の
+「Socket Mode化は新規でなく置換」はDM指示実行の話で、本件はそれとは独立。
+
 ### 【モルガンズ 2026-08-23】PR TIMES下書き ── 完了（配信はしていない）
 
 有璽氏指示「PR TIMESへの投稿下書きを進めたい」。成果物 →
