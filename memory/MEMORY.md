@@ -97,7 +97,7 @@
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 成功時だけ心拍＝障害が「沈黙」で出る／代理心拍が同値なら遺影／**★常駐は一定間隔で打ち続ける。「起動時に1回」では起動した瞬間しか分からない(2026-08-24 manus.pyとslack_socket.pyで同型2件)**
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)
 - [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
-- [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は両機で共有＝後勝ちで成功が失敗に化ける／実体はcron・launchd・daily_jobs.confの3経路
+- [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は両機で共有＝後勝ち／**★名前が1文字違うと黙って失敗する。「--beatを付けた」は「届いた」ではない(2026-08-24 dashboard_data.pyが毎回サイレント失敗)**／実体はcron・launchd・daily_jobsの3経路＋手動
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
 - [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — ★fetchの表示はレンダリング済＝実データはview mode(テーブルクエリ)で見る
 - [リンク共有は配下に効く](reference_link_sharing_inherits_everywhere.md) — 機微を置く場所こそ共有設定を見る。`0A`始まりは判別に使えない
