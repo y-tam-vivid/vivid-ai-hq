@@ -110,7 +110,7 @@
 - [議事録の隔離運用](project_minutes_quarantine.md) — 空・機微・重複はDrive`_要確認`へ移す。移動のみ・削除は有璽氏
 - [議事録の整理ルール](project_giji_organizing_rules.md) — 区分は台帳が持つ／表記は台帳と同じ／指標は社外会議の紐付率
 - [Apps ScriptのAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを見逃す。所属クラスの突合が必須
-- [検査が偽陰性を出す](reference_reference_audit_false_negative.md) — 定数経由の参照を落とし13本を1本と誤判定。「検査した」と「正しく検査できた」は別
+- [検査が偽陰性を出す](reference_reference_audit_false_negative.md) — 定数経由の参照を落とし13本を1本と誤判定／**★「0件」は「見た範囲に異常が無い」。自動処理の突合はcron/daily_jobsしか見ずlaunchd・手動実行を落とし、翌日2件出た(2026-08-24)。実行の経路は4つ**
 - [同名定義は後勝ち](reference_apps_script_name_collision.md) — 新版を貼っても旧版が動き混在する。`関数名.toString()`で実体を読む
 - [Sheets書き込みの暗黙挙動11点](reference_sheets_number_format_order.md) — 器を増やしても保護・入力規則は付いてこない／会社名は.gsにベタ書きされている
 - [Drive上の.gsは開けない](reference_drive_gs_file_not_previewable.md) — octet-stream固定。Googleドキュメントとして作り直す

@@ -66,3 +66,34 @@ new RegExp('(^|[^A-Za-z0-9_$])' + name + '([^A-Za-z0-9_$]|$)')
 
 関連 [[reference_apps_script_name_collision]] [[reference_sheets_number_format_order]]
 [[feedback_read_the_artifact_not_the_copy]]
+
+## ★「0件」と言う検査が、そもそも見ていない経路がある（2026-08-24 実測）
+
+自動処理の突合（`automation_inventory_check.py`）は 2026-08-23 に「登録漏れ 0件」と報告した。
+**翌日、登録漏れが2件見つかった。**
+
+```
+この検査が見る範囲   crontab ／ bin/daily_jobs.conf に載っている実体
+見ていなかった経路   ★launchd（常駐）      → slack_socket.py
+                     ★手動実行のみのもの  → dashboard_build.py
+＝ 同じ盲点で2件とも検知できなかった
+```
+
+**★「0件」は「異常が無い」ではなく「見た範囲に異常が無い」。**
+実行の経路は4つある（cron／daily_jobs／launchd／GASトリガー）のに、検査は2つしか見ていなかった。
+
+- **検査を作ったら、「何を見ていないか」を必ず出力に書かせる。**
+  見た範囲を書かない検査は、0件が何を意味するか読む側に伝わらない
+- **★経路を1つ増やしたら、検査の対象にも同じ経路を足すまでが1作業。**
+  launchd を使い始めた時点で、この盲点は生まれていた
+- → [[reference_monitor_must_exclude_parked]]（検査役2体が違う数字を出したら分類の基準が違う）
+
+### 実行の経路は4つある（数えるときはこれで確認する）
+
+```
+cron              crontab -l
+日次ジョブ        bin/daily_jobs.conf ＋ ~/.vivid-relay/daily_jobs_state/
+launchd（常駐）   ~/Library/LaunchAgents/ ／ launchctl list
+GASトリガー       Apps Script 側（外から読めない。心拍で代理判定）
+★手動実行のみ    どこにも載らない。★人が思い出さないと動かない
+```
