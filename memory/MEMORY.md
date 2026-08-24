@@ -140,6 +140,7 @@
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 「PR動画」1語で動画を作り込んだ。形式/本数/出口を先に確定する
 - [NPO名義リリース2本(2026-08)](project_npo_press_releases_202608.md) — 8/25・8/26配信予定。未配信。残=7月実績数と写真許諾
 - [Robloxイベントの表記規約](reference_roblox_event_naming_rules.md) — 名称・見出しに「Roblox」を入れない／ロゴ不可／無料が前提
+- [記憶の層分け設計](project_memory_layer_design.md) — ★未承認の設計案。MEMORY.mdはfeedbackだけ／分野はINDEX_*へ／降ろした分は_archiveへ1行
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が多すぎて構造的に上限。詳細は各ファイル本文へ
 - [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — assets不可・外部URLもCSPで不可。sipsで縮小→base64で本文へ
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — 2026-08-21に両機allow58で解消済。dontAskは許可リストが空だと全部落ちる
