@@ -126,7 +126,7 @@
 - [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — SendMessageは同じマシン内だけ。連携はWORKING.md/相手のローカル/Notion
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 分けると二重作業を止める役がいなくなる。有璽氏へは1本にまとめて出す
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える
-- [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す
+- [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — 知っていても適用しないから繰り返す。miniは4点導入済・MacBookは未実施
 - [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/人の手を無くす。★返事は出した経路へ
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
