@@ -31,9 +31,10 @@
 - [議事録の整理ルール](project_giji_organizing_rules.md) — 区分は台帳が持つ／表記は台帳と同じ／指標は社外会議の紐付率
 - [Apps ScriptのAPI突合](reference_apps_script_api_verification.md) — node --checkは存在しないメソッドを見逃す。所属クラスの突合が必須
 - [検査が偽陰性を出す](reference_reference_audit_false_negative.md) — 定数経由の参照を落とし13本を1本と誤判定／**★「0件」は「見た範囲に異常が無い」。自動処理の突合はcron/daily_jobsしか見ずlaunchd・手動実行を落とし、翌日2件出た(2026-08-24)。実行の経路は4つ**
+- [見つけた≠失敗した](reference_finding_is_not_failing.md) — ★memory_audit.pyがズレ検出でrc=1→daily_jobs.shが恒久エラー誤判定・5枠即諦め＋誤通知(8/25)。8/26に常時0へ修正済。所見は心拍で伝える
 - [同名定義は後勝ち](reference_apps_script_name_collision.md) — 新版を貼っても旧版が動き混在する。`関数名.toString()`で実体を読む
 - [Drive上の.gsは開けない](reference_drive_gs_file_not_previewable.md) — octet-stream固定。Googleドキュメントとして作り直す
 - [本数で切ると希少な版が消える](reference_retention_by_count_deletes_the_wrong_ones.md) — 残す単位は日ごと最新1本
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
-- [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — 稼働中(cron */5)。Socket Modeは置換／★貼った鍵がlogに平文残留＝revoke不足
+- [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／形式外valueを3回弾き人に失敗が見えている(発信元未特定)／貼った鍵のlog平文は未revoke

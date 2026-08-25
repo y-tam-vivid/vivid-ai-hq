@@ -127,13 +127,27 @@ def beat(result, message):
 
 if __name__ == '__main__':
     import io, contextlib
+    # ★終了コードは「検査が完走したか」だけで決める。「ズレを見つけたか」では決めない。
+    #   2026-08-26 つる実測: ズレ検出で rc=1 を返していたため、呼び出し元の
+    #   bin/daily_jobs.sh がジョブ失敗（恒久エラー）と誤判定し、①その日の残りを諦め
+    #   ②「日次ジョブが失敗しました」を1日5回 有璽氏へ通知し ③自分の心拍を「失敗」にしていた。
+    #   ＝ 検査が異常を見つけるほど「壊れている」ことになる、逆向きの監視だった。
+    #   ズレの有無は心拍（成功/警告）で伝わっている。終了コードで二重に伝えない。
+    #   → memory/reference_finding_is_not_failing.md
     buf = io.StringIO()
-    with contextlib.redirect_stdout(buf):
-        rc = main()
+    try:
+        with contextlib.redirect_stdout(buf):
+            rc = main()
+    except Exception as e:
+        print(buf.getvalue(), end='')
+        print(f'★巡回そのものが落ちた: {type(e).__name__}: {e}')
+        if '--beat' in sys.argv:
+            beat('失敗', f'巡回が落ちた: {type(e).__name__}: {e}'[:180])
+        sys.exit(1)
     body = buf.getvalue()
     print(body, end='')
     if '--beat' in sys.argv:
         first = [l for l in body.split('\n') if l.startswith(('OK', 'NG'))]
         beat('成功' if rc == 0 else '警告',
              (first[0] if first else '結果不明')[:180])
-    sys.exit(rc)
+    sys.exit(0)

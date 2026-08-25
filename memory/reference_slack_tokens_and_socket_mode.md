@@ -1,6 +1,6 @@
 ---
 name: reference-slack-tokens-and-socket-mode
-description: Slackのトークンは2種類あり役割が違う。app-level(xapp-)はSocket Mode専用で、bot(xoxb-)の代わりにはならない。miniに両方あるが消費するコードは0本
+description: Slackのトークンは2種類あり役割が違う。app-level(xapp-)はSocket Mode専用でbot(xoxb-)の代用にならない。★2026-08-25にSocket Modeが常駐開始(launchd)。人の承認が台帳へ通った実測あり／形式外のvalueは弾いて人に「読めません」と返している
 metadata:
   type: reference
 ---
@@ -123,3 +123,52 @@ memory/ の記述            git  伏せ字 `xapp-1-...` のみ＝漏れてい�
 **「flock で多重起動を防ぐ」という申告は実物と合わない。**
 ログには「先の実行（PID 79445）がまだ走っているので今回は何もしない」が連続で残る
 ＝**ポーリング側でも既に「生きたまま黙る」が起きている**（→ [[reference_ran_is_not_succeeded]]）。
+
+---
+
+## ★2026-08-25 追記 ── Socket Mode は常駐して動いている。上の「未実装」は過去の状態
+
+**この節より上の「常駐プロセスは未実装／消費するコードは0本」は 2026-08-23 時点の話。
+いまは動いている。** 未実装だと思って作り直さないこと。
+
+```
+実体    ~/.vivid-relay/slack_socket.py --run --beat（Python 3.9・常駐）
+起動    launchd  ~/Library/LaunchAgents/com.vivid.slack-socket.plist（2026-08-25 11:27 設置）
+        ★cron ではない。crontab が書けない問題は迂回した（→ reference_cron_write_blocked_in_session）
+        ★self_audit の「mini の LaunchAgents に vivid 系 plist は0本」は 8/25 朝の実測。
+          同日昼に1本入った。★監査の結果は日付とセットで読む
+生死    ps に slack_socket.py が居るか ／ ~/.vivid-relay/slack_socket.log の末尾
+```
+
+### 人が押したボタンで台帳が動いた（初の実測・2026-08-25 11:38）
+
+`intake_notify.py` が出した受付シートの照合ボタンを**有璽氏が3回押し、3回とも書き込みまで通った**
+（27行・28行・29行。押すたびにスナップショットを退避してから書いている）。
+**Slack の承認が台帳へ届く経路は、設計ではなく実測で成立している。**
+
+### ★受け口を1本にすると、同じアプリの他のボタンまで巻き込む
+
+Socket Mode は **そのアプリに届く全てのインタラクションを1本のプロセスへ流す。**
+`slack_socket.py` は value を JSON として読む前提なので、**形式が違うボタンは弾かれ、
+押した人には「ボタンの中身が読めませんでした」が返る。**
+
+```
+実測    08-25 13:01 / 08-26 07:28 に2回 ── 計3回
+        ★valueがJSONとして読めない: '40429b2f-…'（UUIDだけが入っている）
+発信元  ★当方の Python 側には無い（~/.vivid-relay と bin を grep して0件）。
+        JSON を入れているのは intake_notify.py だけ。UUID を value に置く別経路
+        （GAS の議事録bot 等・同じ xoxb- を使う）から来ていると見るのが素直。次に追う人はここから
+```
+
+- **★「読めない value」は、こちらの不具合ではなく他機能の呼び出しである可能性が高い。**
+  弾くこと自体は正しいが、**押した人には失敗として見えている**
+  → [[reference_silent_failure_kills_adoption]]。どの機能のボタンかを特定してから、
+  無視するのか受けるのかを決める。**先に受け口を広げない。**
+
+### disconnect は異常ではない（誤報の元）
+
+`ConnectionError('サーバからdisconnect要求: warning')` が数時間おきに出るが、
+**Slack 側が定期的に接続を張り直させる正常な挙動。** 実測ではいずれも1〜2秒で再接続して
+`接続確立（hello受信）` に戻っている（08-25 16:29／19:30、08-26 00:30／05:30 の4回とも）。
+**異常なのは切れることではなく、切れたまま戻らないこと。**
+見るのは disconnect の有無ではなく `down_since`（→ [[reference_ran_is_not_succeeded]]）。

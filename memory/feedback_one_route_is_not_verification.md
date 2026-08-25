@@ -73,6 +73,29 @@ fukuchi-sales は未作成 → ★実際はあった
 
 ---
 
+## ★変種：出力先（stdout / stderr）が機械で違い、片方を捨てて判定が死んだ（2026-08-25）
+
+**`vercel project protection ls` の結果を MacBook で確かめて `2>/dev/null` のまま mini へ配った。
+mini では同じ情報が stderr に出るため、判定に使う変数が常に空だった。**
+
+```
+MacBook   Node 20   JSON が stdout に出る            → 判定できる
+mini      Node 24   「> ssoProtection: {…}」が stderr → 2>/dev/null で捨てて空
+結果      保護をONにしても永久に検知できず、本番の中身が載らない状態が続いていた
+          （安全側には倒れていたので★誰も気づかない。壊れ方として最悪の形）
+```
+
+- **★`2>/dev/null` は「うるさい行を消す」ではなく「判定材料を捨てる」ことがある。**
+  CLI の出力先は同じコマンドでも実行環境（Node やCLIの版）で変わる。
+  **判定に使うなら `2>&1` で両方拾ってから絞る。**
+- **★片方の機械で通った検証を、もう一方で叩かずに配らない。**
+  道具を両機へ入れる規範（fukuchi-core）は「入れる」までしか言っていない。
+  **入れたあと相手機で1回叩くまでが検証** → [[feedback_batch_the_checks]]。
+- 安全側に倒れる設計だと、壊れても悲鳴が出ない。**判定そのものの生死を心拍で見る**
+  → [[reference_ran_is_not_succeeded]]。実例の全文は [[project_ops_dashboard_artifact]]。
+
+---
+
 ## ★変種：エラー文を「能力の宣告」として読んだ（2026-08-26）
 
 **Canva のブランドテンプレート機能が `"requires a Canva paid plan"` を返したのを見て、
