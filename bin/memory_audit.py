@@ -125,7 +125,80 @@ def beat(result, message):
         return
     subprocess.run(['/usr/bin/python3', hb, '記録の巡回（memory_audit.py）', result, message])
 
+def retire_candidates():
+    """★索引から降ろす候補を出す（2026-08-26 有璽氏「どう棚卸しすればいいか」）
+
+    ここは**候補を出すだけ**。降ろす判断はしない。
+    → memory/_archive/INDEX_過去.md の「降ろすときの手順」に従い、必ず有璽氏へ一覧を出す。
+    見るのは4つ。どれも実測できるものだけ。
+    """
+    idx_text = ''
+    for f in os.listdir(MEM):
+        if is_index(f):
+            idx_text += open(os.path.join(MEM, f), encoding='utf-8').read()
+    body_text = ''
+    files = [f for f in sorted(os.listdir(MEM)) if f.endswith('.md') and not is_index(f)]
+    for f in files:
+        body_text += open(os.path.join(MEM, f), encoding='utf-8').read()
+
+    today = datetime.date.today()
+    rows = []
+    for f in files:
+        path = os.path.join(MEM, f)
+        head = open(path, encoding='utf-8').read()
+        # ① 最後に本文が変わった日（git。無ければファイルの mtime）
+        d = git('log', '-1', '--format=%ad', '--date=short', '--', 'memory/' + f).strip()
+        if not d:
+            d = datetime.date.fromtimestamp(os.path.getmtime(path)).isoformat()
+        try:
+            age = (today - datetime.date(*[int(x) for x in d.split('-')])).days
+        except Exception:
+            age = -1
+        # ② 終わったと本文が言っているか
+        # ★「完了。」を終わりの印にしない ── 進行中の案件でも「〜まで完了。」と書く。
+        #   2026-08-26 実測: それを +3 にしたら、昨日作ったばかりの案件が候補の上位へ来た。
+        #   本当に終わったものだけが持つ語に絞る（廃止・後継への置き換え）。
+        done = any(w in head for w in ('【廃止】', '後継＝', '後継=', '【降格】', '⛔降格'))
+        # ③ 他のメモリから [[リンク]] されているか
+        stem = f[:-3]
+        linked = ('[[%s]]' % stem) in body_text
+        # ④ 種別
+        kind = 'reference'
+        m = re.search(r'^  type:\s*(\S+)', head, re.M)
+        if m:
+            kind = m.group(1)
+        score = 0
+        if age >= 60: score += 2
+        if age >= 120: score += 1
+        if done:      score += 3
+        if not linked: score += 1
+        if kind == 'project': score += 1
+        rows.append((score, age, kind, done, linked, f))
+
+    rows.sort(reverse=True)
+    print('索引から降ろす候補（★候補を出すだけ。降ろす判断はしない）')
+    print('  見方: 点が高いほど「もう索引に載せなくてよさそう」')
+    print('        ＋2 60日以上ふれていない ／ ＋1 さらに120日 ／ ＋3 廃止・後継ありと本文が言っている')
+    print('        ＋1 他のメモリからリンクされていない ／ ＋1 project（案件は終わる）')
+    print()
+    print('  点  経過  種別       他から  終わり  ファイル')
+    shown = 0
+    for score, age, kind, done, linked, f in rows:
+        if score < 4:
+            continue
+        print('  %2d  %4d日 %-10s %-6s %-6s %s'
+              % (score, age, kind, 'なし' if not linked else 'あり',
+                 'そう' if done else '―', f))
+        shown += 1
+    print()
+    print('  候補 %d 本 / 全 %d 本' % (shown, len(rows)))
+    print('  ★降ろすときは memory/_archive/INDEX_過去.md の手順に従う（履歴を1行残す）')
+    return 0
+
+
 if __name__ == '__main__':
+    if '--retire' in sys.argv:
+        sys.exit(retire_candidates())
     import io, contextlib
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
