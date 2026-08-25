@@ -1,0 +1,37 @@
+# 営業 ── 分野索引
+
+**営業・顧客台帳・kintone・名刺**
+
+> この分野の作業に着手したら読む。正本は各ファイルの本文。ここは索引。
+> **上限は無い。** 毎ターン届く `MEMORY.md` と違い、必要なときだけ読まれる。
+> 呼び出しの対応は [[INDEX_担当別]] にある。
+
+- [大きなSheetsはgviz経由](reference_gviz_large_sheet_access.md) — ★gvizは黙って嘘をつく。数値状文字列はCSV出力で読む
+- [kintoneは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーは出ない
+- [toC顧客台帳](project_toc_customer_ledger.md) — Notion完結。個人顧客マスター＋提案商談。将来=人物マスター中心
+- [法人番号は申請不要で取れる](reference_corp_number_bulk_download.md) — 全件DLは申請なしで今日から使える。Web-API IDだけが2週間〜1か月
+- [法人番号の真因は社名欄](reference_ledger_name_blocks_corp_match.md) — 施設名同居/誤記/連結で突合が死ぬ。★絞り込みと適格性検査を混ぜない
+- [指数表記は計算で戻さない](reference_recover_exponential_corp_number.md) — toFixedでの復元は禁止。全件データで1社に絞れたときだけ確定
+- [kintoneルックアップはコピー](reference_kintone_lookup_is_a_copy.md) — マスタ更新→参照アプリで取り直しまでが1作業
+- [空行が汚れる2経路](reference_sheet_scan_range_pollution.md) — 書式継承と走査範囲。件数は「会社名がある行」で数える
+- [チェックボックス書式の侵食](reference_sheets_checkbox_format_creep.md) — 空行のfalseは後から行が入るとキーを壊す。CSVはキーの形を検査
+- [レコード統合の手順](reference_record_merge_protocol.md) — 全列突合→移送→集計列を空に→削除。廃止選択肢は上書きで始末
+- [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す／★手段の語彙は3箇所に散る(フォーム/90のK列/Notionチャネル)。90に連絡手段の列は無い
+- [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
+- [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
+- [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体
+- [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない
+- [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — 【解消】miniにGoogle認証が無くGASを人が貼っていた。いまはOAuthで直接読み書きできる
+- [営業ワークブックは戻せる状態に](feedback_sales_workbook_hands_off.md) — AIが書くときだけ①BU→②diff→③承認→④実行
+- [営業ワークブック](project_sales_pipeline_workbook.md) — ★営業は一度も触っていない＝開かせる1回が要る／投稿側intake_notify.pyは未実行
+- [SalesBreakerの口](reference_salesbreaker_engagement_api.md) — engagement/searchでクリック数・会社単位キーまで取れる。叩けば分かる
+- [営業ワークブックは列移動可](reference_sales_workbook_column_moves.md) — 全GASが見出し名で引く。受付シートは例外／apply_schema_v3は実行禁止
+- [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」／ユーザーはログイン名／書き出しはUTF-8／必ず突合
+- [施設と運営法人はずれる](reference_facility_vs_corporation.md) — 営業先は施設・番号は運営法人。複数施設で番号が重複しうる(kintone側は未確認)
+- [kintone顧客マスター](reference_kintone_customer_master.md) — 顧客の正本。Notion顧客DBは中間ミラー(鍵=法人番号)。機微はkintone留置
+- [名刺→kintone](project_meishi_to_kintone_pipeline.md) — ★取得元フォルダは既に在る(受付フォーム自動生成・0件)。残はバッチ本体
+- [コミュニケーションログ基盤](project_communication_log_hub.md) — 📨ログDBへ格納し相互リンク。★逆向き(会社→過去の会話)は辿れない
+- [顧客ファイルのDrive格納先](feedback_customer_files_drive_location.md) — 財務(03)でなく取引先・人物別(11)へ
+- [kintone CSV→Notionミラー](project_kintone_csv_to_notion_mirror.md) — 地雷=指数表記/継続行/cp932化け→作成後にSELECT突合で検証
+- [Sheets書き込みの暗黙挙動11点](reference_sheets_number_format_order.md) — 器を増やしても保護・入力規則は付いてこない
+- [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ★商材名は出さない。訴求A/B/Cテスト・0円が引き／LP作成済・ホスト先未定

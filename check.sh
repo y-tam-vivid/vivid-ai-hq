@@ -33,16 +33,38 @@ done
 
 say "── 4. memory索引の整合"
 if [ -d memory ]; then
+  # 索引は MEMORY.md（全体）と memory/INDEX_*.md（分野別）の複数枚に分かれている。
+  # ★どれか1枚に載っていればよい。1枚も載っていないものは孤児 → memory/project_memory_layer_design.md
+  idxfiles=$(ls memory/MEMORY.md memory/INDEX_*.md 2>/dev/null)
   orph=0
   for f in memory/*.md; do
     [ -e "$f" ] || continue
-    b=$(basename "$f"); [ "$b" = "MEMORY.md" ] && continue
-    grep -q "($b)" memory/MEMORY.md || { fail "索引に無い: $b"; orph=1; }
+    b=$(basename "$f")
+    case "$b" in MEMORY.md|INDEX_*.md) continue ;; esac
+    grep -q "($b)" $idxfiles 2>/dev/null || { fail "どの索引にも無い: $b"; orph=1; }
   done
-  grep -o '](\([^)]*\.md\))' memory/MEMORY.md 2>/dev/null | sed 's/](\(.*\))/\1/' | while read -r f; do
+  cat $idxfiles 2>/dev/null | grep -o '](\([^)]*\.md\))' | sed 's/](\(.*\))/\1/' | sort -u | while read -r f; do
+    case "$f" in _archive/*) [ -f "memory/$f" ] || echo "  ✗ 索引が指すファイルが無い: $f" ; continue ;; esac
     [ -f "memory/$f" ] || echo "  ✗ 索引が指すファイルが無い: $f"
   done
-  [ $orph -eq 0 ] && ok "memory索引に孤児なし ($(ls memory/*.md 2>/dev/null | wc -l | tr -d ' ') 本)"
+  # 担当別対応表が指す分野索引が実在するか
+  if [ -f memory/INDEX_担当別.md ]; then
+    grep -o '](INDEX_[^)]*\.md)' memory/INDEX_担当別.md | sed 's/](\(.*\))/\1/' | sort -u | while read -r f; do
+      [ -f "memory/$f" ] || echo "  ✗ 担当別が指す分野索引が無い: $f"
+    done
+  else
+    fail "memory/INDEX_担当別.md が無い（担当ごとの常設セットの正本）"
+    orph=1
+  fi
+  # MEMORY.md は毎ターン届く。上限を超えたら末尾が黙って落ちる
+  msz=$(wc -c < memory/MEMORY.md | tr -d ' ')
+  if [ "$msz" -gt 24986 ]; then
+    fail "MEMORY.md が上限超過: ${msz} バイト（上限 24986）→ 分野索引へ降ろす"
+    orph=1
+  elif [ "$msz" -gt 20000 ]; then
+    say "  △ MEMORY.md ${msz} バイト（上限 24986 に接近）"
+  fi
+  [ $orph -eq 0 ] && ok "memory索引に孤児なし ($(ls memory/*.md 2>/dev/null | wc -l | tr -d ' ') 本 / MEMORY.md ${msz}B)"
 else
   say "  － memory/ 未配置（A8で symlink 予定）"
 fi
