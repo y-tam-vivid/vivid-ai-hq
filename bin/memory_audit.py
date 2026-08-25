@@ -116,5 +116,24 @@ def main():
     print("        → memory/feedback_memory_index_hygiene.md")
     return 1
 
+
+def beat(result, message):
+    """⚙️自動処理レジスタへ心拍を打つ。★処理名は完全一致（1文字違うと黙って失敗する）"""
+    hb = os.path.expanduser('~/.vivid-relay/heartbeat.py')
+    if not os.path.exists(hb):
+        print('（心拍は打てない: heartbeat.py が無い）')
+        return
+    subprocess.run(['/usr/bin/python3', hb, '記録の巡回（memory_audit.py）', result, message])
+
 if __name__ == '__main__':
-    sys.exit(main())
+    import io, contextlib
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = main()
+    body = buf.getvalue()
+    print(body, end='')
+    if '--beat' in sys.argv:
+        first = [l for l in body.split('\n') if l.startswith(('OK', 'NG'))]
+        beat('成功' if rc == 0 else '警告',
+             (first[0] if first else '結果不明')[:180])
+    sys.exit(rc)
