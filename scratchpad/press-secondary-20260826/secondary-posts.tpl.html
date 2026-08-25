@@ -1,0 +1,743 @@
+<title>リリース二次展開ドラフト</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&display=swap">
+
+<style>
+:root{
+  --paper:#FBFAF7; --card:#FFFFFF; --ink:#221D19; --muted:#6E665F;
+  --rule:#E4DED5; --rule-soft:#F0EBE3;
+  --warm:#B94E16; --warm-soft:#FBF0E8;
+  --navy:#1D4E79; --navy-soft:#ECF1F6;
+  --code:#4A423A; --code-bg:#F5F1EA;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141317; --card:#1C1B21; --ink:#EBE7E1; --muted:#9E968D;
+    --rule:#302D36; --rule-soft:#26242B;
+    --warm:#E8834A; --warm-soft:#2A1F19;
+    --navy:#7FB2DE; --navy-soft:#182430;
+    --code:#C8C1B8; --code-bg:#232128;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141317; --card:#1C1B21; --ink:#EBE7E1; --muted:#9E968D;
+  --rule:#302D36; --rule-soft:#26242B;
+  --warm:#E8834A; --warm-soft:#2A1F19;
+  --navy:#7FB2DE; --navy-soft:#182430;
+  --code:#C8C1B8; --code-bg:#232128;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+  font-size:16px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.zen{font-family:"Zen Kaku Gothic New",-apple-system,"Hiragino Sans",sans-serif}
+.wrap{max-width:860px; margin:0 auto; padding:0 24px 120px}
+
+/* ── ヘッダ ───────────────────────────── */
+header{padding:72px 0 0}
+.kicker{
+  font-size:12px; letter-spacing:.16em; color:var(--muted);
+  text-transform:uppercase; margin:0 0 18px;
+}
+h1{
+  font-family:"Zen Kaku Gothic New",-apple-system,"Hiragino Sans",sans-serif;
+  font-weight:700; font-size:clamp(30px,4.6vw,44px); line-height:1.3;
+  margin:0 0 20px; text-wrap:balance; letter-spacing:.01em;
+}
+.lede{font-size:17px; color:var(--muted); margin:0 0 40px; max-width:62ch}
+
+.pair{display:grid; gap:14px; grid-template-columns:1fr; margin:0 0 56px}
+@media(min-width:680px){.pair{grid-template-columns:1fr 1fr}}
+.rel{
+  background:var(--card); border:1px solid var(--rule); border-radius:4px;
+  padding:20px 22px; border-top:3px solid var(--tone);
+}
+.rel.a{--tone:var(--warm)} .rel.b{--tone:var(--navy)}
+.rel .no{font-size:11px; letter-spacing:.18em; color:var(--tone); font-weight:700; display:block; margin-bottom:8px}
+.rel h3{font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:17px; margin:0 0 10px; line-height:1.5}
+.rel p{margin:0; font-size:14px; color:var(--muted); line-height:1.75}
+
+/* ── 確認事項 ──────────────────────────── */
+.ask{
+  background:var(--warm-soft); border:1px solid var(--rule);
+  border-left:3px solid var(--warm);
+  border-radius:3px; padding:24px 26px; margin:0 0 64px;
+}
+.ask h2{font-family:"Zen Kaku Gothic New",sans-serif; font-size:16px; font-weight:700; margin:0 0 6px}
+.ask > p{font-size:14px; color:var(--muted); margin:0 0 18px}
+.ask ol{margin:0; padding-left:1.3em; font-size:15px}
+.ask li{margin-bottom:14px}
+.ask li:last-child{margin-bottom:0}
+.ask b{font-weight:700}
+.ask .why{display:block; font-size:13.5px; color:var(--muted); margin-top:3px}
+
+/* ── セクション ────────────────────────── */
+section{margin:0 0 24px}
+.sechead{
+  display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+  padding:0 0 14px; border-bottom:2px solid var(--tone); margin:64px 0 34px;
+}
+section.a{--tone:var(--warm)} section.b{--tone:var(--navy)}
+.sechead .tag{
+  font-size:11px; font-weight:700; letter-spacing:.16em; color:var(--tone);
+}
+.sechead h2{
+  font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700;
+  font-size:23px; margin:0; line-height:1.4;
+}
+.sechead .meta{margin-left:auto; font-size:13px; color:var(--muted)}
+
+/* ── 原稿カード ────────────────────────── */
+.post{
+  background:var(--card); border:1px solid var(--rule); border-radius:4px;
+  margin:0 0 22px; overflow:hidden;
+}
+.post > summary{
+  list-style:none; cursor:pointer; padding:18px 22px;
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+}
+.post > summary::-webkit-details-marker{display:none}
+.post > summary:hover{background:var(--rule-soft)}
+.post > summary:focus-visible{outline:2px solid var(--tone); outline-offset:-2px}
+.post[open] > summary{border-bottom:1px solid var(--rule)}
+.post .who{
+  font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700;
+  font-size:16px; margin:0;
+}
+.badge{
+  font-size:11px; letter-spacing:.06em; padding:3px 9px; border-radius:2px;
+  border:1px solid var(--rule); color:var(--muted); white-space:nowrap;
+}
+.badge.m{border-color:var(--tone); color:var(--tone)}
+.chev{margin-left:auto; color:var(--muted); font-size:13px; white-space:nowrap}
+.post[open] .chev .lbl-open{display:none}
+.post:not([open]) .chev .lbl-shut{display:none}
+
+.body{padding:24px 22px 26px}
+.spec{
+  display:grid; gap:10px 20px; grid-template-columns:max-content 1fr;
+  font-size:13.5px; margin:0 0 22px; padding:0 0 20px;
+  border-bottom:1px dashed var(--rule);
+}
+.spec dt{color:var(--muted); white-space:nowrap}
+.spec dd{margin:0}
+.spec code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px;
+  background:var(--code-bg); color:var(--code); padding:1px 6px; border-radius:2px;
+}
+
+.copybar{display:flex; align-items:center; gap:12px; margin:0 0 10px}
+.copybar .lab{font-size:11px; letter-spacing:.14em; color:var(--muted); font-weight:700}
+.copybar .count{margin-left:auto; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums}
+button.copy{
+  font:inherit; font-size:12.5px; padding:5px 13px; cursor:pointer;
+  background:transparent; color:var(--tone); border:1px solid var(--tone);
+  border-radius:2px; transition:background .15s;
+}
+button.copy:hover{background:var(--tone); color:var(--card)}
+button.copy:focus-visible{outline:2px solid var(--tone); outline-offset:2px}
+
+.draft{
+  background:var(--code-bg); border:1px solid var(--rule); border-radius:3px;
+  padding:22px 24px; font-size:15px; line-height:1.95;
+}
+.draft h4{
+  font-family:"Zen Kaku Gothic New",sans-serif; font-weight:700; font-size:15.5px;
+  margin:26px 0 8px; color:var(--ink);
+}
+.draft h4:first-child{margin-top:0}
+.draft p{margin:0 0 15px}
+.draft p:last-child{margin-bottom:0}
+.draft ul{margin:0 0 15px; padding-left:1.25em}
+.draft li{margin-bottom:4px}
+.draft .ph{
+  display:block; margin:18px 0; padding:9px 14px; font-size:13px;
+  color:var(--tone); background:var(--card); border:1px dashed var(--tone);
+  border-radius:2px;
+}
+.draft .fine{font-size:13px; color:var(--muted)}
+.draft hr{border:0; border-top:1px solid var(--rule); margin:22px 0}
+
+/* ── 画像一覧 ──────────────────────────── */
+.shots{display:grid; gap:18px; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); margin:0 0 12px}
+.shot{background:var(--card); border:1px solid var(--rule); border-radius:4px; overflow:hidden}
+.shot img{display:block; width:100%; height:auto}
+.shot figcaption{padding:10px 12px 12px; font-size:12px; line-height:1.6; color:var(--muted)}
+.shot b{display:block; color:var(--ink); font-size:12.5px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; margin-bottom:3px}
+.note{font-size:13.5px; color:var(--muted); margin:18px 0 0; max-width:62ch}
+
+footer{margin:80px 0 0; padding:26px 0 0; border-top:1px solid var(--rule);
+  font-size:13px; color:var(--muted)}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="kicker">NPO法人 南河内こどもステーション ／ PR TIMES 二次展開</p>
+  <h1>配信したリリースを、<br>グループの発信先へ広げる原稿</h1>
+  <p class="lede">PR TIMESへ出した2本を、関係する法人のブログとInstagramへ載せるための原稿と画像です。宛先ごとに読者が違うので、同じ文章は使い回していません。投稿の実行は有璽氏。</p>
+
+  <div class="pair">
+    <div class="rel a">
+      <span class="no">RELEASE 01</span>
+      <h3>親子向けAI体験イベント 開催報告</h3>
+      <p>7/25-26 グランフロント大阪 北館1F ／ 8/15-16 イオンモール京都桂川 1階 月の広場。予約配信を確定済み。</p>
+    </div>
+    <div class="rel b">
+      <span class="no">RELEASE 02</span>
+      <h3>福祉×AI ウェビナー 開催報告</h3>
+      <p>8/22（土）11:00-12:00 オンライン。株式会社ILIFEとの共同開催。8/27（水）10:00 予約入力済み・確定ボタンは未押下。</p>
+    </div>
+  </div>
+</header>
+
+<div class="ask">
+  <h2>残っているのは1件です</h2>
+  <p>推測で埋めていません。ここが分かれば、あとはそのまま貼れます。</p>
+  <ol>
+    <li><b>NPOブログの記事一覧はどのURLか。</b>
+      <span class="why">トップページは開きますが <code>/blog</code> は403で、記事一覧の入口が特定できていません。Jimdoの管理画面で該当ページのURLを1つ教えてください。</span></li>
+  </ol>
+  <p style="margin:20px 0 0; font-size:13.5px; color:var(--muted); border-top:1px dashed var(--rule); padding-top:16px">
+    <b>2026-08-25 に確定した3点</b>（反映済み）── ①<b>02はNPOへ載せない</b>（NPOブログ02のカードは削除しました）
+    ②登壇者の表記は「<b>ふくち。グループ代表の田村が、同グループの株式会社ILIFEとして登壇</b>」・肩書きは<b>「代表」</b>（代表取締役は使わない）
+    ③オレンジワークス藤井寺は「<b>制作物に関わった</b>」で書く
+  </p>
+</div>
+
+<!-- ══════════════ 01 ══════════════ -->
+<section class="a">
+  <div class="sechead">
+    <span class="tag">RELEASE 01</span>
+    <h2>親子向けAI体験イベント 開催報告</h2>
+    <span class="meta">ブログ4本 ／ Instagram 3本</span>
+  </div>
+
+  <!-- 01-A NPOブログ -->
+  <details class="post" open>
+    <summary>
+      <span class="who">NPO法人 南河内こどもステーション</span>
+      <span class="badge m">ブログ</span><span class="badge">Jimdo</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>入稿</dt><dd>文章ブロックと画像ブロックを交互に。見出しは太字の段落で代用</dd>
+        <dt>画像</dt><dd><code>01_1_cover</code> → <code>01_2_booth</code> → <code>01_4_hall</code> → <code>01_3_kyoto</code>（4枚・本文中の位置は指定どおり）</dd>
+        <dt>語り手</dt><dd>当団体</dd>
+      </dl>
+      <div class="copybar"><span class="lab">タイトル</span>
+        <button class="copy" data-t="t1">コピー</button></div>
+      <div class="draft" id="t1"><p>親子でAIにふれる2日間を、大阪と京都で開きました</p></div>
+
+      <div class="copybar" style="margin-top:22px"><span class="lab">本文</span>
+        <button class="copy" data-t="b1">コピー</button>
+        <span class="count" data-c="b1"></span></div>
+      <div class="draft" id="b1">
+        <p>NPO法人 南河内こどもステーションは、2026年7月25日（土）・26日（日）にグランフロント大阪 北館1階、8月15日（土）・16日（日）にイオンモール京都桂川 1階「月の広場」で開かれた、親子で参加できるAI体験イベントに共催団体として参加しました。参加費はどちらも無料です。</p>
+
+        <span class="ph">画像 01_1_cover</span>
+
+        <h4>6つの質問に答えるだけで、自分のアイデアが動き出す</h4>
+        <p>体験は3つのステップでできています。①つくりたいものを思い浮かべる ②画面に出てくる6つの質問に答える ③できあがったものを動かして遊ぶ。ひとくみ10分ほどで、遊ぶ時間はそのうち5分ほどです。</p>
+        <p>キーボードに慣れていないお子さんも、保護者の方と一緒に最後まで進められる形にしました。「こんなのがつくりたい」を言葉にすれば、あとは画面が受け止めてくれます。</p>
+
+        <span class="ph">画像 01_2_booth</span>
+
+        <h4>参加された方の97%が、AIのイベントは初めてでした</h4>
+        <p>7月の会場で実施したアンケート（会場内・匿名・回答37件）では、97%の方が「AIのイベントに参加するのは初めて」と答えました。ふだんAIを使っていない、または文章のやりとりだけという方が54%。そのうえで、97%の方が「たのしかった」と回答されています。</p>
+        <p>2日間で、AIコンテンツの体験は延べ332回。ゲームづくりの体験は100組以上にのぼりました。</p>
+
+        <span class="ph">画像 01_4_hall</span>
+
+        <h4>8月は、つくる体験を中心に</h4>
+        <p>8月のイオンモール京都桂川では、質問に答えていくと自分のゲームが組み上がっていく制作体験を中心に行いました。2日間で延べ29組・のべ49名の方が参加され、同じご家族の再来場を除いた実数は28組46名です。</p>
+        <p>年齢の内訳は、未就学のお子さんが約24%、小学1〜2年が約30%、小学3〜4年が約22%、小学5〜6年が約15%、中学生が約9%。きょうだいで並んで座る組、友だち同士で来てくれた組、前日に来て翌日もう一度来てくれた組がありました。</p>
+
+        <span class="ph">画像 01_3_kyoto</span>
+
+        <h4>「やってみたい」に、手が届く場所を</h4>
+        <p>子どもが何かに興味を持つ瞬間は、たいてい予告なくやってきます。そのときに手を伸ばせる場所が近くにあるかどうかで、次に進めるかが変わってしまう。わたしたちはそう考えています。</p>
+        <p>今回の会場は、どちらも買い物のついでに立ち寄れる場所でした。申し込みも準備も要らず、通りかかった親子がそのまま座って始められる。「AIに詳しい子のためのイベント」ではなく、「まだ何も知らない子が最初にふれる場所」をつくることが、わたしたちの役割だと思っています。</p>
+        <p>南河内こどもステーションは、地域の子どもと保護者の方が体験に出会える機会を、これからも各地でつくっていきます。</p>
+
+        <hr>
+        <h4>開催概要</h4>
+        <ul>
+          <li>日時｜2026年7月25日（土）・26日（日）／2026年8月15日（土）・16日（日）</li>
+          <li>会場｜グランフロント大阪 北館1階（大阪市北区）／イオンモール京都桂川 1階 月の広場（京都市南区）</li>
+          <li>参加費｜無料</li>
+          <li>主催｜ソフトバンク株式会社</li>
+          <li>共催｜株式会社Teala／テレニシ株式会社／ふくち。グループ（NPO法人 南河内こどもステーションを含む）</li>
+        </ul>
+        <p class="fine">※ ゲームづくりの体験にはRobloxを使用しました。<br>※ アンケートは7月の会場で実施した匿名調査（回答37件）です。数値は主催者集計によります。<br>※ 写真は保護者の方の許諾を得て掲載しています。</p>
+        <p class="fine">プレスリリース（PR TIMES）：<b>＿＿＿ URLを貼ってください ＿＿＿</b></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- 01-B オレンジワークス -->
+  <details class="post">
+    <summary>
+      <span class="who">就労継続支援B型 オレンジワークス藤井寺</span>
+      <span class="badge m">ブログ</span><span class="badge">WordPress + Elementor</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>入稿</dt><dd>見出し（h2）と段落をブロック単位で分けて貼る</dd>
+        <dt>画像</dt><dd><code>01_4_hall</code>（1枚・冒頭）</dd>
+        <dt>語り手</dt><dd>当事業所</dd>
+        <dt>禁則</dt><dd>利用者の個人情報・支援内容・写真は載せない</dd>
+      </dl>
+      <div class="copybar"><span class="lab">タイトル</span><button class="copy" data-t="t2">コピー</button></div>
+      <div class="draft" id="t2"><p>わたしたちが関わった制作物が、大阪と京都の会場に並びました</p></div>
+
+      <div class="copybar" style="margin-top:22px"><span class="lab">本文</span>
+        <button class="copy" data-t="b2">コピー</button><span class="count" data-c="b2"></span></div>
+      <div class="draft" id="b2">
+        <p>2026年7月と8月に、大阪と京都で親子向けのAI体験イベントが開かれました。主催はソフトバンク株式会社、共催はふくち。グループほか。オレンジワークス藤井寺は、この会場で使われた<b>制作物の一部に関わっています</b>。</p>
+
+        <span class="ph">画像 01_4_hall</span>
+
+        <h4>自分たちの手が入ったものが、人の集まる場所に置かれる</h4>
+        <p>会場は、7月25日（土）・26日（日）がグランフロント大阪 北館1階、8月15日（土）・16日（日）がイオンモール京都桂川 1階「月の広場」。どちらも買い物のついでに立ち寄れる場所で、申し込み不要・参加費無料で開かれました。</p>
+        <p>7月の2日間では、AIコンテンツの体験が延べ332回、ゲームづくりの体験が100組以上。多くの親子がその場に足を止めています。</p>
+        <p>わたしたちの作業は、事業所の中で完結しません。手を入れたものが外に出て、知らない誰かの目に触れ、使われる。今回のように会場で実際に並ぶ機会は、その手ごたえがいちばん分かりやすい形で返ってくる仕事でした。</p>
+
+        <h4>「できること」は、やってみないと分からない</h4>
+        <p>オレンジワークス藤井寺が日々向き合っているのは、一人ひとりの「できること」を見つけて、それを仕事につなげていく作業です。何が向いているかは、やってみるまで分かりません。だから、試せる仕事の幅をどれだけ持てるかを大切にしています。</p>
+        <p>会場に並んだ子どもたちの体験も、根っこは同じでした。触れる前から「向いていない」と決まってしまわないように、最初の一回を用意する。作る側と体験する側で立場は違いますが、同じことをしていたのだと思います。</p>
+        <p>これからも、事業所の外へ出ていく仕事に取り組んでいきます。</p>
+
+        <p class="fine">※ ゲームづくりの体験にはRobloxを使用しました。<br>※ 主催｜ソフトバンク株式会社／共催｜株式会社Teala、テレニシ株式会社、ふくち。グループ<br>※ 数値は主催者集計です。</p>
+        <p class="fine">プレスリリース（PR TIMES）：<b>＿＿＿ URLを貼ってください ＿＿＿</b></p>
+      </div>
+      <p class="note"><b>制作物の中身は伏せてあります。</b>何を作ったか（チラシ・什器・ノベルティなど）を一言いただければ、冒頭の一文をその具体名に差し替えます。<b>そこだけで記事の説得力がかなり変わります。</b></p>
+    </div>
+  </details>
+
+  <!-- 01-C ふくち。 -->
+  <details class="post">
+    <summary>
+      <span class="who">株式会社ふくち。</span>
+      <span class="badge m">ブログ</span><span class="badge">STUDIO</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>入稿</dt><dd>プレーンテキスト＋画像の順に置く（Markdownの記法は貼れません）</dd>
+        <dt>画像</dt><dd><code>01_1_cover</code>（1枚・冒頭）</dd>
+        <dt>語り手</dt><dd>当社</dd>
+      </dl>
+      <div class="copybar"><span class="lab">タイトル</span><button class="copy" data-t="t3">コピー</button></div>
+      <div class="draft" id="t3"><p>親子向けAI体験イベントを、大阪と京都の2会場で共催しました</p></div>
+
+      <div class="copybar" style="margin-top:22px"><span class="lab">本文</span>
+        <button class="copy" data-t="b3">コピー</button><span class="count" data-c="b3"></span></div>
+      <div class="draft" id="b3">
+        <span class="ph">画像 01_1_cover</span>
+        <p>ふくち。グループは、2026年7月25日（土）・26日（日）にグランフロント大阪 北館1階、8月15日（土）・16日（日）にイオンモール京都桂川 1階「月の広場」で開かれた親子向けAI体験イベントに、共催として参加しました。</p>
+
+        <h4>やったこと</h4>
+        <p>体験は3ステップ。つくりたいものを思い浮かべ、画面の6つの質問に答えると、自分のアイデアがゲームとして動き出します。ひとくみ10分ほど。申し込みは不要で、参加費は無料としました。</p>
+        <p>7月の2日間では、AIコンテンツの体験が延べ332回、ゲームづくりの体験が100組以上。8月の京都桂川では制作体験を中心に、2日間で延べ29組・のべ49名が参加しています。</p>
+
+        <h4>分かったこと</h4>
+        <p>会場アンケート（匿名・回答37件）で、97%が「AIのイベントは初めて」、54%が「ふだんAIを使っていない、または文章のやりとりだけ」と回答しました。そのうえで97%が「たのしかった」と答えています。</p>
+        <p>関心が無いのではなく、入口が無かった。数字はそう読めます。人が集まる場所に机を出して、申し込みを不要にする。それだけで、初めての人が最初の一回にたどり着けることが確かめられました。</p>
+
+        <h4>これから</h4>
+        <p>ふくち。グループは、福祉・教育・地域のそれぞれの現場を持つ会社と団体の集まりです。「試せる機会を、身近な場所に用意する」という考え方は、どの現場にも共通しています。今後も、グループとしてこうした場をつくっていきます。</p>
+
+        <p class="fine">主催｜ソフトバンク株式会社<br>共催｜株式会社Teala／テレニシ株式会社／ふくち。グループ（NPO法人 南河内こどもステーションを含む）<br>※ ゲームづくりの体験にはRobloxを使用しました。</p>
+        <p class="fine">プレスリリース（PR TIMES）：<b>＿＿＿ URLを貼ってください ＿＿＿</b></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- 01-D ビビッド -->
+  <details class="post">
+    <summary>
+      <span class="who">株式会社ビビッド</span>
+      <span class="badge m">ブログ</span><span class="badge">WordPress</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>入稿</dt><dd>見出し（h2）＋段落。記事URLは <code>/YYYY/MM/post-N.html</code> 形式</dd>
+        <dt>画像</dt><dd><code>01_2_booth</code>（1枚・冒頭）</dd>
+        <dt>語り手</dt><dd>当社</dd>
+        <dt>読者</dt><dd>取引先・企業。子ども向けの話を<b>自社のAI実装力の証拠</b>として読ませる</dd>
+      </dl>
+      <div class="copybar"><span class="lab">タイトル</span><button class="copy" data-t="t4">コピー</button></div>
+      <div class="draft" id="t4"><p>「AIを触ったことがない人」が10分で使えるまでを、現場で検証しました</p></div>
+
+      <div class="copybar" style="margin-top:22px"><span class="lab">本文</span>
+        <button class="copy" data-t="b4">コピー</button><span class="count" data-c="b4"></span></div>
+      <div class="draft" id="b4">
+        <span class="ph">画像 01_2_booth</span>
+        <p>当社が所属するふくち。グループは、2026年7月と8月に大阪・京都の商業施設で開かれた親子向けAI体験イベントに共催として参加しました。当社は体験コンテンツの設計と当日の運営に関わっています。</p>
+
+        <h4>「使い方を教える」をやめて、「6つの質問に答える」にした</h4>
+        <p>AIの導入がうまくいかない現場には、共通する詰まり方があります。道具は配られたが、何をどう入力すればよいか分からない。結果、誰も使わない。</p>
+        <p>今回のイベントでは、その工程をまるごと置き換えました。使い方の説明はしません。画面に出る6つの質問に答えると、それがそのまま指示になって、成果物が組み上がります。ひとくみ10分ほど。キーボードに慣れていない小学生でも最後まで進みました。</p>
+
+        <h4>結果</h4>
+        <ul>
+          <li>7月の2日間で、AIコンテンツの体験が延べ332回</li>
+          <li>同2日間で、ゲームづくりの体験が100組以上</li>
+          <li>会場アンケート（匿名・回答37件）で、97%が「AIのイベントは初めて」</li>
+          <li>同アンケートで、54%が「ふだんAIを使っていない、または文章のやりとりだけ」</li>
+          <li>そのうえで、97%が「たのしかった」と回答</li>
+        </ul>
+        <p>スタッフが張り付いて教える運営ではありません。人が入れ替わり続ける商業施設の通路で、この回転数が出ています。</p>
+
+        <h4>企業のAI活用に置き換えると</h4>
+        <p>これは子ども向けだから成立した話ではありません。「自由に使ってください」と渡すのではなく、答えるべき問いを先に設計しておく。使う人に必要な判断を減らすほど、実際に使われる回数は増えます。</p>
+        <p>当社は、AIを導入する工程そのものの設計をご支援しています。ツールの選定ではなく、現場の誰が・どの画面で・何を入力するかまで落とし込む部分です。ご相談は当社お問い合わせ窓口までお願いいたします。</p>
+
+        <p class="fine">主催｜ソフトバンク株式会社／共催｜株式会社Teala、テレニシ株式会社、ふくち。グループ<br>※ ゲームづくりの体験にはRobloxを使用しました。<br>※ 数値は主催者集計です。効果を保証するものではありません。</p>
+        <p class="fine">プレスリリース（PR TIMES）：<b>＿＿＿ URLを貼ってください ＿＿＿</b></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- 01-E IG 法人ビビッド -->
+  <details class="post">
+    <summary>
+      <span class="who">法人Instagram（ビビッド）</span>
+      <span class="badge m">Instagram</span><span class="badge">画像5枚</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>画像</dt><dd><code>01_1_cover</code> → <code>01_2_booth</code> → <code>01_3_kyoto</code> → <code>01_4_hall</code> → <code>01_5_numbers</code></dd>
+        <dt>語り手</dt><dd>当社</dd>
+      </dl>
+      <div class="copybar"><span class="lab">キャプション</span>
+        <button class="copy" data-t="b5">コピー</button><span class="count" data-c="b5"></span></div>
+      <div class="draft" id="b5">
+        <p>AIを触ったことがない親子が、10分で自分のゲームをつくって帰る。<br>そんな2日間を、大阪と京都で開きました。</p>
+        <p>7月25日・26日はグランフロント大阪 北館1階、8月15日・16日はイオンモール京都桂川の月の広場。申し込み不要、参加費は無料です。</p>
+        <p>使い方の説明はしません。画面に出てくる6つの質問に答えるだけで、思い描いたものが動き出す形にしました。</p>
+        <p>7月の2日間の記録です。<br>・AIコンテンツの体験 延べ332回<br>・ゲームづくりの体験 100組以上<br>・会場アンケートで97%が「AIのイベントは初めて」<br>・そのうえで97%が「たのしかった」</p>
+        <p>関心が無いのではなく、入口が無かっただけでした。</p>
+        <p>主催｜ソフトバンク株式会社<br>共催｜株式会社Teala／テレニシ株式会社／ふくち。グループ</p>
+        <p class="fine">※アンケートは会場内・匿名・回答37件／数値は主催者集計です<br>※ゲームづくりの体験にはRobloxを使用しました<br>※写真は保護者の許諾を得て掲載しています</p>
+        <p>#AI体験 #親子イベント #こどもとAI #グランフロント大阪 #イオンモール京都桂川 #プログラミング教育 #AI活用 #ふくち。グループ #ビビッド</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- 01-F IG 個人 -->
+  <details class="post">
+    <summary>
+      <span class="who">個人Instagram（田村有璽）</span>
+      <span class="badge m">Instagram</span><span class="badge">画像3枚</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>画像</dt><dd><code>01_1_cover</code> → <code>01_3_kyoto</code> → <code>01_5_numbers</code></dd>
+        <dt>語り手</dt><dd>一人称「僕」・体験談ベース</dd>
+        <dt>投稿</dt><dd>このアカウントだけ Manus が実行する運用。<b>文面はここから渡す</b></dd>
+      </dl>
+      <div class="copybar"><span class="lab">キャプション</span>
+        <button class="copy" data-t="b6">コピー</button><span class="count" data-c="b6"></span></div>
+      <div class="draft" id="b6">
+        <p>「うちの子、パソコン触ったことないんですけど」</p>
+        <p>会場でいちばん多く聞いた言葉です。そのたびに「大丈夫です、質問に答えるだけなので」と返していました。</p>
+        <p>7月に大阪、8月に京都で、親子向けのAI体験イベントをやりました。申し込みなし、参加費なし、通りかかったら座れる。そういう形にこだわりました。</p>
+        <p>アンケートを取ったら、97%が「AIのイベントは初めて」。54%が「ふだん使っていない、使っていても文章のやりとりだけ」。</p>
+        <p>この数字を見て思ったのは、みんな興味が無いわけじゃないということです。入口が無かっただけでした。</p>
+        <p>10分で自分のゲームができあがって、それを親御さんに見せに行く。あの顔を見るために、またやります。</p>
+        <p>2日間でAIコンテンツの体験は延べ332回。ゲームづくりは100組以上でした。</p>
+        <p class="fine">※アンケートは会場内・匿名・回答37件／数値は主催者集計です<br>※写真は保護者の許諾を得て掲載しています</p>
+        <p>#AI #親子イベント #こどもとAI #経営者 #福祉 #大阪 #京都</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- 01-G IG tane. -->
+  <details class="post">
+    <summary>
+      <span class="who">tane. Instagram</span>
+      <span class="badge m">Instagram</span><span class="badge">準備中のアカウント</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>画像</dt><dd><code>01_1_cover</code> → <code>01_2_booth</code> → <code>01_3_kyoto</code> → <code>01_5_numbers</code></dd>
+        <dt>語り手</dt><dd>tane.（企画の総称。<b>法人格ではないので「当社」と名乗らない</b>）</dd>
+        <dt>状態</dt><dd>準備中。<b>このアカウントの1本目にする場合は、先に自己紹介の投稿が要ります</b></dd>
+      </dl>
+      <div class="copybar"><span class="lab">キャプション</span>
+        <button class="copy" data-t="b7">コピー</button><span class="count" data-c="b7"></span></div>
+      <div class="draft" id="b7">
+        <p>tane. は、ふくち。グループが子どもと親子のためにひらく企画の名前です。</p>
+        <p>7月25日・26日にグランフロント大阪、8月15日・16日にイオンモール京都桂川で、AIにふれる体験の場をひらきました。</p>
+        <p>やることは、たったこれだけ。<br>①つくりたいものを思いうかべる<br>②画面の質問に6つ答える<br>③できたものを動かして遊ぶ</p>
+        <p>ひとくみ10分。パソコンを触ったことがなくても、最後までいけます。</p>
+        <p>2日間で、AIコンテンツの体験は延べ332回。ゲームづくりは100組以上。会場のアンケートでは、97%が「AIのイベントは初めて」と答えてくれました。</p>
+        <p>はじめての一回を、近くの場所に。<br>tane. はそういう場をつくっていきます。</p>
+        <p class="fine">※アンケートは会場内・匿名・回答37件／数値は主催者集計です<br>※ゲームづくりの体験にはRobloxを使用しました<br>※写真は保護者の許諾を得て掲載しています</p>
+        <p>#tane #親子イベント #こどもとAI #はじめてのAI #大阪 #京都 #こどもの体験</p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════════ 02 ══════════════ -->
+<section class="b">
+  <div class="sechead">
+    <span class="tag">RELEASE 02</span>
+    <h2>福祉×AI ウェビナー 開催報告</h2>
+    <span class="meta">ブログ2本 ／ Instagram 3本　<b>※NPOには載せない</b></span>
+  </div>
+
+  <!-- 02-A ILIFE -->
+  <details class="post" open>
+    <summary>
+      <span class="who">株式会社ILIFE</span>
+      <span class="badge m">ブログ</span><span class="badge">WordPress</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>入稿</dt><dd>見出し（h2）＋段落。メニュー名は「活動風景」</dd>
+        <dt>画像</dt><dd><code>02_1_banner</code>（冒頭）／<code>02_2_credit</code>（末尾・任意）</dd>
+        <dt>語り手</dt><dd>当社</dd>
+        <dt>禁則</dt><dd>参加者数は<b>書かない</b>（有璽氏の指示）。福祉利用者の個人情報も不可</dd>
+      </dl>
+      <div class="copybar"><span class="lab">タイトル</span><button class="copy" data-t="t8">コピー</button></div>
+      <div class="draft" id="t8"><p>ウェビナー「アナログな福祉業界をAIで業務改革」を開催しました</p></div>
+
+      <div class="copybar" style="margin-top:22px"><span class="lab">本文</span>
+        <button class="copy" data-t="b8">コピー</button><span class="count" data-c="b8"></span></div>
+      <div class="draft" id="b8">
+        <span class="ph">画像 02_1_banner</span>
+        <p>2026年8月22日（土）11時から、オンラインウェビナー「アナログな福祉業界をAIで業務改革」を開催しました。ふくち。グループ代表の田村有璽が、同グループの株式会社ILIFEとして登壇し、企画・運営はAIコミュニティ RIALAが担当しました。参加は無料、公開収録の形式で行いました。</p>
+
+        <h4>テーマ：AIを全く使ってこなかった僕が、福祉業界のゲームチェンジャーになるまで</h4>
+        <p>福祉の現場は、いまも紙とファックスと手書きが動いています。記録を書き、集計し、翌月にまた同じことをする。その時間は本来、目の前の人に向けられるはずのものです。</p>
+        <p>今回お話ししたのは、専門知識のあるエンジニアがいる会社の話ではありません。AIをまったく使ってこなかった人間が、どこから手をつけて、何を最初にやめたのか。実際にたどった順番をそのまま共有しました。</p>
+
+        <h4>お伝えしたかったこと</h4>
+        <p>いちばん伝えたかったのは、「詳しくなってから始める」必要はないということです。福祉の現場が抱えている手間は、たいてい毎日・毎週まったく同じ形で繰り返されています。同じ形で繰り返されるものほど、任せやすい。</p>
+        <p>だから最初にやることは、ツールを選ぶことではなく、繰り返しているものを書き出すことでした。</p>
+
+        <h4>ご参加いただいた皆さまへ</h4>
+        <p>土曜日の午前中というお時間に、ご参加いただきありがとうございました。当日いただいたご質問は、今後の発信や当社の取り組みに反映してまいります。</p>
+        <p>当社は、福祉の現場が本来の仕事に時間を使えるようにするための取り組みを続けています。ご相談やお問い合わせは、当社ウェブサイトの窓口までお願いいたします。</p>
+
+        <hr>
+        <h4>開催概要</h4>
+        <ul>
+          <li>名称｜アナログな福祉業界をAIで業務改革</li>
+          <li>日時｜2026年8月22日（土）11:00〜12:00</li>
+          <li>形式｜オンライン（公開収録）・参加無料</li>
+          <li>登壇｜ふくち。グループ 代表 田村有璽（同グループ 株式会社ILIFE として）</li>
+          <li>企画・運営｜AIコミュニティ RIALA</li>
+        </ul>
+        <p class="fine">プレスリリース（PR TIMES）：<b>＿＿＿ URLを貼ってください ＿＿＿</b></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- 02-C ふくち。 -->
+  <details class="post">
+    <summary>
+      <span class="who">株式会社ふくち。</span>
+      <span class="badge m">ブログ</span><span class="badge">STUDIO</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>入稿</dt><dd>プレーンテキスト＋画像の順に置く</dd>
+        <dt>画像</dt><dd><code>02_1_banner</code>（1枚・冒頭）</dd>
+        <dt>語り手</dt><dd>当社</dd>
+      </dl>
+      <div class="copybar"><span class="lab">タイトル</span><button class="copy" data-t="t9">コピー</button></div>
+      <div class="draft" id="t9"><p>福祉現場のAI活用について、オンラインでお話ししました</p></div>
+
+      <div class="copybar" style="margin-top:22px"><span class="lab">本文</span>
+        <button class="copy" data-t="b9">コピー</button><span class="count" data-c="b9"></span></div>
+      <div class="draft" id="b9">
+        <span class="ph">画像 02_1_banner</span>
+        <p>2026年8月22日（土）、オンラインウェビナー「アナログな福祉業界をAIで業務改革」が開催されました。登壇したのは、当グループ代表の田村有璽です。同グループの株式会社ILIFEとして登壇し、企画・運営はAIコミュニティ RIALAが担当しました。</p>
+
+        <h4>話したこと</h4>
+        <p>福祉の現場には、紙・ファックス・手書きの記録がいまも残っています。それ自体が悪いわけではありませんが、同じ作業を毎日・毎週くり返しているぶんだけ、本来の仕事に使える時間が削られていきます。</p>
+        <p>当日お伝えしたのは、専門知識を身につけてから始める話ではありません。AIをまったく使っていなかった状態から、何を最初にやめて、どこから手をつけたか。その順番そのものを共有しました。</p>
+
+        <h4>ふくち。グループとして</h4>
+        <p>わたしたちは、福祉・教育・地域の現場を持つ会社と団体の集まりです。現場を持っているからこそ、机の上だけで組み立てた話ではなく、実際に動いた順番をお伝えできると考えています。</p>
+        <p>今後もこうした場を通じて、現場で使える形の知見を共有していきます。</p>
+
+        <p class="fine">日時｜2026年8月22日（土）11:00〜12:00／形式｜オンライン（公開収録）・参加無料<br>登壇｜ふくち。グループ 代表 田村有璽（同グループ 株式会社ILIFE として）／企画・運営｜AIコミュニティ RIALA</p>
+        <p class="fine">プレスリリース（PR TIMES）：<b>＿＿＿ URLを貼ってください ＿＿＿</b></p>
+      </div>
+    </div>
+  </details>
+
+  <!-- 02-D IG 119番 -->
+  <details class="post">
+    <summary>
+      <span class="who">福祉施設の119番</span>
+      <span class="badge m">Instagram</span><span class="badge">画像2枚</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>画像</dt><dd><code>02_1_banner</code> → <code>02_2_credit</code></dd>
+        <dt>読者</dt><dd>福祉事業者。<b>顧客名・施設名は出さない</b></dd>
+        <dt>注意</dt><dd>このアカウントは投稿の型が決まっています。<b>下は文面案で、既存の型に合わせて調整してください</b></dd>
+      </dl>
+      <div class="copybar"><span class="lab">キャプション</span>
+        <button class="copy" data-t="b10">コピー</button><span class="count" data-c="b10"></span></div>
+      <div class="draft" id="b10">
+        <p>紙とファックスと手書きが、まだ現役です。</p>
+        <p>8月22日（土）、ウェビナー「アナログな福祉業界をAIで業務改革」を開催しました。</p>
+        <p>登壇したのは、AIをまったく使ってこなかったところから始めた事業者です。エンジニアがいる会社の話ではありません。</p>
+        <p>いちばん伝えたかったのは、詳しくなってから始める必要はないということ。</p>
+        <p>福祉の現場が抱えている手間は、たいてい毎日・毎週まったく同じ形でくり返されています。同じ形でくり返されるものほど、任せやすい。</p>
+        <p>だから最初にやったのは、ツールを選ぶことではなく、くり返しているものを書き出すことでした。</p>
+        <p>その時間は本来、目の前の人に向けられるはずのものです。</p>
+        <p>登壇｜ふくち。グループ 代表 田村有璽（同グループ 株式会社ILIFE として）<br>企画・運営｜AIコミュニティ RIALA</p>
+        <p>#福祉 #障害福祉 #介護 #業務改善 #AI活用 #DX #福祉施設 #ウェビナー</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- 02-E IG 個人 -->
+  <details class="post">
+    <summary>
+      <span class="who">個人Instagram（田村有璽）</span>
+      <span class="badge m">Instagram</span><span class="badge">画像2枚</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>画像</dt><dd><code>02_1_banner</code> → <code>02_2_credit</code></dd>
+        <dt>語り手</dt><dd>一人称「僕」・体験談ベース</dd>
+      </dl>
+      <div class="copybar"><span class="lab">キャプション</span>
+        <button class="copy" data-t="b11">コピー</button><span class="count" data-c="b11"></span></div>
+      <div class="draft" id="b11">
+        <p>3年前の僕に見せたい登壇でした。</p>
+        <p>8月22日、「アナログな福祉業界をAIで業務改革」というテーマで話しました。サブタイトルは「AIを全く使ってこなかった僕が、福祉業界のゲームチェンジャーになるまでの物語」。</p>
+        <p>盛った表現ではなく、本当に何も使っていませんでした。パソコンの前で固まっていた側の人間です。</p>
+        <p>話したのは成功の話ではなくて、順番の話です。何を最初にやめて、どこから手をつけたか。</p>
+        <p>結論を先に言うと、ツールを選ぶのは最後でした。最初にやったのは、毎日・毎週まったく同じ形でくり返している作業を、ぜんぶ書き出すこと。</p>
+        <p>福祉の現場は、いまも紙とファックスと手書きが動いています。その時間は本来、目の前の人に向けられるはずのものです。</p>
+        <p>土曜の午前中に集まってくださった皆さん、ありがとうございました。</p>
+        <p>企画・運営｜AIコミュニティ RIALA</p>
+        <p>#福祉 #AI活用 #業務改善 #経営者 #ウェビナー #DX</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- 02-F IG ビビッド -->
+  <details class="post">
+    <summary>
+      <span class="who">法人Instagram（ビビッド）</span>
+      <span class="badge m">Instagram</span><span class="badge">画像2枚</span>
+      <span class="chev"><span class="lbl-shut">開く</span><span class="lbl-open">閉じる</span></span>
+    </summary>
+    <div class="body">
+      <dl class="spec">
+        <dt>画像</dt><dd><code>02_1_banner</code> → <code>02_2_credit</code></dd>
+        <dt>語り手</dt><dd>当社</dd>
+      </dl>
+      <div class="copybar"><span class="lab">キャプション</span>
+        <button class="copy" data-t="b12">コピー</button><span class="count" data-c="b12"></span></div>
+      <div class="draft" id="b12">
+        <p>「詳しくなってから始める」必要はありません。</p>
+        <p>8月22日（土）、ウェビナー「アナログな福祉業界をAIで業務改革」が開催されました。ふくち。グループ代表の田村有璽が、同グループの株式会社ILIFEとして登壇しています。</p>
+        <p>お伝えしたのは、AIをまったく使っていなかった状態から、何を最初にやめて、どこから手をつけたかという順番でした。</p>
+        <p>導入がうまくいかない現場には、共通する詰まり方があります。道具は配られたのに、何をどう入力すればよいか分からない。結果、誰も使わない。</p>
+        <p>だから最初にやることは、ツールを選ぶことではなく、毎日・毎週くり返している作業を書き出すことです。</p>
+        <p>当社は、AIを導入する工程そのものの設計をご支援しています。</p>
+        <p>企画・運営｜AIコミュニティ RIALA</p>
+        <p>#AI活用 #業務改善 #DX #福祉 #ウェビナー #ビビッド</p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════════ 画像 ══════════════ -->
+<section>
+  <div class="sechead" style="--tone:var(--muted)">
+    <span class="tag">IMAGES</span>
+    <h2>使う画像（7枚）</h2>
+    <span class="meta">すべて 1080×1080</span>
+  </div>
+
+  <div class="shots">
+    <figure class="shot"><img src="__IMG_0101__" alt="表紙：グランフロント大阪の会場で体験する親子">
+      <figcaption><b>01_1_cover</b>01の表紙。グランフロント大阪</figcaption></figure>
+    <figure class="shot"><img src="__IMG_0102__" alt="iPadで体験する親子">
+      <figcaption><b>01_2_booth</b>6つの質問に答える様子</figcaption></figure>
+    <figure class="shot"><img src="__IMG_0103__" alt="イオンモール京都桂川の会場">
+      <figcaption><b>01_3_kyoto</b>京都桂川。きょうだいでの参加</figcaption></figure>
+    <figure class="shot"><img src="__IMG_0104__" alt="グランフロント大阪の会場全景">
+      <figcaption><b>01_4_hall</b>会場全景。2日間の賑わい</figcaption></figure>
+    <figure class="shot"><img src="__IMG_0105__" alt="数字のまとめカード">
+      <figcaption><b>01_5_numbers</b>332回／100組／97%</figcaption></figure>
+    <figure class="shot"><img src="__IMG_0201__" alt="ウェビナーの告知バナー">
+      <figcaption><b>02_1_banner</b>02の表紙。告知バナー</figcaption></figure>
+    <figure class="shot"><img src="__IMG_0202__" alt="ウェビナーの開催概要カード">
+      <figcaption><b>02_2_credit</b>日時・登壇・テーマ</figcaption></figure>
+  </div>
+
+  <p class="note">原寸ファイルは <code style="font-family:ui-monospace,monospace;font-size:12.5px">scratchpad/social/</code> にあります。ブログには写真の原寸（<code style="font-family:ui-monospace,monospace;font-size:12.5px">~/Downloads/IMG_*.jpeg</code>）を使うほうが画質が上がります。<b>Robloxのポスターと看板が大きく写るカットは、規約に沿って画角から外しました。</b></p>
+</section>
+
+<footer>
+  <p>作成 2026-08-25 ／ 発信先の一覧と入稿形式は Notion「📱 発信アカウント台帳」が正本です。<br>ブログ5行・NPO Instagram 1行を新規に追加し、URL・CMS・入稿形式の3列を足しました。</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  document.querySelectorAll("[data-c]").forEach(function(el){
+    var src = document.getElementById(el.getAttribute("data-c"));
+    if(!src) return;
+    var n = src.innerText.replace(/\s+/g,"").length;
+    el.textContent = n.toLocaleString() + " 字（空白を除く）";
+  });
+
+  document.querySelectorAll("button.copy").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var src = document.getElementById(btn.getAttribute("data-t"));
+      if(!src) return;
+      var text = src.innerText.replace(/\n{3,}/g,"\n\n").trim();
+      var done = function(){
+        var old = btn.textContent;
+        btn.textContent = "コピーしました";
+        setTimeout(function(){ btn.textContent = old; }, 1600);
+      };
+      try{
+        navigator.clipboard.writeText(text).then(done, function(){ fallback(text, done); });
+      }catch(e){ fallback(text, done); }
+    });
+  });
+
+  function fallback(text, done){
+    try{
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); document.body.removeChild(ta); done();
+    }catch(e){}
+  }
+})();
+</script>
