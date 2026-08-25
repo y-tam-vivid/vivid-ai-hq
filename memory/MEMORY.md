@@ -26,7 +26,8 @@
 - [vivid-global.comのDNS](reference_vivid_dns_sakura.md) — Webとさくら／レジストラはGMO。★当方に認証情報が無く変更は実行できない
 - [ビビッドの対外表現](reference_vivid_sales_contact.md) — 連絡先consul_vi@／CI赤#C5000A・黒#221714／ロゴ素材の在り処
 - [様子を見てから足す](feedback_let_it_settle_before_adding.md) — 入れた仕組みは使ってから次。器を同時に立てない
-- [個人タスクの一元化](project_personal_task_system.md) — 相談中・器は未作成。★メモの置き場が未特定＝先に聞く
+- [個人タスクの一元化](project_personal_task_system.md) — ★目的は移譲。優先=洗い出しと所要時間／棚卸しは routine_master.xlsx に117件（器未投入）
+- [カレンダーの色分類](reference_calendar_color_taxonomy.md) — ラベル9種で種別／★トマトだけ「緊急」の軸／算入はaccepted のみ＝仕事週39h・事務作業23%が単独最大
 - [朝の要対応に切る口が無い](feedback_briefing_needs_an_off_switch.md) — 除外ルールページを新設し8/22から様子見中。14日超は消さず畳む
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
 - [CFOナミ](project_cfo_agent.md) — agents/cfo.md＋Notion財務ハブ＋月次/週次routine
@@ -122,7 +123,7 @@
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
 - [確認は溜めて1回](feedback_batch_the_checks.md) — 承認が要るのは6項目だけ。入れたものはその場でminiにも入れる
 - [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。理由＋やりますかまで。★人の判断も候補を挙げて渡す
-- [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — 既定は自分で進める。settings.jsonのpermissionsで担保／検査待ちも停止／★止めるのは操作単位。案件ごと止めた保留はWORKING.mdに置かないと消える(8/24実証)
+- [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — 既定は自分で進める。★止めるのは操作単位。案件ごと止めた保留はWORKING.mdに置かないと消える
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路で一致を見る。行数と件数は別物。検査は別の主体へ
 - [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — SendMessageは同じマシン内だけ。連携はWORKING.md/相手のローカル/Notion
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
@@ -140,10 +141,12 @@
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 「PR動画」1語で動画を作り込んだ。形式/本数/出口を先に確定する
 - [NPO名義リリース2本(2026-08)](project_npo_press_releases_202608.md) — 8/25・8/26配信予定。未配信。残=7月実績数と写真許諾
 - [Robloxイベントの表記規約](reference_roblox_event_naming_rules.md) — 名称・見出しに「Roblox」を入れない／ロゴ不可／無料が前提
-- [記憶の層分け設計](project_memory_layer_design.md) — ★未承認の設計案。MEMORY.mdはfeedbackだけ／分野はINDEX_*へ／降ろした分は_archiveへ1行
+- [記憶の層分け設計](project_memory_layer_design.md) — ★8/25承認済・未着手(同期🔴待ち)。常設=agents/都度=ビビ／正本はINDEX_担当別.md／check.shも同時に直す
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が多すぎて構造的に上限。詳細は各ファイル本文へ
 - [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — assets不可・外部URLもCSPで不可。sipsで縮小→base64で本文へ
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — 2026-08-21に両機allow58で解消済。dontAskは許可リストが空だと全部落ちる
 - [お薬手帳の画像](reference_okusuri_techo_images.md) — 人名_01.png・人ごと連番・医療機微はローカル完結
 - [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ★商材名は出さない。訴求A/B/Cテスト・0円が引き／LP作成済・ホスト先未定
 - [平文の認証情報の扱い](reference_plaintext_credentials_handling.md) — 中身は読まず削除はパス指定1件のみ・破棄ごとに横断調査必須
+- [PR TIMESエディタの地雷](reference_prtimes_editor_behaviors.md) — ★行頭「1.」で本文全体が番号リスト化し解除不能→STEP1/①②③で書く。保存=下書き
+- [PR TIMES本文の体裁](feedback_prtimes_style_conventions.md) — タイトルは内容が先・団体名は「／」で末尾／太字は■見出しだけ／番号は(1)(2)(3)

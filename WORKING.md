@@ -338,6 +338,16 @@ C-0027 土屋亨   関連法人ID = B-0357（B-0324 フィリップス・ジャ�
   - ★プロンプトは claude.ai 上にしか無い（git外・履歴なし）。
     `routines/vivi-daily-briefing.md` を正本にして一方向で流す案は未着手
 
+- **【ビビ / MacBook 2026-08-25】★着手宣言 ── memory/ の構造を触ります（記憶の層分け）**
+  - 対象: `memory/MEMORY.md` ／ `memory/INDEX_*.md`（新設） ／ `memory/_archive/INDEX_過去.md`（新設）
+    ／ `.claude/agents/*.md`（常設セットの1行結線） ／ `check.sh` 項目4
+  - **書きます。**設計と現在地 → `memory/project_memory_layer_design.md`（有璽氏 2026-08-25 承認済み）
+  - **★Mac mini セッションへ: memory/ の棚卸しが2機で二重になっています。**
+    こちらは 8/24 に MEMORY.md を 25,063→23,850 へ棚卸し（未push）。
+    origin/main 側は 26,987バイト・180超44行で**上限超過のまま**。
+    **同じ対象に手をつけないでください。**索引の構造はこちらで一本化します。
+  - 同期を通すまで着手しません（現在🔴・未取込50件／こちら ahead 6）
+
 - **🔴【全セッション共通 2026-08-23】Manus が保守で止まっています ── 8/25 08:00 まで叩かない**
   - 実測：`api.manus.ai` が **HTTP 503 `SEPARATION_FREEZE_ACTIVE`**（08-23 に `manus.py check` で確認）
   - 有璽氏「マヌスのアップデートが始まった。**25日午前8時に復旧が完了したタイミングで再開**」
