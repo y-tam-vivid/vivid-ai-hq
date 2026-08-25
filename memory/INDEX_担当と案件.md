@@ -13,7 +13,7 @@
 - [カレンダーの色分類](reference_calendar_color_taxonomy.md) — ラベル9種で種別／★トマトだけ「緊急」の軸／算入はaccepted のみ＝仕事週39h・事務作業23%が単独最大
 - [朝の要対応に切る口が無い](feedback_briefing_needs_an_off_switch.md) — 除外ルールページを新設し8/22から様子見中。14日超は消さず畳む
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
-- [CFOナミ](project_cfo_agent.md) — agents/cfo.md＋Notion財務ハブ＋月次/週次routine
+- [CFOナミ](project_cfo_agent.md) — 器も月次routineも動いている。★3DBが実測0件＝会計ソフト未決が真因／7月レポートの🔴督促3件が未処理のまま
 - [CLOセンゴク](project_legal_agent.md) — agents/legal.md。日本法ラッパー。法務ハブ構築済／プラグイン導入は未実行
 - [CKOロビン](project_cko_agent.md) — agents/cko.md。会議準備を裏方で作る(毎朝7:40)。Phase B=議事録DB連携待ち
 - [開発ライン ステラ＋3体](project_dev_agents.md) — ステラ(統括)＋エジソン/ピタゴラス/リリス＋開発ハブ＋週次routine
