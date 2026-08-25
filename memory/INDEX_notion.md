@@ -12,6 +12,7 @@
 - [組織マスター4DB](reference_org_master_4db.md) — 組織軸の正本(部門/法人/部署/PJ)。担当者マスターのRelation張替は未実施
 - [組織マスターの所在とコード](reference_org_master_notion.md) — 4DBのdata source ID。施設運営は15-300/15-400へ再コード化済
 - [Relation双方向化の地雷](reference_notion_relation_dual_landmine.md) — one-way→DUAL変換で既存値が全件消失。新規列は最初からDUALで作る
+- [DDLは説明文を消す](reference_notion_ddl_wipes_description.md) — ALTER COLUMN SETで選択肢を足すと列の説明が空になる。触る前に控える／ADD COLUMNは安全
 - [タスクDB Relation付替](project_task_db_relation_migration.md) — Step1-5＋双方向化まで完了。残=ビュー実在確認・Step7降格処理
 - [Notionナレッジハブ](reference_notion_knowledge_hub.md) — 業務管理Notion＋組織マスターの体系。別タブの会話は読めない
 - [ローカルメモ棚卸し](project_local_memo_cleanup.md) — 約1,004件を20分類(未移動)。商談約300件は議事録DBの原資

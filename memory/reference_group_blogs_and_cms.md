@@ -31,7 +31,20 @@ Jimdo       同上。文章ブロックと画像ブロックを交互に置く�
 
 - **ビビッドのドメインは www 付きが正。** `vivid-global.com`（www無し）と
   `www.vivid-global.com` の両方が生きているが、記事は www 側にある。
-- Instagram は別台帳に載っている → Notion「📱 発信アカウント台帳」
+- **2026-08-25 に台帳へ登録済み** → Notion「📱 発信アカウント台帳」
   （collection://3f0202d1-2352-4695-a399-626705eb9014）。**ブログもこの台帳に統合した**
   （DBを分けると発信先が2か所に散るため）。
+
+```
+足した列   発信先URL（url）／CMS・基盤（select）／入稿形式（text）
+足した行   ブログ5本（NPO・ILIFE・ふくち。・ビビッド・オレンジワークス）
+           ＋ NPO Instagram（★開設済みだが未運用・アカウントIDが未取得）
+足した選択肢 媒体に「ブログ」／主体に 法人ふくち。・法人ILIFE・
+           NPO南河内こどもステーション・就労支援オレンジワークス藤井寺
+既存の是正  Instagram 3行（法人ビビッド・119番・tane.）の「投稿の実行」を
+           「人が投稿する」・承認者を「有璽氏」で埋めた
+           ★個人IG だけは Manus が投稿する運用のままにしてある
+副作用      ★ALTER COLUMN SET で「主体」列の説明文が消えた
+           → [[reference_notion_ddl_wipes_description]]
+```
 - 関連 → [[feedback_press_release_is_not_done_at_distribution]] ／ [[reference_tane_brand]]
