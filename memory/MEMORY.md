@@ -57,6 +57,8 @@
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動。自分たちの仕組みは可逆なら直す
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 「PR動画」1語で動画を作り込んだ。形式/本数/出口を先に確定する
+- [離席前に書き戻す](feedback_write_back_before_you_go.md) — 会話にしかない事実は消える。離席宣言/無操作1時間/区切りが合図。機械は1時間放置の未コミットを自動確定
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — 超えるとMEMORY.mdは一部しか届かない(2026-08-21に61,671バイト＝上限2.5倍を実測)。詳細は各ファイル本文へ
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — 両機allow58で解消済。機械を足したら鍵と一緒にpermissionsも揃える
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装済(MEMORY.md 28,788→9,913)。残=エージェントへ届く実測と、索引から降ろす承認
+- [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — **関係法人のブログ・SNS投稿文と画像の作成までが1セット**（2026-08-25）。対象は📱発信アカウント台帳を読んで毎回リスト化・投稿の実行者は当面 有璽氏

@@ -1,3 +1,10 @@
+---
+name: reference_bash32_multibyte_unbound_var
+description: bash 3.2 は全角文字の直後で ${var} が unbound になる。新規シェルは毎回grepで検査
+metadata:
+  type: reference
+---
+
 # bash 3.2(macOS標準)は `$変数` 直後の全角文字を変数名の一部と誤認する
 
 **2026-08-20 実測（`bin/daily_jobs.sh` 作成時）。**

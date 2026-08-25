@@ -70,6 +70,20 @@ BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
 AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
 DIRTY=$(git status --porcelain | wc -l | tr -d " ")
 
+# ①' 放置された未コミットを自動で確定させる（2026-08-25 有璽氏の指示）
+#     「離席したら／指示が1時間ない時は、自動で最新をMDへ共有してほしい」
+#     commit されていないものは他機へ1バイトも届かない。だが書きかけを即座に飲むのも危ない。
+#     → ★最終更新から60分以上たったものだけを、パス指定で commit する（削除は含めない）。
+#     詳細と線引きは bin/autocommit_stale.py のヘッダ。
+AUTOCOMMIT="no"
+if [ "${VIVID_AUTOCOMMIT:-1}" = "1" ] && [ "$DIRTY" -gt 0 ]; then
+  if python3 "$REPO/bin/autocommit_stale.py" 2>&1 | grep -q "^OK"; then
+    AUTOCOMMIT="yes"
+    AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+    DIRTY=$(git status --porcelain | wc -l | tr -d " ")
+  fi
+fi
+
 # ② 取り込めるときだけ取り込む（汚れていたら触らない）
 MERGED="no"
 if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -gt 0 ] && [ "$DIRTY" -eq 0 ]; then
