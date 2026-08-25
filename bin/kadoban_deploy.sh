@@ -49,7 +49,9 @@ if [ ! -f "$SRC_LOCAL" ]; then
 fi
 
 # ② ★出していいかを確かめる ── 固定URLが保護されているか
-PROT="$(cd "$SITE" && $VERCEL project protection "$PROJECT" 2>/dev/null | tr -d ' \n')"
+# ★出力形式が機械で違う（MacBook=JSON / Mac mini=「> ssoProtection: {...}」を stderr へ）。
+#   2026-08-25 実測。stderr を捨てると mini では空になり、保護の有無を判定できなくなる。
+PROT="$(cd "$SITE" && $VERCEL project protection "$PROJECT" 2>&1 | tr -d ' \n')"
 SAFE=0
 case "$PROT" in
   *'"deploymentType":"all"'*) SAFE=1 ;;
