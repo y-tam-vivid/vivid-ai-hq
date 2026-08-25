@@ -283,19 +283,23 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
   - ★プロンプトは claude.ai 上にしか無い（git外・履歴なし）。
     `routines/vivi-daily-briefing.md` を正本にして一方向で流す案は未着手
 
-- **【ビビ / MacBook 2026-08-25】★着手宣言 ── memory/ の構造を触ります（記憶の層分け）**
-  - 対象: `memory/MEMORY.md` ／ `memory/INDEX_*.md`（新設） ／ `memory/_archive/INDEX_過去.md`（新設）
-    ／ `.claude/agents/*.md`（常設セットの1行結線） ／ `check.sh` 項目4
-  - **書きます。**設計と現在地 → `memory/project_memory_layer_design.md`（有璽氏 2026-08-25 承認済み）
-  - **★Mac mini セッションへ: memory/ の棚卸しが2機で二重になっています。**
-    こちらは 8/24 に MEMORY.md を 25,063→23,850 へ棚卸し（未push）。
-    origin/main 側は 26,987バイト・180超44行で**上限超過のまま**。
-    **同じ対象に手をつけないでください。**索引の構造はこちらで一本化します。
-  - **★実装済み（2026-08-25）。**同期は解決し push 済み（0/0）。MEMORY.md 28,788→9,913バイト。
-    分野索引5枚＋INDEX_担当別.md＋_archive/INDEX_過去.md を新設。agents 13本を1行で結線。
-    check.sh 項目4を拡張し、孤児検出・上限超過検出が**実際に赤くなること**を実測で確認。
-  - **残**: ①エージェントを起動して常設セットが届くかを肯定形で実測 ②索引から降ろす候補の承認
-
+- **【ビビ / MacBook 2026-08-25 夜】記憶の層分け・記録の巡回・稼働盤 ── ★どれも完了。残件だけ下に**
+  - 記憶の層分け: MEMORY.md 28,788→約11,000バイト。分野索引5枚＋INDEX_担当別.md＋_archive/INDEX_過去.md。
+    agents 13本へ「MEMORY.md必読→担当別→分野索引」の4段を結線。**つるで到達確認済み（届いた）**
+  - 記録の巡回: `bin/memory_audit.py`（担当=ドーベルマン）。**1日5回・約3時間おき**。
+    ★本文を直したのに索引を直していない commit を検出する（導入時に43件見つかった）
+  - 書き戻しの強制: `bin/hooks/hook_session_writeback.py`（Stopフック）＋
+    `bin/autocommit_stale.py`（60分放置の未コミットを自動確定・vivid-sync から）
+  - 稼働盤: **https://fukuchi-kadoban.vercel.app** ＋ Basic認証。Mac mini の2時間おき8回で自動更新。
+    履歴は `data/dashboard_history/YYYY-MM-DD.json.gz`（日ごと最新1本・消さない）
+  - **★残件（明日以降）**
+    1. **Stopフックが MacBook にしか入っていない。** `~/.claude/settings.json` は機械ローカル（git外）。
+       mini でも効かせるなら `~/.vivid-relay/hook_session_writeback.py` の複製と settings.json への追記が要る
+    2. **索引から降ろす承認。** いま166本すべてどこかの索引に載っている。余力は約14,000バイト
+       （新規メモリ約80本ぶん）あるので急がない。降ろす候補の一覧は求められたら出す
+    3. 朝ブリーフィングの除外ルールは**様子見中**（8/22から）。**8/29に1週間ぶんを実測で報告する**
+    4. `dashboard_data.py` は法人番号なし176件の内訳（個人事業主／理由あり／未調査）を集めていない。
+       画面には「このデータに入っていない」と正直に出してある
 - **🔴【全セッション共通 2026-08-23】Manus が保守で止まっています ── 8/25 08:00 まで叩かない**
   - 実測：`api.manus.ai` が **HTTP 503 `SEPARATION_FREEZE_ACTIVE`**（08-23 に `manus.py check` で確認）
   - 有璽氏「マヌスのアップデートが始まった。**25日午前8時に復旧が完了したタイミングで再開**」
