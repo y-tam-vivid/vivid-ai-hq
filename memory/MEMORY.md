@@ -60,5 +60,6 @@
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — 超えるとMEMORY.mdは一部しか届かない(2026-08-21に61,671バイト＝上限2.5倍を実測)。詳細は各ファイル本文へ
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — 両機allow58で解消済。機械を足したら鍵と一緒にpermissionsも揃える
+- [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — 真因=公開経路が無い(cronから叩けない)。★公開中の手書き版と機械版が別物＝寄せる先が未決
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — **関係法人のブログ・SNS投稿文と画像の作成までが1セット**（2026-08-25）。対象は📱発信アカウント台帳を読んで毎回リスト化・投稿の実行者は当面 有璽氏
