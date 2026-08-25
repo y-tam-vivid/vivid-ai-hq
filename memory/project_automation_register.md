@@ -275,3 +275,66 @@ Notion のページで `★` が `☦` `♦` へ**3回連続で化けた**。
 
 **★検知の網は、経路を1本増やしたその日に広げる。** 広げないと、
 本物の申告倒れ2件が偽陽性6件に埋もれる。→ [[reference_monitor_must_exclude_parked]]
+
+## ★心拍の名前は完全一致。1文字違うと黙って失敗する（2026-08-24 実測）
+
+`dashboard_data.py` は `--beat` を付けて実行していた。**心拍は一度も Notion へ届いていなかった。**
+
+```
+原因①  レジスタの行タイトルと、コード内の PROC_NAME が **一言一句不一致**
+        heartbeat は完全一致でしか照合しない → 毎回サイレント失敗
+原因②  それを見つけるはずの `heartbeat_names_check.py` が、
+        ★`from heartbeat import beat as hb` の **別名呼び出し** を正規表現で拾えていなかった
+        ＝ 検査も同時に目をつぶっていた
+```
+
+- **★「--beat を付けた」は「心拍が届いた」ではない。**
+  名前が1文字違えば、エラーも出さずに落ちる
+- **心拍を打つコードを書いたら、レジスタで最終実行が動くところまでを1作業にする。**
+  ★実行して、レジスタの値が変わったことを目で確かめる
+- **★検査の正規表現は、呼び出しの書き方が変わると静かに外れる。**
+  `import as` / ラッパー関数 / 動的呼び出し ── 書き方を1つ増やしたら検査も足す
+  → [[reference_reference_audit_false_negative]]
+
+### 自動処理の突合に足したもの（2026-08-24）
+
+```
+①② 従来どおり（cron / daily_jobs とレジスタの突合）
+③  ★新設：レジスタの実体パスがディスク上にあるか（手動実行のみの行も対象）
+    launchd の未load plist を別枠で表示
+    ★出力の末尾に「見ていない範囲」を必須で書く
+実測  偽の登録漏れを launchd へ作る → 検知 → 片付け → クリーンを確認
+      レジスタに実体無しの行を作る → ③で検知 → 片付け → クリーンを確認
+```
+
+## ★Mac mini の launchd 経路は空だった（2026-08-25 実測・つる）
+
+実行の経路は4つ（cron／daily_jobs.conf／launchd／手動）と分かっていたが、
+**mini の `~/Library/LaunchAgents/` に vivid 系の plist は1本も無い**（Google の3本だけ）。
+`launchctl list | grep vivid` も0件。
+
+```
+~/.vivid-relay/com.vivid.chatwork-relay.plist   置いてあるだけ。load されていない
+                                                実体は crontab の 45 7（心拍は来ている）
+~/.vivid-relay/com.vivid.slack-socket.plist     置いてあるだけ。load されていない
+                                                レジスタは有効=False・保留印つき＝申告は正しい
+```
+
+- **★plist がディレクトリに在ることは、常駐していることの証拠にならない。**
+  `~/.vivid-relay/` に置いた plist は、`~/Library/LaunchAgents/` へコピーして
+  `launchctl load` するまで**ただのテキスト**。
+- レジスタ「Manus タスク監視」の実体欄は `~/Library/LaunchAgents/com.vivid.manus-watch.plist` を
+  名指ししていたが、これは **MacBook 側の `.plist.disabled`** のこと。mini には存在しない。
+  同じ処理の実体欄に、動いている経路と動いていない経路を並べて書くと読み違える
+  → 2026-08-25 に「mini crontab */15 ＝ 実際に動いている経路」と明示して是正した。
+- **★実体欄には「動いている1本」を先頭に書く。** 参考情報は ⛔ を付けて後ろへ。
+
+## ★作ったのにレジスタに行が無い＝台帳から見えない（2026-08-25・intake_notify.py）
+
+`~/.vivid-relay/intake_notify.py`（2026-08-24 新規270行・ステラ検査済み）は
+cron にも daily_jobs.conf にもレジスタにも無く、**WORKING.md にしか存在しなかった**。
+WORKING.md は終わったら消す器なので、消した瞬間に存在ごと消える。
+
+→ 有効=False・既知（対応保留）✓ で行だけ作った（`3c67b156-8b57-813c-ab91-e1e465ecb0c3`）。
+**★「まだ動かさない」ものこそ行を作る。** 動かす条件を備考に書いておけば、
+承認が下りた日に何をすればよいかが台帳から読める。

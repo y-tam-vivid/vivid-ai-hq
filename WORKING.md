@@ -28,6 +28,142 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ピタゴラス 2026-08-24】Slack投稿側（intake_notify.py）新規作成 ── 実装・ステラ検査・修正・再検証まで完了
+
+有璽氏承認済み（設計「A」）。照合で候補が出た受付シートの行をSlack
+`#01_営業部門-ai確認依頼`（C0BRYFKG153）へボタン付きで投稿する処理。
+受ける側（slack_socket.py）は実装済み・投稿する側が無かった穴を埋めた。
+対象：`~/.vivid-relay/intake_notify.py`（新規270行・受付シートへは1バイトも書かない）
+
+ステラ検査（cross-check）で「載せてよい（条件つき）」。指摘2点（想定外例外で心拍が
+一度も出ない／state保存が全件成功後の一括でクラッシュ時に消える）を修正し、
+モックで3点（例外時心拍・state即時保存・同時実行ロック）とも実測で確認済み。
+
+**★本番投稿(--run)はまだ一度も実行していない。有璽氏の承認後に実行する。**
+cron登録・launchctl load も未実施（手動--runでの初回確認が先）。
+実測（2026-08-24時点）：対象3件（受付シート27〜29行目）。
+
+### 【ピタゴラス 2026-08-23】Slack Socket Mode 常駐（受付シート確認ボタン受信）── 実装・接続実測まで完了
+
+有璽氏依頼「Slackのボタンを受ける常駐プロセスを作る」。#01_営業部門-ai確認依頼
+（`C0BRYFKG153`）で押されたボタンを受け、受付シートの「確認」欄へ書く仕組み。
+
+```
+成果物   ~/.vivid-relay/slack_socket.py            標準ライブラリのみ（RFC6455自前実装）
+          ~/.vivid-relay/com.vivid.slack-socket.plist  launchd常駐設定・★未load
+実測     apps.connections.open → wss URL取得 OK／自前WebSocketでhello受信 OK
+          launchd経由のdry-run（テスト用ラベルで1回・削除済み）でもTCC問題なし
+```
+
+★指示文は確認欄を「Y列」としていたが、実測（受付シートのヘッダー行）は Z列
+（Y列＝照合結果）。見出し名で位置を探すので列移動があっても壊れない
+（intake_register.py と同じ流儀に合わせた）。
+
+★本番投稿・launchctl load はまだしていない。実物のボタンが無く受信テストができない、
+かつ⚙️レジスタ未登録・ステラ（コード検査役）のレビュー未実施のため。
+ビビが投稿の承認を取ったあと、①ステラのコードレビュー②レジスタ登録③launchctl load
+の順を推奨。
+
+★slack_inbox.py（DM経由・5分ポーリング・claude CLIへ指示を流す）とは別プロセス・
+別用途（ボタンinteractivity専用）。`reference_slack_tokens_and_socket_mode.md` の
+「Socket Mode化は新規でなく置換」はDM指示実行の話で、本件はそれとは独立。
+
+### 【モルガンズ 2026-08-23】PR TIMES下書き ── 完了（配信はしていない）
+
+有璽氏指示「PR TIMESへの投稿下書きを進めたい」。成果物 →
+`scratchpad/prtimes-submission-20260823.md`（入力欄別の完成形ドラフト2本＋未確認事項リスト）。
+
+- **実物ドラフト（scratchpad/press-release-drafts.html）はMac miniに無い。** scratchpadごと
+  存在しない＝揮発済み。控えのArtifact URLも認証壁でWebFetch不可。一次資料PDF2点もDownloadsに無い。
+  → `memory/project_npo_press_releases_202608.md` の確定事実を一次情報として新規に組み立てた。
+  **もしMacBook側に実物HTMLが残っていれば、文言の突合のため一度共有してほしい。**
+- 曜日矛盾1件を暦計算で解消（7/25=土・26=日で確定）、配信日の曜日ラベル誤記1件を発見・修正。
+- **★新規の重大論点**：ウェビナー案件（8/25配信予定）は、NPOがこの案件で
+  主催／共催／後援／告知協力のどれを担ったか資料に無い。テーマ「福祉業界の業務改革」・
+  ゲスト田村有璽個人で、子ども支援団体NPOとの接続点が読み取れない。**本文の②④は作文せず空けた。**
+  配信前に確認が要る。詳細は memory 側に追記済み。
+- 配信・投稿は一切していない（下書き作成のみ）。
+
+### 【ビビ 2026-08-23 進行中】有璽氏の6件回答を受けた着手
+
+```
+① 個人事業主22件 → 顧客種別「個人（事業主）」    🔴つる=不可。書いていない。有璽氏へ差し戻し
+③ B-0008 SWELL SOCITY へ B-0380 を統合          🔴つる=不可。★8/3にB-0380側で決着済＝逆転指示
+② notion_backfill.py の毎朝実行                  ✅登録済み。★残＝初回の無人発火を1回見る
+⑥ PR TIMES 投稿下書き2本                        ✅完成（配信していない）。★ウェビナーの座組が未確認
+④ GAS 54v3 の無効化                              手順を有璽氏へ提示（Apps Script側＝人の手）
+⑤ 名刺の取得元フォルダ設置                        ★不要だった。既に在る（下記）
+```
+
+**★①③はどちらも台帳へ1文字も書いていない。** つるの判定はどちらも「不可」。
+
+```
+③ の真相   00_企業マスタの備考に既に書いてある
+           B-0008「社内顧客ID 380 へ統合済み（2026-08-03）」
+           B-0380「社内顧客ID 8 を統合（2026-08-03）」  ＝★方向が逆で既に決着していた
+           kintone登録済(レコード14)・01の詳細・Notionの実体は全部 B-0380 側
+           ★このブロックが以前に書いていた「Notion側にはB-0008が入っている」は誤り
+① の真相   「個人事業主22件」は corp_number_missing_classified.csv の分類A。
+           これは"国税庁データに無い理由の推測"であって個人事業主だと確認した記録ではない
+           15件は既に「法人」＝推測での上書きになる／3件は個人(toC)の可能性を排除できない
+           B-0408 だけは本人が会社名欄に「(個人事業主)」と明記＝単独なら反映可
+```
+
+**★⑤は残件ではなかった（2026-08-23 実測）** ── 受付フォームが 2026-08-08 に
+`📥 営業 受付フォーム (File responses)/名刺データ (File responses)` を自動生成済み。
+ID `19w4hqMOBVxKopvOZNNoSSQajcMQNkJboZSa2-PZjuKvO_4txKhDz6Vjzm6Y7X-PZNNlQoNou`。
+**中身は0件**＝営業が名刺を添付していないだけ。残るのはバッチ本体（未実装）と営業への案内（要承認）。
+
+**★④の押す場所を特定した** ── 54v3 の実体は Apps Script の `intakeMigrateRun2()`
+（識別子サフィックス `_M2`／ドライランは `intakeMigrateDry2()`）。原本は Drive
+`1mmJiOYQ9ZxYtdCmjqInu9e7CTiCIQ7whz9AQFpx6i6Y`（マイドライブ「スクリプト原本」内）。
+
+### 【ビビ 2026-08-23】稼働ダッシュボード ── 画面まで完成・**定期生成は未登録**
+
+有璽氏の依頼「エージェント/AIがどう動いているかを一元で、ブラウザで見に行けるように」。
+
+```
+データ層   ~/.vivid-relay/dashboard_data.py    リリス作成（09:21・読むだけ）
+画面       ~/.vivid-relay/dashboard_build.py   ビビ作成 → dashboard.html（51KB・実測描画OK）
+開く       python3 ~/.vivid-relay/dashboard_build.py
+```
+
+**【ピタゴラス 2026-08-23 12:16】数字の正本へ格上げ ── 実装・実測済み。HTML側は未着手**
+
+有璽氏の設計指示「各エージェントが数字をどこか統一した場所へ集約し、読むだけにする」を受け、
+新しい器は作らず dashboard_data.py / dashboard_data.json を格上げした。
+
+```
+date_utils.py   ~/.vivid-relay/ 新設。norm_date()/date_pattern() の共通部品
+                 ★置き場所はminiの~/.vivid-relay/（理由はdocstring参照。Sheets認証もmini限定のため）
+                 既存3本(ledger_report.py/intake_register.py/watch_external.py)は
+                 スコープ外につき未置換（後方互換）。次に触る人はここへ寄せること
+facts.py        ~/.vivid-relay/ 新設。共通の読み口。from facts import get; get('ledger.companies')
+                 dashboard_data.json の generated_at から24h超で stale:true を返す
+dashboard_data.py  build_ledger() を追加（読むだけ・書き込み一切なし）。
+                 companies/customer_detail/individuals/relation_follow/activity_log/
+                 deals(welfare/subsidy/toc)/companies_with_corp_no・without/
+                 date_format_variants/intake_needs_confirmation の10項目を
+                 {"value","how","as_of"} の3点セットで格納。実測値は本文参照
+```
+
+実測（2026-08-23 12:16）：会社437社（法人番号あり270・なし167）／01=383／02=75／
+08=40／40=27／10=1・20=0・30=0／受付の確認待ち3行／日付書式は3種類混在
+（作成日に "YYYY/M/D" "YYYY/M/D+時刻" "YYYY-MM-DD+時刻" が同居）。
+
+**★残 1点**：`dashboard_data.py --beat` 実行時「レジスタに行が無く新規作成しない」の警告あり
+（既存仕様どおり・元から未登録）。定期生成・レジスタ登録は上のビビのブロックと同じ「未登録」。
+**★MEMORY.md `feedback_never_write_an_unmeasured_number.md` は器の名前を「facts.json」と
+書いているが、実装した正本は dashboard_data.json（facts.py は読み口のみ）。次に読む人は注意。**
+**★コード検査はステラ（dev-producer）配下へ未依頼。cross-check型に従い、自分（作った本人）
+では検査していない。**
+
+**読むだけ。台帳・Notion・kintoneへは1文字も書かない。外部CDNも使わない。**
+
+- **残①** 定期生成（daily_jobs.conf ＋⚙️レジスタ登録＋ドーベルマン検査）＝有璽氏の判断待ち
+- **残②** MacBook へ2本をコピー（`~/.vivid-relay/` は git 管理外＝自動で届かない）
+- 詳細 → `memory/project_ops_dashboard.md`
+
 ### ★AIがスプレッドシートを直接触れるようになった（2026-08-19）
 
 **OAuthで繋がった。GASを人が貼る運用は終わり。** 認証は `~/.vivid-relay/google_token.json`
@@ -510,8 +646,9 @@ mini側は 2026-08-13 に投入済み。リポジトリ外の cwd で新規セ�
 
 ### 観測できた進行状況
 
-- `check.sh` が赤 … 項目6のみ。`core/_MOVED.md` と `plans/polymorphic-hopping-taco.md` が repo未収録
-  （mini側は触っていません。commit 時点でも赤のままです）
+- ~~`check.sh` が赤 … 項目6のみ~~ → **✅解消（2026-08-23 つる）。いま全緑。**
+  `~/.claude/core/{_MOVED,_FROM_MACBOOK}.md` を `_archive/claude-local-2026-08-13/` へ収録した
+  （消していない・mini の実体もそのまま）。★10日間ずっと赤で、慢性化した赤はゲートにならない
 - クローバー博士（researcher）を11体目として追加済み（コミット `5253d32`）
 
 ---
