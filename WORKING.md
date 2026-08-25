@@ -252,6 +252,14 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ビビ / MacBook 2026-08-26】リリース二次展開 ── 中断・明日再開（有璽氏の指示）**
+  - **書いた**: Notion📱発信アカウント台帳（列3・行6を追加／既存IG3行を補完）
+    ／ `memory/` の feedback・reference 数本 ／ `scratchpad/press-secondary-20260826/`
+  - **読んだだけ**: Canva（候補4案を生成したが**アカウントには保存していない**）
+  - **★同じ対象に手をつけないでください**: 📱発信アカウント台帳／PR TIMES release_id=4,5
+  - 明日の再開点4つは `memory/project_npo_press_releases_202608.md` の冒頭
+  - 原稿ページ https://claude.ai/code/artifact/125abd35-6128-40c3-9b1a-c638d5617a8b
+
 - **【ビビ / MacBook 2026-08-25】個人タスク・ルーティンの型づくり（有璽氏と対話中）**
   - **書いた**: `memory/project_personal_task_system.md` ／ `memory/reference_calendar_color_taxonomy.md`（新規）
     ／ `memory/feedback_delegate_the_check_to_ai.md`（新規） ／ `memory/INDEX_担当と案件.md` の2行
