@@ -169,27 +169,21 @@ EOF
 # ④' フックの自動導入（★人に1行貼らせない）
 #    2026-08-20 有璽氏「Mac miniはコピペできない。ここにコード貼っても俺は触れない」
 #    → 「この1行を貼ってください」という渡し方そのものをやめる。
-#      同期のたびに、入っていなければ入れる。入っていれば何もしない（冪等）。
+#
+#    ★2026-08-26 改訂。以前はここで「入れ直すべきか」を自前で判定していたが、
+#      見ていたのは hook_inject_memory.py の有無だけだった。
+#      ＝ **新しいフックを SPEC へ足しても、この条件では走らない。**
+#      実際 2026-08-25 に足した Stop フックは、この経路では一度も配られなかった。
+#      → 判定を二重に持つのをやめ、無条件で呼ぶ。setup_hooks.sh 側が冪等で、
+#        変更が無ければ1バイトも書かず、JSONとして読めなければ触らない。
+#      → memory/reference_fix_where_git_reaches.md
 SETUP="$HOME/vivid-ai-hq/bin/setup_hooks.sh"
-SELFCHECK="$HOME/.vivid-relay/hook_selfcheck.py"
-if [ -x "$SETUP" ]; then
-  NEED=0
-  # 実体が無い / settings.json に登録が無い / 索引が無い のどれかなら入れ直す
-  [ -f "$HOME/.vivid-relay/hook_inject_memory.py" ] || NEED=1
-  [ -f "$HOME/.vivid-relay/landmines.json" ] || NEED=1
-  if [ -f "$HOME/.claude/settings.json" ]; then
-    /usr/bin/grep -q "hook_inject_memory.py" "$HOME/.claude/settings.json" || NEED=1
-  else
-    NEED=1
-  fi
-  # 実体が repo より古ければ入れ直す（フックを更新したら全機へ広がる）
-  if [ -f "$HOME/.vivid-relay/hook_inject_memory.py" ] &&
-     [ "$HOME/vivid-ai-hq/bin/hooks/hook_inject_memory.py" -nt "$HOME/.vivid-relay/hook_inject_memory.py" ]; then
-    NEED=1
-  fi
-  if [ "$NEED" = "1" ]; then
-    bash "$SETUP" >> "$HOME/Library/Logs/vivid-hooks-setup.log" 2>&1 || true
-    echo "[$(date '+%Y-%m-%d %H:%M')] フックを導入/更新した" >> "$HOME/Library/Logs/vivid-hooks-setup.log"
+if [ -f "$SETUP" ]; then
+  OUT_SETUP="$(/bin/bash "$SETUP" 2>&1)"
+  if [ -n "$OUT_SETUP" ]; then
+    {
+      echo "[$(date '+%Y-%m-%d %H:%M')] ${OUT_SETUP}"
+    } >> "$HOME/Library/Logs/vivid-hooks-setup.log"
   fi
 fi
 
