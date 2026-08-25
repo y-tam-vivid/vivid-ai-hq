@@ -34,20 +34,39 @@ metadata:
 アカウント別のデザインを決めたら、**ここを埋める**。別表を作ると二重管理になる。
 collection://3f0202d1-2352-4695-a399-626705eb9014
 
-## 着手できる条件（2026-08-25 実測。どれか1つが要る）
+## 作る場所（2026-08-26 実測）
 
 ```
-Manus            MCPは ✔Connected。★APIキーが失効（HTTP 401 "api key has been
-                 deleted or does not exist"）。保守明けを待つ話ではない。
-                 ★人が要る：Manus Web → 設定 → API Integration で再発行し
-                 ~/.config/manus/api_key を差し替える ── これが最短
-ChatGPT / OpenAI ★連携はゼロ。MCP登録なし・~/.config になし・環境変数なし
-Canva            ✔Connected。ただし★無料プラン。
-                 ブランドキットもブランドテンプレートも有料機能で叩けない
-                 （list-brand-kits は空配列、search-brand-templates は
-                  "requires a Canva paid plan" を返す＝2経路で確認）
-Figma / Gamma    ✔Connected。画像量産の用途では未検証
+Canva     ★これが本命。generate-design で instagram_post が実際に生成できた
+          接続先は有璽氏本人のアカウント（「ふくち。グループ 事業計画」等が見える）
+          ★1回で4案の候補が返る。保存は create-design-from-candidate を呼んだ時だけ
+            ＝候補を出すところまでは可逆
+          ★そのままでは使えない。4案のうち使えたのは1案で、英字のプレースホルダ
+            （"Warm & Inviting Children's Event Brand"）が残っていた。
+            ＝1案選んで edit-design で直す工程が要る。「投げて終わり」にはならない
+Manus     MCPは ✔Connected。★APIキーが失効（HTTP 401 "api key has been
+          deleted or does not exist"）。保守明けを待つ話ではない。
+          Manus Web → 設定 → API Integration で再発行 → ~/.config/manus/api_key
+OpenAI    ★APIキーは無い（MCP登録なし・~/.config になし・環境変数なし）。
+          ★ChatGPT の有料契約とAPIキーは別物。Plusを持っていてもAPIは使えず、
+            platform.openai.com で別に発行し従量課金を登録する必要がある
 ```
 
-**★道具の可否はここに書き溜めない**（腐る）→ [[reference_tool_access_map]]。
-上は「この日そうだった」という実測の記録であって、次に使うときは必ず取りに行く。
+**★ブランドテンプレート機能は使えない**（`search-brand-templates` が
+"requires a Canva paid plan" を返す＝Teams以上の機能）。**だが要らない。**
+アカウントごとの雛形は、Canvaで1枚ずつ作って `copy-design` で複製すれば同じことができる。
+
+## ★この節で1度間違えた（2026-08-25 → 08-26 訂正）
+
+**エラー文1本で「Canvaは無料プラン」と断定し、有璽氏の訂正で覆った。**
+実際は有料アカウントで、生成は通った。
+
+```
+見たもの   search-brand-templates → "requires a Canva paid plan"
+やった判断  ＝このアカウントは無料プラン
+正しい読み  ＝この機能が Teams 以上。プランの有無とは別の話
+やるべきだった  生成そのものを1回叩く（それが目的の機能なのだから）
+```
+
+**★エラー文は「その機能が使えない理由」しか語らない。アカウント全体の能力を語らない。**
+→ [[feedback_one_route_is_not_verification]] ／ 能力を書き溜めない話は [[reference_tool_access_map]]
