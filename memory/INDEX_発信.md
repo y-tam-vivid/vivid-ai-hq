@@ -25,3 +25,4 @@
 - [PR TIMESエディタの地雷](reference_prtimes_editor_behaviors.md) — ★行頭「1.」で本文全体が番号リスト化し解除不能→STEP1/①②③で書く。保存=下書き
 - [PR TIMES本文の体裁](feedback_prtimes_style_conventions.md) — タイトルは内容が先・団体名は「／」で末尾／太字は■見出しだけ／番号は(1)(2)(3)
 - [tane.は法人ではない](reference_tane_brand.md) — ふくち。グループの子ども・親子向けイベント企画の総称。★リリースの主体に使ってよいかは未決・勝手に名義にしない
+- [グループ5法人のブログとCMS](reference_group_blogs_and_cms.md) — **ILIFE/ビビッド/オレンジワークス=WordPress・ふくち。=STUDIO・NPO=Jimdo**。★ビビッドはwww付きが正／原稿はCMSごとに形を変えて渡す

@@ -76,3 +76,24 @@ memory     毎ターン届くのは索引1行だけ。本文は関連しそう�
 
 関連 [[feedback_stop_asking_just_do_it]] [[feedback_one_route_is_not_verification]]
 [[feedback_use_the_team_not_alone]] [[reference_sheets_number_format_order]]
+
+## ★Stop フックを入れた ── ターンの終わりで捕まえる（2026-08-25）
+
+有璽氏「**途中で止まったりするんだよね、このオペレーションが。確実に回るようにしてほしい**」。
+「離席宣言」「区切りで書き戻す」は**どちらもAIの規律に依存**していて、実際に落ちていた。
+
+```
+実体    bin/hooks/hook_session_writeback.py（repo）／ ~/.vivid-relay/ へ複製して settings.json の Stop へ登録
+条件    memory/ ・WORKING.md ・.claude/ ・bin/ の未コミットのうち
+        ★最終更新から10分以上たっているものがあれば exit 2 で差し戻す
+        （＝いま書いている最中・他セッションが書いた直後では鳴らない）
+無限ループ  stop_hook_active が true なら黙って通す。★差し戻しは1ターンに1回まで
+失敗時   フック自身が例外を出しても exit 0。★フックの不具合でセッションを止めない
+```
+
+- **実測（2026-08-25）**: ①未コミット2件がある状態 → exit 2 で一覧と手順を返した
+  ②`stop_hook_active=true` → exit 0 で黙った。**両方向を確かめてから登録した。**
+- **★settings.json は機械ローカル（git外）。** MacBook にだけ入れた状態。
+  **Mac mini には未登録**（`~/.vivid-relay/` への複製と `~/.claude/settings.json` への追記が要る）
+  → [[reference_fix_where_git_reaches]]（届かない側は偽陽性を出す）。
+- 手順の正本 → [[feedback_write_back_before_you_go]]

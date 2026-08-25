@@ -14,7 +14,8 @@ skills:
 
 ```
 道具    ~/vivid-ai-hq/bin/memory_audit.py --beat   ★読むだけ・何も書かない
-実行    Mac mini 毎日09:20（bin/daily_jobs.conf）／手で走らせてもよい
+実行    Mac mini 1日5回 09:20/12:20/15:20/18:20/21:20（bin/daily_jobs.conf）／手で走らせてもよい
+        ★2026-08-25 有璽氏「メモリの更新頻度は高い。毎日では遅い。2〜3時間に一度は最低必要」
 出口    ⚙️自動処理レジスタ「記録の巡回（memory_audit.py）」へ心拍
 ```
 
