@@ -158,3 +158,33 @@ CLI に deploymentType を all にする口が無い。ダッシュボードで�
   「> ssoProtection: {...}」（**stderr**）で出る（Node 20 と 24 の差）。`2>/dev/null` にしていたため
   **mini では判定そのものが死んでいた**（安全側には倒れていたが、保護をONにしても永久に
   中身が載らない状態だった）→ [[feedback_one_route_is_not_verification]]
+
+## ★塞げた ── 無料プランのまま（2026-08-25）
+
+有璽氏「All Deployments は**有料プランのみ**のようです。何かそれ以外の方法は？」
+
+**Vercel Edge Middleware の Basic 認証で解決した。無料枠で動く。**
+
+```
+実体     web/kadoban/middleware.js（repo で管理し、deploy 時に site へコピー）
+合言葉   Vercel の環境変数 KADOBAN_USER / KADOBAN_PASS（暗号化保存）
+         ★ソースにも memory にも書かない → reference_plaintext_credentials_handling
+         ★環境変数が無いときは 503 で閉じる（設定漏れで全公開になるのを防ぐ）
+実測     認証なし → HTTP 401（WWW-Authenticate: Basic）
+         認証あり → HTTP 200・4章すべて表示（自動処理53／エージェント13／営業の台帳／人待ち2）
+         両機（MacBook・Mac mini）で同じ結果
+```
+
+### 守りを2段にした（★「かかっているつもり」を作らない）
+
+```
+出す前    middleware.js があるか ／ 環境変数が2本揃っているか
+          → 欠けていれば中身を載せず、プレースホルダを出して★警告の心拍
+出した後  ★素の GET が 401 を返すか
+          → 401でなければ自動でプレースホルダへ差し戻し、★失敗の心拍を打つ
+```
+
+**＝ 認証が壊れた日に、中身が晒されたまま放置されることが構造的に起きない。**
+
+**これで①は完了。**有璽氏の操作は残っていない。2時間おきに数字が更新される。
+`https://fukuchi-kadoban.vercel.app` を開くとブラウザが合言葉を聞いてくる。

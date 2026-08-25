@@ -10,7 +10,7 @@
 - [カレンダー テンプレ挿入](project_calendar_template_autofill.md) — GASで自動挿入。タイトル【種別】で振り分け＝命名ルールが前提
 - [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入する。触ったファイルを明示・commitは束ねる側が打つ
 - [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない。遅れはSYNC_STATUS.mdへ書く
-- [直した所は配られるか](reference_fix_where_git_reaches.md) — git配下は両機へ自動／~/.vivid-relayは手作業。★届かない側は偽陽性を出す
+- [直した所は配られるか](reference_fix_where_git_reaches.md) — ★「1回だけ実行」の手順は必ず忘れられる。setup_hooks.shをvivid-syncから呼んで自動配布にする
 - [crontabは書けない](reference_cron_write_blocked_in_session.md) — ★日次ジョブの正本はbin/daily_jobs.conf。8/23も未解消／ssh越しなら書ける
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
