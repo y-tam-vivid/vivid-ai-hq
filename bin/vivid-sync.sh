@@ -90,6 +90,20 @@ if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -gt 0 ] && [ "$DIRTY" -eq 0 ]; then
   if git merge --ff-only origin/main >/dev/null 2>&1; then
     MERGED="yes"
     BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
+  elif [ "$AHEAD" -gt 0 ]; then
+    # ★枝分かれ（behind>0 かつ ahead>0）は --ff-only では絶対に解けない。
+    #   2026-08-26 実害: ①' の自動確定が commit した直後に他機が先へ進み、
+    #   mini が behind=11 / ahead=1 で固定。push も merge もできず**11件遅れたまま孤立**した。
+    #   ＝ 自動確定を足したことで、自力で解けない状態に自分から入る道ができていた。
+    #   → 汚れていない（DIRTY=0）ときに限り、通常のマージを試す。
+    #     ★衝突したら abort して🔴のまま残す（勝手に片方を捨てない）。人が両方を残して解く。
+    if git merge --no-edit origin/main >/dev/null 2>&1; then
+      MERGED="yes"
+      BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
+      AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+    else
+      git merge --abort >/dev/null 2>&1 || true
+    fi
   fi
 fi
 

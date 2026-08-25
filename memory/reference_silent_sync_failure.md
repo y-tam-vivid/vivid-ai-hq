@@ -53,3 +53,26 @@ mini は6件遅れの WORKING.md / MEMORY.md を「現在地」として読ん�
 他の全自動処理の土台なのに、監視の外にあった。→ [[project_automation_register]]
 
 関連: [[reference_dangerous_entrypoints]] [[reference_silent_rejection_backlog]]
+
+## ★枝分かれは `--ff-only` では絶対に解けない（2026-08-26 実害）
+
+```
+2026-08-25 夜  autocommit_stale.py が mini で発火し、放置1本を commit した（＝ahead=1）
+その後         MacBook が先へ進み origin が伸びた（＝behind=11）
+2026-08-26 朝  mini は behind=11 / ahead=1 の枝分かれ。
+               merge --ff-only は失敗し、push も behind>0 で送れない
+               ＝ ★11件遅れたまま孤立し、自力では永久に回復しない
+```
+
+**Why:** 「取り込みは失敗してよい」という設計は正しいが、**失敗し続ける状態**が生まれると別問題になる。
+`--ff-only` は片方向にしか進めない。**自動確定（autocommit）を足したことで、
+自分から枝分かれへ入る道ができていた**（commit はするが push は behind=0 のときだけ、という非対称）。
+
+**How to apply:**
+
+- **★汚れていない（未コミット0）ときに限り、通常の merge を試す。**
+  衝突したら `merge --abort` して🔴のまま残す。**勝手に片方を捨てない。**
+- **★「失敗してよい設計」には、必ず「失敗が固定化しないか」を確かめる。**
+  1回の失敗は許容でも、**同じ理由で永久に失敗し続けるなら、それは設計の穴。**
+- 枝分かれかどうかは `git rev-list --left-right --count origin/main...HEAD` の**両方の数**で見る。
+  behind だけを見ていると「遅れている」としか分からず、**解けない遅れ**だと気づけない。
