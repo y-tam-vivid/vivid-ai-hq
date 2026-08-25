@@ -71,3 +71,19 @@ DBの行のプロパティ    ★fetch のページ表示ではレンダリン�
 **逆向きの注意** ── 日本語が本当に化ける事故（`\u` エスケープ）は実在する。
 どちらか分からないときは、**2つの読み方で一致するかを見る**。
 → [[reference_unicode_escape_kanji_swap]]
+
+## ★ファイル添付：MCPのアップロードURLは Cloudflare に弾かれる（2026-08-22 実測）
+
+`notion-create-file-upload` は `upload_url` を返すが、**そこへ curl で multipart POST すると
+Cloudflare の "Attention Required" が返る**（User-Agent を付けても同じ。2回とも同じ結果）。
+
+```
+使える   notion-create-attachment の content 引数（UTF-8テキストを直接渡す。200KiBまで）
+         ★ただしファイル全文をツール引数に載せる＝そのぶんトークンを消費する
+使える   source_url（公開HTTPSから Notion がダウンロードする。リダイレクト不可）
+使えない upload_url へのPOST（Cloudflare）
+```
+
+**大きめの生成物は、先に公開先（Drive等）へ置いて `source_url` で渡すのが素直。**
+「生成物はNotionへ添付」を守るときも、**正本の置き場が決まる前に添付しない**
+（決まる前に貼ると、後から二重管理になる）。
