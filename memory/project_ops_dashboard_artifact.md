@@ -115,3 +115,46 @@ cron でできない   Artifact への publish                              ← 
 | ③ いまのまま | セッションが居るときに publish | **また止まる** |
 
 **★有璽氏の判断待ち。**HTMLは2時間おきに最新化されているので、①へ切り替えれば即日つながる。
+
+## ★①Vercel を実行した（2026-08-25 有璽氏「①を実行して」）
+
+```
+公開先   https://fukuchi-kadoban.vercel.app   （プロジェクト fukuchi-kadoban / team fuku-chi-vivid）
+経路     dashboard_data.py → dashboard_build.py → dashboard_history.py → kadoban_deploy.sh
+定期     bin/daily_jobs.conf の2時間おき8回（08:10〜22:10）の各行へ結線済み
+道具     Vercel 認証を mini へ配布し whoami を実測（両機で動く）
+         ★mini は node/npx が /usr/local/bin にある。cron の最小PATHでは見つからないので
+           スクリプト冒頭で PATH を補強した
+```
+
+### 🔴 いま中身は載せていない ── 固定URLが誰でも読めるため
+
+**実測（2026-08-25）**
+
+```
+vercel project protection enable --sso  → deploymentType は
+  "prod_deployment_urls_and_all_previews" にしかならない
+  ＝ deployment 固有URL（…-5n22jywnn-…）と preview は SSO で塞がる（302を実測）
+  ＝ ★固定URL <project>.vercel.app は塞がらない（素のGETで HTTP 200 を実測）
+CLI に deploymentType を all にする口が無い。ダッシュボードでしか変えられない
+```
+
+稼働盤の中身は**社内の運用実態そのもの**（人名・Slackチャンネル名・会社数・仕組みの穴・DBのID）。
+一度 200 で公開された事実を確認したので、**すぐに「準備中」のプレースホルダへ差し替えた。**
+
+- **`bin/kadoban_deploy.sh` は「出す前に出していいかを確かめる」設計にした。**
+  `deploymentType=all` を確認できなければ本番の中身を載せず、プレースホルダを出して
+  レジスタへ**警告**の心拍を打つ。**黙って公開しない。**判定は両方向を実測済み
+  （all→載せる／prod_…→載せない／空→載せない）。
+- **★人が要る（押す場所）**
+  https://vercel.com/fuku-chi-vivid/fukuchi-kadoban/settings/deployment-protection
+  → **Vercel Authentication** の Standard Protection を **All Deployments** にして Save。
+  **押した次の実行（2時間以内）から、自動で本番の中身が載る。**こちらの作業は残っていない。
+
+### 踏んだもの（同じ型を繰り返さないため）
+
+- **bash 3.2 の全角直後の変数**を7か所。`${var}` で必ず区切る → [[reference_bash32_multibyte_unbound_var]]
+- **1経路で断定した**: 保護の判定が MacBook では JSON（stdout）、mini では
+  「> ssoProtection: {...}」（**stderr**）で出る（Node 20 と 24 の差）。`2>/dev/null` にしていたため
+  **mini では判定そのものが死んでいた**（安全側には倒れていたが、保護をONにしても永久に
+  中身が載らない状態だった）→ [[feedback_one_route_is_not_verification]]

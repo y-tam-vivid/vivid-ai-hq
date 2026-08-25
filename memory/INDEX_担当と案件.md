@@ -8,7 +8,8 @@
 
 - [vivid-global.comのDNS](reference_vivid_dns_sakura.md) — Webとさくら／レジストラはGMO。★当方に認証情報が無く変更は実行できない
 - [ビビッドの対外表現](reference_vivid_sales_contact.md) — 連絡先consul_vi@／CI赤#C5000A・黒#221714／ロゴ素材の在り処
-- [個人タスクの一元化](project_personal_task_system.md) — ★順番厳守=①型(日週月年)②可視化③溢れが出る④そこで減らす/移譲⑤マニュアル。減らす議論はステイ／117件はxlsxのまま
+- [個人タスクの一元化](project_personal_task_system.md) — 型の第1版=71件 週41.8h（都度の頻度取得済）／★突合で現場業務2件が申告2.7倍・要確認／減らす議論はステイ
+- [チェックもAIへ渡す](feedback_delegate_the_check_to_ai.md) — ★移譲の出口は3つ。作業を人へ渡してもチェックが有璽氏なら移譲できていない。全業務共通
 - [カレンダーの色分類](reference_calendar_color_taxonomy.md) — ラベル9種で種別／★トマトだけ「緊急」の軸／算入はaccepted のみ＝仕事週39h・事務作業23%が単独最大
 - [朝の要対応に切る口が無い](feedback_briefing_needs_an_off_switch.md) — 除外ルールページを新設し8/22から様子見中。14日超は消さず畳む
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
