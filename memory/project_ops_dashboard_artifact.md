@@ -68,3 +68,50 @@ publish できるのは Claude Code のセッションだけ ―― つまり**�
   （有効オフ）。定期化するならここを有効にし、ドーベルマンの検査を通す。
 
 関連: [[project_automation_register]] [[reference_ran_is_not_succeeded]]
+
+## ★A案で決着（2026-08-25 有璽氏承認）── 実装・公開済み
+
+> 「A案で良いです。**過去のやつは消えますか？** 設計上、今のものもそうですし、**今後含めて遡れますか？**」
+
+**やったこと**
+
+```
+dashboard_build.py  「営業の台帳 ── いまどうなっているか」の章を追加（mini・バックアップ取得済み
+                     dashboard_build.py.bak_20260825-2205）。★既存の章・見た目には触っていない
+                     出すのは dashboard_data.json の実測値だけ。how をそのまま「数え方」として見せる
+公開                 Artifact 98acdc66 を更新（4章＝自動処理53/エージェント13/営業の台帳/人待ち2）
+                     ★公開中だった手書き版の「営業の台帳」は失わずに移行できた
+履歴                 bin/dashboard_history.py 新設 → data/dashboard_history/YYYY-MM-DD.json.gz
+定期                 bin/daily_jobs.conf へ2時間おき8回（08:10〜22:10）。data→build→history
+```
+
+### ★★答え ── 過去は「消えていた」。今日から残る
+
+```
+これまで   dashboard_data.json も dashboard.html も毎回まるごと上書き。履歴処理は0件（実測）
+           ＝ 8/23・8/24 の数字はもうどこにも無い
+           ただし Artifact 側の版はサーバーに残っていた（8/23版の全文を取得できたのが証拠）
+これから   数字   data/dashboard_history/YYYY-MM-DD.json.gz（git・両機・日ごと最新1本・消さない）
+           画面   Artifact のバージョン（publish のたびに積まれる。label が版の名前）
+           差分   python3 bin/dashboard_history.py --diff で前日との変化だけ出る（実測済み）
+```
+
+### 🔴 満たせていないこと ── URLの自動更新はできない（2026-08-25 実測）
+
+**mini のヘッドレス `claude -p` には Artifact ツールが存在しない。**
+`--allowedTools "Artifact"` を付けても、ツール一覧に出てこないことを実測した。
+
+```
+cron でできる     数字を集める → HTMLを作る → その日の数字を残す      ← 2時間おきで稼働
+cron でできない   Artifact への publish                              ← ★ここだけ人/セッション依存
+```
+
+**＝「2時間おきにURLが更新される」は、いまの経路では実現できない。** 代替は3つ。
+
+| 案 | 中身 | 効き目 |
+|---|---|---|
+| ① Vercel へ静的公開 | 既に `gamemarke.vivid-global.com` で使っている経路。cron から deploy できる | **URLは変わるが完全自動になる** |
+| ② Notion ページへ要点を書く | cron から書ける。ただし表止まり（画面は再現できない） | 見た目が落ちる |
+| ③ いまのまま | セッションが居るときに publish | **また止まる** |
+
+**★有璽氏の判断待ち。**HTMLは2時間おきに最新化されているので、①へ切り替えれば即日つながる。
