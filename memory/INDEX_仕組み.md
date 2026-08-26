@@ -37,4 +37,4 @@
 - [本数で切ると希少な版が消える](reference_retention_by_count_deletes_the_wrong_ones.md) — 残す単位は日ごと最新1本
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
-- [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／形式外valueを3回弾き人に失敗が見えている(発信元未特定)／貼った鍵のlog平文は未revoke
+- [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／形式外valueを3回弾き人に失敗が見えている(発信元未特定)／貼った鍵のlog平文は未revoke／**★scopeは「足してSave」では効かない。再インストールまでが1セット。実測は auth.test の x-oauth-scopes ヘッダ(本文には出ない)**

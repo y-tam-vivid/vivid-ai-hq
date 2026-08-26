@@ -35,3 +35,4 @@
 - [kintone CSV→Notionミラー](project_kintone_csv_to_notion_mirror.md) — 地雷=指数表記/継続行/cp932化け→作成後にSELECT突合で検証
 - [Sheets書き込みの暗黙挙動11点](reference_sheets_number_format_order.md) — 器を増やしても保護・入力規則は付いてこない
 - [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ★商材名は出さない。訴求A/B/Cテスト・0円が引き／LP作成済・ホスト先未定
+- [受付確認をSlack返信で受ける](project_intake_slack_reply.md) — 氏名/IDで解決・一意でなければ聞き返す。★残=Slack Appの再インストール1手だけ(①〜③完了・8/26実測でscopeは未反映)

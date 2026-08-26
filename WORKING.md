@@ -36,6 +36,21 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ピタゴラス 2026-08-26】受付シート確認のSlack返信対応 ── 実装・ステラ検査済。残＝Slack App設定（有璽氏）
+
+対象は `~/.vivid-relay/{intake_notify.py, slack_socket.py, intake_match.py}`。
+実装完了・ステラ検査「載せてよい（条件つき）」。台帳（00/01/02/40/08）へは書いていない
+（ボタン経路と共通の受付シート書き戻しのみ）。詳細 `memory/project_intake_slack_reply.md`。
+
+**★残1点（有璽氏の操作待ち・2026-08-26 15:5x 実測で更新）**：有璽氏より「③まで完了済み」。
+**残るのは④「再インストール」だけ。** scope を足して Save しても発行済みトークンには反映されず、
+実測でも `x-oauth-scopes` は旧のまま（`channels:history` 無し）。
+→ https://api.slack.com/apps/A0ASVGXNXQF/install-on-team
+
+**完了後、常駐プロセス（`com.vivid.slack-socket`）の再起動が要る**
+（次にこのファイルを見た人が代行してよい：`launchctl kickstart -k gui/$(id -u)/com.vivid.slack-socket`）。
+**★再インストールで xoxb- が変わったら `~/.vivid-relay/config.env` の差し替えまでが1セット。**
+
 ### 【モルガンズ 2026-08-23】PR TIMES下書き ── 完了（配信はしていない）
 
 有璽氏指示「PR TIMESへの投稿下書きを進めたい」。成果物 →

@@ -165,6 +165,26 @@ Socket Mode は **そのアプリに届く全てのインタラクションを1�
   → [[reference_silent_failure_kills_adoption]]。どの機能のボタンかを特定してから、
   無視するのか受けるのかを決める。**先に受け口を広げない。**
 
+### ★Scope は「足して Save」では効かない ── 再インストールまでが1セット（2026-08-26 実測）
+
+**画面上は設定済みに見えるのに、機械には何も届かない。** 最も気づきにくい型。
+
+```
+人がやること   ② OAuth & Permissions で scope を足す
+               ③ Event Subscriptions で bot event を足して Save Changes
+               ④ ★Install App / reinstall your app  ← ここまでやって初めてトークンに乗る
+確かめ方       curl -s -D - -o /dev/null -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+                 https://slack.com/api/auth.test | grep -i x-oauth-scopes
+               ★auth.test の本文には scope が出ない。見るのはレスポンスヘッダ
+```
+
+- **③まで終わった状態と、何もしていない状態は、機械から見て同一。** 完了報告を受けても
+  ヘッダで実測するまで「済んだ」にしない（→ [[reference_ran_is_not_succeeded]]）。
+- **★再インストールで xoxb- の文字列が変わることがある。** 変わったら `config.env` の
+  差し替えまでが1セット。送信側が invalid_auth で黙って死ぬ（→ [[reference_silent_failure_kills_adoption]]）。
+- App ID を控えておくと押す場所を直リンクで渡せる（`bots.info?bot=<bot_id>` で取れる）。
+  議事録整理Bot = App `A0ASVGXNXQF` / Bot `B0AT7LC8S3X` / User `U0ATPVCBP7B` / Team `T09SGK78V6D`。
+
 ### disconnect は異常ではない（誤報の元）
 
 `ConnectionError('サーバからdisconnect要求: warning')` が数時間おきに出るが、
