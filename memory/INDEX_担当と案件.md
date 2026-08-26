@@ -15,6 +15,7 @@
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
 - [CFOナミ](project_cfo_agent.md) — 器も月次routineも動く。★3DBが実測0件／ソフトはMF・弥生／7月の🔴督促3件は保留
 - [CLOセンゴク](project_legal_agent.md) — agents/legal.md。日本法ラッパー。法務ハブ構築済／プラグイン導入は未実行
+- [施設運営点検の委託契約v1.1](project_facility_inspection_contract.md) — 甲wakoku/乙ビビッド。★A案確定・レッドライン17本を反映中／追加費用4,000円・対象期間は指定申請日から約2年数ヶ月／士業法リスクは下書き非実施で低下
 - [CKOロビン](project_cko_agent.md) — agents/cko.md。会議準備を裏方で作る(毎朝7:40)。Phase B=議事録DB連携待ち
 - [開発ライン ステラ＋3体](project_dev_agents.md) — ステラ(統括)＋エジソン/ピタゴラス/リリス＋開発ハブ＋週次routine
 - [いろどり(美容診断)](project_irodori_app.md) — 端末内処理。プロトタイプ稼働中・次は精度向上(要 本番ホスティング)
