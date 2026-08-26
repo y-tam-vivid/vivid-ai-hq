@@ -8,6 +8,7 @@
 
 - [vivid-global.comのDNS](reference_vivid_dns_sakura.md) — Webとさくら／レジストラはGMO。★当方に認証情報が無く変更は実行できない
 - [ビビッドの対外表現](reference_vivid_sales_contact.md) — 連絡先consul_vi@／CI赤#C5000A・黒#221714／ロゴ素材の在り処
+- [週次報告オペ](project_weekly_report_ops.md) — 設計済・運用は未開始／★集約は週明け最初の稼働日(金曜案は却下)／取り組み1件=1ラベル
 - [個人タスクの一元化](project_personal_task_system.md) — ★動機はストレス解消。週の型(第1段階)作成済／記録はルーティンDB／9-09基準決定
 - [チェックもAIへ渡す](feedback_delegate_the_check_to_ai.md) — ★移譲の出口は3つ。渡してもチェックが有璽氏なら移譲できていない。全業務
 - [カレンダーの色分類](reference_calendar_color_taxonomy.md) — ラベル9種で種別／★トマトは「緊急」の軸／算入はaccepted のみ＝仕事週39h
