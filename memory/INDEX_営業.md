@@ -34,4 +34,4 @@
 - [顧客ファイルのDrive格納先](feedback_customer_files_drive_location.md) — 財務(03)でなく取引先・人物別(11)へ
 - [kintone CSV→Notionミラー](project_kintone_csv_to_notion_mirror.md) — 地雷=指数表記/継続行/cp932化け→作成後にSELECT突合で検証
 - [Sheets書き込みの暗黙挙動11点](reference_sheets_number_format_order.md) — 器を増やしても保護・入力規則は付いてこない
-- [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ★商材名は出さない。訴求A/B/Cテスト・0円が引き／LP作成済・ホスト先未定
+- [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ★3群13,709件送信済→クリック18社を特定。訴求Aが優勢だが未確定／苦情1件はNG登録
