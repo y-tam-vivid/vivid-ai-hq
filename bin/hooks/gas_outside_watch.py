@@ -35,7 +35,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from sheets_client import Sheets                      # noqa: E402
 
-PROC_NAME = '外形監視（自分で心拍を打てない処理の代理）'
+# ★2026-08-27 つる ── ここは watch_external.py と同じ名前を打っていた（相乗り）。
+#   結果、専用行「GASの稼働を成果物から判定する（外形監視）」へは心拍が届かず、
+#   毎朝08:45に rc=0 で完走しているのに永久に🟡遅延を出していた（8/25・8/26 実測）。
+#   ★レジスタの行名と1文字ずつ一致させること。
+PROC_NAME = 'GASの稼働を成果物から判定する（外形監視）'
 JST = datetime.timezone(datetime.timedelta(hours=9))
 
 # レジスタの処理名 → 成果物の名前に含まれる語

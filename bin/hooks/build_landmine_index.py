@@ -33,6 +33,7 @@ import glob
 HERE = os.path.dirname(os.path.abspath(__file__))
 MEM = os.path.expanduser('~/vivid-ai-hq/memory')
 OUT = os.path.join(HERE, 'landmines.json')
+PROC_NAME = '地雷インデックスの再生成'   # ★⚙️レジスタの行名と1文字ずつ一致させること
 
 # ファイル名／本文のどの語が出たら、どの作業のときに出すか
 TOPIC_WORDS = {
@@ -188,6 +189,18 @@ def main(quiet=False):
             print('  %-8s %d本' % (t, len(entries)))
             for e in entries[:3]:
                 print('       %5.1f  %s' % (e['w'], e['file']))
+
+    # ★心拍（2026-08-27 つる）── これが無かったせいで、毎朝08:25に確かに動いて
+    #   landmines.json を作り直しているのに、⚙️レジスタは永久に🟡遅延を出していた。
+    #   「動いているものを止まっていると誤判定する」型。--quiet でも必ず打つ
+    #   （cron行は --quiet だけなので、フラグ制にすると今日と同じ穴が残る）。
+    try:
+        sys.path.insert(0, HERE)
+        from heartbeat import beat as hb
+        hb(PROC_NAME, '成功',
+           'memory %d本を走査 → 地雷 %d本' % (n_files, sum(len(v) for v in idx.values())))
+    except Exception as e:
+        sys.stderr.write('[心拍] 打てず ： %s\n' % e)
     return 0
 
 
