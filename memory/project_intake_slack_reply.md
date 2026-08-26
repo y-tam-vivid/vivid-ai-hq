@@ -1,6 +1,6 @@
 ---
 name: project-intake-slack-reply
-description: 受付シート確認をSlackスレッド返信でも受ける(氏名/ID)。2026-08-26実装・ステラ検査済。★残=Slack Appの「再インストール」1手だけ(scope追加のSaveでは反映されない・実測)
+description: 受付シート確認をSlackスレッド返信でも受ける(氏名/ID)。2026-08-26実装・ステラ検査済。★①〜④完了・scope反映を実測。残=実返信1回での通し検証だけ
 metadata:
   type: project
 ---
@@ -91,7 +91,30 @@ Socket    apps.connections.open → ok:true（xapp- は有効・常駐も生存 
 `~/.vivid-relay/config.env` の `SLACK_BOT_TOKEN` を差し替えるまでが1セット
 （差し替えないと通知側 `intake_notify.py` が invalid_auth で黙って死ぬ）。
 
-**これが終わるまでコードは待機状態**（イベントがSlackから届かない）。
+### ★2026-08-26 16:1x ── ④完了。scope反映を2経路で実測
+
+有璽氏より「④やった」。**待機状態は解けた。**
+
+```
+経路1  auth.test の x-oauth-scopes
+       → chat:write,chat:write.public,channels:read,im:history,im:read,users:read,
+         channels:history   ★channels:history が乗った
+経路2  conversations.history(C0BRYFKG153) → ok:true・実データ3件を取得
+       ＝ scope が「書いてある」だけでなく「効いている」ことを確認
+トークン ★変わらなかった。config.env の xoxb-990065330... がそのまま ok:true。
+       差し替えは不要だった（変わる場合もあるので、次回も実測してから判断する）
+常駐   launchctl kickstart -k gui/$(id -u)/com.vivid.slack-socket → PID 95524 で再起動、
+       ログに「WebSocket接続完了／接続確立（hello受信）」を確認
+```
+
+**★残っているのは「実際の返信が届くか」の通し検証1回だけ。**
+`handle_events_api` は `#01_営業部門-ai確認依頼`（C0BRYFKG153）内のスレッド返信しか見ず、
+対応する行が state に無ければ**ログに1行出して無視する**（書き込みは起きない）。
+＝ **同チャンネルの任意のスレッドへ「テスト」と返信すれば、安全に受信経路だけを検証できる。**
+確認は `tail ~/.vivid-relay/slack_socket.log` に「スレッド返信受信:」が出るかどうか。
+
+⛔ 以下は2026-08-26 16:1x で解消済み（記録として残す）。~~**これが終わるまでコードは待機状態**~~
+（イベントがSlackから届かない）。
 設定完了後、常駐プロセス（launchd `com.vivid.slack-socket`, PID確認は
 `ps aux | grep slack_socket`）を再起動すればコード変更が反映される
 （`launchctl kickstart -k gui/$(id -u)/com.vivid.slack-socket`）。

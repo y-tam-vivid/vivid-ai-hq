@@ -58,6 +58,25 @@ crontab（mini・実測）
 既存の安全弁（STOP_WORDS・flock・DMのみ・心拍）は**新経路にも同じものが要る**。
 → [[reference_relay_piles_up_and_blames_the_user]] [[feedback_stop_asking_just_do_it]]
 
+## ★scope は「足した」だけでは効かない ── 再インストールまでが1セット（2026-08-26 実測）
+
+```
+scope を追加 → Save Changes    画面上は設定済みに見える。★発行済みトークンには乗らない
+再インストール（Install App）   ここで初めてトークンに scope が付く
+```
+
+- **確かめ方は `auth.test` の `x-oauth-scopes` ヘッダ。** 画面ではなくトークンを見る
+  （`curl -s -D - -o /dev/null -H "Authorization: Bearer $SLACK_BOT_TOKEN" .../auth.test`）。
+- **ヘッダに載っただけでは1経路。** 実際にその scope が要るAPI（例 `conversations.history`）を
+  1回叩いて `ok:true` を見るまでが検証 → [[feedback_one_route_is_not_verification]]。
+- **★再インストールでトークン文字列が変わるとは限らない。** 2026-08-26 は**変わらず**、
+  `config.env` の差し替えは不要だった。変わる場合もあるので**毎回実測してから判断する**
+  （変わったのに差し替えないと、送信側が `invalid_auth` で黙って死ぬ）。
+- **Bot Token Scope と Event Subscriptions は別物。** 前者は「叩ける範囲」、後者は「届くイベント」。
+  片方だけ直しても動かない。
+- 常駐（Socket Mode）は設定変更後に再起動する ──
+  `launchctl kickstart -k gui/$(id -u)/com.vivid.slack-socket` → ログに「接続確立（hello受信）」。
+
 **常駐の置き場も未解決。** crontab は書き込み不能のまま（[[reference_cron_write_blocked_in_session.md]]）。
 launchd は `com.vivid.chatwork-relay.plist` が唯一の前例だが**パスが `/Users/yujimac/`＝MacBook用**で
 mini では動かず、`launchctl list` に vivid は0件（未ロード・実測）。
