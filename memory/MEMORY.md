@@ -50,7 +50,7 @@
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／権限が無い≠届かない／2>/dev/nullは判定材料を捨てる
 - [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — SendMessageは同じマシン内だけ。連携はWORKING.md/相手のローカル/Notion
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
-- [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える
+- [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★Stopフック導入(MacBookのみ・miniは未登録)。差し戻しは1ターン1回
 - [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/人の手を無くす。★返事は出した経路へ
