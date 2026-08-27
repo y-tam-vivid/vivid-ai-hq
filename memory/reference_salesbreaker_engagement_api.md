@@ -72,3 +72,30 @@ read_only:true  db_written / send_executed / csv_generated が false と明示�
 （「未接続」→毎朝同期していた／「回数は無い」→通知メールにあった／「APIでは取れない」→別の口）。
 → [[reference_ai_output_blamed_before_inputs]]
 → [[project_sales_pipeline_workbook]]
+
+## companies/search のフィルタは効くものと効かないものがある（2026-08-23〜27 実測）
+
+```
+✓ industry_class   効く。★ただし部分一致なので誤爆する（「エステ」で建築設計がヒット）
+                   マスタの正式名を使う（「カフェ・喫茶店」「学習塾・予備校」など52種類）
+✓ prefecture       効く（address も同じ）
+✗ keyword          ★効かない。無視されて先頭が返る
+                   6社を別々の語で引いたのに、全部同じ会社（aelva-ns.com）が返った
+✗ area / query     効かない
+```
+
+**「フィルタを付けたら結果が変わった」だけでは効いた証拠にならない。**
+存在しない値を入れて0件になるか、返り値の中身が条件と一致するかで確かめる。
+
+## activity.log の書き方（2026-08-27 実測・18件成功）
+
+```json
+{"target": {"deal_id": 65489925},
+ "summary": "LPクリック3回／要フォロー",
+ "details": "…"}
+```
+
+- `target.deal_id` と、`summary` または `details` が必須
+- ★**deals/upsert/preview は 403「Production route closed in this pilot phase」**
+  ＝ **案件のステータス変更はできない。** 書けるのは活動ログだけ
+- deal_id は `engagement/search` の `deal_context.deal_id` から取れる

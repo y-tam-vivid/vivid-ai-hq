@@ -46,3 +46,30 @@ metadata:
 - **マージ直後の同一セッション内で Write が通ることを実測**（起動し直しは不要だった）。
 - `~/.claude/settings.local.json` にも別途 allow が積まれている（過去セッションでの都度承認の堆積）。
   **こちらは機械ローカルの履歴であって正本ではない。揃える対象は `settings.json` の方。**
+
+## ★★allow に `*` があっても通らないものがある ── ask が優先する（2026-08-27 実測）
+
+カレンダーへ予定を作ろうとして拒否された。**allow には `mcp__claude_ai_Google_Calendar__*` が
+入っていたのに落ちた。**原因は ask 側。
+
+```
+allow   mcp__claude_ai_Google_Calendar__*          ← ワイルドカードで許可されている
+ask     mcp__claude_ai_Google_Calendar__create_event   ★こちらが勝つ
+        mcp__claude_ai_Google_Calendar__delete_event
+defaultMode: dontAsk → ask のものは「聞けないので拒否」になる
+```
+
+- **★これは事故ではなく意図的な設計。**ask に並んでいるのは
+  Gmail送信・Slack投稿・Driveのゴミ箱・カレンダーの作成/削除 ＝ **外へ出る操作**。
+  規範の「承認が要る6項目」と一致している。**回避しようとしない。**
+- **★拒否されたら allow だけ見て「権限が無い」と結論しない。**ask と deny を必ず見る。
+  allow に `*` があるほど、原因が ask 側にあると気づきにくい。
+
+### 予定を作れないときの代替（実際に使った手）
+
+```
+✕ 有璽氏に8本を手で作ってもらう   往復が多く、時刻や繰り返しの写し間違いが出る
+◎ ★.ics ファイルを作って渡す      Googleカレンダーへ一括インポートできる
+   RRULE（繰り返し）も含められる。インポート前に中身を確認できるので可逆
+   ★色（colorId）だけは ics に載らない。インポート後に手で付ける
+```
