@@ -272,6 +272,21 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ビビ / MacBook 2026-08-27】Instagram DM営業リスト ── A完了・B投函待ち・DM文面できた**
+  - **書いた**: `memory/project_ig_dm_sales_lists.md`（新規）／`memory/project_manus_outsourcing.md`（全面改訂）
+    ／`memory/INDEX_営業.md`・`memory/INDEX_発信.md` の各1行
+    ／`scratchpad/manus-ig-list-20260827.md`（A・B指示文）
+    ／`scratchpad/gamebull-ig-dm-drafts-20260827.md`（DM文面）
+  - **★運用**: API連携は使わない。**有璽氏が Manus Web へ手で貼る**。こちらは指示文と検品の役
+  - **★401の真因はプラン無料化**。キーは画面に生きている＝再発行では直らない（実測済み）
+  - **A（ゲームブル）は1本目が返ってきた** → `~/Downloads/instagram_dm_leads_pilot_with_contacts.xlsx`
+    42件（依頼100件）。★**DM可否4/42・投稿日1/42・リンク先0/42** ＝ 非ログインではIGの中身が取れない
+    （構造的制約。再発注しても同じ）。屋号・業種・IGユーザー名は42/42で取れている
+  - **★B（119番）は指示文を直して投函待ち**。取れない3列を削り「調べなくてよい」と明記した
+  - **★有璽氏の判断待ち4点**: ①どのIGアカウントから送るか（停止リスク）②資料URL
+    ③日程調整リンク ④42件を何日に割るか
+  - **★台帳・Notion・SalesBreakerへは1文字も書いていない**（返信があった相手だけ台帳へ入れる設計）
+
 - **【ビビ→ナミ / MacBook 2026-08-27】予実の設計を詰める（有璽氏と対話中）**
   - **読んでいる**: `memory/project_cfo_agent.md`／Notion 💰ナミ(CFO)財務室 配下3DB（予実・KPI・資金繰り）
   - **★書く予定**: `memory/project_cfo_agent.md` の追記。**Notion 3DBへはまだ1件も入れていない**

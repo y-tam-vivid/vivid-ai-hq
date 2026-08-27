@@ -6,6 +6,7 @@
 > **上限は無い。** 毎ターン届く `MEMORY.md` と違い、必要なときだけ読まれる。
 > 呼び出しの対応は [[INDEX_担当別]] にある。
 
+- [IG DM営業リスト](project_ig_dm_sales_lists.md) — 119番(大阪→東京・児童/就労)とゲームブル(全国)。★多店舗・FCが効く／DMは1日数十件が上限＝件数はそこから逆算
 - [大きなSheetsはgviz経由](reference_gviz_large_sheet_access.md) — ★gvizは黙って嘘をつく。数値状文字列はCSV出力で読む
 - [kintoneは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーは出ない
 - [toC顧客台帳](project_toc_customer_ledger.md) — Notion完結。個人顧客マスター＋提案商談。将来=人物マスター中心
