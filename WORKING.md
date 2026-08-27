@@ -272,6 +272,12 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ビビ→ナミ / MacBook 2026-08-27】予実の設計を詰める（有璽氏と対話中）**
+  - **読んでいる**: `memory/project_cfo_agent.md`／Notion 💰ナミ(CFO)財務室 配下3DB（予実・KPI・資金繰り）
+  - **★書く予定**: `memory/project_cfo_agent.md` の追記。**Notion 3DBへはまだ1件も入れていない**
+  - **★同じ対象に手をつけないでください**: 予実管理DB `0af67e7d-6604-4dbc-9368-0abf35c369dc`
+  - 論点: 会計ソフト（MF／弥生）は**出口**。手前に法人横断の中間ハブを置く。粒度は①法人全体②各法人③事業
+
 - **【ビビ→センゴク / MacBook 2026-08-26】施設運営点検・整備支援 業務委託契約のリーガルチェック**
   - **書いた**: `memory/project_facility_inspection_contract.md`（新規）／`memory/INDEX_担当と案件.md` の1行
     ／ `scratchpad/legal-wakoku-20260826/`（v1.1検査レポート ＋ **v1.2_A案_修正版**）
