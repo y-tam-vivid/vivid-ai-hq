@@ -58,6 +58,25 @@ crontab（mini・実測）
 既存の安全弁（STOP_WORDS・flock・DMのみ・心拍）は**新経路にも同じものが要る**。
 → [[reference_relay_piles_up_and_blames_the_user]] [[feedback_stop_asking_just_do_it]]
 
+## ★scope は「足した」だけでは効かない ── 再インストールまでが1セット（2026-08-26 実測）
+
+```
+scope を追加 → Save Changes    画面上は設定済みに見える。★発行済みトークンには乗らない
+再インストール（Install App）   ここで初めてトークンに scope が付く
+```
+
+- **確かめ方は `auth.test` の `x-oauth-scopes` ヘッダ。** 画面ではなくトークンを見る
+  （`curl -s -D - -o /dev/null -H "Authorization: Bearer $SLACK_BOT_TOKEN" .../auth.test`）。
+- **ヘッダに載っただけでは1経路。** 実際にその scope が要るAPI（例 `conversations.history`）を
+  1回叩いて `ok:true` を見るまでが検証 → [[feedback_one_route_is_not_verification]]。
+- **★再インストールでトークン文字列が変わるとは限らない。** 2026-08-26 は**変わらず**、
+  `config.env` の差し替えは不要だった。変わる場合もあるので**毎回実測してから判断する**
+  （変わったのに差し替えないと、送信側が `invalid_auth` で黙って死ぬ）。
+- **Bot Token Scope と Event Subscriptions は別物。** 前者は「叩ける範囲」、後者は「届くイベント」。
+  片方だけ直しても動かない。
+- 常駐（Socket Mode）は設定変更後に再起動する ──
+  `launchctl kickstart -k gui/$(id -u)/com.vivid.slack-socket` → ログに「接続確立（hello受信）」。
+
 **常駐の置き場も未解決。** crontab は書き込み不能のまま（[[reference_cron_write_blocked_in_session.md]]）。
 launchd は `com.vivid.chatwork-relay.plist` が唯一の前例だが**パスが `/Users/yujimac/`＝MacBook用**で
 mini では動かず、`launchctl list` に vivid は0件（未ロード・実測）。
@@ -155,6 +174,13 @@ Socket Mode は **そのアプリに届く全てのインタラクションを1�
 ```
 実測    08-25 13:01 / 08-26 07:28 に2回 ── 計3回
         ★valueがJSONとして読めない: '40429b2f-…'（UUIDだけが入っている）
+★更新   08-27 朝ロビン再測 ── **「計3回」は過小。08-26 の1日だけで13回**
+        07:28×2 / 11:08 / 12:14 / 13:38×2 / **14:12〜14:12:57 に6回（16秒間）** / 18:43
+        ＝毎日発生し、増えている。**16秒で6回は人が連打している形**
+        ★そのたび `fail_reply(response_url, 'ボタンの中身が読めませんでした')` が
+          押した人に返っている（slack_socket.py:531）。無言ではなく**エラーが見えている**
+        判別   自前のボタンは同じログに `ボタン受信: row=… decision=…` と出る（16:23の4回）。
+               UUID型は一度も `ボタン受信` を伴わない ＝ **別アプリのボタン**で確定に近い
 発信元  ★当方の Python 側には無い（~/.vivid-relay と bin を grep して0件）。
         JSON を入れているのは intake_notify.py だけ。UUID を value に置く別経路
         （GAS の議事録bot 等・同じ xoxb- を使う）から来ていると見るのが素直。次に追う人はここから
@@ -165,6 +191,26 @@ Socket Mode は **そのアプリに届く全てのインタラクションを1�
   → [[reference_silent_failure_kills_adoption]]。どの機能のボタンかを特定してから、
   無視するのか受けるのかを決める。**先に受け口を広げない。**
 
+### ★Scope は「足して Save」では効かない ── 再インストールまでが1セット（2026-08-26 実測）
+
+**画面上は設定済みに見えるのに、機械には何も届かない。** 最も気づきにくい型。
+
+```
+人がやること   ② OAuth & Permissions で scope を足す
+               ③ Event Subscriptions で bot event を足して Save Changes
+               ④ ★Install App / reinstall your app  ← ここまでやって初めてトークンに乗る
+確かめ方       curl -s -D - -o /dev/null -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+                 https://slack.com/api/auth.test | grep -i x-oauth-scopes
+               ★auth.test の本文には scope が出ない。見るのはレスポンスヘッダ
+```
+
+- **③まで終わった状態と、何もしていない状態は、機械から見て同一。** 完了報告を受けても
+  ヘッダで実測するまで「済んだ」にしない（→ [[reference_ran_is_not_succeeded]]）。
+- **★再インストールで xoxb- の文字列が変わることがある。** 変わったら `config.env` の
+  差し替えまでが1セット。送信側が invalid_auth で黙って死ぬ（→ [[reference_silent_failure_kills_adoption]]）。
+- App ID を控えておくと押す場所を直リンクで渡せる（`bots.info?bot=<bot_id>` で取れる）。
+  議事録整理Bot = App `A0ASVGXNXQF` / Bot `B0AT7LC8S3X` / User `U0ATPVCBP7B` / Team `T09SGK78V6D`。
+
 ### disconnect は異常ではない（誤報の元）
 
 `ConnectionError('サーバからdisconnect要求: warning')` が数時間おきに出るが、
@@ -172,3 +218,32 @@ Socket Mode は **そのアプリに届く全てのインタラクションを1�
 `接続確立（hello受信）` に戻っている（08-25 16:29／19:30、08-26 00:30／05:30 の4回とも）。
 **異常なのは切れることではなく、切れたまま戻らないこと。**
 見るのは disconnect の有無ではなく `down_since`（→ [[reference_ran_is_not_succeeded]]）。
+
+## ★スコープは「足した」だけでは効かない。再インストールで初めて反映される（2026-08-26 実測）
+
+有璽氏が Slack App の設定を③（スコープ追加・イベント登録）まで済ませた。**まだ届かなかった。**
+
+```
+実測      トークンが実際に持っている権限をヘッダから読んだ
+          x-oauth-scopes ： chat:write, chat:write.public, channels:read,
+                            im:history, im:read, users:read
+          ★channels:history が入っていない
+理由      Slack はスコープを足しただけでは反映しない。
+          **再インストールで新しいトークンが発行されて**初めて効く
+```
+
+**★「設定した」と「効いている」は別。** 今日この形は何度も出ている
+（心拍の名前・ガードの発火・バックアップの中身）。
+
+### 実測の仕方（★憶測で「反映されたはず」と言わない）
+
+```
+リクエストを1本投げ、**応答ヘッダ**を読む
+   x-oauth-scopes            ★いま実際に持っている権限
+   x-accepted-oauth-scopes   ★その口が要求する権限
+→ 差分がそのまま「足りないもの」
+```
+
+**★人へ「やってください」と渡すときは、この実測結果を添える。**
+「まだ届いていません」だけだと、相手は「やったのに」と思う。
+**何が入っていて何が無いかを見せれば、次の一手が自明になる。**

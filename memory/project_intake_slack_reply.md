@@ -1,0 +1,171 @@
+---
+name: project-intake-slack-reply
+description: 受付シート確認をSlackスレッド返信でも受ける(氏名/ID)。2026-08-26実装・ステラ検査済。★①〜④完了・scope反映を実測。残=実返信1回での通し検証だけ
+metadata:
+  type: project
+---
+
+# 受付シート確認 ── Slackスレッド返信で候補外を受ける
+
+**2026-08-26 有璽氏の指示。ピタゴラス実装。** 対象は Mac mini `~/.vivid-relay/`
+（git管理外）の `intake_notify.py`（投稿）／`slack_socket.py`（受信・常駐）／
+`intake_match.py`（照合エンジン）。バックアップ `_backup/*.20260826-1520.bak`。
+
+## 決着済みの前提
+
+```
+毎朝07:20 照合(intake_match.py) → 07:20台 Slackへボタン付き通知(intake_notify.py)
+  → 押すと受付シートZ列へ(slack_socket.py) → 毎朝07:25 台帳登録(intake_register.py)
+社内メモは機械が一切読まない(読み取り機能は撤去済み。戻さない)
+```
+
+## 今回追加した機能
+
+1. **①Slackの返信で候補外を受ける**：スレッドへの返信本文が `[BC]-\d+` 形式ならID直採用
+   （実在確認あり）、それ以外は氏名/会社名として `intake_match.build_index()` の索引を
+   完全一致→姓の部分一致の順で検索。**一意でなければ確定せず候補を返して聞き直す**
+   （機械が「新規」と判定して書かない・先頭を採らない原則を継承）。
+2. **②本文に書き方を明記**：通知本文に「候補に無い場合はスレッド返信で。
+   例：C-0049 または 上妻央育」を追記（`build_blocks`）。
+3. **③受付シートへの書き戻し**：既存の `find_row_and_write()`（ボタン用と共通）を
+   そのまま呼ぶ。**★Z列（確認）へ直接 `○ 同じ人（C-0026）` の形で書く。**
+4. **④翌朝の登録まで通ることを確認**：`intake_register.py` は Z列のこの形式（`OK_ID_RE`）を
+   読んでIDを取り出す。
+
+   ⛔ **上の③④は 2026-08-26 夕方に書き換えた。旧記述（Z列はプレーン「○ 同じ人」・
+   candidate_id はY列＝照合結果へ分離して書く）は廃止済み。** 旧設計のまま読むと、
+   同じ契約ズレをもう一度作る。実物 `slack_socket.py` の `OK_ID_TEMPLATE` /
+   `find_row_and_write()` が正 → [[reference_silent_failure_kills_adoption]]
+   「経路の最後の1行で値が捨てられていた」の節。
+5. **⑤優先順位の明確化**：商材toC/toBの優先（`side_rank`）は実装済みのまま。
+   「継続」時は**選択肢も文言も消さない**。促し文言を足すだけ（下記参照）。
+
+## ⑤第二 ── 一度差し戻された設計変更
+
+```
+当初の実装    継続なら「新規として発番してよいか」の文言自体を出さない
+有璽氏の指摘  「営業側の記入ミスだった場合に詰む。その行が永久に登録できなくなる」
+最終形       文言も「× 別人（新規でよい）」の選択肢も消さない。
+             促し文言だけ足す：「台帳に居ないか...もう一度ご確認ください。
+             確認のうえで本当に初めての方なら、そのまま『× 別人（新規でよい）』を選んでください」
+```
+
+**★教訓**：優先順位を変えるのと選択肢を消すのは別物。人の入力は間違う前提で、
+出口を無くす設計にしない（fukuchi-core既存原則の再確認）。
+
+## ★残っている前提条件（有璽氏の操作待ち）
+
+**Bot Token Scopeに `channels:history` が無い**（実測スコープ：
+`chat:write,chat:write.public,channels:read,im:history,im:read,users:read`）。
+Events APIで `message.channels` を受信するには下記がSlack App管理画面で必要：
+
+```
+1. https://api.slack.com/apps → ワークスペース「株式会社ビビッド」の該当アプリ
+   （Bot: gijiroku-bot / Bot User ID U0ATPVCBP7B）を開く
+2. OAuth & Permissions → Bot Token Scopes に channels:history を追加
+3. Event Subscriptions → Enable Events → Subscribe to bot events に
+   message.channels を追加 → Save Changes
+4. 上部バナーの「reinstall your app」（または Install App）から再インストール
+```
+
+### ★2026-08-26 15:5x 実測 ── ①〜③は完了。**残るのは④だけ**
+
+有璽氏より「③まで完了済み」。トークンのスコープを実測したところ**まだ古いまま**だった。
+
+```
+実測      curl -D - .../auth.test の x-oauth-scopes ヘッダ
+結果      chat:write,chat:write.public,channels:read,im:history,im:read,users:read
+          ＝ channels:history が入っていない（8/26 15:20 時点と同一）
+意味      ★Scope を足して Save Changes しても、発行済みトークンには反映されない。
+          「再インストール」でトークンを再発行して初めて効く。③までで止まると
+          画面上は設定済みに見えるのに、機械には何も届かない
+Socket    apps.connections.open → ok:true（xapp- は有効・常駐も生存 PID 7438）
+          ★受け口は生きている。詰まっているのはスコープ1点だけ
+```
+
+**押す場所（App ID = `A0ASVGXNXQF`／Bot: 議事録整理Bot U0ATPVCBP7B）**
+
+| 画面 | 直リンク |
+|---|---|
+| ④ 再インストール | https://api.slack.com/apps/A0ASVGXNXQF/install-on-team |
+| ② scope の確認 | https://api.slack.com/apps/A0ASVGXNXQF/oauth |
+| ③ Events の確認 | https://api.slack.com/apps/A0ASVGXNXQF/event-subscriptions |
+
+**★再インストールでトークン文字列が変わることがある。** 変わった場合は
+`~/.vivid-relay/config.env` の `SLACK_BOT_TOKEN` を差し替えるまでが1セット
+（差し替えないと通知側 `intake_notify.py` が invalid_auth で黙って死ぬ）。
+
+### ★2026-08-26 16:1x ── ④完了。scope反映を2経路で実測
+
+有璽氏より「④やった」。**待機状態は解けた。**
+
+```
+経路1  auth.test の x-oauth-scopes
+       → chat:write,chat:write.public,channels:read,im:history,im:read,users:read,
+         channels:history   ★channels:history が乗った
+経路2  conversations.history(C0BRYFKG153) → ok:true・実データ3件を取得
+       ＝ scope が「書いてある」だけでなく「効いている」ことを確認
+トークン ★変わらなかった。config.env の xoxb-990065330... がそのまま ok:true。
+       差し替えは不要だった（変わる場合もあるので、次回も実測してから判断する）
+常駐   launchctl kickstart -k gui/$(id -u)/com.vivid.slack-socket → PID 95524 で再起動、
+       ログに「WebSocket接続完了／接続確立（hello受信）」を確認
+```
+
+### ★2026-08-27 朝 ロビン実測 ── 返信経路は通った。**未検証はボタン経路の「修正後」**
+
+`slack_socket.log` を読み直した。**残件の中身が変わっている。**
+
+```
+16:20:06  スレッド返信受信: user=U09S3N4QJUA text='テスト'
+          → 「対応する行が無い。無視する」  ★①の受信経路は通し検証済み（想定どおり）
+16:23〜   ボタン4回（row=29/30/31/32・candidate_id=C-0014/C-0049/C-0026/C-0072）全て書込完了
+          ★これは修正前の押下。この4回で「IDが捨てられる」欠陥が出た（→ 7bc6a6f / a2d1e40）
+17:01:50  再起動（接続確立）＝ここから修正後のコードが動いている
+以降      8/26 22時台まで・8/27 08時までに **ボタン押下・スレッド返信は0件**
+```
+
+**★つまり「Z列へ `○ 同じ人（C-0026）` を書く」修正後の通し検証は、まだ1度も走っていない。**
+「16:23に4回通った」を根拠に済んだ扱いにしない（あれは壊れていた版）。
+次に押してもらうときは、押下後に**受付シートZ列の実物**を見てIDが入っているかまで確認する。
+
+**★（参考・旧記述）残っているのは「実際の返信が届くか」の通し検証1回だけ。**
+`handle_events_api` は `#01_営業部門-ai確認依頼`（C0BRYFKG153）内のスレッド返信しか見ず、
+対応する行が state に無ければ**ログに1行出して無視する**（書き込みは起きない）。
+＝ **同チャンネルの任意のスレッドへ「テスト」と返信すれば、安全に受信経路だけを検証できる。**
+確認は `tail ~/.vivid-relay/slack_socket.log` に「スレッド返信受信:」が出るかどうか。
+
+⛔ 以下は2026-08-26 16:1x で解消済み（記録として残す）。~~**これが終わるまでコードは待機状態**~~
+（イベントがSlackから届かない）。
+設定完了後、常駐プロセス（launchd `com.vivid.slack-socket`, PID確認は
+`ps aux | grep slack_socket`）を再起動すればコード変更が反映される
+（`launchctl kickstart -k gui/$(id -u)/com.vivid.slack-socket`）。
+
+## 実測（本番へは書いていない）
+
+```
+resolve_reply_text('C-0049')     → ok (C-0049, 上妻央育)
+resolve_reply_text('上妻央育')     → ambiguous [(B-0355,上妻央育),(C-0049,上妻央育)]
+                                    ★これはコードの欠陥ではなくデータ側の実態。
+                                    B-0355(00企業マスタ・会社名欄に個人名)とC-0049(02個人)が
+                                    未統合の重複として実在する。正しく「一意に定まらない」と判定
+resolve_reply_text('存在しない太郎') → not_found
+continuing×該当なし の文言        「新規として発番してよいか」も「× 別人」も残存を確認
+```
+
+## ★コード検査（2026-08-26 完了）
+
+ステラ（dev-producer）へ検査依頼、実物diff・参照関数を突合したうえで判定。
+
+```
+判定  載せてよい（条件つき）
+条件① Slack App設定完了までは無効のまま（コード変更不要・想定どおり）
+条件② 余力があればID直書き判定の前にNFKC正規化を1行足す（必須ではない）
+       → その場で反映済み。「Ｃ－0049」（全角）でも C-0049 に解決することを実測
+```
+
+その他の懸念（自己申告した2点）はステラが打ち消し：「C-0049じゃない方」型の否定文脈は
+`^[BC]-\d+$`の完全一致要求により自然にnot_foundへ安全側で落ちる（実害無し）。
+`build_index`の毎回全読みは手動返信という低頻度前提なら許容範囲（自動化・高頻度化する
+なら要キャッシュ化と付記）。指摘のうち唯一の残件（IDの桁数`\d+`と`intake_register.py`の
+`\d{4}`固定の不整合）は今回変更した範囲の外にある既存の潜在不整合で、現行データは
+全4桁のため今は無害（将来5桁化したら要修正。ここに記録のみ）。

@@ -35,3 +35,4 @@
 - [kintone CSV→Notionミラー](project_kintone_csv_to_notion_mirror.md) — 地雷=指数表記/継続行/cp932化け→作成後にSELECT突合で検証
 - [Sheets書き込みの暗黙挙動11点](reference_sheets_number_format_order.md) — 器を増やしても保護・入力規則は付いてこない
 - [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ★3群13,709件送信済→クリック18社を特定。訴求Aが優勢だが未確定／苦情1件はNG登録
+- [受付確認をSlack返信で受ける](project_intake_slack_reply.md) — 氏名/IDで解決。★返信経路は8/26 16:20実測OK。**書き先はZ列直書き（Y列分離は廃止）／修正後のボタン押下は0件＝未検証**

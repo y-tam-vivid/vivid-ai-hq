@@ -136,3 +136,26 @@ git で配れないもの    ~/.claude/settings.json（機械ローカル・フ�
   手順書に書くのではなく、**定期実行から呼ぶ**。呼べない性質のものだけを人へ渡す。
 
 関連: [[reference_hooks_enforce_what_discipline_cannot]] [[feedback_write_back_before_you_go]]
+
+## ★★ 裏返しの事故 ── 配布「先」を直すと、15分後に黙って巻き戻る（2026-08-27 実測）
+
+上の節で配る仕組みを作った結果、**新しい壊れ方が生まれた。**
+
+```
+つるが直したもの   ~/.vivid-relay/build_landmine_index.py   ← ★配布先
+                   ~/.vivid-relay/gas_outside_watch.py      ← ★配布先
+実測              編集 → 実行 → 心拍が🟢で着弾（成功したように見えた）
+                  その直後に grep → **編集が消えていた**
+真因              vivid-sync.sh（*/15）→ setup_hooks.sh が
+                  ~/vivid-ai-hq/bin/hooks/*.py を無条件で cp して上書きする
+```
+
+- **★`~/.vivid-relay/` は、もう「手で入れる場所」ではない。`bin/hooks/` に同名がある
+  ファイルは配布先＝上書きされる。** この節の上半分（2026-08-22・23 の記述）は
+  **その時点では正しかったが、いまは半分だけ正しい**。触る前に必ず next の1行を打つ：
+  `ls ~/vivid-ai-hq/bin/hooks/<同じ名前>` ── 在れば、そちらが正本。
+- **★エラーは1つも出ない。** cp が黙って勝つので、直した本人も気づけない。
+  今回は**心拍が🟢で着弾したことが、修正が生きている証拠にならなかった**
+  （実行と上書きの間に時間差があるだけ）→ [[feedback_one_route_is_not_verification]]
+- 直し方：`bin/hooks/` 側を直す → `bash bin/setup_hooks.sh`（冪等）で配り直す →
+  **配布先を grep して一致を確かめる**。これで MacBook へも git 経由で自動で届く。
