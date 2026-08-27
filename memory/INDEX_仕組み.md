@@ -14,7 +14,7 @@
 - [crontabは書けない](reference_cron_write_blocked_in_session.md) — ★日次ジョブの正本はbin/daily_jobs.conf。8/23も未解消／ssh越しなら書ける
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
-- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**／**★心拍の宛先は行名の文字列一致。相乗り・beat無しで、動いているのに永久に🟡になる(8/27に2件)**
+- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**／**★心拍の宛先は行名の文字列一致。相乗り・beat無しで、動いているのに永久に🟡になる(8/27に2件)**／**★8/28 heartbeat_names_check の5件中4件が誤検知だった（PROC_NAME固定・行末コメント・自前beatラッパ）。修正済。同じ穴を4回踏んでいる＝次は正規表現を足さずastか自己申告へ**／**★「有効」フラグのズレは2回目。今回は常駐(Slack Socket Mode)で、人が手で起動した後もレジスタが2日間 有効=False＝永久に🔴が立たない状態だった。起動と登録は1セット**
 - [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 常駐は一定間隔で心拍／心拍はmain()の外で包む。末尾は例外が素通り
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)／**★手順書に「まだ無い機能」を書いた。決着済みの設計を在るものとして扱った。人が読む文書の前に動線を1回自分で通す(2026-08-24)**
@@ -37,5 +37,5 @@
 - [本数で切ると希少な版が消える](reference_retention_by_count_deletes_the_wrong_ones.md) — 残す単位は日ごと最新1本
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
-- [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／**形式外value(UUID)は8/26だけで13回・毎日増加。押した人にエラーが返っている＝別アプリのボタン。発信元未特定**／貼った鍵のlog平文は未revoke／**★scopeは「足してSave」では効かない。再インストールまでが1セット。実測は auth.test の x-oauth-scopes ヘッダ(本文には出ない)**
+- [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／**形式外value(UUID)は累計17回(8/27も3回)。押した人にエラーが返り続けている＝別アプリのボタン。発信元未特定・暫定手当ても未実施**／貼った鍵のlog平文は未revoke／**★scopeは「足してSave」では効かない。再インストールまでが1セット。実測は auth.test の x-oauth-scopes ヘッダ(本文には出ない)**
 - [md→Word変換](reference_md_to_docx.md) — bin/md2docx.py。★pandoc/LibreOfficeは無い。python-docxを両機へ導入済／変換後は読み返して数える
