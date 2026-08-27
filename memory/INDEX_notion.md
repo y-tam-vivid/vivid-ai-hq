@@ -23,5 +23,5 @@
 - [Notion運用ルール正本](project_notion_operating_rules.md) — 読み書き前に必ず参照。4層モデル＋要約は鮮度ヘッダー必須
 - [【廃止】最新版を最上部](feedback_notion_latest_version_top.md) — 規律依存で破綻し廃止。後継=Notion運用ルール正本
 - [ナレッジ設計ページ](reference_notion_knowledge_design.md) — Drive住み分け・命名(事業×法人)の協議ハブ
-- [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — ★fetchの表示はレンダリング済＝実データはview mode(テーブルクエリ)で見る
+- [Notion MCPの読み取り制約](reference_notion_mcp_read_limits.md) — ★404の切り分けは/v1/search／DBテンプレはAPI経由で効かない／実データはview mode
 - [リンク共有は配下に効く](reference_link_sharing_inherits_everywhere.md) — 機微の置き場は共有設定／Notion公開はpublic_urlで数えられる(現在0件)
