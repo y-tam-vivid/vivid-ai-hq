@@ -19,7 +19,7 @@
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 常駐は一定間隔で心拍／心拍はmain()の外で包む。末尾は例外が素通り
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)／**★手順書に「まだ無い機能」を書いた。決着済みの設計を在るものとして扱った。人が読む文書の前に動線を1回自分で通す(2026-08-24)**
 - [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
-- [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は1文字違うと黙って失敗／★miniのlaunchdは0本＝plistが在るのは常駐の証拠でない
+- [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は1文字違うと黙って失敗／★miniのlaunchdは0本＝plistが在るのは常駐の証拠でない／★法人番号月次更新を新設(0827)。9/1初回目視待ち
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
 - [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — 1つしか選べない置き場に判断を置かない。3割超の偏りは既定値と疑う
 - [入力と出力先を先に見る](reference_ai_output_blamed_before_inputs.md) — ★フォールバックは工程ごとに散る(議事録で7個)。1本直しても潰れない
