@@ -106,7 +106,14 @@ def _save_shown(shown, picked):
         for f in picked:
             shown[f] = shown.get(f, 0) + 1
         os.makedirs(os.path.dirname(SHOWN), exist_ok=True)
-        json.dump(shown, open(SHOWN, 'w'), ensure_ascii=False)
+        # ★2026-08-29 ステラ指摘（実測）── ロック無しの read-modify-write で、
+        #   8スレッド同時に叩くと 240件中238件のカウントが消えた。
+        #   並列サブエージェントはこのリポジトリの標準運用なので恒常的に起きる。
+        #   → tmp へ書いて os.replace（原子的置換）。ロックまでは要らない
+        tmp = SHOWN + '.tmp.%d' % os.getpid()
+        with open(tmp, 'w') as f:
+            json.dump(shown, f, ensure_ascii=False)
+        os.replace(tmp, SHOWN)
     except Exception:
         pass
 TOPIC_HINTS = {
