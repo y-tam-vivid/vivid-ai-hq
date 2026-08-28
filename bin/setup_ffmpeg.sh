@@ -29,6 +29,15 @@ if [ -x "$DEST" ]; then
     exit 0
 fi
 
+# arm64機はRosetta 2が無いとx86_64バイナリを実行できない（2026-08-29 miniで実測：
+# "Bad CPU type in executable"）。導入はsudo不要（実測済み）なので先に済ませる。
+# ★稼働プロセス(oahd)の有無ではなく実体ファイルで判定する
+#   （oahdは初回のx86_64実行まで起動しておらず、稼働チェックだと誤判定する）。
+if [ "$(uname -m)" = "arm64" ] && [ ! -e /Library/Apple/usr/share/rosetta/rosetta ]; then
+    echo "Rosetta 2 が未導入のため導入します（sudo不要）..."
+    softwareupdate --install-rosetta --agree-to-license
+fi
+
 echo "evermeet.cx から最新安定版の情報を取得します..."
 INFO_JSON="$(curl -sL -m 20 "https://evermeet.cx/ffmpeg/info/ffmpeg/release")"
 ZIP_URL="$(python3 -c "import json,sys; print(json.loads(sys.argv[1])['download']['zip']['url'])" "$INFO_JSON")"
