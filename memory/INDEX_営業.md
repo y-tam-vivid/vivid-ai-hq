@@ -10,6 +10,7 @@
 - [kintoneは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーは出ない
 - [toC顧客台帳](project_toc_customer_ledger.md) — Notion完結。個人顧客マスター＋提案商談。将来=人物マスター中心
 - [法人番号は申請不要で取れる](reference_corp_number_bulk_download.md) — 全件DLは申請なしで今日から使える。Web-API IDだけが2週間〜1か月
+- [あいまい照合の設計](reference_fuzzy_match_design.md) — ★1文字違いは距離であって類似ではない(直/正で別人を結合)。誤りの実例で試す／キーは複数持つ
 - [法人番号の真因は社名欄](reference_ledger_name_blocks_corp_match.md) — 施設名同居/誤記/連結で突合が死ぬ。★絞り込みと適格性検査を混ぜない
 - [指数表記は計算で戻さない](reference_recover_exponential_corp_number.md) — toFixedでの復元は禁止。全件データで1社に絞れたときだけ確定
 - [kintoneルックアップはコピー](reference_kintone_lookup_is_a_copy.md) — マスタ更新→参照アプリで取り直しまでが1作業
