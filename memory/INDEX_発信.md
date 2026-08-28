@@ -27,3 +27,4 @@
 - [PR TIMES本文の体裁](feedback_prtimes_style_conventions.md) — タイトルは内容が先・団体名は「／」で末尾／太字は■見出しだけ／番号は(1)(2)(3)
 - [tane.は法人ではない](reference_tane_brand.md) — ふくち。グループの子ども・親子向けイベント企画の総称。★リリースの主体に使ってよいかは未決・勝手に名義にしない
 - [グループ5法人のブログとCMS](reference_group_blogs_and_cms.md) — **ILIFE/ビビッド/オレンジワークス=WordPress・ふくち。=STUDIO・NPO=Jimdo**。★ビビッドはwww付きが正／原稿はCMSごとに形を変えて渡す
+- [イベント運用スキル群](project_event_skills_suite.md) — event-*6本。★2026-08-28時点で実体はどこにも無い(4経路で実測0件)＝tar.gzの在り処を確認中／約束事5点(Notion書込は都度確認・推測禁止5項目・肖像権目視・放デイは対象外)はスキルの有無に関わらず有効
