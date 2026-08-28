@@ -169,6 +169,16 @@ def _working_md_marker_ages(threshold_days=7):
 def _role_guard_summary():
     """①観点：hook_role_guard.py が実際に役割違反を止めた回数（2026-08-29 新設・稼働はこれから）"""
     log = os.path.join(HERE, 'role_guard.log')
+    # ★2026-08-29 つる ── 登録の有無を先に見る。
+    #   それまでは「log が無ければ未稼働」としか判定しておらず、settings.json へ未登録の
+    #   ままでも手動テストでログが出来た瞬間に「ブロック3件」と稼働中のように見えた。
+    #   ＝テストするほど動いているように見える指標だった（実際にこの誤読が起きた）。
+    registered = False
+    try:
+        s = json.load(open(os.path.expanduser('~/.claude/settings.json')))
+        registered = 'hook_role_guard.py' in json.dumps(s.get('hooks', {}))
+    except Exception:
+        pass
     if not os.path.exists(log):
         return '（role_guard.log が無い＝まだ稼働していない。settings.json への登録が残件）'
     try:
@@ -177,7 +187,11 @@ def _role_guard_summary():
         return '（取れず ： %s）' % e
     blocked = sum(1 for ln in lines if '★ブロック' in ln)
     warned = sum(1 for ln in lines if '★警告' in ln)
-    return '直近ログ %d行 ／ ブロック %d件 ／ 警告 %d件' % (len(lines), blocked, warned)
+    body = '直近ログ %d行 ／ ブロック %d件 ／ 警告 %d件' % (len(lines), blocked, warned)
+    if not registered:
+        return ('★未稼働（settings.json に hook_role_guard.py の登録が無い）。'
+                'この件数は手動テストの痕跡であって、実際に止めた回数ではない ： ' + body)
+    return body
 
 
 def _open_findings_summary(min_streak=3):
