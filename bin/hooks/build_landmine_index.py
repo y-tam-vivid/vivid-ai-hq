@@ -29,6 +29,7 @@ import re
 import sys
 import json
 import glob
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MEM = os.path.expanduser('~/vivid-ai-hq/memory')
@@ -114,6 +115,7 @@ def weight(name, n_star, n_lines, mtime, newest):
 
 
 MAX_CHARS = 1400      # 1トピックあたりの上限。★本数ではなく文字数で切る（読まれる量が問題なので）
+FRESH_DAYS = 7        # ★この日数以内に書かれたものは上限で落とさない（いちばん踏みやすいので）
 
 
 def main(quiet=False):
@@ -148,8 +150,11 @@ def main(quiet=False):
             if not desc:
                 continue
             lines = [desc if len(desc) <= 150 else desc[:150] + '…']
+        mt = os.path.getmtime(p)
         entry = {'file': name, 'desc': desc, 'points': lines,
-                 'w': round(weight(name, n_star, len(lines), os.path.getmtime(p), newest), 1)}
+                 'w': round(weight(name, n_star, len(lines), mt, newest), 1),
+                 # ★書いたばかりのものは上限で落とさない（下の詰め方を参照）
+                 'fresh': (time.time() - mt) / 86400.0 <= FRESH_DAYS}
         # ★どこへ入れるか（2026-08-20 実測で3回作り直した）
         #   ・feedback_*  ── 有璽氏に言われたこと。**どの作業でも効くので必ず常設枠**。
         #     トピック語を含むかどうかで振り分けると、文字数の運で落ちる。
@@ -162,13 +167,23 @@ def main(quiet=False):
             idx.setdefault(t, []).append(entry)
 
     # ★重い順に、文字数の上限まで詰める。落としたものは黙って落とさない
+    #
+    # ★2026-08-29 実測 ── 常設枠で **188本中100本が落ちていた**。
+    #   しかも落ちていたのが `reference_hooks_enforce_what_discipline_cannot`
+    #   `reference_delivered_but_unread` ── **「書いても届かない」を止めるための記憶そのもの**。
+    #   重い順で切ると、書いたばかりの地雷（＝いちばん踏みやすい）が真っ先に落ちる。
+    #   だから **直近 FRESH_DAYS 以内のものは上限に関わらず先に確保する**。
     dropped = {}
     for t in idx:
         idx[t].sort(key=lambda e: -e['w'])
         # ★常設枠は広めに取る。どの作業でも効くものなので、押し出す方が損が大きい
         cap = MAX_CHARS * 3 if t == 'always' else MAX_CHARS
-        kept, used = [], 0
+        fresh = [e for e in idx[t] if e.get('fresh')]
+        kept = list(fresh)
+        used = sum(len(e['desc']) + sum(len(x) for x in e['points']) for e in kept)
         for e in idx[t]:
+            if e in kept:
+                continue
             cost = len(e['desc']) + sum(len(x) for x in e['points'])
             if used + cost > cap and kept:
                 continue
@@ -205,4 +220,18 @@ def main(quiet=False):
 
 
 if __name__ == '__main__':
-    sys.exit(main(quiet='--quiet' in sys.argv))
+    # ★2026-08-29 実測 ── `import time` の抜けで NameError を出しながら **exit=0** を返し、
+    #   古い landmines.json をそのまま残していた。呼び出し側（cron・フック）からは
+    #   「動いた」ようにしか見えず、**新しい記憶が1本も載らないまま気づけない**。
+    #   → 落ちたら 1 を返し、心拍も「失敗」で打つ（reference_ran_is_not_succeeded）。
+    try:
+        sys.exit(main(quiet='--quiet' in sys.argv))
+    except Exception as e:
+        sys.stderr.write('[landmine] ★失敗 ： %r\n' % (e,))
+        try:
+            sys.path.insert(0, HERE)
+            from heartbeat import beat as hb
+            hb(PROC_NAME, '失敗', repr(e)[:300])
+        except Exception:
+            pass
+        sys.exit(1)

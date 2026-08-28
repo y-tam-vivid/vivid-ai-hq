@@ -88,6 +88,27 @@ RULES = [
 #   （2026-08-20 有璽氏「抜け漏れがあるんじゃないか」）
 #   → memory から自動生成した索引も併せて読む。**memoryに書けば次から効く**
 LANDMINES = os.path.join(HERE, 'landmines.json')
+# ★どれを何回出したかの記録。これが無いと重い順の上位2本だけが毎回出て、
+#   残りは一生出ない（2026-08-29 実測）。機械ローカルでよい＝git へは入れない
+SHOWN = os.path.expanduser('~/.vivid-relay/landmine_shown.json')
+
+
+def _load_shown():
+    try:
+        return json.load(open(SHOWN))
+    except Exception:
+        return {}
+
+
+def _save_shown(shown, picked):
+    """出したものの回数を1つ増やす。★何があっても例外を外に出さない"""
+    try:
+        for f in picked:
+            shown[f] = shown.get(f, 0) + 1
+        os.makedirs(os.path.dirname(SHOWN), exist_ok=True)
+        json.dump(shown, open(SHOWN, 'w'), ensure_ascii=False)
+    except Exception:
+        pass
 TOPIC_HINTS = {
     'sheets': ['sheets_client', 'WORKBOOK_ID', 'INTAKE_ID', '_マスタ', '_活動ログ',
                '_関係フォロー', 'スプレッドシート', 'spreadsheet'],
@@ -154,14 +175,25 @@ def from_memory(blob):
     tops = [t for t, hints in TOPIC_HINTS.items()
             if any(h in blob for h in hints)]
 
+    shown = _load_shown()
+
     def relevant_first(entries):
         """★常設枠は本数が多い。重み順の上位だけを出すと毎回同じ2本になる。
-        いまの作業に語が一致するものを先に出し、残りを重み順で埋める。"""
+        いまの作業に語が一致するものを先に出し、残りを重み順で埋める。
+
+        ★2026-08-29 実測で分かった穴 ── 語が一致しないとき順序は完全に安定で、
+          **上位2本だけが毎回出て、残りは一生出ない**。有璽氏の
+          「散々書きますと言っても見ないんやったら意味ない」はこの構造の話。
+          だから語の一致が同点なら **最近出していないものを先に出す**。
+          本数は増やさない（増やすと読まれなくなる → reference_delivered_but_unread）。
+        """
         def score(e):
             text = (e.get('desc', '') + ' ' + ' '.join(e.get('points') or []))
             words = [w for w in re.findall(r'[一-龯ぁ-んァ-ヶA-Za-z_]{3,}', text)]
             return sum(1 for w in set(words) if w in blob)
-        return sorted(entries, key=lambda e: -score(e))
+        return sorted(entries, key=lambda e: (-score(e), shown.get(e['file'], 0)))
+
+    picked = []
 
     def take(topic, n):
         got = []
@@ -172,6 +204,7 @@ def from_memory(blob):
             pts = e.get('points') or []
             if not pts:
                 continue
+            picked.append(e['file'])
             got.append('【%s】\n%s' % (e['file'].replace('.md', ''),
                                        '\n'.join('・' + p for p in pts[:3])))
         return got
@@ -190,6 +223,7 @@ def from_memory(blob):
             continue
         seen.add(x)
         uniq.append(x)
+    _save_shown(shown, picked)
     return uniq[:5]
 
 

@@ -16,12 +16,31 @@
          ＝ いま書いている最中のもの・他セッションが書き込んだ直後のものでは鳴らない
   無限ループ対策  stop_hook_active が true（＝すでに1度差し戻した）なら黙って通す
 
+★2つ目の検査 ── 探さずに人へ投げていないか（2026-08-29 有璽氏）
+  > 「散々書きますとかなんとかしますって言っててもそれ見ないんやったら意味ないやん。
+  >   根本的にどうやって解決すんのそういうの」
+
+  実測した構造 ── **検問が1つも無い経路が1本だけ残っていた**。
+
+    ファイルを触る       → PreToolUse が地雷を突きつける   効いている
+    ターンを終える       → 上の書き戻し検査               効いている
+    ★人へ作業を依頼する → 何も鳴らない
+    ★「無い/分からない」→ 何も鳴らない
+
+  2026-08-28、Drive に実物があるのに「kintone の CSV を書き出していただけますか」と
+  有璽氏へ投げた。**その場所は自分で作った場所だった。** ファイルを触っていないので
+  フックは鳴らず、memory は引きに行かないと来ないので来なかった。
+  「あとから記憶に書いてありました」と言うのも同じ理由 ── **指摘されて初めて探すから**。
+
+  だから：**人へ投げる／無いと言うターンでは、探した形跡があるかを機械で見る。**
+  探していれば黙って通す。探していなければ1度だけ差し戻す。
+
 出力の作法
   exit 2 ＋ stderr  → Claude に差し戻される（stderr の中身がそのまま指示になる）
   exit 0            → そのまま終了
   ★何があっても exit 1 で落とさない。フック自身の失敗でセッションを止めない
 """
-import json, os, subprocess, sys, time
+import json, os, re, subprocess, sys, time
 
 REPO = os.path.expanduser('~/vivid-ai-hq')
 WATCH = ('memory/', 'WORKING.md', '.claude/', 'bin/')
@@ -43,6 +62,110 @@ def log(verdict, detail=''):
         pass
 
 
+# ─────────────────────────────────────────────────────────────
+# 検査2 ── 探さずに人へ投げていないか
+# ─────────────────────────────────────────────────────────────
+
+# ★狭く取る。誤爆すると「またフックがうるさい」で読まれなくなり、無いのと同じになる
+#   （reference_delivered_but_unread の型）。だから「人に手を動かさせる依頼」と
+#   「無いと断定した」だけに絞る。「〜しますか」「承認してください」では鳴らせない。
+ASK_HUMAN = re.compile(
+    r'(いただけますか|いただけません|していただ|もらえますか|もらえません'
+    r'|送ってください|共有してください|共有してほしい|書き出して|エクスポートして'
+    r'|出力してください|貼ってください|アップロードして)')
+CLAIM_ABSENT = re.compile(
+    r'(見つかりませんでした|見つかりません|見当たりません|存在しません'
+    r'|どこにあるか(は)?(分|わ)かりません|所在が(分|わ)かりません'
+    r'|こちらには(ありません|無い|持っていません)|手元にありません)')
+
+# 探した形跡（★実際に叩いたツールの入力から見る。言葉でなく行為で判定する）
+SEARCHED = re.compile(
+    r'(vivid-ai-hq/memory|memory/|INDEX_|MEMORY\.md'          # 記憶を引いた
+    r'|drive\.files|files\(\)\.list|search_files|Google_Drive'  # Drive を探した
+    r'|notion-search|notion-fetch)')                            # Notion を探した
+
+
+def _turn_messages(path):
+    """直近の人の発言以降の、こちらの発話とツール入力を取り出す"""
+    said, tooled = [], []
+    try:
+        lines = open(path, encoding='utf-8').read().splitlines()
+    except Exception:
+        return said, tooled
+    start = 0
+    for i, ln in enumerate(lines):
+        try:
+            o = json.loads(ln)
+        except Exception:
+            continue
+        if o.get('type') != 'user' or o.get('isMeta'):
+            continue
+        c = (o.get('message') or {}).get('content')
+        # ツール結果だけの user 行は「人の発言」ではない
+        if isinstance(c, list) and all(
+                isinstance(b, dict) and b.get('type') == 'tool_result' for b in c):
+            continue
+        txt = c if isinstance(c, str) else ' '.join(
+            b.get('text', '') for b in c or [] if isinstance(b, dict))
+        if '<system-reminder>' in txt and len(txt) > 4000:
+            continue
+        start = i
+    for ln in lines[start + 1:]:
+        try:
+            o = json.loads(ln)
+        except Exception:
+            continue
+        if o.get('type') != 'assistant':
+            continue
+        for b in (o.get('message') or {}).get('content') or []:
+            if not isinstance(b, dict):
+                continue
+            if b.get('type') == 'text':
+                said.append(b.get('text', ''))
+            elif b.get('type') == 'tool_use':
+                tooled.append(json.dumps(b.get('input', {}), ensure_ascii=False))
+    return said, tooled
+
+
+def check_asked_without_looking(payload):
+    """人へ投げた／無いと言った、のに探していないなら差し戻し文を返す"""
+    tp = payload.get('transcript_path')
+    if not tp or not os.path.isfile(tp):
+        return None
+    said, tooled = _turn_messages(tp)
+    if not said:
+        return None
+    body = '\n'.join(said)
+    ask = ASK_HUMAN.search(body)
+    absent = CLAIM_ABSENT.search(body)
+    if not ask and not absent:
+        return None
+    if any(SEARCHED.search(t) for t in tooled):
+        return None                       # 探したうえで言っている。通す
+    what = []
+    if ask:
+        what.append('有璽氏に手を動かしてもらう依頼（「%s」）' % ask.group(1))
+    if absent:
+        what.append('「%s」という断定' % absent.group(1))
+    return [
+        '★探さずに人へ投げようとしています。',
+        '',
+        'このターンで ' + ' と '.join(what) + ' を書いていますが、',
+        'このターンでは memory も Drive も Notion も1度も検索していません。',
+        '',
+        '2026-08-28、Drive に実物があるのに「kintone の CSV を書き出していただけますか」と',
+        '有璽氏へ投げました。★その場所は自分で作った場所でした。',
+        '',
+        '終える前に、次を実際に叩いてください（言うだけでなく実行する）：',
+        '  1  grep -ril "<いま探している語>" ~/vivid-ai-hq/memory/',
+        '  2  Drive を検索する（drive.files().list / search_files）',
+        '  3  それでも無ければ「◯◯と△△を探したが無い」と探した先を明記して渡す',
+        '',
+        '★探したうえで人に依頼するのは正しい行為です。探さずに渡すのだけが問題です。',
+        '（意図して省いている場合は、その旨を1行述べればそのまま終えられます）',
+    ]
+
+
 def main():
     try:
         payload = json.load(sys.stdin)
@@ -53,6 +176,17 @@ def main():
     if payload.get('stop_hook_active'):
         log('通した', '2度目（stop_hook_active）')
         return 0
+
+    # ★検査2を先に見る。書き戻しより前に「そもそも探したか」を問う
+    try:
+        lines = check_asked_without_looking(payload)
+    except Exception as e:
+        lines = None
+        log('検査2で例外', str(e))
+    if lines:
+        sys.stderr.write('\n'.join(lines) + '\n')
+        log('★差し戻した(検査2)', '探さずに人へ投げた')
+        return 2
 
     if not os.path.isdir(os.path.join(REPO, '.git')):
         log('通した', 'リポジトリが無い')
