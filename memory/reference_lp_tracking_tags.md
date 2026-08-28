@@ -105,3 +105,27 @@ GTM           そのまま動く
 テンプレ更新のリスクを負わずに分離できる。** 経路が3つ以上に増えたら `/form` へ寄せる。
 テンプレ更新の手順は `scratchpad/sb_fix_templates.py` の型（本文ごと save で上書き）。
 ★`templates/list` は 403（production_gate）で読めない。**save は通る**という非対称がある。
+
+## 経路別の配布URL ─ 2026-08-28 に6本へ拡張（全パス実測済み）
+
+**正本の一覧は `~/Documents/gamemarke_lp/配布URL一覧.md`**（有璽氏へ渡す用・コピーしやすい形）。
+ここには**規則**だけ置く。規則が分かれば組み立てられるので、URLを二重に持たない。
+
+```
+規則   https://gamemarke.vivid-global.com/<パス>?utm_source=<source>&utm_medium=<medium>
+
+  /            （なし）                      フォーム営業 ★SBテンプレ1609。触ると第2波が壊れる
+  /ig          instagram / dm                Instagram DM
+  /line        line      / message           LINE
+  /dm          messenger / dm                Messenger
+  /mail        email     / direct            メール個別送信
+  /sign        email     / signature         メール署名（★パスだけでも識別できる）
+```
+
+- **識別はパスとUTMの二重。** どちらか片方が落ちても経路が分かる
+- **新しい経路を足す** ── `vercel.json` の rewrites の `(form|ig|line|dm|mail|sign)` に
+  1語足してデプロイするだけ。HTMLは触らない
+- **★`.vercelignore` に `*.md` を入れた**（2026-08-28）。入れないと
+  `https://gamemarke.vivid-global.com/配布URL一覧.md` で**社内向けの注記が外から読める**。
+  `*.bak*.html` も同様に除外済み（308→404 を実測）
+- 一覧に無いパスは404のまま（`/adminpanel` で実測）
