@@ -719,3 +719,23 @@ LPを例外にすれば足りる。確かめ方の手順 → [[reference_lp_trac
 
 **残＝第2波の送信（有璽氏の操作）**：リスト735（3,121件・フォーム有）× テンプレ1609（訴求A）。
 約5時間（600件/時）。
+
+## 2026-08-28 ── Instagram DM でも同じLPを使う（流入経路の分離）
+
+有璽氏「来週あたりからインスタグラムへのDM等でもこのLPを使っていきたい。どちらから
+クリックされたかのログ、タグを分けられるか」。**分けられる。実測で確定した。**
+
+```
+フォーム営業（今のまま・触らない）  https://gamemarke.vivid-global.com/
+Instagram DM（★これを配る）        https://gamemarke.vivid-global.com/ig?utm_source=instagram&utm_medium=dm&utm_campaign=gamebull
+```
+
+**★SalesBreaker が utm_source を読んで sources[] に "Instagram" と分類した**（仕様書に
+記載のない挙動）。SBのダッシュボードだけで経路別の数が見える。詳細と確かめ方 →
+[[reference_lp_tracking_tags]]
+
+- Vercel の rewrites で `/form` `/ig` `/dm` `/mail` を同じLPに向けた。クエリが落ちても
+  パスで分かる二重の保険
+- **第2波（リスト735・3,121件）は `/` のまま送ってよい。** テンプレを触る必要はない
+- IG DM の文面は `scratchpad/gamebull-ig-dm-drafts-20260827.md`。**リンクをこのURLに
+  差し替えること**（★差し替えないと経路が混ざる）
