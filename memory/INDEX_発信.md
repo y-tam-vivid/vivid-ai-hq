@@ -27,4 +27,4 @@
 - [PR TIMES本文の体裁](feedback_prtimes_style_conventions.md) — タイトルは内容が先・団体名は「／」で末尾／太字は■見出しだけ／番号は(1)(2)(3)
 - [tane.は法人ではない](reference_tane_brand.md) — ふくち。グループの子ども・親子向けイベント企画の総称。★リリースの主体に使ってよいかは未決・勝手に名義にしない
 - [グループ5法人のブログとCMS](reference_group_blogs_and_cms.md) — **ILIFE/ビビッド/オレンジワークス=WordPress・ふくち。=STUDIO・NPO=Jimdo**。★ビビッドはwww付きが正／原稿はCMSごとに形を変えて渡す
-- [イベント運用スキル群](project_event_skills_suite.md) — event-*6本。★tar.gzはclaude.aiチャットの添付のみ＝有璽氏が~/Downloadsへ保存するまで実体ゼロ。以後はgitで両機へ配る(scp禁止)／約束事5点(Notion書込は都度確認・推測禁止5項目・肖像権目視・放デイは対象外)はスキルの有無に関わらず有効
+- [イベント運用スキル群](project_event_skills_suite.md) — ★8/28導入完了。両機で6本を実測(計14本)／**social-kitはcv2/ffmpeg欠落で顔ぼかし・リール不可**・参照先のfukuchi-deck-builder/docx/pptx/standup-…-importerは4本とも存在しない／約束事5点(Notion書込は都度確認・推測禁止5項目・肖像権目視・放デイ対象外)

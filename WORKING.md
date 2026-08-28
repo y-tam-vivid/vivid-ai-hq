@@ -285,6 +285,15 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ビビ / MacBook 2026-08-28】イベント運用スキル6本 ── 導入完了。★有璽氏の回答待ち3点**
+  - **書いた**: `.claude/skills/event-*`（6本）＋ `EVENT-SKILLS-README.md` ／
+    `memory/project_event_skills_suite.md` ／ `memory/INDEX_発信.md` の1行
+  - **★両機で実測済み**（MacBook・mini とも6本／計14本／symlink経由でも見える）
+  - **★動かないもの**: `event-social-kit` は cv2・ffmpeg が両機に無く**顔ぼかし・リール生成が不可**
+  - **★参照先4本が存在しない**: `fukuchi-deck-builder` `docx` `pptx` `standup-event-notion-importer`
+  - **★台帳・Notionへは1文字も書いていない。** イベントDBの実在も未確認
+  - 詳細と回答待ち3点 → `memory/project_event_skills_suite.md`
+
 - **【ビビ / MacBook 2026-08-27】Instagram DM営業リスト ── A完了・B投函待ち・DM文面できた**
   - **書いた**: `memory/project_ig_dm_sales_lists.md`（新規）／`memory/project_manus_outsourcing.md`（全面改訂）
     ／`memory/INDEX_営業.md`・`memory/INDEX_発信.md` の各1行

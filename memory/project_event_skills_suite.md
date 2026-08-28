@@ -7,17 +7,30 @@ metadata:
 
 # イベント運用スキル群（event-*）── 構成と約束事
 
-## いまここ（2026-08-28）
-
-**★実体はまだ1本も存在しない。** 有璽氏は「導入した」と述べたが、実測では次のすべてで0件。
+## いまここ（2026-08-28 23:1x）── ★導入完了。両機で6本が見える
 
 ```
-~/.claude/skills/            8本（cross-check〜thinking-os）。event-* は無し
-~/vivid-ai-hq/.claude/skills/  同上（~/.claude/skills はここへの symlink）
-origin/main（未取込20件を含む）  git ls-tree で event-* スキルは0件
-Mac mini ~/.claude/skills/    event-* は無し
-event-skills-for-claude-code.tar.gz   ~ 配下（Library除く）を find して0件
+配置       ~/vivid-ai-hq/.claude/skills/event-*（6本）＋ EVENT-SKILLS-README.md
+           既存8本と衝突ゼロ → 14本。~/.claude/skills はここへの symlink＝全cwdで読まれる
+認識       Claude Code のスキル一覧に6本とも出た（実測）
+配布       commit → push → mini で merge。★両機とも6本を実測で確認
 ```
+
+**★動かないものが1つある** ── `event-social-kit` の依存が両機とも不足。
+
+| | MacBook | Mac mini |
+|---|---|---|
+| Pillow | ✅ | ✅ |
+| **cv2 (opencv)** | ❌ | ❌ |
+| numpy | ❌ | ✅ |
+| **ffmpeg** | ❌ | ❌ |
+| Noto Sans CJK | ❌ | 未確認 |
+
+→ **顔ぼかし・リール生成は現状できない。** 他5本のスクリプトは `--help` 起動を実測済み（標準ライブラリのみ）。
+
+**★スキルが呼ぶ他スキルが4本とも存在しない**（実測）── `fukuchi-deck-builder` `docx` `pptx`
+`standup-event-notion-importer`。**企画書・報告書の Word/PowerPoint 出力と、放デイ側への
+振り分け先が無い。** 参照が空振りするので、出力形式を決める前に有璽氏へ確認が要る。
 
 **★所在が確定（2026-08-28 有璽氏）** ── tar.gz は **claude.ai チャットの添付としてのみ存在**。
 Google Drive には一度も置いていない。**＝人が1回ダウンロードするまで実体はゼロ。**
