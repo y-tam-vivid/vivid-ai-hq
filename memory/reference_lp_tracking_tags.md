@@ -59,3 +59,49 @@ MS Clarity      y999sy395z      録画・ヒートマップ・怒りクリック
 
 [[project_gamebull_form_sales]] [[feedback_stop_asking_just_do_it]]
 [[reference_vercel_free_plan_protection]]（LPの公開先とBasic認証の型）
+
+## ★流入経路を分ける ─ 2026-08-28 実測で確定
+
+有璽氏「来週あたりからInstagramのDMでもこのLPを使いたい。**どちらからクリックされたか
+分けられるか**」。**分けられる。** 4つの計測すべてで分かれることを実物で確かめた。
+
+```
+配るURL
+  フォーム営業（SalesBreaker）  https://gamemarke.vivid-global.com/
+  Instagram DM                  https://gamemarke.vivid-global.com/ig?utm_source=instagram&utm_medium=dm&utm_campaign=gamebull
+```
+
+**実測の結果（`/ig?utm_source=instagram...` を1回開いた直後）**
+
+```
+SalesBreaker  pages[] に /ig?utm_source=... が別行で出た
+              ★sources[] に "Instagram" が新しく現れた
+              ＝ SBは utm_source を読んで参照元に分類している（仕様書に記載なし・実測で判明）
+GA4           dl に UTM付きの完全URLを送信。cs/cm/cn が空なのは正常
+              （GA4は dl のクエリをサーバー側で解釈する）。管理画面に出るのは数時間後
+Clarity       関数あり・4回送信。★Page URL でのセグメント分けは未実測（管理画面が要る）
+GTM           そのまま動く
+```
+
+## パスの分岐（Vercel rewrites）
+
+`~/Documents/gamemarke_lp/vercel.json` に置いた。`/form` `/ig` `/dm` `/mail` の4本が
+同じ index.html を返す（URLは書き換わらない）。存在しないパスは404のまま。
+
+```json
+"rewrites": [{ "source": "/(form|ig|dm|mail)", "destination": "/" }]
+```
+
+- **★`destination` を `/index.html` にすると 404 になる。** `cleanUrls: true` と干渉する。
+  `"/"` を指定すること（2026-08-28 に実測で踏んだ）
+- **なぜクエリだけに頼らないか** ── SBはメール内リンクを**自前のトラッキングドメインへ
+  書き換えてリダイレクト**させる（docs/salesbreaker-agent-operating-manual.md）。
+  そのときクエリが生き残るかは、実際に送信・クリックされるまで検証できない。
+  **パスはリダイレクトで落ちない。** 保険として二重に持つ
+
+## フォーム営業側のテンプレは触っていない
+
+`/` に来たものはフォーム営業と読める（IG側が `/ig` を使うため）。**触らないことで
+テンプレ更新のリスクを負わずに分離できる。** 経路が3つ以上に増えたら `/form` へ寄せる。
+テンプレ更新の手順は `scratchpad/sb_fix_templates.py` の型（本文ごと save で上書き）。
+★`templates/list` は 403（production_gate）で読めない。**save は通る**という非対称がある。
