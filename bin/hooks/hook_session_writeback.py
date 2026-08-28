@@ -87,10 +87,30 @@ CLAIM_ABSENT = re.compile(
 SEARCH_TOOLS = {'Read', 'Grep', 'Glob', 'WebFetch', 'WebSearch', 'Bash', 'Agent', 'Task'}
 
 # 探した形跡（★実際に叩いたツールの入力から見る。言葉でなく行為で判定する）
+#
+# ★2026-08-29 つる2周目の指摘（実測）── つる自身が daily_jobs.conf を find で
+#   探して0件→別の場所で発見、という**最も基本的な探索行為**が「探していない」と
+#   判定される構造だった（語彙が memory/ Drive/ Notion 系の固有名詞にしか当たらず、
+#   find/ls/grep/cat のような汎用コマンド名が抜けていたため）。
+#
+# ★設計判断（トレードオフ・ビビの依頼どおり報告する）
+#   採った案：コマンド名（単語境界）だけを見る。対象パスが「探すべき場所」
+#     （memory/Drive/Notion等）に関係しているかまでは見ない。
+#   理由：①話題関連性の判定は自由記述の依頼文から対象を推定する必要があり、
+#     実装が複雑になるうえ誤判定（見逃し・過検知の両方）が増える。
+#     ②既存設計（SEARCH_TOOLS によるツール種別の絞り込み）自体が既に
+#       「厳密な対象特定」までは行っていない粒度なので、一貫性がある。
+#     ③「うるさくして読まれなくなる」よりは、狭く始めて様子を見る方が安全
+#       （reference_delivered_but_unread の教訓）。
+#   捨てたリスク：無関係な `ls ~/Downloads` 等でも「探した」と判定され通ってしまう
+#     ＝ 見逃し方向のリスク（誤爆で止められすぎるより安全側と判断した）。
+#     精度を上げるなら、コマンドの引数に WORKING.md/memory/Drive/Notion 等の
+#     語が含まれるかを追加条件にできる（未実装。次に踏んだら検討）。
 SEARCHED = re.compile(
     r'(vivid-ai-hq/memory|memory/|INDEX_|MEMORY\.md'          # 記憶を引いた
     r'|drive\.files|files\(\)\.list|search_files|Google_Drive'  # Drive を探した
-    r'|notion-search|notion-fetch)')                            # Notion を探した
+    r'|notion-search|notion-fetch'                              # Notion を探した
+    r'|\bfind\b|\bls\b|\bgrep\b|\bcat\b|\brg\b)')                # ★基本的な探索コマンド（単語境界）
 
 
 def _turn_messages(path):
