@@ -7,6 +7,69 @@ metadata:
 
 # イベント運用スキル群（event-*）── 構成と約束事
 
+## ★2026-08-29 ピタゴラス着手 ── Word/PowerPoint/PDF/ffmpeg 環境整備
+
+有璽氏「いります。使います。使えるようにして。存在しませんじゃなくて使えるようにして」を受けた対応。
+**台帳・Notion・kintoneへは1文字も書いていない。**
+
+```
+① snspipe.pyフォント対応     ★承認待ち（diffのみ提示・未着手）
+② PowerPoint出力            ✅完了。bin/md2pptx.py新設・両機実測
+③ PDF出力                   ✅完了。bin/md2pdf.py新設・両機実測
+④ ffmpeg導入                ✅完了。bin/setup_ffmpeg.sh新設・両機実測
+```
+
+**① snspipe.pyのフォント対応（`.claude/skills/event-social-kit/scripts/snspipe.py` 44-48行目）**
+依頼にあった候補は実測で不採用にした：
+- `PingFang.ttc` は **miniに存在しない**（MacBookのみ・両機不一致。macOS 26.5.2と14.6.1で構成が違う）
+- `Hiragino Sans GB.ttc` は簡体字中国語用で、両機でファイルサイズも異なる（23,522,052 vs 25,879,292）
+- 代わりに「ヒラギノ角ゴシック W0〜W9.ttc」を採用。ウェイトごとに独立ファイルで両機に実在。
+  `getname()`実測: W3=Regular相当／W6=Bold相当／W9=最太。呼び出しはBlack/Medium/Regularの3種のみ
+  （151/157/161/163/217/220/222/249行）。**diffのみ提示済み・ビビの承認待ちで未着手。**
+
+**② PowerPoint（bin/md2pptx.py）**
+python-pptx 1.0.2を両機へpip導入。bin/md2docx.pyと同じ思想（命名・引数・検算作法）。
+`#`→タイトルスライド／`##`→新規スライド／`###`→小見出し／表・箇条書き・番号付き・**強調**に対応。
+実測：3スライド生成・太字反映・表2種とも両機で正しく生成（miniは他セッション作業中のためgit経由の
+到達は保留・一時ファイルとして直接検証）。
+
+**③ PDF（bin/md2pdf.py）**
+選定した経路と、落とした理由（実測ベース）：
+```
+weasyprint       pip installは通るが実行時にlibgobject-2.0等のネイティブ依存が要る。
+                 MacBookにHomebrewが無く導入不可（brew自体が両機とも既定で入っていなかった。
+                 miniのみ後から判明: 既にbrew導入済みだったが、道具は両機同一手順にする方針で不使用）
+reportlab+TTF    macOSの日本語システムフォント(ヒラギノ角ゴ/明朝/丸ゴ)は全てCFF(PostScript)
+                 アウトラインで、reportlabのTTFontローダーが非対応（fontToolsで実測確認）
+CFF→TTF変換      otf2ttf+cu2quで変換は可能だが実測14秒/フォント・8.9MB/本。毎回変換は非現実的。
+                 かつAppleフォントの変換ファイルをリポジトリへコミットするのはライセンス上の
+                 再配布リスクがある
+docx/pptx経由    LibreOffice(soffice)が無く自動変換できない。GUI操作(Word/Keynote)は自動化不向き
+→ 採用: reportlab組み込みCIDフォント(HeiseiMin-W3本文／HeiseiKakuGo-W5見出し・強調)。
+   ★非埋め込み方式（グリフ実体をPDFに埋め込まない）。社内利用なら実用上問題ないが、
+   契約書等の厳密な体裁保証が要る文書は引き続きbin/md2docx.py(Word)を使うこと。
+```
+実測：QuickLookでPNG化し目視確認済み（見出し・表・箇条書き・番号付き・強調のゴシック体切替、
+すべて両機で正しく描画）。
+
+**④ ffmpeg（bin/setup_ffmpeg.sh）**
+```
+選定       evermeet.cxの静的バイナリ(x86_64)。両機ともarm64だがRosetta 2経由で動作
+          （動画エンコードまで実測済み）。80MB前後でリポジトリへは置かず、導入スクリプトのみ
+          git管理し各機で個別ダウンロード（.gitignoreへbin/vendor/追加）。冪等性も確認済み
+brew不使用の理由  MacBookにHomebrewが無い。miniには既にあったが、両機で手順を統一する方針
+Rosetta   ★miniは未導入で"Bad CPU type in executable"を実測 → 導入した（sudo不要と確認済み）。
+          setup_ffmpeg.shへ自動導入チェックを追記（実体ファイルの有無で判定。稼働プロセスoahdの
+          有無で判定すると初回実行前は誤判定するため不採用）
+```
+両機で動画変換（3枚の静止画→h264 mp4）を実測。
+
+**★残作業**
+- ①のdiff承認待ち（承認され次第、snspipe.py本体を修正）
+- ②③はmini側でgit経由の到達が未確認（他セッションが作業ツリーを汚しているため。一時ファイルでの
+  動作検証は完了済み。他セッションのgit状態が片付き次第、通常のpull到達を確認すること）
+- コード検査はステラ（dev-producer）配下へ未依頼（cross-check型に従い自分では検査していない）
+
 ## いまここ（2026-08-28 23:1x）── ★導入完了。両機で6本が見える
 
 ```
