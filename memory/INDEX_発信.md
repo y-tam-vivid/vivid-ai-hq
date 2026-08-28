@@ -28,3 +28,4 @@
 - [tane.は法人ではない](reference_tane_brand.md) — ふくち。グループの子ども・親子向けイベント企画の総称。★リリースの主体に使ってよいかは未決・勝手に名義にしない
 - [グループ5法人のブログとCMS](reference_group_blogs_and_cms.md) — **ILIFE/ビビッド/オレンジワークス=WordPress・ふくち。=STUDIO・NPO=Jimdo**。★ビビッドはwww付きが正／原稿はCMSごとに形を変えて渡す
 - [イベント運用スキル群](project_event_skills_suite.md) — ★8/28導入・両機14本。**8/29実測=Linux前提で止まる(opencvは<5必須・FONT_DIRがLinuxパスで文字描画不可)**／**Notion🗓️イベント管理は9列しかなく推測禁止5項目の置き場が無い**／工程は必ず全部通るわけではない(報告書までは一体)
+- [ブランドテーマ3種](reference_brand_themes.md) — ふくち。/119番/tane.の実データは揃っている(作り直さない)／**★tane.の配色がDriveとNotionで5色とも食い違い・未決**／Notionのブランドガイドは「110番」のまま古い／NPOは専用VI無し
