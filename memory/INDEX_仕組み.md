@@ -39,3 +39,4 @@
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
 - [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／**形式外value(UUID)は累計17回(8/27も3回)。押した人にエラーが返り続けている＝別アプリのボタン。発信元未特定・暫定手当ても未実施**／貼った鍵のlog平文は未revoke／**★scopeは「足してSave」では効かない。再インストールまでが1セット。実測は auth.test の x-oauth-scopes ヘッダ(本文には出ない)**
 - [md→Word変換](reference_md_to_docx.md) — bin/md2docx.py。★pandoc/LibreOfficeは無い。python-docxを両機へ導入済／変換後は読み返して数える
+- [日本語ファイル名はNFD](reference_japanese_filename_normalization.md) — macOSのファイル名はNFD。NFC文字列でgrep/in判定すると静かに0件になる。★担当の申告と検算が食い違ったら、まず検算側を疑う（両機のフォント在庫も実測記載）
