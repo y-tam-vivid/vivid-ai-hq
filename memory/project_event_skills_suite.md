@@ -13,10 +13,10 @@ metadata:
 **台帳・Notion・kintoneへは1文字も書いていない。**
 
 ```
-① snspipe.pyフォント対応     ★承認待ち（diffのみ提示・未着手）
-② PowerPoint出力            ✅完了。bin/md2pptx.py新設・両機実測
-③ PDF出力                   ✅完了。bin/md2pdf.py新設・両機実測
-④ ffmpeg導入                ✅完了。bin/setup_ffmpeg.sh新設・両機実測
+① snspipe.pyフォント対応     ★承認済み・内容は実測済み。🔴本体反映が構造的に不可（下記）
+② PowerPoint出力            ✅完了。bin/md2pptx.py新設・両機実測。ステラ検査依頼中
+③ PDF出力                   ✅完了。bin/md2pdf.py新設・両機実測。ステラ検査依頼中
+④ ffmpeg導入                ✅完了。bin/setup_ffmpeg.sh新設・両機実測。ステラ検査依頼中
 ```
 
 **① snspipe.pyのフォント対応（`.claude/skills/event-social-kit/scripts/snspipe.py` 44-48行目）**
@@ -25,7 +25,30 @@ metadata:
 - `Hiragino Sans GB.ttc` は簡体字中国語用で、両機でファイルサイズも異なる（23,522,052 vs 25,879,292）
 - 代わりに「ヒラギノ角ゴシック W0〜W9.ttc」を採用。ウェイトごとに独立ファイルで両機に実在。
   `getname()`実測: W3=Regular相当／W6=Bold相当／W9=最太。呼び出しはBlack/Medium/Regularの3種のみ
-  （151/157/161/163/217/220/222/249行）。**diffのみ提示済み・ビビの承認待ちで未着手。**
+  （151/157/161/163/217/220/222/249行）。
+
+**★NFC/NFD混在の実測**（ビビの指摘で判明）：macOSのファイル名はNFDで保存されることがあり、
+コード中のNFCリテラルと文字列比較しても一致しない。実測：`/System/Library/Fonts` のヒラギノ角ゴ
+9ファイルのうち **W3.ttc だけがNFC、他8本は全てNFD**（ファイルごとに正規化形式が違う実物）。
+→ `glob`で実ファイル名を取得しNFC正規化して照合する方式に修正（詳細は
+[[reference_japanese_filename_normalization]]）。**diffは承認済み。**
+
+**🔴①の本体反映が構造的にできない（2026-08-29 実測で確認）**：
+`.claude/skills/` という部分文字列を含むパスへの Edit / Write が、settings.json の
+permissions.allow に Edit/Write が明記されているにもかかわらず一律拒否される。
+`hook_role_guard.py` が原因ではないことを確認済み（`~/.vivid-relay/role_guard.log` 不在・
+settings.json の PreToolUse に未登録）。ディレクトリ実体ではなく**パス文字列マッチ**の可能性が
+高い（同一ディレクトリへの別ファイル名の新規作成も拒否／ディレクトリ名を変えた別階層のコピーは
+成功）。**回避策（Bash経由の書き込み等）は意図的なガード回避に当たるため実行していない。**
+
+diffの正しさ自体は、scratchpad内に実際と同じ深さの階層構造（`dotclaude/skls/event-social-kit/
+scripts/`）を再現し、carousel・story・reel・grid の全モードを両機で実行して実測済み。
+storyモードはbadge/headline/sub/noteの日本語文字列がすべて正しく描画されることを画像で確認、
+reelモードはエンドカードのBlack/Mediumフォントが正しく描画されたmp4（h264・1080x1920）を
+両機で生成できることを確認した（下記reelのffmpeg PATH問題も合わせて修正・検証済み）。
+
+**★残＝有璽氏かビビの手で1ファイルを置き換えるだけ。** 最終版の全文は本会話の報告メッセージに
+掲載済み（このファイルには転記しない。二重管理を避けるため）。
 
 **② PowerPoint（bin/md2pptx.py）**
 python-pptx 1.0.2を両機へpip導入。bin/md2docx.pyと同じ思想（命名・引数・検算作法）。
@@ -64,11 +87,18 @@ Rosetta   ★miniは未導入で"Bad CPU type in executable"を実測 → 導入
 ```
 両機で動画変換（3枚の静止画→h264 mp4）を実測。
 
+**★snspipe.py reelモードのffmpeg呼び出しもPATH依存だった**（ビビの指摘で判明）。
+`subprocess.run(['ffmpeg', ...])` はPATH解決に依存し、bin/vendor/ffmpegはPATHに無いため
+そのままではreelが落ちる。①のdiffに `shutil.which('ffmpeg')` → 無ければ
+`repo_root/bin/vendor/ffmpeg` へフォールバックする修正を追加し、両機で実際にreelモードを
+実行してh264 mp4（1080x1920・エンドカードのBlack/Medium日本語フォント含む）が生成される
+ことを確認した。①の本体反映が不可な構造的問題（上記）のため、この修正も同じ理由で未反映。
+
 **★残作業**
-- ①のdiff承認待ち（承認され次第、snspipe.py本体を修正）
-- ②③はmini側でgit経由の到達が未確認（他セッションが作業ツリーを汚しているため。一時ファイルでの
+- 🔴①のsnspipe.py本体反映（有璽氏かビビの手が要る。構造的にAIから書けない）
+- ②③④はステラ（dev-producer）へ検査を依頼中（cross-check型・自分では検査していない）
+- ②③はmini側でgit経由の到達が未確認（他セッションが作業ツリーを汚していたため。一時ファイルでの
   動作検証は完了済み。他セッションのgit状態が片付き次第、通常のpull到達を確認すること）
-- コード検査はステラ（dev-producer）配下へ未依頼（cross-check型に従い自分では検査していない）
 
 ## いまここ（2026-08-28 23:1x）── ★導入完了。両機で6本が見える
 
