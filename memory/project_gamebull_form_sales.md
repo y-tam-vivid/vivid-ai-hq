@@ -618,3 +618,104 @@ TENNIS PLANET武蔵小杉／DP財団（center@dpjapan.jp）から返信。
   第2波で母数が増えたときに再挑戦できる
 - ★リスト726/727 の企業には**もう訴求B・Cを送信済み**。第2波で訴求Aを再送すると2通目になる。
   同じ相手に別の訴求を送るのは避ける（不信を招く）→ **第2波は新規に抽出する**
+
+## ★★LPのフォルダが消えた（2026-08-27〜28）── 作業物を ~/Downloads に置いてはいけない
+
+```
+消えたもの   ~/Downloads/gamemarke_lp/      LPの正本（index.html ＋ assets 6点）
+             ~/Library/Application Support/com.vercel.cli/auth.json   Vercelの認証
+残ったもの   ~/Downloads/gamemarke_配布用/   PDFとCSV
+             公開中のLP（gamemarke.vivid-global.com）は HTTP 200 で生きていた
+```
+
+- **原因は特定していない。** `~/Downloads` は Downloads整理の自動処理（cron）の対象で、
+  17分類アーカイブへ移す設計になっている → [[downloads-archive-system]]。
+  ただし移動先で見つかっていないので、**断定はしない**
+- ★**教訓：作業中の正本を `~/Downloads` に置かない。** あそこは「片づけられる場所」。
+  今回は `~/Documents/gamemarke_lp/` へ復元した
+
+### 復旧のやり方（公開版から完全に取り戻せた）
+
+```
+curl -s -o index.html https://gamemarke.vivid-global.com/
+for f in vivid_logo.png vivid_catch_red.png manga_p03.jpg manga_p05.jpg manga_p06.jpg deck_p14.jpg; do
+  curl -s -o "assets/$f" "https://gamemarke.vivid-global.com/assets/$f"
+done
+＋ .vercelignore と vercel.json を作り直す
+```
+
+**公開してあるものは、公開先が予備になる。** 32,745バイト・画像6点・CTA5本・商材名0件で一致した。
+
+## ★Sales Breaker の1行タグ（2026-08-27）
+
+```
+形     <script src="https://salesbreaker.jp/v1/sb-track.js?id=<client_id>&token=<token>" async></script>
+確認   ★id が API の client_id と一致することを必ず確かめる（別テナントのタグを貼る事故を防ぐ）
+実体   HTTP 200 / 10,066バイト / 送信先は https://sb-trk.site
+       form・button[type=submit]・.wpcf7-submit 等のクリックを拾う。ALLOW_REDIRECT=false
+入手   ★APIからは取れない。管理画面（マーケティング設定）から人が取ってくる
+設置   LPの </head> 直前。★2026-08-27 にローカルへ設置済み・デプロイは未了（Vercel未ログイン）
+```
+
+## ★1行タグを設置して発火を確認した（2026-08-27）
+
+```
+設置    LPの </head> 直前。置き場は ~/Documents/gamemarke_lp/（★~/Downloads から移した）
+確認    設置前 page_views 0 / visitors 0 / events 0
+        当方がLPを2回開く
+        設置後 page_views 2 / visitors 1 / events 2  ★同一セッション内で0→2を実測
+        visitor_id = v_aj7nwdr1i_… が採番された
+```
+
+- **★`visited_at` は空のまま（`{}`）。** タグを入れても日時は返らない。
+  これはAPI全体の仕様で、**訴求別の時系列比較は結局できない**
+- 取れるようになったもの：LPを開いた企業／どこまで読んだか／再訪／AI流入
+- **タグを入れる前に、id が `account/status` の client_id と一致するか必ず確かめる**
+  （別テナントのタグを貼ると、他社のデータに混ざる）
+
+## いまの状態（2026-08-27 時点）
+
+```
+第1波  13,709件 送信済み（訴求A/B/C）→ 成功1,383（10.1%）→ クリック18社
+       ★訴求Aで確定（10社 vs 3社 vs 4社）。テストは打ち切った
+第2波  リスト id 735「ゲーム型販促_第2波_フォーム有_20260827」3,121件 ★送信待ち
+       全件がフォーム保有。第1波の13,709件は除外済み
+       テンプレは id 1609（訴求A・「ご放念ください」に修正済み）
+保留   リスト id 728 歯科 7,735件（送信しない）
+       文面「ゲーム型販促_歯科_定期検診の再来院」も保留（未登録）
+```
+
+## 2026-08-28 ── LPの計測タグ4本を設置・発火まで実測
+
+有璽氏「①②③を進めましょう」を受けた作業。**LPに4つの計測が同時に動く状態になった。**
+
+```
+Sales Breaker  sb-track.js id=17e298ff...    設置前 page_views 0 → 設置後 2 を実測
+Google Tag Mgr GTM-PQX3L4TQ                  ★会社サイトと同じコンテナ
+Google 4       G-4D1C77WR0P                  ★足していない。GTMコンテナに元から在った
+MS Clarity     y999sy395z                    window.clarity が関数・clarity.js 読込済
+```
+
+実体 `~/Documents/gamemarke_lp/index.html`（34,020バイト）。バックアップ
+`index.bak.preclarity.html`。Vercel `--prod` でデプロイ済。
+
+**★GTMコンテナ共有の誤発火は「起きていない」と実測で確定した**（当初は有璽氏へ確認を
+依頼しかけたが、自分で測れる話だった → [[feedback_stop_asking_just_do_it]]）。
+
+```
+外へ出た計測      GA4のPV 1発 ／ Clarity ／ SalesBreaker のみ
+広告系の送信      0本
+コンテナの測定ID  G- のみ。AW-(広告CV) DC- UA- は 1本も無い ＝ 水増しする器が無い
+CTAを4回クリック  dataLayer に gtm.click ×4 は入るが、新規通信 0
+                  ＝ クリックリスナーは動くが紐づいたタグが無い
+```
+
+**除外ルールは入れていない。** 会社サイト側にコンバージョンタグを足すとき、その場で
+LPを例外にすれば足りる。確かめ方の手順 → [[reference_lp_tracking_tags]]
+
+**★これで取れるようになったもの** ── SBが「どの会社が来たか」、Clarityが「どこまで
+読んでどこで離脱したか」、GA4が流入元。第1波では会社名しか分からなかったが、
+第2波からは**離脱位置が分かる**＝LPを直す根拠が手に入る。
+
+**残＝第2波の送信（有璽氏の操作）**：リスト735（3,121件・フォーム有）× テンプレ1609（訴求A）。
+約5時間（600件/時）。

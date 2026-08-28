@@ -108,3 +108,29 @@ metadata:
 
 関連 [[feedback_batch_the_checks]] [[feedback_verify_before_declining]]
 [[feedback_one_route_is_not_verification]] [[feedback_use_the_team_not_alone]]
+
+**★懸念も、自分で潰せるなら潰してから渡す**（2026-08-28 実証）
+
+LP（gamemarke）を会社サイトと同じ GTM コンテナに入れたあと、報告の最後に
+「会社サイト向けタグがLPで誤発火するかもしれないので、GTMのプレビューで確認してください」
+と書いた。有璽氏から **「ここは解消することはできる？できない？」**。
+
+**測れば済む話だった。** その場で3手で確定した。
+
+```
+① 実際の通信を数える   performance.getEntriesByType('resource')
+                       → 外へ出た計測は GA4のPV 1発・Clarity・SalesBreaker のみ。広告系0
+② コンテナ定義を読む   curl googletagmanager.com/gtm.js?id=GTM-XXXX を丸ごと取得
+                       → 測定IDを正規表現で数える。AW-/DC-/UA- が0本＝水増しする器が無い
+③ クリックを流す       document.addEventListener('click', e=>e.preventDefault(), true) で
+                       遷移を止めてから .click()。dataLayer に gtm.click は入るが通信0
+                       ＝リスナーは動くが紐づいたタグが無い
+```
+
+- **「〜かもしれません、確認してください」は、確認する手段が自分に有るなら書いてはいけない。**
+  懸念を書いた時点で仕事は終わっておらず、**人の時間で自分の推測を検算させている**。
+- **懸念を出すときは3つセットで出す** ── ①測った結果 ②残る不確かさ ③それが実害になる条件。
+  ②③だけを渡すのは、判断の押し返し。
+- **★ブラウザの計測タグは全部この3手で確定できる。** GTM・GA4・広告タグ・Clarity・
+  各種SaaSのトラッカー。管理画面へのログインは要らない。→ [[reference_lp_tracking_tags]]
+- 同じ型 → [[feedback_verify_before_declining]]（「できない」の前に試す）

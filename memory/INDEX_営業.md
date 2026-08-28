@@ -6,6 +6,7 @@
 > **上限は無い。** 毎ターン届く `MEMORY.md` と違い、必要なときだけ読まれる。
 > 呼び出しの対応は [[INDEX_担当別]] にある。
 
+- [IG DM営業リスト](project_ig_dm_sales_lists.md) — 119番(大阪→東京・児童/就労)とゲームブル(全国)。★多店舗・FCが効く／DMは1日数十件が上限＝件数はそこから逆算
 - [大きなSheetsはgviz経由](reference_gviz_large_sheet_access.md) — ★gvizは黙って嘘をつく。数値状文字列はCSV出力で読む
 - [kintoneは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーは出ない
 - [toC顧客台帳](project_toc_customer_ledger.md) — Notion完結。個人顧客マスター＋提案商談。将来=人物マスター中心
@@ -35,5 +36,6 @@
 - [顧客ファイルのDrive格納先](feedback_customer_files_drive_location.md) — 財務(03)でなく取引先・人物別(11)へ
 - [kintone CSV→Notionミラー](project_kintone_csv_to_notion_mirror.md) — 地雷=指数表記/継続行/cp932化け→作成後にSELECT突合で検証
 - [Sheets書き込みの暗黙挙動11点](reference_sheets_number_format_order.md) — 器を増やしても保護・入力規則は付いてこない
-- [GameBull×SalesBreaker](project_gamebull_form_sales.md) — ★3群13,709件送信済→クリック18社を特定。訴求Aが優勢だが未確定／苦情1件はNG登録
+- [GameBull×SalesBreaker](project_gamebull_form_sales.md) — 第1波13,709件済→★訴求Aで確定。第2波3,121件(フォーム有)は送信待ち／LPに1行タグ設置済
 - [受付確認をSlack返信で受ける](project_intake_slack_reply.md) — 氏名/IDで解決。★返信経路は8/26 16:20実測OK。**書き先はZ列直書き（Y列分離は廃止）／修正後のボタン押下は0件＝未検証**
+- [LPの計測タグ](reference_lp_tracking_tags.md) — gamemarke に SB/GTM/GA4/Clarity の4本。★ログイン不要で発火を確定させる3手
