@@ -1,3 +1,7 @@
 .DS_Store
 *.log
 .claude/settings.local.json
+
+# bin/setup_ffmpeg.sh が両機それぞれへダウンロードするバイナリ本体。
+# 80MB前後あり配布物としてリポジトリへ置かない（各機で個別に導入する設計）。
+bin/vendor/
