@@ -26,6 +26,21 @@ import json, os, subprocess, sys, time
 REPO = os.path.expanduser('~/vivid-ai-hq')
 WATCH = ('memory/', 'WORKING.md', '.claude/', 'bin/')
 STALE_MIN = 10
+LOG = os.path.expanduser('~/.vivid-relay/hook_writeback.log')
+
+
+def log(verdict, detail=''):
+    """★毎回1行残す。「鳴っていない」と「動いていない」を区別するため（2026-08-28 有璽氏）
+
+    このフックは exit 2 の中身が Claude にしか返らず、有璽氏の画面には出ない。
+    ログが無いと「消えてる気がする」を実測で否定できない。★何があっても例外を外に出さない。
+    """
+    try:
+        os.makedirs(os.path.dirname(LOG), exist_ok=True)
+        with open(LOG, 'a') as f:
+            f.write('%s\t%s\t%s\n' % (time.strftime('%Y-%m-%dT%H:%M:%S'), verdict, detail))
+    except Exception:
+        pass
 
 
 def main():
@@ -36,14 +51,17 @@ def main():
 
     # すでに1度差し戻している。2度目は通す（無限ループにしない）
     if payload.get('stop_hook_active'):
+        log('通した', '2度目（stop_hook_active）')
         return 0
 
     if not os.path.isdir(os.path.join(REPO, '.git')):
+        log('通した', 'リポジトリが無い')
         return 0
 
     r = subprocess.run(['git', '-C', REPO, 'status', '--porcelain', '-z'],
                        capture_output=True, text=True)
     if r.returncode != 0 or not r.stdout:
+        log('通した', '未コミット0件')
         return 0
 
     entries = [e for e in r.stdout.split('\0') if e]
@@ -68,6 +86,7 @@ def main():
         targets.append((path, '変更' if code.strip() != '??' else '新規'))
 
     if not targets:
+        log('通した', '%d分超の対象なし（未コミット%d件）' % (STALE_MIN, len(entries)))
         return 0
 
     lines = [
@@ -92,6 +111,7 @@ def main():
         'その旨を1行述べてそのまま終えて構いません（2度目はこのフックは鳴りません）。',
     ]
     sys.stderr.write('\n'.join(lines) + '\n')
+    log('★差し戻した', '%d件: %s' % (len(targets), ' '.join(p for p, _ in targets[:5])))
     return 2
 
 
