@@ -48,9 +48,7 @@ from reportlab.lib.units import mm
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
-from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, ListFlowable, ListItem,
-)
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 
 GOTHIC = "HeiseiKakuGo-W5"
 MINCHO = "HeiseiMin-W3"
@@ -77,7 +75,8 @@ STYLES = {
                             alignment=TA_LEFT, spaceAfter=6),
     "cell": ParagraphStyle("cell", fontName=MINCHO, fontSize=9.5, leading=13),
     "cell_head": ParagraphStyle("cell_head", fontName=GOTHIC, fontSize=9.5, leading=13),
-    "li": ParagraphStyle("li", fontName=MINCHO, fontSize=10.5, leading=15),
+    "li": ParagraphStyle("li", fontName=MINCHO, fontSize=10.5, leading=15,
+                          leftIndent=14, spaceAfter=2),
 }
 
 
@@ -157,26 +156,26 @@ def convert(src: Path, dst: Path):
             continue
 
         # 箇条書き
+        # ★reportlabのListFlowable(bulletType="bullet")はstartパラメータを無視し
+        #   既定の記号(•相当)しか出せない（2026-08-29 ステラ検査で指摘・実測で確認）。
+        #   Paragraphへ「・」を手動で前置する方式に変更した（意図と実挙動を一致させる）。
         m_ul = re.match(r"^-\s+(.*)$", stripped)
         if m_ul:
-            items = []
             while i < n and re.match(r"^-\s+(.*)$", lines[i].strip()):
                 text = re.match(r"^-\s+(.*)$", lines[i].strip()).group(1)
-                items.append(ListItem(Paragraph(bold_to_font_tag(text), STYLES["li"])))
+                story.append(Paragraph(f"・{bold_to_font_tag(text)}", STYLES["li"]))
                 i += 1
-            story.append(ListFlowable(items, bulletType="bullet", start="・",
-                                       leftIndent=14))
             story.append(Spacer(1, 4))
             continue
 
         m_ol = re.match(r"^\d+[.)]\s+(.*)$", stripped)
         if m_ol:
-            items = []
+            n_item = 1
             while i < n and re.match(r"^\d+[.)]\s+(.*)$", lines[i].strip()):
                 text = re.match(r"^\d+[.)]\s+(.*)$", lines[i].strip()).group(1)
-                items.append(ListItem(Paragraph(bold_to_font_tag(text), STYLES["li"])))
+                story.append(Paragraph(f"{n_item}. {bold_to_font_tag(text)}", STYLES["li"]))
+                n_item += 1
                 i += 1
-            story.append(ListFlowable(items, bulletType="1", leftIndent=14))
             story.append(Spacer(1, 4))
             continue
 

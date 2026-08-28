@@ -32,6 +32,7 @@ from pathlib import Path
 from pptx import Presentation
 from pptx.util import Pt, Inches
 from pptx.enum.text import PP_ALIGN
+from pptx.dml.color import RGBColor
 
 JP_FONT = "游ゴシック"
 
@@ -187,11 +188,17 @@ def convert(src: Path, dst: Path):
                 tbl_w, tbl_h = Inches(8.8), Inches(min(0.5 * rows_n, 5.0))
                 gtable = slide.shapes.add_table(rows_n, width, left, top, tbl_w, tbl_h)
                 table = gtable.table
+                # ★ヘッダー行の網掛けを明示（2026-08-29 ステラ検査で「表にスタイル未指定」
+                #   の指摘。md2docx.py の Table Grid + ヘッダー太字に体裁を揃えた）。
+                table.first_row = True
                 for r_idx, row in enumerate(rows):
                     for c_idx in range(width):
                         cell = table.cell(r_idx, c_idx)
                         text = row[c_idx] if c_idx < len(row) else ""
                         cell.text = ""
+                        if r_idx == 0:
+                            cell.fill.solid()
+                            cell.fill.fore_color.rgb = RGBColor(0xEE, 0xEE, 0xEE)
                         add_rich_run(cell.text_frame.paragraphs[0], text, size=12,
                                       base_bold=(r_idx == 0))
             continue
