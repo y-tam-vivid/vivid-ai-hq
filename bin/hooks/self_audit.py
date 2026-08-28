@@ -30,6 +30,7 @@
 """
 
 import os
+import re
 import sys
 import json
 import subprocess
@@ -77,7 +78,120 @@ def collect():
             if any(k in line for k in ('Traceback', 'Error', '★失敗', 'エラー')):
                 warns.append('%s ： %s' % (f, line.strip()[:150]))
     out['warnings'] = '\n'.join(warns[-25:])
+
+    # ★2026-08-29 追加（ピタゴラス実装）── 「仕組みの生死」だけでなく
+    #   「規範どおりに動けているか」を見る。有璽氏「なんで俺が言われてからしか
+    #   この動きをせんねん。直後だけなんだよいつも」への直し。
+    out['git_no_review'] = _git_commits_without_review()
+    out['working_md_markers'] = _working_md_marker_ages()
+    out['role_guard'] = _role_guard_summary()
+    out['open_findings'] = _open_findings_summary()
     return out
+
+
+def _git_commits_without_review(n=20):
+    """①②観点：実装コードを含むコミットのうち、メッセージに検査役の言及が無いものを拾う。
+
+    ★できないこと（正直に明記）：git の著者(author)は Claude Code のコミットが
+      すべて有璽氏の git 設定（y_tam <y_tam@vivid-global.com>）で記録されるため、
+      **「ビビが書いたか担当が書いたか」を著者情報から機械的に判別することはできない**
+      （実測で確認：直近コミットは全て同一著者）。
+      → 代わりに「コミットメッセージ本文に検査役への言及があるか」という
+        **弱い代理指標（自己申告ベース）** を使う。申告漏れがあれば見逃す。
+    """
+    try:
+        r = subprocess.run(
+            ['git', '-C', REPO, 'log', '-n', str(n), '--format=%H|%s'],
+            capture_output=True, text=True, timeout=20)
+        if r.returncode != 0:
+            return '（取れず）'
+    except Exception as e:
+        return '（取れず ： %s）' % e
+    hits = []
+    for line in r.stdout.strip().split('\n'):
+        if '|' not in line:
+            continue
+        h, s = line.split('|', 1)
+        try:
+            names = subprocess.run(
+                ['git', '-C', REPO, 'show', '--name-only', '--format=', h],
+                capture_output=True, text=True, timeout=15).stdout
+        except Exception:
+            continue
+        code_files = [f for f in names.split('\n')
+                      if re.search(r'\.(py|js|ts|gs|sh)$', f)]
+        if not code_files:
+            continue
+        try:
+            body = subprocess.run(
+                ['git', '-C', REPO, 'log', '-1', '--format=%B', h],
+                capture_output=True, text=True, timeout=15).stdout
+        except Exception:
+            body = ''
+        if not re.search(r'つる|ステラ|ドーベルマン|検査|載せてよい|レビュー', body):
+            hits.append('%s %s（コード%d件）' % (h[:9], s[:50], len(code_files)))
+    if not hits:
+        return '（直近%d件、実装コードを含むコミットは全て検査役への言及あり）' % n
+    return '\n'.join(hits[:10])
+
+
+def _working_md_marker_ages(threshold_days=7):
+    """③観点：WORKING.md の「★残」「未着手」等マーカーの経過日数（見出しの日付から算出）"""
+    path = os.path.join(REPO, 'WORKING.md')
+    try:
+        lines = open(path, encoding='utf-8').read().split('\n')
+    except Exception as e:
+        return '（取れず ： %s）' % e
+    import datetime as _dt
+    heading_re = re.compile(r'^###.*?(\d{4})-(\d{2})-(\d{2})')
+    marker_re = re.compile(r'★残|未着手|残件|判断待ち|承認待ち')
+    today = _dt.date.today()
+    cur = None
+    hits = []
+    for ln in lines:
+        m = heading_re.match(ln)
+        if m:
+            try:
+                cur = _dt.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+            except ValueError:
+                cur = None
+            continue
+        if cur and marker_re.search(ln):
+            days = (today - cur).days
+            if days >= threshold_days:
+                hits.append((days, cur.isoformat(), ln.strip()[:70]))
+    hits.sort(key=lambda x: -x[0])
+    if not hits:
+        return '（%d日以上経過のマーカーは無い）' % threshold_days
+    return '\n'.join('%3d日経過(%s) %s' % (d, dt, t) for d, dt, t in hits[:10])
+
+
+def _role_guard_summary():
+    """①観点：hook_role_guard.py が実際に役割違反を止めた回数（2026-08-29 新設・稼働はこれから）"""
+    log = os.path.join(HERE, 'role_guard.log')
+    if not os.path.exists(log):
+        return '（role_guard.log が無い＝まだ稼働していない。settings.json への登録が残件）'
+    try:
+        lines = open(log, encoding='utf-8').read().strip().split('\n')
+    except Exception as e:
+        return '（取れず ： %s）' % e
+    blocked = sum(1 for ln in lines if '★ブロック' in ln)
+    warned = sum(1 for ln in lines if '★警告' in ln)
+    return '直近ログ %d行 ／ ブロック %d件 ／ 警告 %d件' % (len(lines), blocked, warned)
+
+
+def _open_findings_summary(min_streak=3):
+    """③観点：指摘台帳（findings_tracker）で N日以上開いたままの指摘を集約"""
+    try:
+        sys.path.insert(0, HERE)
+        from findings_tracker import open_findings
+        rows = open_findings(min_streak_days=min_streak)
+    except Exception as e:
+        return '（取れず ： %s）' % e
+    if not rows:
+        return '（%d日以上開いたままの指摘は無い）' % min_streak
+    return '\n'.join('%3d日連続 [%s] %s' % (
+        r.get('streak_days', 0), r.get('source'), r.get('last_text')) for r in rows[:10])
 
 
 def main(dry=True, beat=False):
@@ -122,6 +236,30 @@ def main(dry=True, beat=False):
 %s
 ```
 
+### ★実装コードを含むコミットで検査役への言及が無いもの（弱い代理指標）
+```
+%s
+```
+★注意：git の著者情報からは「ビビが書いたか担当が書いたか」を判別できない
+（Claude Code のコミットは全て有璽氏の git 設定で記録されるため、実測で確認済み）。
+これは「コミットメッセージに検査役の名前が出ているか」という自己申告ベースの
+弱い指標です。ここに挙がったコミットは**疑いがある**というだけで、確定ではありません。
+
+### ★WORKING.md で7日以上放置されている「★残／未着手」マーカー
+```
+%s
+```
+
+### ★役割違反の検問（hook_role_guard.py）の稼働状況
+```
+%s
+```
+
+### ★3日以上開いたままの指摘（findings_tracker）
+```
+%s
+```
+
 ## 検査してほしいこと
 
 1. **cron に載っているのに動いていないもの**
@@ -139,6 +277,14 @@ def main(dry=True, beat=False):
    ・フックは3本とも生きているか
    ・記録の経路（memory / landmines.json / corrections.log）は更新されているか
    ・「有効」なのに一度も心拍が来ていないものは無いか
+
+5. **★規範どおりに動けているか（2026-08-29 追加）**
+   ・実装コードを含むコミットで検査役への言及が無いものは、実際に検査を経ずに
+     コミットされた疑いがあるか。**git だけでは確定できないので、疑いとして報告する**
+   ・WORKING.md の「★残／未着手」マーカーで7日以上放置されているものがあれば、
+     「なぜ止まっているか」（判断待ちか、単に忘れられているか）を材料から推測して添える
+   ・findings_tracker で3日以上開いたままの指摘があれば、それを最優先で扱う
+     （[[reference_a_warning_nobody_owns]]「正しく鳴っているのに拾われない」型）
 
 ## ★重要 ── 出したら終わりにしない
 
@@ -160,7 +306,9 @@ def main(dry=True, beat=False):
 ```
 1000文字以内。日本語。**問題が無ければ「無い」と明言する。**
 """ % (d['crontab'][:3000], d['selfcheck'][:1500],
-       d['scripts'][:2000], d['warnings'][:2500] or '（なし）')
+       d['scripts'][:2000], d['warnings'][:2500] or '（なし）',
+       d['git_no_review'][:1500], d['working_md_markers'][:1500],
+       d['role_guard'][:500], d['open_findings'][:1500])
 
     if dry:
         print('---- ドライランなので、つるを呼ばない ----')
