@@ -68,3 +68,44 @@ Downloads・Desktop・/tmp・Drive のどこにも無く、**チャットの添�
 - **★base64 で Drive へ流すのは採らない。** バイナリは1バイト崩れると展開できず、
   失敗が「壊れたファイル」として静かに残る。テキストへばらすのも写経＝転記事故を増やす。
   **人が1回ダウンロードするのがいちばん確実で速い。**
+## ★同名の untracked ファイルが、同期を永久に止める（2026-08-29 実測）
+
+**2つのセッションが同じファイルを作ると、git の同期がその瞬間から止まる。**
+しかも `vivid-sync.sh` の自動処理では解けない。
+
+```
+起きたこと
+  MacBook 側が bin/setup_ffmpeg.sh を作って push
+  mini 側でも同じものが作られた（★untracked のまま・commit していない）
+  → merge しようとすると
+     error: The following untracked working tree files would be overwritten by merge:
+            bin/setup_ffmpeg.sh
+  → ★未取込 9件のまま固定。SYNC_STATUS.md が🔴になり
+     「いま読んでいる WORKING.md / MEMORY.md は古い」状態が続く
+```
+
+**★`vivid-sync.sh` は枝分かれ（behind>0 かつ ahead>0）には対処済み**（過去に
+behind=11/ahead=1 で孤立した事故を踏んで `git merge --no-edit` を入れてある）。
+**だが untracked の同名衝突は、その merge も弾く。** 自動では絶対に解けない。
+
+### 直し方（可逆・消さない）
+
+```
+1  退避する（消さない・移動のみ）   mv して scratchpad へ
+2  git merge --no-edit origin/main
+3  ★退避した版とリモート版を diff で比較する
+   2026-08-29 の実測では **完全に同一**だった（＝両セッションが同じものを作っていた）
+4  違っていたら、退避した版の中身を確認してから判断する
+```
+
+### ここで一度、誤った断定をしかけた
+
+担当が「`vivid-sync.sh` の自動処理に委ねます」と報告したのに対し、こちらは
+**「それは成立しません」と断定しかけた**。実物（`bin/vivid-sync.sh` 90-105行目）を読んだら
+枝分かれは既に扱えていた。**担当の判断のほうが正しかった。**
+本当の原因は別（untracked の同名衝突）で、**それは読むまで分からなかった**。
+→ [[feedback_one_route_is_not_verification]]
+
+**★🔴 が出ている間に現在地を答えない。** 今日、🔴 が出ている状態で有璽氏へ報告を続けていた。
+規範（fukuchi-core「届いたものがいつの版か」）に「先に取り込む」と書いてある。
+
