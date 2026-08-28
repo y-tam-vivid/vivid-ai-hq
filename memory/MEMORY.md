@@ -24,7 +24,7 @@
 - [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 社内は「本人/田村さん」不可／★対外は肩書き「代表」・グループ名が先で個社が後。制作物の実物を自動で正としない
 - [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨する
 - [思考OS Skill](project_thinking_os_skill.md) — 10レンズ＋6要素骨格をローカルSkill化。/thinking-osで全モデル共通
-- [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。「システムは△△・こちらは◯◯、どちらが正か」と並べて聞く
+- [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。並べて聞く／**★既存の器を「足りない」と決めつけない。列名が同じでも意味は同じでない(会場=エリアだった)。対処は変えるでなく足す**
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — ★「揃えろ/合わせて」は作り直しの許可になる(2回目)。触らない対象を列挙
 - [作業前にcwdを読む](feedback_read_the_workspace_first.md) — START_HERE/AGENTS/README/.envを先に読む。読まずに「できない」と言わない
