@@ -5,3 +5,9 @@
 # bin/setup_ffmpeg.sh が両機それぞれへダウンロードするバイナリ本体。
 # 80MB前後あり配布物としてリポジトリへ置かない（各機で個別に導入する設計）。
 bin/vendor/
+
+# フックの実行時状態（毎回変わる。git に入れると同期が止まる）
+# ★2026-08-29：この1件で Stop フックが鳴り、同期が止まりかけた。
+#   今日 untracked / 未コミットで同期が2回止まっている（reference_two_sessions_built_the_same_thing）
+bin/hooks/.hook_last_notify.json
+# ★landmines.json は git 管理下（配布に必要）。除外しないこと
