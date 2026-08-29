@@ -116,5 +116,30 @@ open_findings.json には実データが2件あり streak_days=1 を持ってい
   （パスを2箇所に書いたため）。**動いているものを止まっていると言い、
   作ったものを届いていると言っていた。**両方向に間違えていた。
 
+
+## ★穴Aを防ぐ検問が、穴Aと同じ構造を持っていた（2026-08-29 ステラが Pass B で発見）
+
+`action_catalog_check.py`（Layer2＝検問が実在し動いているかを突合する仕組み）は、
+**git repo の `bin/hooks/*.py` を import して LOG 定数を取っている。**
+だが実際に動いているのは `~/.vivid-relay/*.py`（settings.json が呼ぶ実体）。
+
+```
+実測（★2経路で確認：sha256 と diff -q）
+  hook_role_guard.py         4c368857 / 4c368857   同一
+  hook_output_guard.py       294490ed / 294490ed   同一
+  hook_session_writeback.py  efb00a44 / efb00a44   同一
+  → いまは実害なし
+
+★だが片方だけ直して同期を忘れると、
+  Layer2 は「git側の、もう動いていない LOG 定義」を見て✓を出し続ける
+  ＝ 穴A（正本でない方を見て判定する）とまったく同じ型
+```
+
+**★docstring には「穴Aと同じ型を作らない設計」と明記されている。** 書いた本人がそこだけ死角だった。
+（[[feedback_use_the_team_not_alone]]「作った本人は自分が想定した壊し方しか思いつかない」）
+
+- **★運用条件**：`bin/hooks/*.py` を編集したら、必ず `diff` で `~/.vivid-relay/` 側との
+  同一性を確認してから「直った」と申告する。**Layer2 自身はこの非同期に気づけない。**
+
 関連: [[reference_ran_is_not_succeeded]] [[reference_no_gate_on_asking_the_human]]
 [[reference_hooks_enforce_what_discipline_cannot]] [[feedback_find_holes_without_being_told]]
