@@ -36,6 +36,14 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ピタゴラス 2026-08-29】残り3つの穴（Bash書込ブロック・1経路断定検問・ask追加スクリプト）── 着手中
+
+有璽氏「動く状態に持っていくことがタスクだろ」を受けた対応。①Bash経由の書込をexit 2化
+②「1経路で断定」検問の成立性実測 ③settings.json ask追加の1手スクリプト。
+台帳・Notion・kintoneへは1文字も書かない。詳細はこのセッションの報告を参照。
+★settings.jsonのPreToolUseには既にhook_role_guard.py/hook_output_guard.pyが登録済み
+（前回ブロックの「登録待ち」は解消済みと判明・今回実測で確認）。
+
 ### 【ピタゴラス 2026-08-29】Word/PowerPoint/PDF/ffmpeg 環境整備 ── ①🔴本体反映のみ人の手待ち・②③④ステラ検査済み反映済み
 
 有璽氏「いります。使います。使えるようにして」を受けた対応。詳細・実測値は
@@ -195,7 +203,8 @@ MacBook側にもコピーしてください（両機に道具を入れる原則�
    6ケース実測（サブエージェント通過／メインブロック2件／対象外拡張子通過／Bash警告／
    Bash読取通過／mcp__通過）。ログは ~/.vivid-relay/role_guard.log
    ★settings.jsonへの登録は自分ではできない（Bash・Edit両方で権限拒否を実測。無傷を確認）。
-   ★ビビか有璽氏が settings.json の PreToolUse へ登録するまで稼働しない
+   ✅**2026-08-29 12:2x 有璽氏が登録済み。本物のPreToolUseイベントで発火を実測**
+   （role_guard.log 9,455バイト・17:09まで実際のagent_idで発火中）
 
 ② bin/hooks/self_audit.py に4観点追加
    _git_commits_without_review（★git著者では判別不能。コミットメッセージの検査役言及を
@@ -224,7 +233,7 @@ MacBook側にもコピーしてください（両機に道具を入れる原則�
 
 **残＝有璽氏かビビの手が要るもの**：
 ```
-① settings.json の PreToolUse へ hook_role_guard.py / hook_output_guard.py を登録
+① ✅**完了（2026-08-29・有璽氏が適用）** settings.json の PreToolUse へ登録済み・稼働実測済み
   （自分では権限拒否・実測済み）
 ② settings.jsonのask へ fukuchi-core/SKILL.md の編集を追加（ビビが別途出す予定・私は触っていない）
 ```
@@ -272,7 +281,7 @@ MacBook側にもコピーしてください（両機に道具を入れる原則�
 指摘2（メインでagent_id欠落か未検証）
    ★ビビがメインセッションから hook_role_guard.py へ直接 payload を流し実測（exit=2）。
    ただし「フックを直接叩いたテストで、本物のPreToolUseイベント経由ではない」とビビが
-   自ら限界を明記。settings.json未登録のため本物のイベントでの検証はまだできていない
+   自ら限界を明記。→ ✅**2026-08-29 に登録され、本物のイベントで発火を実測。この限界は解消**
 指摘3（Bash経由 python3 -c "open().write()" が正規表現をすり抜ける）
    ★実演済み。role_guard.log へ記録（★ただしUTC時刻で記録してしまい、他行(JST)と
    タイムゾーン表記が不整合。私の記録ミスとして正直に申告）

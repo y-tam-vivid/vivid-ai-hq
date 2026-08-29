@@ -90,5 +90,31 @@ memory 188本を走査 → 常設枠に載ったのは 19本（10%）
 - **★検査を作った本人は、自分が想定した壊し方しか思いつかない。** 別主体を通す
   （[[feedback_use_the_team_not_alone]]）。今回は実際に、通して初めて4つ出た。
 
+
+## ★作ったが、見る画面へ配線されていなかった（2026-08-29 フランキー発見）
+
+「指摘が拾われない」への対策として `findings_tracker.py` を作り、
+**連続日数（streak_days）を数える機能を実装した。ビビは有璽氏へ「対策済み」と報告した。**
+
+```
+実測（grep で2経路）
+  ledger_report.py     findings 参照 2件   ← cron のテキストログにだけ統合
+  dashboard_data.py    ★0件
+  dashboard_build.py   ★0件
+                       ＝ 有璽氏が実際に見る画面に、1件も届いていない
+
+open_findings.json には実データが2件あり streak_days=1 を持っている。
+★3日続いても、画面の見た目は1日目とまったく同じまま。
+```
+
+**★「作った」と「効いている」の間に、もう1つ「見る場所へ配線した」がある。**
+実装が正しく動いていても、**人が見る画面に線が引かれていなければ、無いのと同じ。**
+
+- **★対策を報告する前に、有璽氏が実際に見る場所（稼働ダッシュボード・Slack DM）に
+  出ているかを grep で確かめる。** ログに出ているのは配線ではない。
+- ★このとき同時に、`self_audit.py` が「役割検問はまだ稼働していない」と言い続けていた
+  （パスを2箇所に書いたため）。**動いているものを止まっていると言い、
+  作ったものを届いていると言っていた。**両方向に間違えていた。
+
 関連: [[reference_ran_is_not_succeeded]] [[reference_no_gate_on_asking_the_human]]
 [[reference_hooks_enforce_what_discipline_cannot]] [[feedback_find_holes_without_being_told]]
