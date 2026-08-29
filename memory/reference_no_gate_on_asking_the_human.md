@@ -83,5 +83,23 @@ metadata:
 **★対策を入れるときは、その対策が「届く経路」に載るところまで実測する。**
 書いた・作った・入れた で止めると、今回のように何日も空振りする。
 
+
+## ★検査2が、作った本人を正しく捕まえた（2026-08-29 実測）
+
+```
+起きたこと   「バックアップが今回の分だけ見当たりません」と書いた
+             → その後に探して、~/.claude/settings.json.backup_* に実在を確認
+             ＝ ★断定を先に書き、後から確かめた
+
+検査2の判定  「見当たりません」＋そのターンで検索なし → 差し戻し
+判定語の確認 \bfind\b|\bls\b|\bgrep\b は入っており、ls/grep は「探した」と判定される
+             （実測で3コマンドとも通ることを確認）
+★つまり誤爆ではない。**探す前に断定した順序そのもの**を捕まえた
+```
+
+**★フックが、それを作った本人の同じ癖を止めた。** 今日いちばん効いた瞬間。
+「結論を先に置き、検証を後に回す」（[[feedback_never_write_an_unmeasured_number]]）が、
+文章でも起きることの実例。
+
 関連: [[feedback_read_the_artifact_not_the_copy]] [[reference_stale_copy_of_kintone_columns]]
 [[reference_ran_is_not_succeeded]] [[reference_delivered_but_unread]]
