@@ -36,6 +36,84 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ピタゴラス 2026-08-29】fukuchi-core Layer0 適用スクリプト ── ✅作成・実測完了。残＝有璽氏が1回叩く
+
+有璽氏「規範の変更実行」承認を受け、bin/apply_fukuchi_core_layer0.sh を新設。
+台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+実測①  自分（system-developer）も .claude/skills/fukuchi-core/SKILL.md へは書けないことを
+       実際にEditで試して確認（「don't ask mode」で拒否。ビビと同じ結果）。
+       ★SKILL.mdは変更されていない（拒否されたため実害なし）
+実測②  挿入ロジックをテスト環境で先に実測（挿入成功ケース／マーカー不在での中止ケースの
+       両方を確認してから本番スクリプトを作成）
+実測③  ENABLE_CHECK3=False のまま観測は続くか → ★続く。check_single_route_claim()内で
+       ENABLE_CHECK3の判定より前にtrack()を呼んでおり、Stopフックが発火する限り
+       findings_trackerへ記録され続ける。実測で確認・テスト汚染は除去済み。
+       週次集計は open_findings(source='single_route_claim') で取得可能
+       （inspector_misses.pyと同じ形の集計スクリプトを別途足せば「週次で何件」を出せる）
+```
+
+**bin/apply_fukuchi_core_layer0.sh**（bash -n構文チェック済み・実行権限付与済み）：
+①SKILL.mdをバックアップ ②_pending_fukuchi_core_layer0.mdの内容を「### 3」節末尾へ挿入
+（マーカー不在なら中止しSKILL.mdは変更しない）③一時ファイル削除 ④./check.sh
+⑤commit→bash bin/vivid-sync.sh。**apply_targets_md_replacement.shと同じ型**。
+
+**★実行方法**：有璽氏本人が `cd ~/vivid-ai-hq && bash bin/apply_fukuchi_core_layer0.sh` を
+1回叩く（AIのツール経由ではなく人の手のターミナル操作なので.claude/skills/への拒否と無関係に通る）。
+
+check.sh実行済み：項目1-6全緑・項目7既知（無関係）・項目8既存の助言のみ。
+
+### 【ピタゴラス 2026-08-29】ステラ設計（検査3・findings配線・inspector_misses・fresh eyes・敵対的実測）── 実装・実測完了。ステラ検査依頼中
+
+ビビ経由でステラの設計（優先順位1〜5）を受理。⑥Layer0（cross-check/fukuchi-coreへの追記＝
+規範の変更）は指示通り触っていない。台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+1(最優先) 検査3(1経路断定)   ✅ hook_session_writeback.pyへ実装。CLAIM_WORDS(ステラ指定5語彙＋
+                            活用ゆれ)・method_signature()(bash:grep/find/cat/stat/hash/other)・
+                            check_single_route_claim()。実測：手動9/9検出・誤検知0/7。
+                            ★ステラ実例(8ケース中6/8→8/8・活用ゆれで漏れた)をdocstringに記録。
+                            ★実データ計測：実transcript236ファイル・953ターン中、断定語ヒット
+                            667(70%)・うち1経路188(28%)。hook_output_guardの「88本で誤検知0件」
+                            とは桁違い。サンプルの大半は「はい」への返信で文脈不明を説明する
+                            定型パターンへの誤爆と判明。★ENABLE_CHECK3=False(観測モードのまま)。
+                            この実測結果と結論もdocstringに記録済み
+2        findings配線        ✅ 検査3の検出(観測モードでも)をfindings_tracker.track()へ配線。
+                            _normalize()本体(findings_tracker.py)は変更せず、呼び出し側で
+                            _claim_key_hint()(ファイルパス優先→前後文脈)を実装し対象軸のキーを
+                            生成。実測：track成功を確認・テスト汚染はopen_findings.jsonから除去済み
+3        inspector_misses.py ✅ 新規(findings_trackerの薄いラップ)。--record/--list/--weekly。
+                            ★実装1回目は集計ロジックにバグ(累計呼び出し回数を数える設計だったが
+                            findings_trackerは同日再track ではレコードが1件に集約される)を実測で
+                            発見・streak_days軸に設計変更して解消(2日連続シミュレーションで実証)
+4        fresh eyes 2パス    ★手順として明文化のみ(コード実装ではない)。memory/
+                            reference_fresh_eyes_two_pass.md新規+INDEX_仕組み.md1行。
+                            対象は検問インフラ限定。★未実演(次に検問インフラを変更する回で使う)
+5        敵対的実測パス       ✅ bin/hooks/adversarial_cases.md新規。8パターンの表。実際に
+                            hook_role_guard.pyへ6ケース(heredoc/open write/sed -i/os.rename/
+                            symlink/変数展開)を流し、表の記述(1のみ捕まえる・2-7はBLIND)が
+                            実測と一致することを確認
+```
+
+**check.sh実行済み**：項目1-6全緑・項目7既知（無関係）・項目8は既存の助言のみ（新規追加分に
+重複なし）。**配布**：hook_session_writeback.py・inspector_misses.pyを~/.vivid-relay/へ複製・
+バイト一致確認済み。**★MacBookは未配布**（git管理外）。
+
+**穴Cの再現（新規バグではない）**：~/.vivid-relay/側でhook_selfcheck.pyを再実行したところ
+「hook_session_writeback.py：反応しない」が再現した。これは既に切り分け済みの脆弱性
+（未コミット状態が10分以上経過していないとテストケースが無反応になる、テストの前提が
+状況依存）そのもの。実装自体は正しく動作している。
+
+**✅ステラ検査完了「載せてよい（条件つき）」**：237ファイルで独立再計測（950/668/188・
+私の953/667/188とほぼ完全一致）し捏造でないことを確認。指摘2件を対応済み：
+①docstringの原因説明を訂正（「はい」への定型返信ではなく「ターン跨ぎの検証」が主因、
+と188件中10件のサンプル精査で判明・私が既にdocstringに書いていた「漏れる箇所2」の方が
+正確だった）②sys.path.insert()の重複呼び出し（Stopフック発火のたびに追加されていた）を
+モジュールロード時1回のみに修正。実測：3ケースとも従来通り動作・sys.path重複解消を確認。
+配布・check.sh再実行済み（変化なし）。
+③fresh eyes 2パス方式の未実演は次回の検問インフラ変更時に持ち越し。
+
 ### 【ピタゴラス 2026-08-29】①③穴A/B/D 実装・実測完了 ── ✅ステラ検査「載せてよい（条件つき）」
 
 **★ビビが実測で確認済み**：穴A「直近ログ234行/ブロック9件/警告12件」と正しく読める／

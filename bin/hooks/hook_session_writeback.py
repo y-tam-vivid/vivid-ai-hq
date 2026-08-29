@@ -42,10 +42,41 @@
 """
 import json, os, re, subprocess, sys, time
 
+# ★2026-08-29 ステラ検査指摘（軽微・条件2）対応：以前は check_single_route_claim() が
+#   呼ばれるたびに sys.path.insert() していた（Stopフック発火のたびにsys.pathへ同じ
+#   パスが重複追加される冗長性）。モジュールロード時に1回だけ追加する形に直した。
+_HERE = os.path.dirname(os.path.abspath(__file__))
+if _HERE not in sys.path:
+    sys.path.insert(0, _HERE)
+
 REPO = os.path.expanduser('~/vivid-ai-hq')
 WATCH = ('memory/', 'WORKING.md', '.claude/', 'bin/')
 STALE_MIN = 10
 LOG = os.path.expanduser('~/.vivid-relay/hook_writeback.log')
+
+# ★検査3（1経路断定）を実際にブロックするか。2026-08-29 導入時点では False（観測のみ）。
+#
+# ★2026-08-29 実測（このプロジェクトの実transcript全236ファイルで計測・一時検証スクリプトは
+#   scratchpad側。このリポジトリには含めていない）：
+#     総ターン数 953 ／ 断定語を含むターン 667（70%）
+#     うち1経路以下（検査3が検出＝差し戻し候補）  188（断定ターンの28%）
+#     うち2経路以上（通過）                        479
+#   hook_output_guard の「88本で誤検知0件」とは桁違いに高い比率。
+#   ★2026-08-29 ステラ検査で訂正（自分の当初の原因説明は不正確だった）：
+#   188件から10件サンプリングして実物を読んだところ、主因は「有璽氏の短い『はい』への
+#   定型的な返信」ではなく、**ターン跨ぎの検証**だった（前のターンで既に2経路以上で
+#   確認済みのものを、このターンでは結論だけ短く述べているケース）。この場合、
+#   check_single_route_claim() は「このターン」の tool_calls しか見ないため、
+#   実際には複数方式で確認済みでも「1経路」に誤判定される。
+#   これは自分がdocstring内「ステラが明記した漏れる箇所2」に既に書いていた限界
+#   （ターン跨ぎの検証は誤検知しうる）が主因だった、という意味で、指摘の方が正確。
+#   結論（ENABLE_CHECK3=False）自体は変わらない。
+#   ★結論：現状のまま有効化すると「うるさくて読まれなくなる」
+#   （reference_delivered_but_unread）を確実に踏む。ENABLE_CHECK3 は False のまま維持する。
+#   次に着手する人は、CLAIM_WORDSを「探索の結果としての断定」に絞る条件
+#   （例：直前に検索系ツール呼び出しが1つ以上あることを前提条件にする等）を
+#   検討してから再計測すること。
+ENABLE_CHECK3 = False
 
 
 def log(verdict, detail=''):
@@ -114,12 +145,18 @@ SEARCHED = re.compile(
 
 
 def _turn_messages(path):
-    """直近の人の発言以降の、こちらの発話とツール入力を取り出す"""
-    said, tooled = [], []
+    """直近の人の発言以降の、こちらの発話とツール入力を取り出す
+
+    戻り値: (said, tooled, tool_calls)
+      tooled       検査2用（従来どおり・文字列化したinput）
+      tool_calls   検査3用（★2026-08-29追加）。[(tool_name, input_dict), ...]
+                   ツール名と生の input を両方保持する（method_signature() が使う）
+    """
+    said, tooled, tool_calls = [], [], []
     try:
         lines = open(path, encoding='utf-8').read().splitlines()
     except Exception:
-        return said, tooled
+        return said, tooled, tool_calls
     start = 0
     for i, ln in enumerate(lines):
         try:
@@ -157,9 +194,11 @@ def _turn_messages(path):
                 #   された。＝ 検問を直す作業がいちばん素通りする、という自己言及的な穴。
                 #   → 探す行為のツールだけを証拠に数える。書く行為は数えない。
                 nm = b.get('name', '')
+                inp = b.get('input', {}) or {}
                 if nm in SEARCH_TOOLS or nm.startswith('mcp__'):
-                    tooled.append(json.dumps(b.get('input', {}), ensure_ascii=False))
-    return said, tooled
+                    tooled.append(json.dumps(inp, ensure_ascii=False))
+                    tool_calls.append((nm, inp))
+    return said, tooled, tool_calls
 
 
 def check_asked_without_looking(payload):
@@ -167,7 +206,7 @@ def check_asked_without_looking(payload):
     tp = payload.get('transcript_path')
     if not tp or not os.path.isfile(tp):
         return None
-    said, tooled = _turn_messages(tp)
+    said, tooled, _tool_calls = _turn_messages(tp)
     if not said:
         return None
     body = '\n'.join(said)
@@ -201,6 +240,159 @@ def check_asked_without_looking(payload):
     ]
 
 
+# ─────────────────────────────────────────────────────────────
+# 検査3 ── 1つの方法でしか探していないのに断定していないか（2026-08-29 ステラ設計）
+# ─────────────────────────────────────────────────────────────
+#
+# 検査2との違い
+#   検査2   探した形跡が「ある/ない」だけを見る（0か1か）
+#   検査3   探した形跡が「複数の独立した方式か」を見る（1種類か2種類以上か）
+#           ＝ 検査2を通っても、1つの方法だけで断定していれば検査3で差し戻す
+#
+# ★語彙は原理的に閉じない（設計中にステラ自身が実証した事実）
+#   プロトタイプ1回目：既存の判定語をそのまま流用 → テスト8ケース中 6/8 しか捕まらなかった。
+#   漏れた2件は、まさに2026-08-29 の実際の失敗②③だった。
+#   原因：活用ゆれ（「入っていない」の正規表現はあったが「入っていません」の形が無かった）。
+#   2回目：語彙を活用ゆれ込みで拡張し 8/8 で検出。
+#   → **対策を作った本人が、1つの書き方しか想定しなかったために漏らした。**
+#     Anthropic 自身が認める偽陰性率17%と同じ性質の限界が、この設計にも即座に出た。
+#     ＝ このCLAIM_WORDSも将来また同じ形で漏れうる。閉じたと思わないこと。
+#
+# ★ステラが明記した「漏れる箇所」（隠さず記録する）
+#   1  語彙は原理的に閉じない（上記で実証済み）
+#   2  ターン跨ぎの検証は誤検知しうる。前ターンで既に2経路で検証済みで、今ターンでは
+#      結論だけを述べている場合、このターンの tool_calls だけを見ると「1経路」に見える。
+#      ★1経路断定はコード編集より発生頻度が高いと見込まれる。検査2以上に
+#      「うるさくて読まれない」リスクがある → 実装後1週間は差し戻し比率を計測し、
+#      多すぎれば緩める（このdocstringへ追記すること）。
+#   3  Write/Edit でファイルに直接断定を書いた場合は対象外（この Stop hook は
+#      アシスタントの発話（text block）しか見ておらず、ファイルの中身は見ていない）。
+#   4  「方式が2つ違う」は独立性の代理指標にすぎない。同じ壊れた前提を2つの方式
+#      （例：grep と find）で読んでも、前提が壊れていれば2経路とも同じ誤りに一致しうる。
+#      ＝ 方式の数は「独立に確認した証拠」であって「正しさの証明」ではない。
+#   5  サブエージェント経由の発話でこの Stop hook がどう発火するか（そもそも
+#      サブエージェントの Stop で発火するか）は、この実装では未実測。
+#
+# 判定
+#   断定語（CLAIM_WORDS）が発話に出たとき、このターンで使った探索ツールの
+#   method_signature() の distinct 数が1以下（0または1種類）なら差し戻す。
+#   ★合格ライン：実データ（実際のtranscript）で誤検知率を計測してから有効化する。
+#     hook_output_guard の「88本で誤検知0件」と同水準を求める（docstring内に実測記録）。
+
+# ★ステラ指定の5語彙のみ（0件／すべて／入っていない／存在しません／更新されている）＋活用ゆれ。
+#   検査2の CLAIM_ABSENT とは独立した語彙（検査3は「断定全般」を対象にする）。
+#   ★誤検知回避のため、指定外の語（「完了」「終わった」等）は含めない
+#   （実測で「実装が完了しました」等の正当な完了報告に誤爆しないことを確認済み）。
+CLAIM_WORDS = re.compile(
+    r'(0件'
+    r'|すべて|全部|全て'
+    r'|入って(?:い)?(?:ない|ません|ませんでした)'
+    r'|存在し(?:ない|ません)'
+    r'|更新され(?:ている|ていません|ました|ていない))')
+
+
+def method_signature(tool_name, tool_input):
+    """検証手段の「方式」を1つの文字列（シグネチャ）として返す。
+
+    ★Bash はコマンド文字列の内容から grep/find/cat/stat/hash/other に細分化する
+    （ステラ指定）。それ以外のツール（Read/Grep/Glob/WebFetch/WebSearch/Agent/Task/mcp__*）は
+    ツール名そのものを signature とする（＝ Bash の grep と Grep ツールは別方式として扱う。
+    どちらも「検索」だが実行系路が異なるため独立性の代理指標として意味がある）。
+
+    ★できないこと：Bash の command 文字列を正確に構文解析していない（正規表現のみ）。
+    パイプで複数コマンドを繋いだ場合、最初にマッチしたキーワードで分類される
+    （例: `find . | grep foo` は 'bash:find' と 'bash:grep' の両方にマッチしうるが、
+    この実装では if-elif 順に最初の一致だけを返す。優先順位は grep→find→cat→stat→hash→other）。
+    """
+    if tool_name == 'Bash':
+        cmd = str((tool_input or {}).get('command', ''))
+        if re.search(r'\bgrep\b|\brg\b', cmd):
+            return 'bash:grep'
+        if re.search(r'\bfind\b', cmd):
+            return 'bash:find'
+        if re.search(r'\bcat\b|\bhead\b|\btail\b', cmd):
+            return 'bash:cat'
+        if re.search(r'\bstat\b|\bls\b|\bwc\b', cmd):
+            return 'bash:stat'
+        if re.search(r'\bmd5\b|\bmd5sum\b|\bsha256sum\b|\bshasum\b', cmd):
+            return 'bash:hash'
+        return 'bash:other'
+    return tool_name
+
+
+# ファイルパス／固有名詞らしき文字列（対象の代理）
+_CLAIM_TARGET_RE = re.compile(r'[\w./_-]+\.(?:py|md|json|js|ts|tsx|jsx|sh|yml|yaml|txt|csv|gs|rb)\b')
+
+
+def _claim_key_hint(text, claim_word):
+    """断定文からfindings_trackerのキーに使う『対象』のヒントを抽出する。
+
+    ★2026-08-29 ステラ指摘対応：_normalize()（findings_tracker.py側）は数字を#に
+    伏せるだけで、自然文の断定同士は表記が少しでも違うと別々のキーになり慢性化を
+    追えない。findings_tracker.py 本体は変更せず（既存の呼び出し元3本への影響を
+    避けるため）、ここで「対象ファイル／対象命題」を軸にした短い文字列を組み立ててから
+    track() へ渡すことで、実質的にキーの軸を変える。
+    優先度：①拡張子つきのファイルパスらしき文字列 ②断定語の前後の短い文脈。
+    ★これも語彙と同じく閉じない設計であることを明記する（ファイルパス以外の対象
+    ── Notionページ・DBの行・人名等 ── は②のフォールバックにしか乗らない）。
+    """
+    m = _CLAIM_TARGET_RE.search(text)
+    if m:
+        return '%s:%s' % (m.group(0), claim_word)
+    idx = text.find(claim_word)
+    if idx >= 0:
+        start = max(0, idx - 20)
+        return text[start:idx + len(claim_word)]
+    return claim_word
+
+
+def check_single_route_claim(payload):
+    """断定語が出たとき、そのターンの検証手段が実質1種類以下なら差し戻す（検査3）"""
+    tp = payload.get('transcript_path')
+    if not tp or not os.path.isfile(tp):
+        return None
+    said, _tooled, tool_calls = _turn_messages(tp)
+    if not said:
+        return None
+    body = '\n'.join(said)
+    m = CLAIM_WORDS.search(body)
+    if not m:
+        return None
+    sigs = sorted(set(method_signature(nm, inp) for nm, inp in tool_calls))
+    if len(sigs) >= 2:
+        return None                       # 2方式以上で確認済み。通す
+
+    # ★2026-08-29 findings_trackerへの配線。ENABLE_CHECK3がFalse（観測モード）でも、
+    #   検出したこと自体は記録する（将来の有効化判断の材料にするため）。
+    #   track()自体は findings_tracker.py 側で例外を握りつぶさないので、ここで守る。
+    #   ★sys.pathへの追加はモジュールロード時に1回だけ（ファイル冒頭の_HERE参照）。
+    try:
+        from findings_tracker import track
+        key_hint = _claim_key_hint(body, m.group(1))
+        track('single_route_claim', [key_hint])
+    except Exception as e:
+        log('検査3のtrack失敗', str(e))
+    return [
+        '★1つの方法でしか確認していないのに断定しています（検査3）。',
+        '',
+        '「%s」という断定を書いていますが、このターンで使った検証手段は %s 種類だけです（%s）。'
+        % (m.group(1), len(sigs), '、'.join(sigs) or 'なし'),
+        '',
+        '2026-08-29、この検問を設計する過程でステラ自身が実例を出しました：',
+        '判定語彙のプロトタイプが8ケース中6/8しか捕まえられず、漏れた2件はその日の',
+        '実際の失敗そのものでした（活用ゆれの語彙漏れが原因）。',
+        '**1つの方法・1つの視点だけで確認したことは、間違っている可能性を消しません。**',
+        '',
+        '終える前に、別方式で確認してください（例）：',
+        '  grep で確認したなら → find や wc、あるいは実際に該当ファイルを開いて確かめる',
+        '  1回のBashコマンドだけで判断したなら → 別の角度（別のツール）でもう一度見る',
+        '',
+        '★同じ壊れた前提を2つの方式で読んでも同じ誤りに一致することがあります。',
+        '方式を増やすことは「正しさの証明」ではなく「独立に確認した」という代理指標です。',
+        '（意図して1方式で十分と判断した場合は、その理由を1行述べればそのまま終えられます）',
+    ]
+
+
 def main():
     try:
         payload = json.load(sys.stdin)
@@ -222,6 +414,24 @@ def main():
         sys.stderr.write('\n'.join(lines) + '\n')
         log('★差し戻した(検査2)', '探さずに人へ投げた')
         return 2
+
+    # ★検査3 ── 1つの方法でしか探していないのに断定していないか（2026-08-29 ステラ設計）
+    #   ★観測モード：ENABLE_CHECK3=False の間はログに記録するだけで exit 2 にしない。
+    #   ステラの指示「合格ライン：実データで誤検知率を計測してから有効化する」に従い、
+    #   実運用のtranscriptで誤検知率が hook_output_guard 相当（0件近辺）になるまでは
+    #   ブロックしない。有効化するときはこの定数を True にする（このファイルの1箇所のみ）。
+    try:
+        lines3 = check_single_route_claim(payload)
+    except Exception as e:
+        lines3 = None
+        log('検査3で例外', str(e))
+    if lines3:
+        if ENABLE_CHECK3:
+            sys.stderr.write('\n'.join(lines3) + '\n')
+            log('★差し戻した(検査3)', '1経路断定')
+            return 2
+        else:
+            log('検査3(観測のみ・未有効化)', '1経路断定を検出したがブロックしていない')
 
     if not os.path.isdir(os.path.join(REPO, '.git')):
         log('通した', 'リポジトリが無い')
