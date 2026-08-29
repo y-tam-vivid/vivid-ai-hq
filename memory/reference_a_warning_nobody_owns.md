@@ -67,5 +67,34 @@ alerts（対応が要るものの一覧）へ足すロジックが無い項目�
   唯一 `chatwork_relay.py:183` が既存ブロックの削除失敗を握りつぶし重複表示を招きうる。
   ★「怪しそう」で数を挙げず、実際に読んで危険度を分けること。
 
+## ★3つ目の型 ── 点検の探針が「被検査対象の実行条件」に依存していた（2026-08-30 実測）
+
+`~/.vivid-relay/hook_selfcheck.py` は毎朝フック6本の生存を見る。**その探針1本が、
+フックが正常でも「反応しない」と出す作りだった。**
+
+```
+実測（2026-08-30 つる）
+  経路1  08:20 の cron       → 「異常 1件 / hook_session_writeback.py ： 反応しない」
+                              Notion⚙️レジスタ「フックの生存点検」も🔴失敗
+  経路2  08:45 に手で叩く     → 「6本とも正常」rc=0
+  → 実体は同じ。★変わったのは作業ツリーの状態だけ
+```
+
+**なぜ揺れるか** ── 探針は `transcript_path` を `/nonexistent` にして呼び、
+Stopフックが **git status を見て「10分以上さわっていない未コミットがある」ときだけ**出す
+文言を待っていた。ツリーがきれいな朝はフックが**設計どおり黙る**。それを故障と読む。
+
+- **★探針は自己完結させる。** 被検査対象が「たまたま発火する条件」に依存した探針は、
+  正常な朝に🔴を出す ＝ 偽陽性で🔴が慢性化し、本物の🔴が埋もれる。
+  今回は「gitの状態を一切見ない経路（検査2）」を突く形へ置き換えた。
+- **★探針が本番のログ・数字を汚していないか見る。** hook_writeback.log は
+  `dashboard_data.py` が当日行を数えている ＝ 毎朝1行の探針が稼働盤に偽データを毎日足す。
+  子プロセスの `HOME` を一時ディレクトリへ差し替えて回避した。
+- **★点検のログに時刻を入れる。** `hook_selfcheck.log` は時刻が無く「3本とも正常」が
+  10行並んでいた。**いつ壊れたか読めない**。壊れた瞬間が分からない記録は事後検証に使えない。
+- **★「正常しか出せない点検」になっていないか、壊して1回確かめる**
+  （[[reference_dangerous_entrypoints]]「実測で1回確かめる」の点検版）。
+
 関連: [[reference_heartbeat_proves_life_not_results]] [[reference_ran_is_not_succeeded]]
 [[reference_delivered_but_unread]] [[project_automation_register]]
+[[reference_monitor_must_exclude_parked]] [[reference_hooks_enforce_what_discipline_cannot]]
