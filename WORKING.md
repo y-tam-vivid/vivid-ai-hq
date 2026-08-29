@@ -118,8 +118,9 @@ check.sh実行済み：項目1-6全緑・項目7既知（無関係）・項目8�
 
 **★ビビが実測で確認済み**：穴A「直近ログ234行/ブロック9件/警告12件」と正しく読める／
 穴B「6本とも正常」（朝は4本）／穴D dashboard_data 11件・build 10件の配線（朝は0件）。
-**★残る人の手1回**：`python3 bin/settings_harden_norms.py --run` →
-その後 `.claude/skills/` 配下を1回編集し承認ダイアログが出るか確認。
+~~**★残る人の手1回**：`python3 bin/settings_harden_norms.py --run`~~ → **✅適用済み（2026-08-29 夜
+に2経路で実測確認。詳細は下の「離席中の申し送り」ブロック末尾）**。残るのは
+`.claude/skills/` 配下を1回編集して承認ダイアログが実際に出るかの通し確認だけ。
 **未着手**：②1経路断定の検知／穴C改修／Layer1/2/3／sandbox.enabled 全面導入。
 ★②と「検査を作った本人の死角」はステラへ設計を発注済み（走行中）。
 
@@ -315,12 +316,21 @@ MacBook側にもコピーしてください（両機に道具を入れる原則�
   Layer 2 の cron / daily_jobs 登録        未検証のものを自動実行に載せない規範
   ENABLE_CHECK3 の True 化                 誤爆28%。観測データが溜まってから判断
 
-★離席中に進めているもの（すべて可逆）
-  check.sh 項目8 が見つけたパス二重定義2件（WORKING.md・memory）の解消
-  Layer 1/2/3 の実装と実測（★登録はしない）
-  sandbox の影響範囲の調査（★有効化はしない）
-  fresh eyes 2パスの実演（ステラへの依頼文で Pass A から始めるよう指定済み）
+★離席中に進めたもの（すべて可逆）── 2026-08-29 夜 commit 40e615e で確定済み
+  ✅ パス二重定義2件の解消     bin/hooks/paths.py を正本にし5ファイルを import へ差し替え。
+                              実測：check.sh 項目8 が ✓（二重定義なし）へ変わった
+  ✅ Layer1 行為カタログ       bin/hooks/action_catalog.json（14項目）
+  ✅ Layer2 3点突合            bin/hooks/action_catalog_check.py。★cron/daily_jobs 未登録
+                              実測：登録✓12／登録不明1（dashboard配線＝code_pathタイプで
+                              判定方法が未実装）／ログ不明4（LOG定数を持たない4本）
+  ⏸ sandbox の影響範囲調査     未着手（有効化はしない方針は維持）
+  ⏸ fresh eyes 2パスの実演     未実演のまま（次の検問インフラ変更で使う）
 ```
+
+**★settings_harden_norms.py は既に適用されていた**（WORKING.md の別ブロックは「残＝有璽氏が
+1回叩く」のままだが実物は済んでいる）。実測：経路1 = `action_catalog_check.py` が
+「permissions.ask に実在」／経路2 = `~/.claude/settings.json` を直接読み ask 15件中に
+`Edit/Write(.claude/skills/**)` と `…/fukuchi-core/SKILL.md` の計4件を確認 → 一致。
 
 **★今日、終わった作業が報告に出ないことが3回あった**（適用スクリプト／観測モードの配線／
 見逃し台帳）。いずれもビビが実測で発見。→ `memory/feedback_use_the_team_not_alone.md`
