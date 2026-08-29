@@ -1,6 +1,6 @@
 ---
 name: reference_norms_outnumber_their_enforcement
-description: 規範632KBに対し実際にブロックする機械ゲートは1つだけ。最も重い「規範の変更」が技術的に最も無防備だった
+description: 規範632KBに対しブロックする機械ゲートは朝ゼロ→夕方4つ。規範の変更とお金は今も無防備
 metadata:
   type: reference
 ---
@@ -17,8 +17,12 @@ metadata:
                      ＝ 115,279バイト（原稿用紙 約95枚）★毎ターン
   索引経由でしか届かない  feedback 42本＋reference 85本 ＝ 632,353バイト（約526枚）
 
-実際にブロックする機械ゲート
-  ★全体で 1つだけ ── hook_session_writeback.py の検査2（2026-08-29 新設）
+実際にブロックする機械ゲート（★2026-08-29 中に 0 → 4 へ変わった）
+  朝の時点   ★ゼロ。見せるだけのフックしか無かった
+  夕方       ① Stopフック検査2（探さず人へ「無い」と言う）
+             ② Stopフック本体（未コミットでターンを終える）
+             ③ hook_role_guard   ★ビビが実装コードを書くと exit 2（12:2x 本物のイベントで実測）
+             ④ hook_output_guard （判定の外にある断定文を警告）
   hook_inject_memory.py は exit(0) のみ ＝ 見せるだけ・強制力なし
   hook_catch_correction.py は自ら「★止めない。ブロックしない」と明記
 ```
