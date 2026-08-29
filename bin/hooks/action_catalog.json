@@ -1,0 +1,169 @@
+{
+  "_meta": {
+    "generated": "2026-08-29",
+    "generated_by": "ピタゴラス（system-developer）",
+    "note": "ロビンの22項目は初版の種として指定されたが、Notion検索（notion-search）1回では該当ページを特定できなかった。無理に埋めず、実測可能な材料（settings.json登録済み5フック・crontab実測2本・daily_jobs.conf実測1ジョブ・本日判明した穴A〜E）から構築した。ロビンの22項目が見つかり次第、statusを'unknown'から差し替えること。",
+    "schema_version": 1
+  },
+  "actions": [
+    {
+      "id": "hook_permission_slack",
+      "name": "承認待ちのSlack通知",
+      "registration": {
+        "type": "settings_hook",
+        "event": "PermissionRequest",
+        "command_substr": "hook_permission_slack.py"
+      },
+      "log_module": null,
+      "log_attr": null,
+      "log_note": "★LOG定数が無い（実測で確認・bin/hooks/hook_permission_slack.py）。Layer2の②（ログ活性確認）は判定不能として扱うこと。",
+      "source_file": "bin/hooks/hook_permission_slack.py"
+    },
+    {
+      "id": "hook_catch_correction",
+      "name": "訂正の発話を検出して記録",
+      "registration": {
+        "type": "settings_hook",
+        "event": "UserPromptSubmit",
+        "command_substr": "hook_catch_correction.py"
+      },
+      "log_module": "hook_catch_correction",
+      "log_attr": "LOG",
+      "source_file": "bin/hooks/hook_catch_correction.py"
+    },
+    {
+      "id": "hook_inject_memory",
+      "name": "作業直前に地雷を突きつける",
+      "registration": {
+        "type": "settings_hook",
+        "event": "PreToolUse",
+        "command_substr": "hook_inject_memory.py"
+      },
+      "log_module": null,
+      "log_attr": null,
+      "log_note": "LOG定数の有無は今回未確認（依頼のスコープ外・次に確認すること）。",
+      "source_file": "bin/hooks/hook_inject_memory.py"
+    },
+    {
+      "id": "hook_role_guard",
+      "name": "役割違反の検問（メインセッションの実装コード直書き阻止）",
+      "registration": {
+        "type": "settings_hook",
+        "event": "PreToolUse",
+        "command_substr": "hook_role_guard.py"
+      },
+      "log_module": "hook_role_guard",
+      "log_attr": "LOG",
+      "source_file": "bin/hooks/hook_role_guard.py",
+      "note": "穴B（2026-08-29）：hook_selfcheck.py の生存点検対象から漏れていた。修正済み。"
+    },
+    {
+      "id": "hook_output_guard",
+      "name": "コード内固定文字列の矛盾検出",
+      "registration": {
+        "type": "settings_hook",
+        "event": "PreToolUse",
+        "command_substr": "hook_output_guard.py"
+      },
+      "log_module": "hook_output_guard",
+      "log_attr": "LOG",
+      "source_file": "bin/hooks/hook_output_guard.py",
+      "note": "穴B（2026-08-29）：hook_selfcheck.py の生存点検対象から漏れていた。修正済み。"
+    },
+    {
+      "id": "hook_session_writeback_check1",
+      "name": "書き戻し確認（未コミット10分超で差し戻し）",
+      "registration": {
+        "type": "settings_hook",
+        "event": "Stop",
+        "command_substr": "hook_session_writeback.py"
+      },
+      "log_module": "hook_session_writeback",
+      "log_attr": "LOG",
+      "source_file": "bin/hooks/hook_session_writeback.py",
+      "note": "穴C（2026-08-29）：hook_selfcheck.py のテストケースが『未コミット10分超が実在する』ことに依存しており、作業ツリーがクリーンな瞬間に実行すると誤って『反応しない』と映る。実装自体は正しく動作していると切り分け済み（未解決の限界として記録のみ）。"
+    },
+    {
+      "id": "hook_session_writeback_check2",
+      "name": "探さずに人へ投げていないかの検問",
+      "registration": {
+        "type": "settings_hook",
+        "event": "Stop",
+        "command_substr": "hook_session_writeback.py"
+      },
+      "log_module": "hook_session_writeback",
+      "log_attr": "LOG",
+      "source_file": "bin/hooks/hook_session_writeback.py"
+    },
+    {
+      "id": "hook_session_writeback_check3",
+      "name": "1経路断定の検問（検査3・観測モード）",
+      "registration": {
+        "type": "settings_hook",
+        "event": "Stop",
+        "command_substr": "hook_session_writeback.py"
+      },
+      "log_module": "hook_session_writeback",
+      "log_attr": "LOG",
+      "source_file": "bin/hooks/hook_session_writeback.py",
+      "note": "2026-08-29 実装。ENABLE_CHECK3=False（観測のみ・ブロックしない）。実データ953ターン中667が断定語ヒット・うち188が1経路（誤爆率が高く有効化していない）。findings_tracker(source='single_route_claim')へ検出のたびに記録される。"
+    },
+    {
+      "id": "cron_hook_selfcheck",
+      "name": "フック4本の生存点検（毎朝08:20）",
+      "registration": {
+        "type": "cron",
+        "schedule": "20 8 * * *",
+        "command_substr": "hook_selfcheck.py"
+      },
+      "log_file_hint": "~/.vivid-relay/hook_selfcheck.log",
+      "source_file": "bin/hooks/hook_selfcheck.py"
+    },
+    {
+      "id": "cron_self_audit",
+      "name": "自己監査（毎朝08:40・つる相当）",
+      "registration": {
+        "type": "cron",
+        "schedule": "40 8 * * *",
+        "command_substr": "self_audit.py --run --beat"
+      },
+      "log_file_hint": "~/.vivid-relay/self_audit.log",
+      "source_file": "bin/hooks/self_audit.py",
+      "note": "穴A（2026-08-29）：_role_guard_summary()が誤ったログパス(bin/hooks/role_guard.log)を独自定義し、実物(~/.vivid-relay/role_guard.log)と食い違って『まだ稼働していない』と言い続けていた。修正済み（paths.py集約・依頼1と同日に対応）。"
+    },
+    {
+      "id": "daily_jobs_memory_audit",
+      "name": "記録の巡回（1日5回・09:20/12:20/15:20/18:20/21:20）",
+      "registration": {
+        "type": "daily_jobs_conf",
+        "schedules": ["09:20", "12:20", "15:20", "18:20", "21:20"],
+        "command_substr": "memory_audit.py --beat"
+      },
+      "log_file_hint": null,
+      "source_file": "bin/memory_audit.py"
+    },
+    {
+      "id": "dashboard_findings_wiring",
+      "name": "findings_tracker → 稼働盤ダッシュボードへの配線",
+      "registration": {
+        "type": "code_path",
+        "note": "settings.json/crontabへの直接登録ではなく、~/.vivid-relay/dashboard_data.py の build_findings() が実行時に findings_tracker.open_findings() を呼ぶ構造。"
+      },
+      "log_module": null,
+      "source_file": "~/.vivid-relay/dashboard_data.py",
+      "note": "穴D（2026-08-29）：findings_trackerは実装されていたがdashboard未配線だった。修正済み。build_findings()新設・KPIタイル「慢性(3日+)」追加。"
+    },
+    {
+      "id": "settings_ask_skills_protection",
+      "name": ".claude/skills/ 全体のask保護（規範ファイルの誤編集防止）",
+      "registration": {
+        "type": "settings_permission",
+        "path": "permissions.ask",
+        "pattern_substr": ".claude/skills"
+      },
+      "log_module": null,
+      "source_file": "bin/settings_harden_norms.py",
+      "note": "穴E（2026-08-29）：.claude/skills/全体がaskに無かった。bin/settings_harden_norms.pyを用意（有璽氏が--runで実行）。fukuchi-core/SKILL.md個別と.claude/skills/**globの両方を候補に含めた。globが実際に効くかは未検証（要有璽氏確認）。"
+    }
+  ]
+}

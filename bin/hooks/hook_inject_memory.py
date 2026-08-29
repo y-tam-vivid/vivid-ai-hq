@@ -129,7 +129,10 @@ TOPIC_HINTS = {
 }
 
 
-WORKING = os.path.expanduser('~/vivid-ai-hq/WORKING.md')
+# ★2026-08-29 ビビ依頼①：パスの二重定義解消（check.sh項目8で検出・穴Aと同じ型）。
+#   独自の代入文をやめ、bin/hooks/paths.py の正本を import する。
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import WORKING_MD as WORKING
 
 
 def already_in_progress(blob):

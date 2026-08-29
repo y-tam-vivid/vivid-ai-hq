@@ -37,7 +37,10 @@ import subprocess
 import datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = os.path.expanduser('~/vivid-ai-hq')
+# ★2026-08-29 ビビ依頼①：パスの二重定義解消（check.sh項目8で検出・穴Aと同じ型）。
+#   独自の代入文をやめ、bin/hooks/paths.py の正本を import する。
+sys.path.insert(0, HERE)
+from paths import REPO, WORKING_MD
 CLAUDE = os.path.expanduser('~/.npm-global/bin/claude')
 PROC_NAME = '自己監査（自分で穴を見つけて直す）'
 TIMEOUT = 1500
@@ -137,7 +140,7 @@ def _git_commits_without_review(n=20):
 
 def _working_md_marker_ages(threshold_days=7):
     """③観点：WORKING.md の「★残」「未着手」等マーカーの経過日数（見出しの日付から算出）"""
-    path = os.path.join(REPO, 'WORKING.md')
+    path = WORKING_MD
     try:
         lines = open(path, encoding='utf-8').read().split('\n')
     except Exception as e:

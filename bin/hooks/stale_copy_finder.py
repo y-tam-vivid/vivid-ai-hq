@@ -61,7 +61,10 @@ import re
 import subprocess
 import sys
 
-REPO = os.path.expanduser('~/vivid-ai-hq')
+# ★2026-08-29 ビビ依頼①：パスの二重定義解消（check.sh項目8で検出・穴Aと同じ型）。
+#   独自の代入文をやめ、bin/hooks/paths.py の正本を import する。
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import REPO, WORKING_MD, MEMORY_DIR
 
 TARGET_GLOBS = [
     'memory',            # *.md（_archive は除外）
@@ -96,12 +99,12 @@ MIN_BASENAME_LEN = 5  # 短すぎる基底名（誤爆源）を除外
 def _collect_files():
     files = []
     # memory/*.md（_archive を除く）
-    memdir = os.path.join(REPO, 'memory')
+    memdir = MEMORY_DIR
     for name in os.listdir(memdir):
         if name.endswith('.md') and not name.startswith('_'):
             files.append(os.path.join(memdir, name))
     # WORKING.md
-    wf = os.path.join(REPO, 'WORKING.md')
+    wf = WORKING_MD
     if os.path.exists(wf):
         files.append(wf)
     # .claude/skills/**/*.md

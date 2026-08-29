@@ -13,8 +13,10 @@
 """
 import os, re, subprocess, sys, datetime
 
-ROOT = os.path.expanduser('~/vivid-ai-hq')
-MEM  = os.path.join(ROOT, 'memory')
+# ★2026-08-29 ビビ依頼①：パスの二重定義解消（check.sh項目8で検出・穴Aと同じ型）。
+#   独自の代入文をやめ、bin/hooks/paths.py の正本を import する（bin/直下なのでhooks/を足す）。
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'hooks'))
+from paths import REPO as ROOT, MEMORY_DIR as MEM
 DAYS = int(os.environ.get('MEMORY_AUDIT_DAYS', '30'))
 LIMIT_BYTES = 24986
 LIMIT_LINE  = 180

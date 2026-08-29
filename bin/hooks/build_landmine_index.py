@@ -32,7 +32,10 @@ import glob
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-MEM = os.path.expanduser('~/vivid-ai-hq/memory')
+# ★2026-08-29 ビビ依頼①：パスの二重定義解消（check.sh項目8で検出・穴Aと同じ型）。
+#   独自の代入文をやめ、bin/hooks/paths.py の正本を import する。
+sys.path.insert(0, HERE)
+from paths import MEMORY_DIR as MEM
 OUT = os.path.join(HERE, 'landmines.json')
 PROC_NAME = '地雷インデックスの再生成'   # ★⚙️レジスタの行名と1文字ずつ一致させること
 
