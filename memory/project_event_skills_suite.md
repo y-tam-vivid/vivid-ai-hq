@@ -14,10 +14,28 @@ metadata:
 
 ```
 ① snspipe.pyフォント対応     ★承認済み・内容は実測済み。🔴本体反映が構造的に不可（下記）
-② PowerPoint出力            ✅完了。bin/md2pptx.py新設・両機実測。ステラ検査依頼中
-③ PDF出力                   ✅完了。bin/md2pdf.py新設・両機実測。ステラ検査依頼中
-④ ffmpeg導入                ✅完了。bin/setup_ffmpeg.sh新設・両機実測。ステラ検査依頼中
+② PowerPoint出力            ✅完了。bin/md2pptx.py新設・両機実測。★ステラ検査「条件つき」
+                             →条件（表スタイル未指定）を修正し反映済み・両機再検算OK
+③ PDF出力                   ✅完了。bin/md2pdf.py新設・両機実測。★ステラ検査「条件つき」
+                             →条件（箇条書き記号がstart無視で■相当）を修正し反映済み・
+                             両機再検算OK
+④ ffmpeg導入                ✅完了。bin/setup_ffmpeg.sh新設・両機実測。★ステラ検査
+                             「条件つき」（trap無し等は改善提案でブロッカーでないと判定）
 ```
+
+**★ステラ検査で出た2件の修正内容（2026-08-29・作る役として対応済み）**
+
+```
+md2pdf.py    ListFlowable(bulletType="bullet", start="・") は reportlab の仕様上
+             start が無視され既定記号（■相当）で出る。Paragraphへ「・」「1. 」を
+             手動前置する方式に変更。未使用のListFlowable/ListItem importも削除
+md2pptx.py   表にスタイル未指定だった。ヘッダー行へ背景色(RGBColor 0xEEEEEE)と
+             table.first_row=Trueを設定し、md2docx.pyのTable Grid+太字ヘッダーに
+             体裁を揃えた
+```
+
+両修正とも両機で実データ変換→検算（PDF: PNG化して目視／PPTX: python-pptxで
+fill_rgb・first_rowを読み返し確認）済み。commit `90490d2`。
 
 **① snspipe.pyのフォント対応（`.claude/skills/event-social-kit/scripts/snspipe.py` 44-48行目）**
 依頼にあった候補は実測で不採用にした：
