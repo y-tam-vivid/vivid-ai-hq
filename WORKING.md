@@ -323,8 +323,21 @@ MacBook側にもコピーしてください（両機に道具を入れる原則�
   ✅ Layer2 3点突合            bin/hooks/action_catalog_check.py。★cron/daily_jobs 未登録
                               実測：登録✓12／登録不明1（dashboard配線＝code_pathタイプで
                               判定方法が未実装）／ログ不明4（LOG定数を持たない4本）
-  ⏸ sandbox の影響範囲調査     未着手（有効化はしない方針は維持）
-  ⏸ fresh eyes 2パスの実演     未実演のまま（次の検問インフラ変更で使う）
+  ✅ sandbox の影響範囲調査     実測完了・settings.json未変更。既知バグ2件（#50454相対パス
+                              無効／#53209 denyRead親denyWriteですり抜け）をGitHubで確認。
+                              ★重大な発見：sandbox.enabled=true+denyWrite(.claude/skills)の
+                              状態と、sandbox無しの状態の両方で同じテストを行い比較したところ、
+                              .claude/skills/への書込み拒否は**両方で同一に発生**した＝今回の
+                              テスト設計では「拒否がsandbox由来かaskルール由来か」を切り分け
+                              られなかった（1経路で断定しないよう2経路目を追加して発覚）。
+                              bin/・git操作はsandbox.enabled=true下でも正常動作を実測確認。
+                              ★副産物の発見：`Write(.claude/skills/**)`ask設定に対し
+                              「is not matched by file permission checks — only Edit(path)
+                              rules are」という警告が出た＝Write系askルールの一部が機能して
+                              いない可能性。詳細はこのセッションの報告参照
+  ✅ fresh eyes 2パスの実演     Layer1/2実装の検査をステラへ依頼する際、Pass A（blindでdiffのみ）
+                              →Pass B（背景・申告つき）の順で明記して依頼した（初実演）。
+                              検査結果待ち
 ```
 
 **★settings_harden_norms.py は既に適用されていた**（WORKING.md の別ブロックは「残＝有璽氏が
