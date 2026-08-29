@@ -8,6 +8,11 @@ CASES=[
  ('hook_inject_memory.py','{"tool_name":"Bash","tool_input":{"command":"sheets_client"}}','additionalContext'),
  ('hook_catch_correction.py','{"prompt":"何回も言ってるやろ"}','additionalContext'),
  ('hook_permission_slack.py','{"tool_name":"Bash","tool_input":{"command":"ls"}}','suppressOutput'),
+ # ★2026-08-29 追加（穴B・ビビ指摘）。役割違反の検問2本がPreToolUseに登録されているのに
+ #   生存点検の対象外だった＝唯一の強い機械ゲートの生死を点検の外に置いていた。
+ #   Bashのリダイレクト書込み疑いは exit0+JSON なのでCASES向き。
+ ('hook_role_guard.py','{"tool_name":"Bash","tool_input":{"command":"cat > /tmp/selfcheck_probe.py <<EOF"},"session_id":"selfcheck"}','additionalContext'),
+ ('hook_output_guard.py','{"tool_name":"Write","tool_input":{"file_path":"/tmp/selfcheck_probe.py","content":"for x in [1]:\\n    if x:\\n        print(\\\"OK\\\")\\nprint(\\\"すべて正常\\\")\\n"}}','additionalContext'),
 ]
 # ★JSONではなく素のテキストを返すフック（Stop フックはこの形）。
 #   2026-08-29 つる追加。それまで CASES は3本しか無く、settings.json に登録されている

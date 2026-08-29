@@ -34,11 +34,31 @@
                 可逆な操作（保存前で止めるだけ）なので、警告ではなくブロックにした。
                 過去に「警告だけ」では規範が繰り返し破られた実績があるため
                 （このファイルの動機そのものがその実例）。
-  Bash          ヒヤドキュリスティックでリダイレクト/teeによる書き込みを検出したら
+  Bash          ヒューリスティックでリダイレクト/teeによる書き込みを検出したら
                 **警告に留める**（exit 0 + additionalContext）。シェルコマンドの完全な
                 パースはできないため、誤検知（読み取り専用コマンドを誤爆）のリスクが高い。
                 ブロックすると「うるさくて読まれなくなる」（reference_delivered_but_unread）
                 の型を踏む。
+
+  ★2026-08-29 一度8パターン化してexit2ブロックまで実装・実測したが、撤回した経緯を残す
+  （一度踏んだ地雷は個別に直さず記録に落とす、の実例として）。
+    試みた内容：redirect/tee 以外に sed/perl -i・dd of=・curl/wget・cp/mv/rsync/install・
+    Python open()/pathlib・Node fs.write系の計8パターンを正規表現で検出しexit 2でブロック。
+    実測は良好だった（書込16/16検出・読取30/30誤検知ゼロ）が、ビビ経由でクローバー博士の
+    調査が入り、**この設計自体が誤りだと判明**：
+      ① Claude Code には公式のOSレベル・サンドボックス機能がある
+        （settings.json の sandbox.filesystem.denyWrite。macOS=Seatbelt/Linux=seccomp。
+        https://code.claude.com/docs/en/sandboxing）。カーネルレベルで拒否するため、
+        どんな経路（正規表現で拾えない書き方）で来ても効く。正規表現検出は原理的に
+        後追い・不完全にしかなり得ない。
+      ② Saltzer & Schroeder (1975) の「ブラックリスト方式（検出型）は原理的に不完全」
+        という古典的知見に、今回の実装がそのまま当てはまっていた。
+    → **正規表現によるBash検出の強化はやめ、sandbox.filesystem.denyWrite の導入検討へ
+      切り替えた**（別スクリプト・別検討。このファイルでは扱わない）。
+    → hook_role_guard.py 自体は残す。**役割を分ける**：
+      サンドボックス＝OSレベルで書けなくする（防御）
+      このフック＝「担当へ渡すべき仕事を自分でやろうとした」という役割判定を伝える（教育）
+      Bash側は元の「リダイレクト/tee のみ検出・警告のみ」へ差し戻した。
 
 ログ
   ~/.vivid-relay/role_guard.log に全判定を1行残す（self_audit.py の②観点に使う）。
@@ -59,6 +79,8 @@ CODE_EXTS = {'.py', '.js', '.ts', '.tsx', '.jsx', '.gs', '.sh', '.rb'}
 # Bash 経由でコード拡張子ファイルへ書き込む簡易ヒューリスティック
 #   例: `cat > foo.py <<EOF` / `echo x >> bar.sh` / `... | tee baz.ts`
 #   ★完全なシェルパースはしない。誤検知が出ても警告止まりにして実害を出さない
+#   ★2026-08-29 一度8パターン・exit2化を試みたが撤回した（docstring参照）。
+#   Bash側の完全な防御は sandbox.filesystem.denyWrite（OSレベル）へ委ねる方針。
 BASH_WRITE_PATTERN = re.compile(
     r'(?:>>?|\btee\b)\s+[\'"]?([^\s\'"|;&<>]+\.(?:py|js|ts|tsx|jsx|gs|sh|rb))\b')
 
@@ -101,7 +123,9 @@ def warn_message(file_path):
         '★注意：Bash 経由で実装コードらしきファイルへ書き込もうとしています（%s）。\n'
         'メインセッション（ビビ）は実装コードを直接書けません '
         '（memory/feedback_use_the_team_not_alone.md）。\n'
-        '意図した書き込みなら、Write/Edit ではなく Agent tool で担当へ渡してください。'
+        '意図した書き込みなら、Write/Edit ではなく Agent tool で担当へ渡してください。\n'
+        '（★このパターン検出は限定的です。完全な防御は sandbox.filesystem.denyWrite '
+        '（OSレベル）の導入で検討中。docstring参照）'
     ) % file_path
 
 

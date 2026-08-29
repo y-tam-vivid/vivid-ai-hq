@@ -167,8 +167,20 @@ def _working_md_marker_ages(threshold_days=7):
 
 
 def _role_guard_summary():
-    """①観点：hook_role_guard.py が実際に役割違反を止めた回数（2026-08-29 新設・稼働はこれから）"""
-    log = os.path.join(HERE, 'role_guard.log')
+    """①観点：hook_role_guard.py が実際に役割違反を止めた回数（2026-08-29 新設・稼働はこれから）
+
+    ★2026-08-29 改修（ビビ指摘・穴A）：ここでは以前 `os.path.join(HERE, 'role_guard.log')`
+    （＝ bin/hooks/role_guard.log）という誤ったパスを独自に持っていた。実物のログは
+    hook_role_guard.py の LOG 定数（~/.vivid-relay/role_guard.log）にしかない。
+    9,455バイト・本物の agent_id で発火し続けていたのに、パスが違うだけで
+    「role_guard.log が無い＝まだ稼働していない」と毎朝言い続けていた。
+    ＝ パスを2箇所に文字列で書いた時点で片方が古くなる（reference_stale_premise_daily と同型）。
+    二度と起こさないよう、文字列で再定義せず hook_role_guard.py から LOG を import する。"""
+    try:
+        sys.path.insert(0, HERE)
+        from hook_role_guard import LOG as log
+    except Exception as e:
+        return '（LOG定数の取得に失敗 ： %s）' % e
     # ★2026-08-29 つる ── 登録の有無を先に見る。
     #   それまでは「log が無ければ未稼働」としか判定しておらず、settings.json へ未登録の
     #   ままでも手動テストでログが出来た瞬間に「ブロック3件」と稼働中のように見えた。

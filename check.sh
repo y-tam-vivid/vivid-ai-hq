@@ -103,5 +103,23 @@ else
   ok "版の並存なし"
 fi
 
+say "── 8. パスの二重定義（documentation drift・穴A型）"
+# ★2026-08-29 新設。self_audit.py が hook_role_guard.py の LOG 定数と別に
+#   独自パスを持ち、実物ログが9,455バイトあるのに「まだ稼働していない」と
+#   言い続けていた事故（穴A）を機械的に検出する。★助言のみ・exit 1 にはしない
+#   （実害の有無は人が判断する必要があるため。現状2件は値としては実質同じ場所を
+#   指しており、破綻ではなく書き方の不統一）。
+if [ -f bin/check_path_duplication.py ]; then
+  dup_out=$(python3 bin/check_path_duplication.py 2>&1)
+  if echo "$dup_out" | grep -q "★重複定義の疑い"; then
+    say "  △ パスが複数箇所で異なる書き方で定義されています（助言・ブロックしない）:"
+    echo "$dup_out" | sed 's/^/      /'
+  else
+    ok "パスの二重定義なし"
+  fi
+else
+  say "  － bin/check_path_duplication.py が無い"
+fi
+
 say ""
 [ $NG -eq 0 ] && { say "✅ ズレなし"; exit 0; } || { say "❌ ズレを検出。上記を解消してから commit すること"; exit 1; }
