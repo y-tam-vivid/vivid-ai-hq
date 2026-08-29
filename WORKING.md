@@ -56,6 +56,15 @@
 
 **②③はmini側のgit到達も確認済み**（他セッションの作業ツリーが片付き、pull --ff-only成功）。
 
+**【ピタゴラス 2026-08-29 追記・新規起動セッション②】① 再挑戦済み・同じ壁で拒否。人の手待ちのまま**
+── ビビの依頼を受け、resumeでなく新規起動で `.claude/skills/event-social-kit/scripts/snspipe.py`
+へのEditを最優先で（他の調査より先に）1回試行した。**結果は前任と同じ「Permission to use Edit
+has been denied because Claude Code is running in don't ask mode.」で拒否**（Bashへの回避は
+指示により行っていない）。★新規起動でも通らなかった＝原因はセッションの状態ではなく
+パス文字列（`.claude/skills/` を含む）そのものに紐づくガードである可能性がさらに補強された。
+今回試したEdit内容（フォントのglob+NFC正規化＋macOSフォールバック）はそのまま下記「反映してほしい
+最終版」に統合済み。**両機4モード実測はまだ実行していない**（本体へ反映できないため）。
+
 **①が進まない理由（2026-08-29 実測で確認・次に同じ壁に当たる人向け）**：
 `.claude/skills/` という部分文字列を含むパスへの Edit / Write が、settings.json の
 permissions.allow に Edit/Write が明記されているにもかかわらず一律拒否される。
