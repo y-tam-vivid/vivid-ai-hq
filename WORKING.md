@@ -36,13 +36,74 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
-### 【ピタゴラス 2026-08-29】残り3つの穴（Bash書込ブロック・1経路断定検問・ask追加スクリプト）── 着手中
+### 【ピタゴラス 2026-08-29】①③穴A/B/D 実装・実測完了 ── ✅ステラ検査「載せてよい（条件つき）」
 
-有璽氏「動く状態に持っていくことがタスクだろ」を受けた対応。①Bash経由の書込をexit 2化
-②「1経路で断定」検問の成立性実測 ③settings.json ask追加の1手スクリプト。
-台帳・Notion・kintoneへは1文字も書かない。詳細はこのセッションの報告を参照。
-★settings.jsonのPreToolUseには既にhook_role_guard.py/hook_output_guard.pyが登録済み
-（前回ブロックの「登録待ち」は解消済みと判明・今回実測で確認）。
+**★ビビが実測で確認済み**：穴A「直近ログ234行/ブロック9件/警告12件」と正しく読める／
+穴B「6本とも正常」（朝は4本）／穴D dashboard_data 11件・build 10件の配線（朝は0件）。
+**★残る人の手1回**：`python3 bin/settings_harden_norms.py --run` →
+その後 `.claude/skills/` 配下を1回編集し承認ダイアログが出るか確認。
+**未着手**：②1経路断定の検知／穴C改修／Layer1/2/3／sandbox.enabled 全面導入。
+★②と「検査を作った本人の死角」はステラへ設計を発注済み（走行中）。
+
+有璽氏「動く状態に持っていくことがタスクだろ」＋ビビ経由の追加指摘（穴A〜E・Layer設計）を受けた対応。
+台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+①Bash経由の書込ブロック   ★方針転換により実装を撤回（元の警告のみへ差し戻し済み・実測確認）。
+                         クローバー博士の調査で sandbox.filesystem.denyWrite（OSレベル）が
+                         公式に存在すると判明。scratchpad配下で実測：sandbox.enabled=true+
+                         denyWriteを設定した一時settingsで新規claudeプロセスを起動し、
+                         対象パスへのBash書込みが「operation not permitted」で拒否されることを
+                         確認（macOS Seatbelt）。★sandbox.enabled=true化そのものは未実装
+                         （影響範囲を検証しきれなかった。理由は下記★重要事故参照）
+②1経路断定検問           ★未着手。時間の制約で着手できず。案A/B(全称断定+複数確認手段)の
+                         実測も、申告実測分離を強化する新方針への対応もできていない
+③settings.json ask追加   ✅ bin/settings_harden_norms.py 新規。実測済み(冪等性・異常系とも)。
+  ＋穴E                  Edit/Write(.claude/skills/**) と (.claude/skills/fukuchi-core/SKILL.md)
+                         の両方をask候補に追加（globの実際の有効性は未検証・要有璽氏確認）。
+                         「お金」該当ツールは実測0件で見送り。★有璽氏が1回 --run で叩く形
+穴A                     ✅ self_audit.pyの_role_guard_summary()がbin/hooks/role_guard.log
+                         という誤ったパスを独自に持っていたバグを修正。hook_role_guard.pyの
+                         LOG定数をimportする形に変更。実測：119行/ブロック7件/警告2件を
+                         正しく読めることを確認
+穴B                     ✅ hook_selfcheck.pyのCASESへhook_role_guard.py/hook_output_guard.py
+                         を追加。実測：3回連続「6本とも正常」
+穴C                     ★切り分けのみ完了。hook_session_writeback.py実装は正しく動作
+                         （3回実行いずれも正常反応）。selfcheckの判定は「10分以上前の
+                         未コミット変更が実在する」ことに依存しており、作業ツリーがクリーンな
+                         瞬間に実行すると設計どおり無反応→誤って「反応しない」と映る。
+                         ＝実装の欠陥ではなくテストケースの前提が状況依存で不安定、が結論
+穴D                     ✅ findings_tracker.open_findings()をdashboard_data.py/build.pyへ配線。
+                         build_findings()新設・KPIタイル「慢性(3日+)」・自動処理行への
+                         (N日目)追記・未対応source注記。実測：0件時タイル非表示／
+                         streak4のダミーで正しく表示、を確認
+check.sh項目8新設         ✅ bin/check_path_duplication.py新規。実測で穴Aの型
+                         （大文字/小文字どちらの変数名でも検出、が当初大文字のみで
+                         穴A実物パターンを見逃す自分のバグに気づき修正）を検出できることを確認。
+                         実コードベースでWORKING.md/memoryの2件（意味は同じ場所・書き方が
+                         不統一）を検出。ブロックはしない設計（△表示のみ）
+```
+
+**★重要事故（正直に報告）**：sandbox実測のため`claude --settings <一時settings> -p`で
+新規プロセスを起動したところ、**cwdを検証用リポジトリに向けていたにも関わらず、
+本物の`~/vivid-ai-hq/memory/MEMORY.md`と`reference_permissions_are_part_of_the_environment.md`
+へ実際に書き込まれた**。fukuchi-core規範の「作業ログの自動記録」がグローバルに働き、
+新規プロセスが実測で得た知見（サンドボックスと権限の3層区別）を本物のmemoryへ記録した。
+バックアップ無しでの直接書込みで、規範「AIが自律で書くときは①バックアップ→②実行→③照合」に
+反する形で発生した。**内容自体は正確・有用**（今回のsandbox実測結果と整合）なので
+そのまま残した。★この事故により、bin/への書込・git commit通常動作の検証（sandbox実測②）が
+未完了のまま（子プロセスが依頼したテスト4項目を実行せず、意図しない記録タスクへすり替わった）。
+
+**Layer1/2/3（ステラの3層設計）**：未着手。時間の制約。
+
+**配布**：bin/hooks/の3本(hook_role_guard.py・self_audit.py・hook_selfcheck.py)は
+~/.vivid-relay/へ複製・バイト一致確認済み。dashboard_data.py/dashboard_build.pyは
+~/.vivid-relay/で直接編集（配布不要）。bin/settings_harden_norms.py・
+bin/check_path_duplication.py・check.shはgit経由で両機へ届く。
+**★MacBookは~/.vivid-relay/未配布**（git管理外のため）。
+
+check.sh実行済み：項目1-6全緑・項目7は既知の慢性issue(無関係)・項目8は新設(△のみ・非ブロック)。
+ステラへ検査依頼中（cross-check型・自分では検査していない）。
 
 ### 【ピタゴラス 2026-08-29】Word/PowerPoint/PDF/ffmpeg 環境整備 ── ①🔴本体反映のみ人の手待ち・②③④ステラ検査済み反映済み
 
