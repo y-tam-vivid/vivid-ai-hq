@@ -337,7 +337,14 @@ MacBook側にもコピーしてください（両機に道具を入れる原則�
                               いない可能性。詳細はこのセッションの報告参照
   ✅ fresh eyes 2パスの実演     Layer1/2実装の検査をステラへ依頼する際、Pass A（blindでdiffのみ）
                               →Pass B（背景・申告つき）の順で明記して依頼した（初実演）。
-                              検査結果待ち
+                              ★ステラ検査結果「進めてよい（条件つき）」。Pass Aで10件洗い出し、
+                              Pass Bで自分でコマンドを実行して1件ずつ裏取り（申告を信じて
+                              消したのではない）。★Pass Bで新規発見：action_catalog_check.pyの
+                              Layer2が「実際に動いているコード(~/.vivid-relay/)」ではなく
+                              「実行元のコピー(HERE基準)」をimportする構造で、bin/hooks/と
+                              vivid-relayの複製漏れが起きると穴Aと同じ型（正本でない方を見て
+                              ✓を出す）を再現しうると指摘。★docstringへ明記＋配布時にdiff -q
+                              で一致確認する運用を実演して対応済み
 ```
 
 **★settings_harden_norms.py は既に適用されていた**（WORKING.md の別ブロックは「残＝有璽氏が
