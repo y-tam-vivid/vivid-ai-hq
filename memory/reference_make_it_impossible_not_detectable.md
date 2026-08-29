@@ -99,5 +99,59 @@ eBPF / gVisor のフル導入       研究段階・今回には過剰。設計�
 社内では「規範文書が長大化して読まれなくなる」という形で既に進行している
 （[[reference_delivered_but_unread]]）。
 
+
+## ★★作る必要が無かった。Claude Code 本体に既にある（2026-08-29 クローバー E調査）
+
+**OSカーネルレベルで書き込みを拒否する機能が、公式に実装済みだった。**
+私たちは同じものを正規表現で自作していた。
+
+```json
+settings.json
+{"sandbox": {"enabled": true, "filesystem": {
+  "denyWrite": ["~/.claude/settings.json"],
+  "denyRead":  ["~/.claude/credentials.json"]
+}}}
+```
+
+macOS は Seatbelt、Linux は seccomp を使う。**`python3 -c "open().write()"` だろうと
+`echo >>` だろうと、どの経路で来ても OS が弾く。** settings.json 自体への書き込みも
+全スコープで既定拒否（＝自分でポリシーを緩められない設計）。
+出典: https://code.claude.com/docs/en/sandboxing
+
+```
+★既知バグ（2026年時点・採用前に実測が要る）
+  相対パスは無効化され絶対パスのみ有効          Issue #50454
+  denyWrite 配下で denyRead がすり抜ける         Issue #53209
+★注意   広い deny は、その中の狭い allow の例外を無効化する
+        ＝ ホワイトリストとブラックリストを混ぜると事故る（実務記事群で共通の注記）
+```
+
+### ★ここから引く教訓
+
+**「無い」と判断する前に、公式ドキュメントを見る。**
+[[feedback_use_the_team_not_alone]] の「①スキル ②bin/ ③pip ④過去実績の grep で数える」に
+**⑤公式ドキュメント**を足す。**自作した検問は、公式機能の劣化版だった。**
+
+## ★慢性化した警告 ── Google SRE の答え（F調査）
+
+```
+Google SRE Workbook  multiwindow, multi-burn-rate alerting
+                     短期・長期の2ウィンドウで消費速度を見て、
+                     ★「ページ（即時対応）」と「チケット（翌営業日）」を機械的に分ける
+                     https://sre.google/workbook/alerting-on-slos/  （一次資料で確認）
+
+alert fatigue の根本原因（実務解説）  ①重要度が階層化されていない（全部同列）
+                                      ②棚卸しの不在
+```
+
+**★社内の「慢性化した赤が3日で背景に溶ける」は、重要度階層の不在型。**
+即対応と週次棚卸しを**別チャネルへ機械的に分離**し、後者は人を呼ばない代わりに
+定期棚卸しへ強制的に載せる。
+
+## ★パスを2箇所に書いた問題 ── docs as code の答え
+
+「動いている検問を『動いていない』と言い続けた」のは典型的な **documentation drift**。
+**解はドキュメント側を直す努力ではなく、正本を1箇所に強制し、CIで乖離を機械的に検出する構造。**
+
 関連: [[reference_norms_outnumber_their_enforcement]] [[reference_heartbeat_proves_life_not_results]]
 [[feedback_never_write_an_unmeasured_number]] [[feedback_use_the_team_not_alone]]
