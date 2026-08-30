@@ -26,7 +26,7 @@
 - [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — 【解消】miniにGoogle認証が無くGASを人が貼っていた。いまはOAuthで直接読み書きできる
 - [営業ワークブックは戻せる状態に](feedback_sales_workbook_hands_off.md) — AIが書くときだけ①BU→②diff→③承認→④実行
 - [営業ワークブック](project_sales_pipeline_workbook.md) — ★営業は一度も触っていない＝開かせる1回が要る／投稿側intake_notify.pyは未実行
-- [SalesBreakerの口](reference_salesbreaker_engagement_api.md) — engagement/searchでクリック数・会社単位キーまで取れる。叩けば分かる
+- [SalesBreaker API](reference_salesbreaker_engagement_api.md) — ★2026-08-28 contract=turn82。list/get系は403。中身を読めるのは templates/preview と saved-lists/preview だけ
 - [営業ワークブックは列移動可](reference_sales_workbook_column_moves.md) — 全GASが見出し名で引く。受付シートは例外／apply_schema_v3は実行禁止
 - [kintone CSV取り込みの地雷](reference_kintone_csv_import_landmines.md) — 更新キーは「3.」／ユーザーはログイン名／書き出しはUTF-8／必ず突合
 - [施設と運営法人はずれる](reference_facility_vs_corporation.md) — 営業先は施設・番号は運営法人。複数施設で番号が重複しうる(kintone側は未確認)

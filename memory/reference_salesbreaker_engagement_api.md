@@ -130,3 +130,46 @@ vivid-ai-hq  設定を配るためのリポジトリ。★SalesBreakerとの接�
 **★メールを書く前に、APIを1回叩く。** 聞かずに済むなら、そのほうが速い。
 （★ただし先方の人とはやり取りしない ── 2026-08-18 有璽氏。
 　どうしても必要なら、送るのは有璽氏）
+
+## ★契約が turn82 になり、読み取り経路の多くが閉じた（2026-08-28 実測）
+
+`bin/capability_check.sh` の contract が **`operator-turn75-…` → `operator-turn82-tracking-read`**
+に変わっていた。**capability一覧には35本すべて enabled と出るが、実際に叩くと403が返るものがある。**
+
+```
+★capability に載っていること ≠ 叩けること。一覧だけで判断しない
+  403 operator_production_route_closed
+     templates/list  templates/get  saved-lists/list  campaigns/preview
+     history/list    engagement/summary
+  200 生きている
+     templates/preview        ★テンプレの中身（件名・本文・URL）を読む唯一の経路
+     saved-lists/preview      ★リストの名前と件数を読む唯一の経路
+     tracking/summary         ページ別・参照元別のアクセス
+     companies/search         企業の抽出
+     activities/log           dealへの活動記録
+```
+
+**確かめ方**
+
+```python
+# テンプレ  {'template_id': 1609} → data.rendered に件名・本文、data.url_present
+call('/api/operator/v0/templates/preview', {'template_id': 1609})
+# リスト    {'saved_list_id': 735} → saved_list_name / target_count
+call('/api/operator/v0/saved-lists/preview', {'saved_list_id': 735})
+```
+
+- **★件数の大きいリストは 504 になる**（7,735件のリスト728で実測）。失敗＝不在ではない
+- **`templates/save` は 2026-08-27 に実際に通った実績がある**（本文が書き換わったことを
+  preview で確認済み）。ただし turn82 以降に通るかは未検証。**送信直前にテンプレを触らない**
+  ── save が壊れても読み取りが403だと気づけない時期があった
+
+## ★送信直前にテンプレを触らない（2026-08-28 判断）
+
+第2波3,121件の送信前、URLを `/form?utm_source=…` へ更新するか検討して**やめた**。
+
+```
+利得   GA4の集客レポートで「salesbreaker / form」と明示的に見える
+リスク save が本文を壊すと、3,121件が壊れた文面で送られる
+       経路の識別は「/ (フォーム営業) と /ig (IG DM)」で既に足りている
+判断   触らない。利得よりリスクが大きい
+```
