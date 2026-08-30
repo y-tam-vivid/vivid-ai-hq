@@ -36,6 +36,15 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ステラ 2026-08-31】営業へ渡す前の通し検証 ── 調査中（読み取りのみ・書かない）
+
+有璽氏「一時的でいいから営業へ渡せる状態にしたい。エラー多発は不可」を受け、受付フォーム
+→intake_match→Slack通知→ボタン→intake_register→Notion反映 の経路を通しで検査中。
+対象: `~/.vivid-relay/{intake_match,intake_notify,slack_socket,intake_register,
+notion_backfill,notion_customer_upsert}.py` ／ `bin/daily_jobs.conf` ／ crontab ／
+`scratchpad/sales-guide-draft.md`。**読み取り・ドライランのみ。台帳・Slackへは触らない。**
+検査役はステラ本人（cross-check：作ったのはピタゴラス、検査は別主体）。
+
 ### 【ピタゴラス 2026-08-31】findings text欠陥の修正・1経路断定観測の実測 ── ✅findings修正・実測完了。ステラ検査依頼中
 
 ビビ依頼（最優先＝findings text欠陥・②観測実測・sandbox未検証項目の列挙）に対応。
