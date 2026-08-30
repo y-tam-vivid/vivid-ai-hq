@@ -156,11 +156,29 @@ def clear(key, note=''):
 
 
 def open_findings(min_streak_days=0):
-    """いま open な指摘（streak_days >= min_streak_days）を新しい順で返す"""
+    """いま open な指摘（streak_days >= min_streak_days）を新しい順で返す
+
+    ★2026-08-31 修正（ビビが実物のopen_findings.jsonを読んで発見した欠陥）：
+      track() の戻り値は 'text' というキー名を使うが（docstring 19-24行目の使用例参照）、
+      保存データ（この関数が返す各行の実体）は 'last_text' というキー名しか持っていなかった。
+      ＝ track() の戻り値の形式を期待して 'text' キーで読むと、保存データ側には存在しない
+      ため常に None になる（"中身が空"に見える）。呼び出し側（ledger_report.py 等）も
+      track() 側の保存（_save 内の rec['last_text'] = text）も、どちらも正しく動作していた
+      ── 2経路で実測して裏取り済み：
+        経路1: ~/.vivid-relay/open_findings.json を直接読み last_text に中身があることを確認
+        経路2: findings_tracker.py --list（CLI）で中身が正しく表示されることを確認
+      欠陥は「保存」ではなく「2つの異なるキー名を持つインターフェースが並立していたこと」。
+    ★対処：ここで 'text' キー（'last_text' の複製）を動的に追加し、どちらのキー名でも
+      読めるようにする。保存データ自体（open_findings.json）は変更しない（二重管理を避け、
+      正本は last_text のまま・text は読み出し時に複製するだけ）。
+      dict(v) でコピーしてから追加する（元の state 辞書を書き換えない）。
+    """
     state = _load()
-    rows = [v for v in state.values()
+    rows = [dict(v) for v in state.values()
             if v.get('open') and v.get('streak_days', 0) >= min_streak_days]
     rows.sort(key=lambda r: -r.get('streak_days', 0))
+    for r in rows:
+        r['text'] = r.get('last_text', '')
     return rows
 
 
