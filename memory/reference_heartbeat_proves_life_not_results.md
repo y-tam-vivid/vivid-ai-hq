@@ -141,5 +141,35 @@ open_findings.json には実データが2件あり streak_days=1 を持ってい
 - **★運用条件**：`bin/hooks/*.py` を編集したら、必ず `diff` で `~/.vivid-relay/` 側との
   同一性を確認してから「直った」と申告する。**Layer2 自身はこの非同期に気づけない。**
 
+## ★裸の `main()` は、落ちたときに心拍を打たない（2026-08-31 つる 自己監査で実測）
+
+これまでの節はすべて「動いたのに緑」の話だった。**今日出たのは逆側の穴。**
+
+```
+実測（2026-08-31 07:20 intake_match.py）
+  経路1  intake_match.log ： Sheets API 503 → sh.read() で例外 → traceback で終了
+  経路2  レジスタ「受付シートの照合」 最終実行=2026-08-30T07:20 のまま → 🟡遅延
+  → 一致。★「失敗」の心拍は1つも打たれていない
+```
+
+**原因は構造。** `beat()` は `main()` の最後にしか無く、末尾は `main(...)` を裸で呼ぶだけ。
+途中で落ちれば beat へ到達しない。結果、レジスタ上では
+
+```
+落ちた（例外で死んだ）        どちらも「最終実行が古い」だけ
+遅れた（まだ走っていない）     ＝ 区別できない
+```
+
+**★同型が scheduled なもので計10本**（2026-08-31 実測・`tail -6` に except が無い）：
+dashboard_build / gas_outside_watch / heartbeat_names_check / ledger_guard_extend /
+ledger_report / memory_sweep / notion_minutes_duplicate_report / progress_report /
+self_audit / watch_external。**intake_match を含め11本。**
+
+- **★心拍は `try/finally` 側に置く。** 「成功で打つ」だけでは、いちばん知りたい
+  「落ちた」が永久に届かない。落ちた瞬間こそ打つべき回。
+- **★🟡遅延を見たら「まだ走っていない」と読まない。** ログを開いて traceback を探す。
+  遅延と死亡が同じ色で出る間は、レジスタの色は原因を持っていない。
+- 修正はコード変更なので検査役（つる）では行わず、ピタゴラスへ回した。
+
 関連: [[reference_ran_is_not_succeeded]] [[reference_no_gate_on_asking_the_human]]
 [[reference_hooks_enforce_what_discipline_cannot]] [[feedback_find_holes_without_being_told]]
