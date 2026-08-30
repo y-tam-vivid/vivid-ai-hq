@@ -123,6 +123,27 @@ Drive フォルダ `1phKsApqIzTYmNTeMewUGFfkDjMz8He7V` に `.gs.txt`（mimeType 
 
 関連: [[feedback_one_route_is_not_verification]]（同一性は時刻でなくハッシュで見る）
 
+
+## ★`--help` が実データを書き換える（2026-08-31 実測）
+
+```
+dashboard_data.py に argparse は ★0件
+  → 未知の引数（--help / --dry-run / --check など）は黙って無視され、
+    ★本処理がそのまま走る
+実際   ステラが `--help` を叩いたら、実データの再生成が始まった
+```
+
+**★「説明を出すだけ」に見える入口が、書き込みを走らせる。**
+この記憶が挙げてきた4型（①既定dry-run ②名前は普通なのに全消去 ③順序を飛ばすと二重作成
+④件数だけ静かに違う）に、**⑤未知の引数を無視して本処理が走る**を足す。
+
+- **★`sys.argv` を手で見ているスクリプトは、全部この型を持つ。**
+  `"--beat" in sys.argv` のような書き方は、**知らない引数を全部「無視」する**。
+- **★新しく触るスクリプトは `--help` すら安全でないと思って扱う。**
+  中身を読んでから叩く。読めないなら叩かない。
+- ★見つかったのは、検査役が**自分の操作ミスを正直に申告したから**。
+  隠していたら地雷のまま残っていた（[[feedback_use_the_team_not_alone]]）。
+
 関連: [[project_sales_pipeline_workbook]] [[reference_sales_workbook_column_moves]]
 [[reference_kintone_csv_import_landmines]] [[reference_mac_mini_execution_env]]
 
