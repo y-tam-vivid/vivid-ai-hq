@@ -42,6 +42,9 @@
 """
 import json, os, re, subprocess, sys, time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import CODE_EXTS, GUARDED_FILES
+
 # ★2026-08-29 ステラ検査指摘（軽微・条件2）対応：以前は check_single_route_claim() が
 #   呼ばれるたびに sys.path.insert() していた（Stopフック発火のたびにsys.pathへ同じ
 #   パスが重複追加される冗長性）。モジュールロード時に1回だけ追加する形に直した。
@@ -393,6 +396,146 @@ def check_single_route_claim(payload):
     ]
 
 
+
+# ─────────────────────────────────────────────────────────────
+# 検査4 ── 窓口が一人で実装して終わっていないか（2026-08-31）
+# ─────────────────────────────────────────────────────────────
+# なぜ要るか
+#   2026-08-20 有璽氏「有機的に全然動かせてねえじゃん。役割分担してやれっつってんねん」
+#   2026-08-31 有璽氏「全然エージェント同士がやり取りするみたいな状態になってなくない？
+#                      俺がめっちゃ入らなあかんやんけ」
+#   同じ指摘が3回。原因は bin/team_run.py（編成→並列→検査→統合を回す道具）が
+#   2026-08-20 の作成から 8/31 まで一度も呼ばれていなかったこと（被参照0件を実測）。
+#   ★規範に書くだけでは同じことが起きる。実際、この検査を書いた回でさえ、
+#     書いた本人（ビビ）が team_run を通さず一人で実装していた。だから機械で止める。
+#
+# 判定材料（★曖昧なものを入れない。検査3が誤爆28%で観測モードのまま止まった反省）
+#   条件A  このセッションで bin/ か .claude/ 配下の実装ファイルを Write/Edit した
+#   条件B  かつ team_run.py を一度も呼んでいない
+#   → A かつ B のときだけ差し戻す。どちらも tool_calls から機械的に判定でき、解釈が要らない。
+#
+# 誤爆させない除外
+#   ・サブエージェント（agent_id あり）は対象外。担当として呼ばれた側が書くのは正しい姿
+#   ・記録だけの編集（memory/ ・WORKING.md ・*.json のデータ更新）は対象外
+GUARDED_DIRS = ('bin/', '.claude/')
+# ★拡張子と保護ファイルの正本は paths.py（2026-08-31 チーム検査の指摘）。
+#   ここへ書き写さない。書き写した結果、hook_role_guard.py と守る範囲が食い違った。
+IMPL_EXT = CODE_EXTS
+
+# team_run.py を「実行した」形だけを数える。
+#   ★`-c` を除外する（2026-08-31 チーム検査の指摘・実測で再現）。
+#     python3 -c "open('bin/team_run.py','w').write(...)" は「team_run.py を書き換える」
+#     コマンドなのに、文字列に team_run.py を含むため「実行した」と誤判定され、
+#     ★検問が自分自身の書き換えを見逃す＝自己無効化する穴になっていた。
+#   ★あわせて、書き込みを伴うコマンドは実行とみなさない（下の _is_team_run_exec）。
+TEAM_RUN_EXEC = re.compile(
+    r'(?:python[23]?|/\S*python\S*)\s+(?!-)[^|;&]*team_run\.py')
+
+
+def _is_team_run_exec(cmd):
+    """そのコマンドが team_run.py の「実行」か。書き換えなら False。"""
+    if not TEAM_RUN_EXEC.search(cmd):
+        return False
+    # 書き込み先が拾えるコマンドは実行ではない（cp bin/x bin/team_run.py 等）
+    return not any(True for _ in _iter_write_paths(cmd))
+
+# Bash 経由の書き込み先を拾う。★ここで捕まえられない書き方が残ることは
+#   bin/hooks/adversarial_cases.md に列挙してある（完全ではない）。
+BASH_WRITE_PATH = re.compile(
+    r'(?:'
+    r'>>?\s*(?P<path>[^\s;&|<>]+)'                        # > path  /  >> path
+    r'|sed\s+-i[^\s]*\s+(?:-e\s+\S+\s+)?[^\s]*\s+(?P<path2>[^\s;&|]+)'   # sed -i ... path
+    r"|tee\s+(?:-a\s+)?(?P<path3>[^\s;&|]+)"             # tee path
+    r"|open\(\s*['\"](?P<path4>[^'\"]+)['\"]\s*,\s*['\"][wa]"  # open(path,'w')
+    r'|(?:cp|mv)\s+\S+\s+(?P<path5>[^\s;&|]+)'           # cp src dst / mv src dst
+    r')')
+
+
+def _is_guarded(rel):
+    """守る対象か。実装コード拡張子か、名指しで守るファイル（roster.json 等）。"""
+    return ((rel.startswith(GUARDED_DIRS) and rel.endswith(IMPL_EXT))
+            or rel in GUARDED_FILES)
+
+
+def _iter_write_paths(cmd):
+    for m in BASH_WRITE_PATH.finditer(cmd):
+        for g in ('path', 'path2', 'path3', 'path4', 'path5'):
+            v = m.groupdict().get(g)
+            if v:
+                yield v
+
+
+def _all_tool_calls(path):
+    """セッション全体の (ツール名, input) を返す。
+    ★_turn_messages() は使えない。あれは SEARCH_TOOLS と mcp__ しか拾わない設計で、
+      Write/Edit が入らないうえ戻り値はタプル。辞書として扱うと例外になり、
+      log('検査4で例外') で握りつぶされて「静かに無効化された検査」になる
+      （2026-08-31、実際にその形で書いてしまい、逆検算の前に気づいた）。
+    ★直近の人の発言以降ではなくセッション全体を見る。team_run を前のターンで
+      呼んでいたら、それは通してよいため。"""
+    out = []
+    try:
+        lines = open(path, encoding='utf-8').read().splitlines()
+    except Exception:
+        return out
+    for ln in lines:
+        try:
+            o = json.loads(ln)
+        except Exception:
+            continue
+        if o.get('type') != 'assistant':
+            continue
+        for b in (o.get('message') or {}).get('content') or []:
+            if isinstance(b, dict) and b.get('type') == 'tool_use':
+                out.append((b.get('name', ''), b.get('input') or {}))
+    return out
+
+
+def check_solo_implementation(payload):
+    """窓口が担当を1体も通さずに実装まで完結していたら差し戻す（検査4）"""
+    if payload.get('agent_id') or payload.get('agent_type'):
+        return None                      # サブエージェント＝担当として呼ばれた側。正常
+
+    edited, called_team_run = [], False
+    for name, inp in _all_tool_calls(payload.get('transcript_path') or ''):
+        if name == 'Bash':
+            cmd = str(inp.get('command', ''))
+            # ★実行を伴う呼び出しだけを数える（2026-08-31 チーム検査の指摘①）。
+            #   'team_run' in cmd だと `grep team_run` や `echo team_run` で素通りできた。
+            if _is_team_run_exec(cmd):
+                called_team_run = True
+            # ★Bash経由の書き込みも数える。Write/Edit だけを見ていた版は
+            #   heredoc・sed -i・tee・python -c open().write() を一切検知できなかった。
+            #   これは bin/hooks/adversarial_cases.md のケース1・3そのもの。
+            for wp in _iter_write_paths(cmd):
+                rel = wp.split('vivid-ai-hq/')[-1].lstrip('./')
+                if _is_guarded(rel):
+                    edited.append(rel)
+        elif name in ('Write', 'Edit', 'MultiEdit', 'NotebookEdit'):
+            fp = str(inp.get('file_path') or '')
+            rel = fp.split('vivid-ai-hq/')[-1]
+            if _is_guarded(rel):
+                edited.append(rel)
+    if called_team_run or not edited:
+        return None
+    uniq = list(dict.fromkeys(edited))
+    return [
+        '★担当を1体も通さずに実装まで終えています（検査4）。',
+        '',
+        '  このセッションで書き換えた実装ファイル ： %s%s' % (
+            '、'.join(uniq[:4]), '（ほか%d件）' % (len(uniq) - 4) if len(uniq) > 4 else ''),
+        '  team_run.py の呼び出し ： 0回',
+        '',
+        '  窓口は投げて束ねる役です。作る役と検査役は別の主体でなければなりません。',
+        '  次のどちらかをしてから終えてください。',
+        '',
+        '    python3 %s/bin/team_run.py "いま行った変更を検査してください"' % REPO,
+        '    （編成だけ見るなら --dry を付ける）',
+        '',
+        '  正本 ： bin/coordination/roster.json ／ 規範 ： fukuchi-core「窓口と担当」',
+    ]
+
+
 def main():
     try:
         payload = json.load(sys.stdin)
@@ -432,6 +575,17 @@ def main():
             return 2
         else:
             log('検査3(観測のみ・未有効化)', '1経路断定を検出したがブロックしていない')
+
+    # ★検査4 ── 窓口が一人で実装して終わっていないか（2026-08-31）
+    try:
+        lines4 = check_solo_implementation(payload)
+    except Exception as e:
+        lines4 = None
+        log('検査4で例外', str(e))
+    if lines4:
+        sys.stderr.write('\n'.join(lines4) + '\n')
+        log('★差し戻した(検査4)', '担当を通さず一人で実装した')
+        return 2
 
     if not os.path.isdir(os.path.join(REPO, '.git')):
         log('通した', 'リポジトリが無い')

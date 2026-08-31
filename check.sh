@@ -121,5 +121,106 @@ else
   say "  － bin/check_path_duplication.py が無い"
 fi
 
+say "── 9. 協調層（roster.json ⇄ team_run.py ⇄ 担当定義）"
+# ★2026-08-31 新設。「作ったが経路に載っていない」「正本を写して二重管理になった」を機械で止める。
+#   team_run.py は 2026-08-20 に作られ 8/31 まで一度も呼ばれず、同じ指摘が3回来た。
+ROSTER=bin/coordination/roster.json
+if [ ! -f "$ROSTER" ]; then
+  fail "協調層の正本が無い: $ROSTER"
+else
+  python3 -c "import json,io;json.load(io.open('$ROSTER',encoding='utf-8'))" 2>/dev/null \
+    && ok "roster.json が読める（JSONとして妥当）" || fail "roster.json が壊れている"
+
+  # ★今日踏んだ地雷。担当が読むものの正本は memory/INDEX_担当別.md だけ。
+  #   roster.json へ書き写した当日に3件ズレた（ナミ・つる・モルガンズの INDEX_notion が落ちた）。
+  if grep -q '"reads"' "$ROSTER"; then
+    fail "roster.json に \"reads\" がある。担当が読むものの正本は memory/INDEX_担当別.md の1枚だけ"
+  else
+    ok "担当が読むものは INDEX_担当別.md に一本化されている"
+  fi
+
+  # 編成表に出る担当が roster.json と agents/*.md の両方に実在するか
+  # ★2026-08-31 チーム検査の指摘③ ── 以前は 2>/dev/null で例外を握りつぶし、
+  #   python が落ちても標準出力が空なので「ok」と誤判定しえた（偽陰性）。
+  #   returncode を見る。★2>/dev/null は判定材料を捨てる、の実例。
+  # stderr は別ファイルへ分ける（$miss へ混ぜると rc=0 でも診断出力が
+  #   「担当が無い」表示に紛れ込む ── 2026-08-31 チーム検査の指摘）
+  _err=$(mktemp)
+  miss=$(python3 - <<'EOF' 2>"$_err"
+import importlib.util, os, json, io
+spec = importlib.util.spec_from_file_location("tr", "bin/team_run.py")
+tr = importlib.util.module_from_spec(spec); spec.loader.exec_module(tr)
+names = set()
+for pat, name, makers, checker in tr.TEAM:
+    names.update(a for a, _ in makers); names.add(checker)
+names.update(a for a, _ in tr.DEFAULT[1]); names.add(tr.DEFAULT[2])
+bad = [n for n in sorted(names)
+       if n not in tr.ROSTER.get("agents", {})
+       or not os.path.exists(os.path.join(".claude/agents", n + ".md"))]
+print(" ".join(bad))
+EOF
+)
+  rc=$?
+  if [ $rc -ne 0 ]; then
+    fail "編成表の検査が実行できない（python rc=$rc）: $(tail -1 "$_err")"
+  elif [ -n "$miss" ]; then
+    fail "編成表の担当が roster.json か agents/ に無い: $miss"
+  else
+    ok "編成表の担当が roster.json と agents/ の両方に実在する"
+  fi
+  rm -f "$_err"
+
+  # ★本丸：作っただけで呼ばれていないものを検出する
+  if grep -rqs "team_run" .claude/skills/fukuchi-core/SKILL.md; then
+    ok "team_run.py が規範から呼ばれている（入口に載っている）"
+  else
+    fail "team_run.py がどこからも呼ばれていない。作っただけで経路に載っていない"
+  fi
+
+  python3 bin/team_run.py --dry "検査用のダミー依頼" >/dev/null 2>&1 \
+    && ok "team_run.py --dry が通る" || fail "team_run.py --dry が落ちる"
+
+  # ★仕様(roster.json)と実装(team_run.py)の一致を機械で検証する（2026-08-31 新設）。
+  #   有璽氏「監査役に毎度毎度指摘されてたら意味ない。ならないように設計しろ」。
+  #   実測：1周目と2周目に検査役が見つけた欠陥を、これは即座に検出する（逆検算済み）。
+  if [ -f bin/coordination/verify_spec.py ]; then
+    vs=$(python3 bin/coordination/verify_spec.py 2>&1)
+    if [ $? -eq 0 ]; then
+      ok "仕様⇄実装の一致 $(echo "$vs" | grep -o '一致 [0-9]* ／ 不一致 [0-9]* ／ 未検証 [0-9]*')"
+      echo "$vs" | grep '△' | sed 's/^/      /'
+    else
+      fail "仕様と実装が食い違っています:"
+      echo "$vs" | grep '✗' | sed 's/^/      /'
+    fi
+  else
+    fail "bin/coordination/verify_spec.py が無い"
+  fi
+
+  # ★成熟度モードの実測（2026-08-31）。昇格・降格・判定・指紋・ガードを実際に回す。
+  if [ -f bin/coordination/test_maturity.py ]; then
+    tm=$(python3 bin/coordination/test_maturity.py 2>&1)
+    if [ $? -eq 0 ]; then
+      ok "成熟度モードの実測（昇格・降格・検査役の失敗扱い）"
+    else
+      fail "成熟度モードの実測が不一致: $(echo "$tm" | grep '★不一致')"
+    fi
+  else
+    fail "bin/coordination/test_maturity.py が無い"
+  fi
+
+  # ★検査4（担当を通さず一人で実装）の敵対的実測。作っただけで呼ばれないのを避け、
+  #   ここから毎回叩く（2026-08-31 チーム検査の指摘④「変更前の全件実行記録が無い」）。
+  if [ -f bin/hooks/test_check4.py ]; then
+    t4=$(python3 bin/hooks/test_check4.py 2>&1)
+    if [ $? -eq 0 ]; then
+      ok "検査4の敵対的実測 $(echo "$t4" | grep -o '全[0-9]*件一致')"
+    else
+      fail "検査4の敵対的実測が不一致: $(echo "$t4" | grep '★不一致')"
+    fi
+  else
+    fail "bin/hooks/test_check4.py が無い（検査4の裏が取れない）"
+  fi
+fi
+
 say ""
 [ $NG -eq 0 ] && { say "✅ ズレなし"; exit 0; } || { say "❌ ズレを検出。上記を解消してから commit すること"; exit 1; }

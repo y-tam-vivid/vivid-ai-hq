@@ -6,6 +6,7 @@
 > **上限は無い。** 毎ターン届く `MEMORY.md` と違い、必要なときだけ読まれる。
 > 呼び出しの対応は [[INDEX_担当別]] にある。
 
+- [協調層(誰に振る・どう渡す)](project_coordination_layer.md) — 正本=bin/coordination/roster.json／実行=team_run.py。★依頼は必ずこれを通す。検査の重さは成熟度で変え、危険6分類は常に実測
 - [Downloads→Drive本棚](project_downloads_archive_system.md) — 受け皿17分類。sort_downloads.pyが週次(要フルディスクアクセス)
 - [カレンダー テンプレ挿入](project_calendar_template_autofill.md) — GASで自動挿入。タイトル【種別】で振り分け＝命名ルールが前提
 - [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入する。触ったファイルを明示・commitは束ねる側が打つ
