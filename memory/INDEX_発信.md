@@ -10,10 +10,10 @@
 - [AI活用→発信ネタ化](project_ai_usage_to_content_pipeline.md) — 区切りごとに⑥へ自動記録(=発信の種)。正本は発信ネタDB1つ／⑥は📅セッション単位で拾う／迷ったら拾う
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
 - [Manus AIへの外注](project_manus_outsourcing.md) — ★8/27 API連携をやめ有璽氏が仲介。こちらは指示文を書く役／401の真因はプラン無料化＝再発行では直らない
-- [有璽個人IGの運用](project_yuji_personal_ig_operation.md) — ★曜日制(月=福祉DX/水=AI・DX/金=お金)／素材9/11まで作り置き済／Chromeで組んで押すのは有璽氏／Web下書き不可・本文は200〜215字へ書き直す／**8/24〜28の週は完了。次は8/31の週(合図待ち)**
+- [有璽個人IGの運用](project_yuji_personal_ig_operation.md) — ★週次の定例／**画像の在庫は3系統(再制作版/月金構図/水曜)＋未使用リール。1系統だけ使い「似すぎ」の指摘3回目**／カルーセルは9/11まで＝次ロットが要る／本文200〜215字
 - [テイストは素材ではない](feedback_taste_is_not_a_sticker.md) — 「型×テイスト」だけでは採用案の画像が貼り込まれる。表紙案を採ったら2枚目以降も同時に決める／完成後は全枚めくる
 - [119番の投稿標準型](project_f119_post_standard.md) — ★Manus停止中(〜8/25 08:00)。差し戻し送信済で復旧待ち／見本はI-03/01とI-04/05
-- [型でなく構図](feedback_type_is_not_layout.md) — 単調なら構図のレバーを増やす／検算は全点並べる／「外してよい」も対象を列挙
+- [型でなく構図](feedback_type_is_not_layout.md) — 単調なら構図のレバーを増やす／検算は全点並べる／**★3回目=別レイアウトの在庫があるのに1系統だけ使っていた。定例作業ほど同じ引き出しを開き続ける**
 - [Manus APIの実測挙動](reference_manus_api_behaviors.md) — 添付不可＝Driveリンク／`stopped`は完了と中断を区別しない
 - [広報PRモルガンズ](project_pr_agent.md) — agents/pr.md。資料ベースで設計・実送信は承認後。露出モードはpr-playbook.md準拠
 - [親子向けAI体験イベント](project_ai_kids_event_pr.md) — 7/25-26の一次資料・統計・団体情報の置き場。★第1回リリースは未配信のまま
