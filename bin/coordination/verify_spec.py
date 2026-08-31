@@ -191,8 +191,20 @@ def verify_no_worker_crosstalk():
         return
     if 'joined' in body or 'outs' in body:
         ng('担当同士の往復禁止', 'run_agent が他の担当の出力を受け取れる形になっている')
+        return
+    # ★呼び出し側も見る（2026-08-31 チーム検査4周目の指摘）。関数本体が綺麗でも、
+    #   main() で他の担当の出力を混ぜて渡していれば往復と同じことが起きる。
+    #   makers を回している箇所（並列実行）で joined/outs を渡していないか。
+    import re as _re
+    calls = _re.findall(r'run_agent\([^)]*\)', TEAM_RUN_SRC, _re.S)
+    dirty = [c for c in calls
+             if ('joined' in c or 'outs' in c) and 'chk' not in c]
+    if dirty:
+        ng('担当同士の往復禁止',
+           '作る役の呼び出しに他の担当の出力が混ざっている ： %s' % dirty[0][:80])
     else:
-        ok('担当同士の往復禁止', 'run_agent は他の担当の出力を受け取らない')
+        ok('担当同士の往復禁止',
+           'run_agent の本体と全%d箇所の呼び出しの両方を確認' % len(calls))
 
 
 # ─────────────────────────────────────────────────────────────
@@ -229,13 +241,83 @@ def verify_termination():
                    t['timeout_minutes'], want, got))
 
 
+CHECKS = (verify_self_inspection, verify_inspectors_reachable, verify_blind,
+          verify_envelope, verify_no_worker_crosstalk, verify_termination)
+
+
+
+# ─────────────────────────────────────────────────────────────
+# 7. 網羅性 ── 仕様に書いてあるのに検証していない項目を列挙する
+#    ★2026-08-31 チーム検査4周目の指摘。「未検証は明示する」と自分で書きながら、
+#      envelope.forbidden・termination.on_unresolved/on_malformed_envelope・
+#      human_gates を黙って通していた。仕様の過半が検証範囲の外にあった。
+#    ★これは個別項目の検査ではなく「検査の網羅率そのもの」を測る。
+#      roster.json に新しい項目を足せば、自動的に「未検証」として出てくる。
+# ─────────────────────────────────────────────────────────────
+# いま機械で検証できている仕様のキー（上の各 verify_* が実際に見ているもの）
+COVERED = {
+    'inspection.self_inspection', 'inspection.pass_a_blind',
+    'envelope.required', 'flow.forbidden_edges',
+    'termination.max_rounds', 'termination.timeout_minutes',
+}
+
+# 検証しないと決めたもの（理由つき）。★「できない」を隠さず、理由を書いて残す
+WONT = {
+    'inspection.pass_b_context': '2周目に何を渡すかは実行時にしか決まらない',
+    'flow.entry': '入口が secretary であることは実行経路が1本なので自明',
+}
+
+
+def _spec_keys():
+    """roster.json の検証対象キーを列挙する（_ で始まる注記は除く）"""
+    keys = []
+    for section in ('envelope', 'flow', 'inspection', 'termination', 'human_gates'):
+        node = ROSTER.get(section)
+        if not isinstance(node, dict):
+            continue
+        for k in node:
+            if k.startswith('_'):
+                continue
+            keys.append('%s.%s' % (section, k))
+    return keys
+
+
+def verify_coverage():
+    keys = _spec_keys()
+    uncovered = [k for k in keys if k not in COVERED and k not in WONT]
+    covered = [k for k in keys if k in COVERED]
+    if uncovered:
+        # ★不一致ではないが、黙って通してはいけない。必ず名前を出す
+        unverified(
+            '検証していない仕様が %d件（網羅率 %d/%d）' % (
+                len(uncovered), len(covered), len(keys)),
+            '、'.join(uncovered))
+    else:
+        ok('仕様の網羅性', '%d件すべて検証済み' % len(covered))
+    for k, why in sorted(WONT.items()):
+        if k in keys:
+            unverified('%s は検証しない' % k, why)
+
+
 def main():
-    for fn in (verify_self_inspection, verify_inspectors_reachable, verify_blind,
-               verify_envelope, verify_no_worker_crosstalk, verify_termination):
+    for fn in CHECKS:
         try:
             fn()
-        except Exception as e:
-            ng(fn.__name__, '検証中に例外 ： %s' % str(e)[:120])
+        # ★BaseException で受ける（2026-08-31 実測）。team_run.py の
+        #   _assert_separated() は SystemExit を投げるが、SystemExit は Exception を
+        #   継承しないため `except Exception` では捕まらない。実測すると
+        #   verify_spec.py は検査結果を1行も出さずに落ち、しかも rc=0（成功）で返り、
+        #   check.sh が「✓ 仕様⇄実装の一致」と表示していた。
+        #   ＝ 検証が死んでいるのに緑になる、いちばん危ない壊れ方だった。
+        except BaseException as e:
+            ng(fn.__name__, '検証中に例外 ： %s: %s' % (type(e).__name__, str(e)[:100]))
+
+    # ★1件も結果が無いのは「問題なし」ではなく「検証が走っていない」
+    if not results:
+        print('  ✗ 検証が1件も実行されていない（検証プロセス自体の異常）')
+        return 1
+
+    verify_coverage()          # ★印字より前に呼ぶ（結果に載せるため）
 
     mark = {'ok': '✓', 'ng': '✗', 'unverified': '△'}
     for state, title, detail in results:
