@@ -14,7 +14,8 @@
 - [crontabは書けない](reference_cron_write_blocked_in_session.md) — ★日次ジョブの正本はbin/daily_jobs.conf。8/23も未解消／ssh越しなら書ける
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
-- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**／**★心拍の宛先は行名の文字列一致。相乗り・beat無しで、動いているのに永久に🟡になる(8/27に2件)**／**★8/28 heartbeat_names_check の5件中4件が誤検知だった（PROC_NAME固定・行末コメント・自前beatラッパ）。修正済。同じ穴を4回踏んでいる＝次は正規表現を足さずastか自己申告へ**／**★「有効」フラグのズレは2回目。今回は常駐(Slack Socket Mode)で、人が手で起動した後もレジスタが2日間 有効=False＝永久に🔴が立たない状態だった。起動と登録は1セット**
+- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**／**★心拍の宛先は行名の文字列一致。相乗り・beat無しで、動いているのに永久に🟡になる(8/27に2件)**／**★8/28 heartbeat_names_check の5件中4件が誤検知だった（PROC_NAME固定・行末コメント・自前beatラッパ）。修正済。同じ穴を4回踏んでいる＝次は正規表現を足さずastか自己申告へ**／**★「有効」フラグのズレは2回目。今回は常駐(Slack Socket Mode)で、人が手で起動した後もレジスタが2日間 有効=False＝永久に🔴が立たない状態だった。起動と登録は1セット**／**★9/1 毎朝の材料「ログの失敗N件」の中身を初実測＝10件中6件がSlackの正常なdisconnect。「異常でない」と別memoryで判定済みなのに self_audit.py がそれを読まないため12日間鳴り続けている。件数は tail -25 の窓で動くので増減も指標にならない。直すのはピタゴラス**
+- [判断待ちは配布を止めない](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/1 intake_notifyが「人の目視を挟むか判断待ち」の最中にSlackへ本番投稿5件。文書の保留を機械は読まない／★レジスタの有効=Falseは実行を止めない(監視の対象外にするだけ)。止めるならdaily_jobs.confの行を止める
 - [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 常駐は一定間隔で心拍／心拍はmain()の外で包む。末尾は例外が素通り
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)／**★手順書に「まだ無い機能」を書いた。決着済みの設計を在るものとして扱った。人が読む文書の前に動線を1回自分で通す(2026-08-24)**

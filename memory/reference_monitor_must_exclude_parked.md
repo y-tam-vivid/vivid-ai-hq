@@ -194,6 +194,42 @@ CALL_RX = \bbeat\(\s*['"](.+?)['"]
 - **★「実体消失」と出たら、消えたと決める前に `launchctl list` と心拍の最終実行を見る。**
   動いていて心拍も🟢のものを「消えた」と報告するのが、この誤検知のいちばん危険な形。
 
+## ★毎朝の材料「ログの失敗 N件」の中身を数えた ── 6割が正常だった（2026-09-01 ロビン 実測）
+
+④で「self_audit.py は未修正のまま」と書いた状態が **12日続いている**。
+今日その中身を初めて数えた。**慢性の発生源は404ではなく Slack の disconnect だった。**
+
+```
+経路1  self_audit.py と同じ条件で全 *.log を走査
+       （tail -25 → Traceback / Error / ★失敗 / エラー を含む行）
+         corrections.log    1件
+         intake_match.log   3件   ← 本物（8/31 07:20 の Sheets API 503 の traceback 3行）
+         slack_socket.log   6件   ← ★全件が正常
+       計 10件
+
+経路2  slack_socket.log の該当6行を目視
+       6行とも ConnectionError('サーバからdisconnect要求: warning')
+       各行の直後2行が必ず「WebSocket接続完了」→「接続確立（hello受信）」＝復旧済み
+       → 一致。★10件中6件（60%）は障害ではない
+```
+
+**★判定は済んでいる。読む側が知らないだけ。**
+[[reference_slack_tokens_and_socket_mode]] に「disconnect は異常ではない（誤報の元）
+＝ Slack 側が定期的に接続を張り直させる正常な挙動。見るのは down_since」と明記済み。
+だが `self_audit.py` は memory を読まないので、**確定した判定が収集側へ一生届かない。**
+文字列 `エラー` が `★接続が切れた/エラー:` に必ず当たるため、除外は1行で足りる。
+
+- **★「正常だと判定した」で終えない。その事象を数えている仕組みを探して同時に直す。**
+  ②③（止めてある・対応保留）と同じ根 ―― **状態を文章に持たせても、読む側が見なければ効かない。**
+- **★件数そのものが指標にならない。** `tail -25` は窓が動く。同じログ・同じ日でも
+  朝の材料は slack_socket 8件／intake_match 2件、数時間後の実測は 6件／3件だった。
+  **増減を異常の兆候として読まない。**
+- **★本物（intake_match の503）は、正常6件に挟まれて並ぶ。**
+  つるが8/31に自力で捕まえたのは幸運で、埋もれる側の構造は何も変わっていない
+  → [[reference_ran_is_not_succeeded]] ／ [[reference_heartbeat_proves_life_not_results]]
+- 直す場所は `~/.vivid-relay/self_audit.py`（git外・両機で腐る → [[reference_fix_where_git_reaches]]）。
+  **コード変更なので検査役では行わない。ピタゴラスへ回す。**
+
 ## ★「有効」フラグのズレは2回目（2026-08-28 実測）
 
 2026-08-23 と同じ穴。今回は **Slack Socket Mode（常駐）** で起きた。
