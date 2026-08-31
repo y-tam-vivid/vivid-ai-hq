@@ -415,7 +415,29 @@ def check_single_route_claim(payload):
 #   ・サブエージェント（agent_id あり）は対象外。担当として呼ばれた側が書くのは正しい姿
 #   ・記録だけの編集（memory/ ・WORKING.md ・*.json のデータ更新）は対象外
 GUARDED_DIRS = ('bin/', '.claude/')
-IMPL_EXT = ('.py', '.sh', '.js', '.ts', '.tsx', '.jsx', '.gs', '.rb')
+IMPL_EXT = ('.py', '.sh', '.js', '.ts', '.tsx', '.jsx', '.gs', '.rb', '.json')
+
+# team_run.py を「実行した」形だけを数える。grep/echo など言及だけでは通さない。
+TEAM_RUN_EXEC = re.compile(r'(?:python[23]?|/\S*python\S*)\s+[^|;&]*team_run\.py')
+
+# Bash 経由の書き込み先を拾う。★ここで捕まえられない書き方が残ることは
+#   bin/hooks/adversarial_cases.md に列挙してある（完全ではない）。
+BASH_WRITE_PATH = re.compile(
+    r'(?:'
+    r'>>?\s*(?P<path>[^\s;&|<>]+)'                        # > path  /  >> path
+    r'|sed\s+-i[^\s]*\s+(?:-e\s+\S+\s+)?[^\s]*\s+(?P<path2>[^\s;&|]+)'   # sed -i ... path
+    r"|tee\s+(?:-a\s+)?(?P<path3>[^\s;&|]+)"             # tee path
+    r"|open\(\s*['\"](?P<path4>[^'\"]+)['\"]\s*,\s*['\"][wa]"  # open(path,'w')
+    r'|(?:cp|mv)\s+\S+\s+(?P<path5>[^\s;&|]+)'           # cp src dst / mv src dst
+    r')')
+
+
+def _iter_write_paths(cmd):
+    for m in BASH_WRITE_PATH.finditer(cmd):
+        for g in ('path', 'path2', 'path3', 'path4', 'path5'):
+            v = m.groupdict().get(g)
+            if v:
+                yield v
 
 
 def _all_tool_calls(path):
@@ -452,8 +474,18 @@ def check_solo_implementation(payload):
     edited, called_team_run = [], False
     for name, inp in _all_tool_calls(payload.get('transcript_path') or ''):
         if name == 'Bash':
-            if 'team_run' in str(inp.get('command', '')):
+            cmd = str(inp.get('command', ''))
+            # ★実行を伴う呼び出しだけを数える（2026-08-31 チーム検査の指摘①）。
+            #   'team_run' in cmd だと `grep team_run` や `echo team_run` で素通りできた。
+            if TEAM_RUN_EXEC.search(cmd):
                 called_team_run = True
+            # ★Bash経由の書き込みも数える。Write/Edit だけを見ていた版は
+            #   heredoc・sed -i・tee・python -c open().write() を一切検知できなかった。
+            #   これは bin/hooks/adversarial_cases.md のケース1・3そのもの。
+            for wp in _iter_write_paths(cmd):
+                rel = wp.split('vivid-ai-hq/')[-1].lstrip('./')
+                if rel.startswith(GUARDED_DIRS) and rel.endswith(IMPL_EXT):
+                    edited.append(rel)
         elif name in ('Write', 'Edit', 'MultiEdit', 'NotebookEdit'):
             fp = str(inp.get('file_path') or '')
             rel = fp.split('vivid-ai-hq/')[-1]

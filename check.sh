@@ -143,7 +143,10 @@ else
   # ★2026-08-31 チーム検査の指摘③ ── 以前は 2>/dev/null で例外を握りつぶし、
   #   python が落ちても標準出力が空なので「ok」と誤判定しえた（偽陰性）。
   #   returncode を見る。★2>/dev/null は判定材料を捨てる、の実例。
-  miss=$(python3 - <<'EOF' 2>&1
+  # stderr は別ファイルへ分ける（$miss へ混ぜると rc=0 でも診断出力が
+  #   「担当が無い」表示に紛れ込む ── 2026-08-31 チーム検査の指摘）
+  _err=$(mktemp)
+  miss=$(python3 - <<'EOF' 2>"$_err"
 import importlib.util, os, json, io
 spec = importlib.util.spec_from_file_location("tr", "bin/team_run.py")
 tr = importlib.util.module_from_spec(spec); spec.loader.exec_module(tr)
@@ -159,12 +162,13 @@ EOF
 )
   rc=$?
   if [ $rc -ne 0 ]; then
-    fail "編成表の検査が実行できない（python rc=$rc）: $(echo "$miss" | tail -1)"
+    fail "編成表の検査が実行できない（python rc=$rc）: $(tail -1 "$_err")"
   elif [ -n "$miss" ]; then
     fail "編成表の担当が roster.json か agents/ に無い: $miss"
   else
     ok "編成表の担当が roster.json と agents/ の両方に実在する"
   fi
+  rm -f "$_err"
 
   # ★本丸：作っただけで呼ばれていないものを検出する
   if grep -rqs "team_run" .claude/skills/fukuchi-core/SKILL.md; then
@@ -175,6 +179,19 @@ EOF
 
   python3 bin/team_run.py --dry "検査用のダミー依頼" >/dev/null 2>&1 \
     && ok "team_run.py --dry が通る" || fail "team_run.py --dry が落ちる"
+
+  # ★検査4（担当を通さず一人で実装）の敵対的実測。作っただけで呼ばれないのを避け、
+  #   ここから毎回叩く（2026-08-31 チーム検査の指摘④「変更前の全件実行記録が無い」）。
+  if [ -f bin/hooks/test_check4.py ]; then
+    t4=$(python3 bin/hooks/test_check4.py 2>&1)
+    if [ $? -eq 0 ]; then
+      ok "検査4の敵対的実測 $(echo "$t4" | grep -o '全[0-9]*件一致')"
+    else
+      fail "検査4の敵対的実測が不一致: $(echo "$t4" | grep '★不一致')"
+    fi
+  else
+    fail "bin/hooks/test_check4.py が無い（検査4の裏が取れない）"
+  fi
 fi
 
 say ""
