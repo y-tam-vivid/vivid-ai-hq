@@ -287,6 +287,23 @@ def verify_maturity():
             bad.append('%d回通過しても spec へ降りない（%s）' % (need, promoted))
         if demoted != 'full':
             bad.append('差し戻し後に full へ戻らない（%s）' % demoted)
+        # ★危険度の下限が実績を上書きするか（2026-08-31 有璽氏の承認で追加）
+        floor = (rule.get('risk_floor', {}).get('always_full') or [])
+        if not floor:
+            unverified('危険度の下限', 'roster.json に risk_floor.always_full が無い')
+        else:
+            # spec に落ちている状態で、危険な依頼が full へ戻るか実際に確かめる
+            leaked = []
+            for r in floor:
+                sample = r['match'].split('|')[0].replace('\\', '')
+                if tr.mode_for(kind, '%s を扱う作業' % sample)[0] != 'full':
+                    leaked.append(sample)
+            if leaked:
+                ng('危険度の下限',
+                   '実績があると素通りする ： %s' % '、'.join(leaked))
+            else:
+                ok('危険度の下限',
+                   '実測 ： %d分類すべて、spec の実績があっても full へ固定' % len(floor))
         if bad:
             ng('成熟度モード', '／'.join(bad))
         else:

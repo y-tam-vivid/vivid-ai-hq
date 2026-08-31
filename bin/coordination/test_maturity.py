@@ -101,8 +101,31 @@ def test_ledger_guarded():
           hsw._is_guarded('bin/coordination/roster.json'), True)
 
 
+
+def test_risk_floor():
+    """★危険度の下限は実績を上書きする（2026-08-31 有璽氏の承認で追加）。
+    kind は7分類で粗く、軽い依頼の実績が重い依頼へ流用されうる。
+    取り返しのつかない領域だけ、何回通っても実測に固定する。"""
+    need = int(tr.ROSTER['inspection']['maturity']['promote_after_clean_runs'])
+    k = '実装'
+    for _ in range(need):
+        tr.record_run(k, sent_back=False)
+    check('危険語なしなら spec のまま', tr.mode_for(k, 'ログ表示を整える')[0], 'spec')
+    danger = [
+        ('台帳へ書く', '顧客台帳へ新規行を登録する'),
+        ('外へ出る', 'プレスリリースをPR TIMESへ配信する'),
+        ('規範の変更', 'fukuchi-core の規範を改訂する'),
+        ('自動処理', 'cronへ定期実行を1本追加する'),
+        ('削除', '古いNotionページを削除する'),
+        ('お金', '見積を出して発注する'),
+    ]
+    for label, task in danger:
+        check('危険度の下限 ： %s → 実測固定' % label, tr.mode_for(k, task)[0], 'full')
+
+
 def main():
     with_temp_ledger(test_promote_demote)
+    with_temp_ledger(test_risk_floor)
     test_verdict()
     test_fingerprint()
     test_ledger_guarded()
@@ -112,8 +135,9 @@ def main():
         for n in ng:
             print('   ' + n)
         return 1
-    print('全件一致。★ただし kind の粒度（7分類）は粗く、軽い依頼での実績が'
-          '重い依頼へ流用されうる。分類軸は未決（有璽氏の判断待ち）。')
+    print('全件一致。★危険度の下限（A案）は実装済み ── 台帳・外へ出る・規範・自動処理・'
+          '削除・お金 は実績に関係なく実測。担当/ファイル単位の実績（B案）は未実装で、'
+          '同じ危険度の中では kind（7分類）の粗さが残る。')
     return 0
 
 

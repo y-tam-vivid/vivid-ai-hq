@@ -210,9 +210,28 @@ def _save_maturity(m):
         f.write('\n')
 
 
-def mode_for(kind):
+def risk_floor_hit(task):
+    """危険度による実測の下限。当たったら実績に関係なく full。
+    ★2026-08-31 有璽氏の承認。kind は7分類で粗く、軽い依頼の実績が重い依頼へ
+      流用されうる。取り返しのつかない領域だけ実測に固定する。"""
+    floor = (ROSTER.get('inspection', {}).get('maturity', {})
+             .get('risk_floor', {}).get('always_full') or [])
+    for rule in floor:
+        try:
+            if re.search(rule['match'], task or '', re.I):
+                return rule['why']
+        except re.error:
+            continue
+    return None
+
+
+def mode_for(kind, task=''):
     """その仕事の検査モードを決める。full=実測で全数 ／ spec=仕様だけ。
-    ★仕様が変わっていたら、実績に関係なく全種類を full へ戻す。"""
+    ★順番が意味を持つ ： ①危険度の下限 → ②仕様・実装の変化 → ③実績。
+      危険度を最初に見る。実績がいくらあっても、危ないものは実測のまま。"""
+    hit = risk_floor_hit(task)
+    if hit:
+        return 'full', '危険度の下限に当たる（%s）。実績に関係なく実測' % hit
     mat = _load_maturity()
     rule = ROSTER.get('inspection', {}).get('maturity', {})
     need = int(rule.get('promote_after_clean_runs', 3))
@@ -409,7 +428,7 @@ def main():
         print('   作る役   %-18s %s' % (a, angle))
     print('   検査役   %-18s ★作る役とは別。通す／止めるまで判定させる' % checker)
     print('   束ねる役 %-18s 合意点／対立点／不明点に分ける' % 'cko')
-    mode, why = mode_for(name)
+    mode, why = mode_for(name, task)
     print('■ 検査モード ： %s ── %s' % (
         '実測（全数を検査役へ）' if mode == 'full' else '仕様のみ（対立点だけ）', why))
     print('')
@@ -497,7 +516,7 @@ def main():
     # ★実績を台帳へ。差し戻しが出たら clean_runs を0へ戻す（＝次回また実測になる）
     sent_back = looks_sent_back(chk, checker_ok=chk_ok)
     rec = record_run(name, sent_back)
-    nxt, nxt_why = mode_for(name)
+    nxt, nxt_why = mode_for(name, task)
     print('── 実績 ： %s（通算%d回・連続%d回）→ 次回は %s ： %s' % (
         rec['last_result'], rec['total_runs'], rec['clean_runs'],
         '実測' if nxt == 'full' else '仕様のみ', nxt_why))
