@@ -161,6 +161,83 @@ DEFAULT = ('その他',
            'data-auditor')
 
 
+
+# ── 成熟度で検査の重さを変える（2026-08-31 有璽氏の設計）──────────────
+#   有璽氏「ルーティンになってるやつは仕様だけを簡単に回すでいい。そうでないものは
+#           実測でやる。毎回毎回実測でやってたら時間がいくらあっても足りない。
+#           いかに実測して、ちゃんと問題ない状況を作って、ルーティンに回し、
+#           そこは仕様だけでできるように回していく、そういう設計」
+#   ★条件は roster.json の inspection.maturity が正本。ここへ数字を書き写さない。
+MATURITY_PATH = os.path.join(REPO, 'bin', 'coordination', 'maturity.json')
+
+
+def _spec_fingerprint():
+    """仕様（roster.json）の指紋。★時刻ではなく中身のハッシュで見る。
+    更新時刻は『触った』を示すだけで『中身が変わった』を示さない。"""
+    import hashlib
+    with open(ROSTER_PATH, 'rb') as f:
+        return hashlib.sha256(f.read()).hexdigest()[:16]
+
+
+def _load_maturity():
+    try:
+        with io.open(MATURITY_PATH, encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {'_spec_fingerprint': '', 'kinds': {}}
+
+
+def _save_maturity(m):
+    with io.open(MATURITY_PATH, 'w', encoding='utf-8') as f:
+        json.dump(m, f, ensure_ascii=False, indent=2)
+        f.write('\n')
+
+
+def mode_for(kind):
+    """その仕事の検査モードを決める。full=実測で全数 ／ spec=仕様だけ。
+    ★仕様が変わっていたら、実績に関係なく全種類を full へ戻す。"""
+    mat = _load_maturity()
+    rule = ROSTER.get('inspection', {}).get('maturity', {})
+    need = int(rule.get('promote_after_clean_runs', 3))
+    fp = _spec_fingerprint()
+    if mat.get('_spec_fingerprint') != fp:
+        # 仕様が動いた ＝ 型が変わった。全部やり直す
+        for k in mat.get('kinds', {}).values():
+            k['clean_runs'] = 0
+        mat['_spec_fingerprint'] = fp
+        _save_maturity(mat)
+        return 'full', '仕様が変わったので実測からやり直す'
+    rec = mat.get('kinds', {}).get(kind)
+    if not rec:
+        return 'full', 'この種類は初めて。実測で確かめる'
+    n = int(rec.get('clean_runs', 0))
+    if n >= need:
+        return 'spec', '%d回連続で差し戻しなし。ルーティン化済み' % n
+    return 'full', '差し戻しなしが %d/%d 回。あと%d回で仕様モードへ' % (n, need, need - n)
+
+
+def record_run(kind, sent_back):
+    """実行結果を台帳へ書く。差し戻しが出たら実績を0へ戻す。"""
+    mat = _load_maturity()
+    mat.setdefault('kinds', {})
+    rec = mat['kinds'].setdefault(kind, {'clean_runs': 0, 'total_runs': 0})
+    rec['total_runs'] = int(rec.get('total_runs', 0)) + 1
+    rec['clean_runs'] = 0 if sent_back else int(rec.get('clean_runs', 0)) + 1
+    rec['last_run'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    rec['last_result'] = '差し戻し' if sent_back else '通過'
+    mat['_spec_fingerprint'] = _spec_fingerprint()
+    _save_maturity(mat)
+    return rec
+
+
+SENT_BACK_WORDS = ('差し戻し', '止める', '★不可', '進めてはいけない')
+
+
+def looks_sent_back(verdict_text):
+    """検査役の判定が差し戻しか。★判定語を数えるだけの素朴な判定であることを明記する
+    （固定文字列ではなく実際の出力を見ている点は守る）。"""
+    return any(w in (verdict_text or '') for w in SENT_BACK_WORDS)
+
 def _assert_separated(name, makers, checker):
     """★作る役と検査役が同じなら止める。
     この仕組みの核心（自分が作ったものを自分で検査しない）に反するため。
@@ -295,6 +372,9 @@ def main():
         print('   作る役   %-18s %s' % (a, angle))
     print('   検査役   %-18s ★作る役とは別。通す／止めるまで判定させる' % checker)
     print('   束ねる役 %-18s 合意点／対立点／不明点に分ける' % 'cko')
+    mode, why = mode_for(name)
+    print('■ 検査モード ： %s ── %s' % (
+        '実測（全数を検査役へ）' if mode == 'full' else '仕様のみ（対立点だけ）', why))
     print('')
     if dry:
         print('---- 編成だけ。実行しない ----')
@@ -324,6 +404,9 @@ def main():
 ## 依頼（元の議題）
 %s
 
+## 検査の重さ ： %s
+%s
+
 ## ★1周目は blind です（roster.json inspection.pass_a_blind）
 各担当の所見は **わざと渡していません**。申告を先に読むと、報告に無いもの
 （落とした指示・過剰修正）が見えなくなるためです。実物と diff だけを見てください。
@@ -345,7 +428,14 @@ def main():
 
 深刻な順に最大6件。①どこ ②何が問題か ③どの規範に反するか ④起きる事故。
 問題が無ければ「無い」と明言。読んでいない範囲があれば必ず書く。700文字以内。
-""" % (checker, task, REPO, REPO)
+""" % (checker, task,
+           '実測モード（full）' if mode == 'full' else '仕様モード（spec）',
+           ('この仕事は初めてか型が変わりました。**全数を実物で確かめてください。**\n'
+            '   対立していない箇所にも欠陥は出ます（2026-08-31 の実績）。'
+            if mode == 'full' else
+            'この型は実測を通過してルーティン化しています。**対立点と、仕様から外れた点だけ**\n'
+            '   を見てください。機械検証（verify_spec.py）は別途通っています。'),
+           REPO, REPO)
     _, chk_a, chk_ok = run_agent(checker, chk_prompt, '検査の観点で',
                                  '検査役です（1周目・blind）。直さないでください。')
     # ── Pass B ── ここで初めて申告を見せる（roster.json inspection.pass_b_context）
@@ -366,6 +456,14 @@ def main():
     _, chk_b, _ = run_agent(checker, chk_b_prompt, '申告との突合の観点で',
                             '検査役です（2周目）。直さないでください。')
     chk = '【1周目・実物だけを見た所見】\n%s\n\n【2周目・申告と突き合わせて】\n%s' % (chk_a, chk_b)
+
+    # ★実績を台帳へ。差し戻しが出たら clean_runs を0へ戻す（＝次回また実測になる）
+    sent_back = looks_sent_back(chk)
+    rec = record_run(name, sent_back)
+    nxt, nxt_why = mode_for(name)
+    print('── 実績 ： %s（通算%d回・連続%d回）→ 次回は %s ： %s' % (
+        rec['last_result'], rec['total_runs'], rec['clean_runs'],
+        '実測' if nxt == 'full' else '仕様のみ', nxt_why))
     print('── 検査役 %s' % checker)
     print(chk[:900])
     print('')

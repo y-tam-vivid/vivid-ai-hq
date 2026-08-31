@@ -241,13 +241,83 @@ def verify_termination():
                    t['timeout_minutes'], want, got))
 
 
-CHECKS = (verify_self_inspection, verify_inspectors_reachable, verify_blind,
-          verify_envelope, verify_no_worker_crosstalk, verify_termination)
+
 
 
 
 # ─────────────────────────────────────────────────────────────
-# 7. 網羅性 ── 仕様に書いてあるのに検証していない項目を列挙する
+# 7. inspection.modes / maturity ── 成熟度で検査の重さが変わるか
+#    ★仕様を読むだけにしない。実際に record_run を回して昇格・降格を確かめる。
+#      （2026-08-31 有璽氏の設計 ： 実測を通ったものだけルーティンへ降ろす）
+# ─────────────────────────────────────────────────────────────
+def verify_maturity():
+    modes = ROSTER.get('inspection', {}).get('modes') or {}
+    rule = ROSTER.get('inspection', {}).get('maturity') or {}
+    if not modes or not rule:
+        unverified('成熟度モード', 'roster.json に inspection.modes / maturity が無い')
+        return
+    for m in ('full', 'spec'):
+        if m not in modes:
+            ng('成熟度モード', 'roster.json に %s モードの定義が無い' % m)
+            return
+    if not hasattr(tr, 'mode_for') or not hasattr(tr, 'record_run'):
+        ng('成熟度モード', '実装に mode_for / record_run が無い（仕様だけ）')
+        return
+
+    # ★実際に回して確かめる。本物の台帳を汚さないよう一時ファイルへ差し替える。
+    import tempfile, shutil, json as _json
+    real = tr.MATURITY_PATH
+    tmpdir = tempfile.mkdtemp(prefix='verify_maturity_')
+    tr.MATURITY_PATH = os.path.join(tmpdir, 'maturity.json')
+    with io.open(tr.MATURITY_PATH, 'w', encoding='utf-8') as f:
+        _json.dump({'_spec_fingerprint': tr._spec_fingerprint(), 'kinds': {}}, f)
+    try:
+        need = int(rule.get('promote_after_clean_runs', 3))
+        kind = '__verify__'
+        first = tr.mode_for(kind)[0]
+        for _ in range(need):
+            tr.record_run(kind, sent_back=False)
+        promoted = tr.mode_for(kind)[0]
+        tr.record_run(kind, sent_back=True)
+        demoted = tr.mode_for(kind)[0]
+        bad = []
+        if first != 'full':
+            bad.append('初回が full でない（%s）' % first)
+        if promoted != 'spec':
+            bad.append('%d回通過しても spec へ降りない（%s）' % (need, promoted))
+        if demoted != 'full':
+            bad.append('差し戻し後に full へ戻らない（%s）' % demoted)
+        if bad:
+            ng('成熟度モード', '／'.join(bad))
+        else:
+            ok('成熟度モード',
+               '実測 ： 初回=full → %d回通過で spec → 差し戻しで full へ復帰' % need)
+    finally:
+        tr.MATURITY_PATH = real
+        shutil.rmtree(tmpdir, ignore_errors=True)
+
+
+# ─────────────────────────────────────────────────────────────
+# 8. flow.edges ── 検査役への渡し方がモードで変わるか
+# ─────────────────────────────────────────────────────────────
+def verify_flow_edges():
+    edges = ROSTER.get('flow', {}).get('edges') or []
+    bym = [e for e in edges if e.get('type') == 'by_mode']
+    if not bym:
+        unverified('検査役への渡し方', 'roster.json に by_mode の辺が無い')
+        return
+    e = bym[0]
+    if e.get('full') != 'all' or e.get('spec') != 'conflict_only':
+        ng('検査役への渡し方', 'by_mode の中身が full=all / spec=conflict_only でない')
+        return
+    if 'mode ==' in TEAM_RUN_SRC and '実測モード' in TEAM_RUN_SRC:
+        ok('検査役への渡し方', 'full=全数 ／ spec=対立点だけ を実装が出し分けている')
+    else:
+        ng('検査役への渡し方', '実装がモードで検査役への指示を変えていない')
+
+
+# ─────────────────────────────────────────────────────────────
+# 9. 網羅性 ── 仕様に書いてあるのに検証していない項目を列挙する
 #    ★2026-08-31 チーム検査4周目の指摘。「未検証は明示する」と自分で書きながら、
 #      envelope.forbidden・termination.on_unresolved/on_malformed_envelope・
 #      human_gates を黙って通していた。仕様の過半が検証範囲の外にあった。
@@ -259,6 +329,7 @@ COVERED = {
     'inspection.self_inspection', 'inspection.pass_a_blind',
     'envelope.required', 'flow.forbidden_edges',
     'termination.max_rounds', 'termination.timeout_minutes',
+    'inspection.modes', 'inspection.maturity', 'flow.edges',
 }
 
 # 検証しないと決めたもの（理由つき）。★「できない」を隠さず、理由を書いて残す
@@ -297,6 +368,11 @@ def verify_coverage():
     for k, why in sorted(WONT.items()):
         if k in keys:
             unverified('%s は検証しない' % k, why)
+
+
+CHECKS = (verify_self_inspection, verify_inspectors_reachable, verify_blind,
+          verify_envelope, verify_no_worker_crosstalk, verify_termination,
+          verify_maturity, verify_flow_edges)
 
 
 def main():
