@@ -51,6 +51,7 @@
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／権限が無い≠届かない／2>/dev/nullは判定材料を捨てる／**★0件が出たら同じ条件で数え直さない。別の方法で数える（日本語ファイル名はNFDでgrepが静かに0件になる→[[reference_japanese_filename_normalization]]）**
 - [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — ★別の面のファイルは人が落とすまで実体ゼロ。配布はgit
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
+- [協調層＝team_run.pyが入口](project_coordination_layer.md) — ★依頼は手で選ばず通す。正本=roster.json／危険6分類は常に実測
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**／**★2026-08-29「ギャッやるなよ。誰かにやらせろ」＝2回目。★「存在しません」で止めるな＝スキル名でなく①スキル②bin/③pip④過去実績のgrepで数える（Word変換は既にbin/md2docx.pyが在った）**
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★点検側が4本中Stopだけ見ていなかった(8/29解消)
