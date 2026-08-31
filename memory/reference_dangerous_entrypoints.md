@@ -147,6 +147,33 @@ dashboard_data.py に argparse は ★0件
 関連: [[project_sales_pipeline_workbook]] [[reference_sales_workbook_column_moves]]
 [[reference_kintone_csv_import_landmines]] [[reference_mac_mini_execution_env]]
 
+### ★横断調査（2026-08-31 ピタゴラス・ビビ依頼③）── 危険な順に列挙
+
+`~/.vivid-relay/*.py` を `grep -l sys.argv` で洗ったら **33ファイル全てargparse不使用**
+（0件）。うち21ファイルは `'--run'/'--apply' in sys.argv` という書き込みゲートを持つ
+（未知の引数が来ても`--run`という文字列が含まれない限り書き込まない＝相対的に安全）。
+**残り12ファイルはゲートが無く、うち3本が実際に書き込みを行う**（開いて確認済み）。
+
+```
+危険度  ファイル                    書く先                          備考
+①最大   oauth_setup.py             TOKEN_PATH（OAuth認証トークン）   ★未知の引数で誤実行
+                                    ・STATE_PATH                     されると認証情報が
+                                                                    壊れるリスク。今回は
+                                                                    呼び出しタイミングの
+                                                                    実測までは未着手
+②       dashboard_data.py          dashboard_data.json（稼働盤）    ★2026-08-31実測済み
+                                                                    の実害（--helpで再生成）
+③       build_landmine_index.py    landmines.json（地雷インデックス）influenced：フックが
+                                                                    読む索引。実害は
+                                                                    キャッシュ再生成程度
+```
+
+**★ゲート無し・書込みも無い残り9本**（heartbeat.py・facts.py・ledger_audit.py・
+ledger_dupes.py・ledger_report.py・heartbeat_names_check.py・vivid_briefing.py）は
+grep実測で書込み行が見つからなかった＝現状は読み取り専用と判定できるが、
+**将来これらに書込み処理が追加されたら、この型が即座に成立する**（argparse不使用は
+変わっていないため）。★直すのは別途（今回は列挙のみ・ビビ依頼どおり）。
+
 ## ★止める判断が正しかったことを、止めたあとに実測で確かめる（2026-08-23 実地）
 
 GAS 54v3 を無効化したあと、ドライランを1回通した。**そこで初めて実害の中身が見えた。**
