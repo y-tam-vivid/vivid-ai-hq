@@ -171,12 +171,29 @@ DEFAULT = ('その他',
 MATURITY_PATH = os.path.join(REPO, 'bin', 'coordination', 'maturity.json')
 
 
+# 指紋に含めるファイル。★仕様だけでなく実装も見る（2026-08-31 チーム検査5周目の指摘）。
+#   roster.json のハッシュしか見ていなかったため、team_run.py 自身を書き換えても
+#   降格しなかった。roster.json の demote_on に「実装ファイルが変わったら full」と
+#   書きながら実装していなかった ── 今日4回目の「書いたを動くと取り違える」型。
+FINGERPRINT_FILES = (
+    os.path.join(REPO, 'bin', 'coordination', 'roster.json'),
+    os.path.join(REPO, 'bin', 'team_run.py'),
+    os.path.join(REPO, 'bin', 'coordination', 'verify_spec.py'),
+)
+
+
 def _spec_fingerprint():
-    """仕様（roster.json）の指紋。★時刻ではなく中身のハッシュで見る。
+    """仕様と実装の指紋。★時刻ではなく中身のハッシュで見る。
     更新時刻は『触った』を示すだけで『中身が変わった』を示さない。"""
     import hashlib
-    with open(ROSTER_PATH, 'rb') as f:
-        return hashlib.sha256(f.read()).hexdigest()[:16]
+    h = hashlib.sha256()
+    for path in FINGERPRINT_FILES:
+        try:
+            with open(path, 'rb') as f:
+                h.update(f.read())
+        except Exception:
+            h.update(b'<missing>')
+    return h.hexdigest()[:16]
 
 
 def _load_maturity():
@@ -206,7 +223,7 @@ def mode_for(kind):
             k['clean_runs'] = 0
         mat['_spec_fingerprint'] = fp
         _save_maturity(mat)
-        return 'full', '仕様が変わったので実測からやり直す'
+        return 'full', '仕様か実装が変わったので実測からやり直す'
     rec = mat.get('kinds', {}).get(kind)
     if not rec:
         return 'full', 'この種類は初めて。実測で確かめる'
@@ -230,13 +247,33 @@ def record_run(kind, sent_back):
     return rec
 
 
-SENT_BACK_WORDS = ('差し戻し', '止める', '★不可', '進めてはいけない')
+SENT_BACK_WORDS = ('差し戻し', '止める', '★不可', '進めてはいけない',
+                   '通してはいけない', '載せてはいけない', '要修正', '必須条件')
+PASSED_WORDS = ('載せてよい', '進めてよい', '問題ない', '通してよい')
 
 
-def looks_sent_back(verdict_text):
-    """検査役の判定が差し戻しか。★判定語を数えるだけの素朴な判定であることを明記する
-    （固定文字列ではなく実際の出力を見ている点は守る）。"""
-    return any(w in (verdict_text or '') for w in SENT_BACK_WORDS)
+def looks_sent_back(verdict_text, checker_ok=True):
+    """検査役の判定が差し戻しか。
+
+    ★checker_ok を必ず渡すこと（2026-08-31 チーム検査5周目の指摘）。
+      検査役の実行が失敗（タイムアウト・API エラー）したとき、出力は空になる。
+      空文字には差し戻し語が含まれないので、以前の実装は **検査が動かなかった回を
+      「通過」として実績に積んでいた**。3回落ちれば spec へ昇格してしまう。
+      ＝ 検査が死んでいるのに緑になる、今日3回目の同じ型。
+
+    ★判定に失敗したら「差し戻し」に倒す。実績は積まない方が安全側。
+    """
+    if not checker_ok:
+        return True                      # 検査が走らなかった＝通過ではない
+    t = (verdict_text or '').strip()
+    # ★閾値は20字。30字にしていたとき「問題ない。この方針で進めてよい。」（27字）を
+    #   差し戻しと誤判定した（2026-08-31 実測）。日本語は情報密度が高く30字は長い。
+    if len(t) < 20:
+        return True                      # 中身が無い判定は通過とみなさない
+    if any(w in t for w in SENT_BACK_WORDS):
+        return True
+    # ★肯定の語が1つも無いなら、通過と断定しない（固定文字列だけに頼らない）
+    return not any(w in t for w in PASSED_WORDS)
 
 def _assert_separated(name, makers, checker):
     """★作る役と検査役が同じなら止める。
@@ -458,7 +495,7 @@ def main():
     chk = '【1周目・実物だけを見た所見】\n%s\n\n【2周目・申告と突き合わせて】\n%s' % (chk_a, chk_b)
 
     # ★実績を台帳へ。差し戻しが出たら clean_runs を0へ戻す（＝次回また実測になる）
-    sent_back = looks_sent_back(chk)
+    sent_back = looks_sent_back(chk, checker_ok=chk_ok)
     rec = record_run(name, sent_back)
     nxt, nxt_why = mode_for(name)
     print('── 実績 ： %s（通算%d回・連続%d回）→ 次回は %s ： %s' % (

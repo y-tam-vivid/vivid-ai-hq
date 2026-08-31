@@ -1,6 +1,13 @@
 {
   "_": "仕事の種類ごとの成熟度台帳。team_run.py が実行のたびに書き、検査モードを決める。",
   "_rule": "3回連続で差し戻しなし → spec（仕様だけ）／差し戻し1回で full（実測）へ戻す。",
-  "_spec_fingerprint": "0aff6f1fda60c666",
-  "kinds": {}
+  "_spec_fingerprint": "7e35afaf83ad0a30",
+  "kinds": {
+    "台帳・顧客データ": {
+      "clean_runs": 0,
+      "total_runs": 1,
+      "last_run": "2026-08-31 01:48",
+      "last_result": "差し戻し"
+    }
+  }
 }

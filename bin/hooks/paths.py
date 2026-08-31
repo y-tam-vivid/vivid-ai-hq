@@ -39,4 +39,9 @@ CODE_EXTS = ('.py', '.sh', '.js', '.ts', '.tsx', '.jsx', '.gs', '.rb')
 # 拡張子ではなくファイル名で守るもの（データだが壊すと設計が壊れる）
 #   ★「実装コード拡張子」に .json を混ぜない。混ぜると *.json 全部が対象になり、
 #     コメントの説明（実装コード）と実際の挙動（データも含む）が食い違う。
-GUARDED_FILES = ('bin/coordination/roster.json',)
+GUARDED_FILES = (
+    'bin/coordination/roster.json',
+    # ★実績台帳。ここを直接書けば「3回通過した」ことにして spec へ昇格できてしまう
+    #   （2026-08-31 チーム検査5周目の指摘。検問の自己無効化と同型）
+    'bin/coordination/maturity.json',
+)

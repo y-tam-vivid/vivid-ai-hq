@@ -196,6 +196,18 @@ EOF
     fail "bin/coordination/verify_spec.py が無い"
   fi
 
+  # ★成熟度モードの実測（2026-08-31）。昇格・降格・判定・指紋・ガードを実際に回す。
+  if [ -f bin/coordination/test_maturity.py ]; then
+    tm=$(python3 bin/coordination/test_maturity.py 2>&1)
+    if [ $? -eq 0 ]; then
+      ok "成熟度モードの実測（昇格・降格・検査役の失敗扱い）"
+    else
+      fail "成熟度モードの実測が不一致: $(echo "$tm" | grep '★不一致')"
+    fi
+  else
+    fail "bin/coordination/test_maturity.py が無い"
+  fi
+
   # ★検査4（担当を通さず一人で実装）の敵対的実測。作っただけで呼ばれないのを避け、
   #   ここから毎回叩く（2026-08-31 チーム検査の指摘④「変更前の全件実行記録が無い」）。
   if [ -f bin/hooks/test_check4.py ]; then
