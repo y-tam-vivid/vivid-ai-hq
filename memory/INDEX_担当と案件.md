@@ -14,7 +14,8 @@
 - [カレンダーの色分類](reference_calendar_color_taxonomy.md) — ラベル9種で種別／★トマトは「緊急」の軸／算入はaccepted のみ＝仕事週39h
 - [朝の要対応に切る口が無い](feedback_briefing_needs_an_off_switch.md) — 除外ルールページを新設し8/22から様子見中。14日超は消さず畳む
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
-- [CFOナミ](project_cfo_agent.md) — ★3DBに法人/事業列が無く3階層を切れない。MF/弥生とも部門は名称一致で持てる。有璽氏の回答待ち4件／督促3件は保留
+- [請求書に毎回いるもの](reference_invoice_requirements.md) — インボイス必須6項目／★登録番号が未確認で止まる／端数処理は税率ごとに1回／前払は発行日が対象月の前月
+- [CFOナミ](project_cfo_agent.md) — ★8/31 大枠確定＝中間ハブが正本・案Yで按分は月末1回。★スウェルとリアンは別法人格／唯一のブロッカーは「誰が入力するか」未回答
 - [CLOセンゴク](project_legal_agent.md) — agents/legal.md。日本法ラッパー。法務ハブ構築済／プラグイン導入は未実行
 - [施設運営点検の委託契約v1.1](project_facility_inspection_contract.md) — 甲wakoku/乙ビビッド。★A案確定・レッドライン17本を反映中／追加費用4,000円・対象期間は指定申請日から約2年数ヶ月／士業法リスクは下書き非実施で低下
 - [CKOロビン](project_cko_agent.md) — agents/cko.md。会議準備を裏方で作る(毎朝7:40)。Phase B=議事録DB連携待ち
