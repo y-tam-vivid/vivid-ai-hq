@@ -42,6 +42,9 @@
 """
 import json, os, re, subprocess, sys, time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import CODE_EXTS, GUARDED_FILES
+
 # ★2026-08-29 ステラ検査指摘（軽微・条件2）対応：以前は check_single_route_claim() が
 #   呼ばれるたびに sys.path.insert() していた（Stopフック発火のたびにsys.pathへ同じ
 #   パスが重複追加される冗長性）。モジュールロード時に1回だけ追加する形に直した。
@@ -415,10 +418,26 @@ def check_single_route_claim(payload):
 #   ・サブエージェント（agent_id あり）は対象外。担当として呼ばれた側が書くのは正しい姿
 #   ・記録だけの編集（memory/ ・WORKING.md ・*.json のデータ更新）は対象外
 GUARDED_DIRS = ('bin/', '.claude/')
-IMPL_EXT = ('.py', '.sh', '.js', '.ts', '.tsx', '.jsx', '.gs', '.rb', '.json')
+# ★拡張子と保護ファイルの正本は paths.py（2026-08-31 チーム検査の指摘）。
+#   ここへ書き写さない。書き写した結果、hook_role_guard.py と守る範囲が食い違った。
+IMPL_EXT = CODE_EXTS
 
-# team_run.py を「実行した」形だけを数える。grep/echo など言及だけでは通さない。
-TEAM_RUN_EXEC = re.compile(r'(?:python[23]?|/\S*python\S*)\s+[^|;&]*team_run\.py')
+# team_run.py を「実行した」形だけを数える。
+#   ★`-c` を除外する（2026-08-31 チーム検査の指摘・実測で再現）。
+#     python3 -c "open('bin/team_run.py','w').write(...)" は「team_run.py を書き換える」
+#     コマンドなのに、文字列に team_run.py を含むため「実行した」と誤判定され、
+#     ★検問が自分自身の書き換えを見逃す＝自己無効化する穴になっていた。
+#   ★あわせて、書き込みを伴うコマンドは実行とみなさない（下の _is_team_run_exec）。
+TEAM_RUN_EXEC = re.compile(
+    r'(?:python[23]?|/\S*python\S*)\s+(?!-)[^|;&]*team_run\.py')
+
+
+def _is_team_run_exec(cmd):
+    """そのコマンドが team_run.py の「実行」か。書き換えなら False。"""
+    if not TEAM_RUN_EXEC.search(cmd):
+        return False
+    # 書き込み先が拾えるコマンドは実行ではない（cp bin/x bin/team_run.py 等）
+    return not any(True for _ in _iter_write_paths(cmd))
 
 # Bash 経由の書き込み先を拾う。★ここで捕まえられない書き方が残ることは
 #   bin/hooks/adversarial_cases.md に列挙してある（完全ではない）。
@@ -430,6 +449,12 @@ BASH_WRITE_PATH = re.compile(
     r"|open\(\s*['\"](?P<path4>[^'\"]+)['\"]\s*,\s*['\"][wa]"  # open(path,'w')
     r'|(?:cp|mv)\s+\S+\s+(?P<path5>[^\s;&|]+)'           # cp src dst / mv src dst
     r')')
+
+
+def _is_guarded(rel):
+    """守る対象か。実装コード拡張子か、名指しで守るファイル（roster.json 等）。"""
+    return ((rel.startswith(GUARDED_DIRS) and rel.endswith(IMPL_EXT))
+            or rel in GUARDED_FILES)
 
 
 def _iter_write_paths(cmd):
@@ -477,19 +502,19 @@ def check_solo_implementation(payload):
             cmd = str(inp.get('command', ''))
             # ★実行を伴う呼び出しだけを数える（2026-08-31 チーム検査の指摘①）。
             #   'team_run' in cmd だと `grep team_run` や `echo team_run` で素通りできた。
-            if TEAM_RUN_EXEC.search(cmd):
+            if _is_team_run_exec(cmd):
                 called_team_run = True
             # ★Bash経由の書き込みも数える。Write/Edit だけを見ていた版は
             #   heredoc・sed -i・tee・python -c open().write() を一切検知できなかった。
             #   これは bin/hooks/adversarial_cases.md のケース1・3そのもの。
             for wp in _iter_write_paths(cmd):
                 rel = wp.split('vivid-ai-hq/')[-1].lstrip('./')
-                if rel.startswith(GUARDED_DIRS) and rel.endswith(IMPL_EXT):
+                if _is_guarded(rel):
                     edited.append(rel)
         elif name in ('Write', 'Edit', 'MultiEdit', 'NotebookEdit'):
             fp = str(inp.get('file_path') or '')
             rel = fp.split('vivid-ai-hq/')[-1]
-            if rel.startswith(GUARDED_DIRS) and rel.endswith(IMPL_EXT):
+            if _is_guarded(rel):
                 edited.append(rel)
     if called_team_run or not edited:
         return None

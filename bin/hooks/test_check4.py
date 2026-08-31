@@ -73,6 +73,14 @@ CASES = [
      [E('bin/hooks/x.py'), B('grep -n team_run bin/*.py')], {}, True),
     ('team_run を echo しただけ',
      [E('bin/hooks/x.py'), B("echo 'team_run.py を呼ぶべき'")], {}, True),
+    ('★自己無効化 : python -c で team_run.py 自身を書き換える',
+     [B("""python3 -c "open('bin/team_run.py','w').write('x')" """)], {}, True),
+    ('★自己無効化 : sed -i で team_run.py 自身を書き換える',
+     [B("sed -i 's/a/b/' bin/team_run.py")], {}, True),
+    ('★自己無効化 : cp で team_run.py を上書き',
+     [B('cp /tmp/x.py bin/team_run.py')], {}, True),
+    ('roster.json を Bash の heredoc で書き換え（名指しで守る）',
+     [B("cat > bin/coordination/roster.json <<'EOF'\n{}\nEOF")], {}, True),
 
     # ── 通すべきもの
     ('team_run.py を実行した',

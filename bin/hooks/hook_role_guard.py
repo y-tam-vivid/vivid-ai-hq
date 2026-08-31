@@ -74,7 +74,9 @@ LOG = os.path.expanduser('~/.vivid-relay/role_guard.log')
 # ★依頼にある「.py .js .gs .sh .ts など」を軸に、実務で使う拡張子を広めに取る。
 #   誤爆を避けるため .md .json .yaml .yml .txt .csv .html 等の
 #   データ・ドキュメント・設定系は含めない（ビビが memory や設定値を書くのは正当な業務）
-CODE_EXTS = {'.py', '.js', '.ts', '.tsx', '.jsx', '.gs', '.sh', '.rb'}
+# ★正本は paths.py（2026-08-31）。ここに書き写すと守る範囲が食い違う。
+from paths import CODE_EXTS as _CODE_EXTS
+CODE_EXTS = set(_CODE_EXTS)
 
 # Bash 経由でコード拡張子ファイルへ書き込む簡易ヒューリスティック
 #   例: `cat > foo.py <<EOF` / `echo x >> bar.sh` / `... | tee baz.ts`

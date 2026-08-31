@@ -27,3 +27,16 @@ import os
 REPO = os.path.expanduser('~/vivid-ai-hq')
 WORKING_MD = os.path.join(REPO, 'WORKING.md')
 MEMORY_DIR = os.path.join(REPO, 'memory')
+
+
+# ── 実装コードとみなす拡張子（★2026-08-31 ここが正本）─────────────
+#   hook_role_guard.py の CODE_EXTS と hook_session_writeback.py の IMPL_EXT が
+#   別々に同じリストを持っており、片方に .json を足したらもう片方が追随せず
+#   守る範囲が食い違った（2026-08-31 チーム検査でロビンが指摘）。
+#   ★足すならここ1箇所。
+CODE_EXTS = ('.py', '.sh', '.js', '.ts', '.tsx', '.jsx', '.gs', '.rb')
+
+# 拡張子ではなくファイル名で守るもの（データだが壊すと設計が壊れる）
+#   ★「実装コード拡張子」に .json を混ぜない。混ぜると *.json 全部が対象になり、
+#     コメントの説明（実装コード）と実際の挙動（データも含む）が食い違う。
+GUARDED_FILES = ('bin/coordination/roster.json',)
