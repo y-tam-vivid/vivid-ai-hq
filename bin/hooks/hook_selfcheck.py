@@ -92,7 +92,56 @@ def _check_hook_session_writeback():
         return None
     return 'hook_session_writeback.py ： 反応しない（出力先頭: %s）' % detail
 
-PLAIN_CHECKS = [_check_hook_session_writeback]
+def _probe_solo_implementation():
+    """hook_session_writeback.py の検査4（担当を通さず一人で実装）を実際に発火させる。
+
+    ★探針の作り方 ── assistant の text ブロックを入れない。text を入れると
+    検査2（探さずに人へ投げた）や検査3（1経路断定）が先に return してしまい、
+    検査4まで実行経路が届かず「正常」と誤って報告する。tool_use だけを置く。
+    ★HOME を一時ディレクトリへ差し替え、本物の ~/.vivid-relay/ のログを汚さない
+    （_probe_writeback_stop と同じ理由）。
+    戻り値: (ok: bool, detail: str)
+    """
+    tmpdir = tempfile.mkdtemp(prefix='selfcheck_solo_')
+    try:
+        tp = os.path.join(tmpdir, 'transcript.jsonl')
+        with open(tp, 'w', encoding='utf-8') as f:
+            f.write(json.dumps(
+                {"type": "user", "message": {"content": "直して"}},
+                ensure_ascii=False) + '\n')
+            f.write(json.dumps(
+                {"type": "assistant", "message": {"content": [
+                    {"type": "tool_use", "name": "Edit",
+                     "input": {"file_path": "/x/vivid-ai-hq/bin/hooks/probe_only.py"}}]}},
+                ensure_ascii=False) + '\n')
+        payload = json.dumps({
+            "session_id": "selfcheck-probe-solo",
+            "transcript_path": tp,
+            "stop_hook_active": False,
+        })
+        env = dict(os.environ)
+        env['HOME'] = tmpdir
+        r = subprocess.run(
+            ['/usr/bin/python3', os.path.join(HERE, 'hook_session_writeback.py')],
+            input=payload, capture_output=True, text=True, timeout=30, env=env)
+        out = (r.stdout or '') + (r.stderr or '')
+        expect = '担当を1体も通さずに実装まで終えています'
+        return (expect in out), out[:200]
+    finally:
+        shutil.rmtree(tmpdir, ignore_errors=True)
+
+
+def _check_solo_implementation_guard():
+    """検査4（2026-08-31 新設）の生存確認。
+    ★これが無いと、検査4が黙って壊れても点検は「6本とも正常」と言い続ける（穴B と同じ型）。"""
+    ok, detail = _probe_solo_implementation()
+    if ok:
+        return None
+    return '検査4（担当を通さず一人で実装）： 反応しない（出力先頭: %s）' % detail
+
+
+PLAIN_CHECKS = [_check_hook_session_writeback,
+                _check_solo_implementation_guard]
 
 ng=[]
 for f,inp,expect in CASES:

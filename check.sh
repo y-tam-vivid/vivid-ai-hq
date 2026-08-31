@@ -140,7 +140,10 @@ else
   fi
 
   # 編成表に出る担当が roster.json と agents/*.md の両方に実在するか
-  miss=$(python3 - <<'EOF' 2>/dev/null
+  # ★2026-08-31 チーム検査の指摘③ ── 以前は 2>/dev/null で例外を握りつぶし、
+  #   python が落ちても標準出力が空なので「ok」と誤判定しえた（偽陰性）。
+  #   returncode を見る。★2>/dev/null は判定材料を捨てる、の実例。
+  miss=$(python3 - <<'EOF' 2>&1
 import importlib.util, os, json, io
 spec = importlib.util.spec_from_file_location("tr", "bin/team_run.py")
 tr = importlib.util.module_from_spec(spec); spec.loader.exec_module(tr)
@@ -154,7 +157,10 @@ bad = [n for n in sorted(names)
 print(" ".join(bad))
 EOF
 )
-  if [ -n "$miss" ]; then
+  rc=$?
+  if [ $rc -ne 0 ]; then
+    fail "編成表の検査が実行できない（python rc=$rc）: $(echo "$miss" | tail -1)"
+  elif [ -n "$miss" ]; then
     fail "編成表の担当が roster.json か agents/ に無い: $miss"
   else
     ok "編成表の担当が roster.json と agents/ の両方に実在する"

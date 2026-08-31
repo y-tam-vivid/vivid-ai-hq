@@ -42,7 +42,22 @@ import datetime
 #   別ユーザー名の機械で「ファイルが無い」で落ちる。実測で踏んだので直した。
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RELAY = os.path.expanduser('~/.vivid-relay')
-CLAUDE = os.path.expanduser('~/.npm-global/bin/claude')
+def _find_claude():
+    """claude CLI の場所を実際に探す。★固定パスにしない（2026-08-31）。
+    ~/.npm-global/bin/claude 固定だったため、実体が /opt/node22/bin/claude にある面で
+    「claude が無い」と誤って報告した。パスは機械ごとに違う。"""
+    import shutil
+    found = shutil.which('claude')
+    if found:
+        return found
+    for c in ('~/.npm-global/bin/claude', '/opt/node22/bin/claude',
+              '/usr/local/bin/claude', '/opt/homebrew/bin/claude'):
+        c = os.path.expanduser(c)
+        if os.path.exists(c):
+            return c
+    return 'claude'
+
+CLAUDE = _find_claude()
 TIMEOUT = 1500
 
 # ── 協調層の正本を読む（2026-08-31）────────────────────────────
@@ -147,13 +162,49 @@ def _assert_separated(name, makers, checker):
             % (name, checker))
 
 
+def inspector_for(domain):
+    """その領域の検査役を roster.json の inspects から引く。
+    ★TEAM 側へ検査役を書き写さない（2026-08-31 チーム検査の指摘①）。
+      roster.json は cfo/legal/dev-producer/data-auditor/automation-watchdog の5体に
+      inspects を持たせているのに、TEAM の checker は data-auditor と legal の2体固定で、
+      「cron・GASトリガーは必ずドーベルマンを通す」ゲートが実装に存在しなかった。"""
+    for aid, a in ROSTER.get('agents', {}).items():
+        if a.get('inspects') == domain:
+            return aid
+    return None
+
+
+# 仕事の中身 → 通すべき検査役の領域（★ここは「領域名」だけを書く。担当名は書かない）
+INSPECT_DOMAIN = [
+    (r'cron|routine|トリガー|定期実行|自動処理|daily_jobs', '自動処理'),
+    (r'台帳|顧客|マスタ|重複|突合|発番|kintone|スプレッドシート|シート', 'データ'),
+    (r'契約|法務|規約|コンプラ|個人情報', '法務'),
+    (r'請求|入金|予実|kpi|資金', '財務'),
+    (r'実装|コード|スクリプト|バグ|フック|hook', 'コード'),
+]
+
+
 def classify(task):
     for pat, name, makers, checker in TEAM:
         if re.search(pat, task, re.I):
+            checker = _override_checker(task, makers, checker)
             _assert_separated(name, makers, checker)
             return name, makers, checker
-    _assert_separated(DEFAULT[0], DEFAULT[1], DEFAULT[2])
-    return DEFAULT
+    checker = _override_checker(task, DEFAULT[1], DEFAULT[2])
+    _assert_separated(DEFAULT[0], DEFAULT[1], checker)
+    return DEFAULT[0], DEFAULT[1], checker
+
+
+def _override_checker(task, makers, fallback):
+    """roster.json のゲートを優先する。★作る役と重なる場合はフォールバックへ戻す
+    （自分が作ったものを自分で検査させない、が上位の規範）"""
+    who = [a for a, _ in makers]
+    for pat, domain in INSPECT_DOMAIN:
+        if re.search(pat, task, re.I):
+            cand = inspector_for(domain)
+            if cand and cand not in who:
+                return cand
+    return fallback
 
 
 def validate_all():
@@ -253,8 +304,12 @@ def main():
 ## 依頼（元の議題）
 %s
 
-## 各担当の所見（★作った本人の申告。信用せず実物で確かめること）
-%s
+## ★1周目は blind です（roster.json inspection.pass_a_blind）
+各担当の所見は **わざと渡していません**。申告を先に読むと、報告に無いもの
+（落とした指示・過剰修正）が見えなくなるためです。実物と diff だけを見てください。
+
+  git -C %s diff HEAD~1     直近の変更
+  git -C %s status --short  未コミットの変更
 
 ## やること（★roster.json の inspection.pass_a_blind に従う）
 1. **数字は1つ残らず、あなた自身が別経路で数え直す。**申告の値をそのまま採用しない。
@@ -269,8 +324,27 @@ def main():
 
 深刻な順に最大6件。①どこ ②何が問題か ③どの規範に反するか ④起きる事故。
 問題が無ければ「無い」と明言。読んでいない範囲があれば必ず書く。700文字以内。
-""" % (checker, task, joined[:6000])
-    _, chk, chk_ok = run_agent(checker, chk_prompt, '検査の観点で', '検査役です。直さないでください。')
+""" % (checker, task, REPO, REPO)
+    _, chk_a, chk_ok = run_agent(checker, chk_prompt, '検査の観点で',
+                                 '検査役です（1周目・blind）。直さないでください。')
+    # ── Pass B ── ここで初めて申告を見せる（roster.json inspection.pass_b_context）
+    chk_b_prompt = """あなたは同じ検査役です。1周目は実物だけを見て次を書きました。
+
+## あなたの1周目の所見（blind）
+%s
+
+## いま初めて渡す「作った本人の申告」
+%s
+
+## やること
+1. **申告にあって、あなたが1周目に見つけられなかったもの** ＝ 実物で裏が取れているか
+2. **あなたが1周目に見つけたのに、申告に出てこないもの** ＝ ★これが本命。
+   「できません」は書けるが「忘れました」は本人にも見えない。落ちた指示は報告に出ない
+3. 最後に「進めてよいか／止めるか」を一言で
+400文字以内。日本語。""" % (chk_a[:2500], joined[:4000])
+    _, chk_b, _ = run_agent(checker, chk_b_prompt, '申告との突合の観点で',
+                            '検査役です（2周目）。直さないでください。')
+    chk = '【1周目・実物だけを見た所見】\n%s\n\n【2周目・申告と突き合わせて】\n%s' % (chk_a, chk_b)
     print('── 検査役 %s' % checker)
     print(chk[:900])
     print('')
