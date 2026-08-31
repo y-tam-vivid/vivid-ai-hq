@@ -144,6 +144,23 @@ dashboard_data.py に argparse は ★0件
 - ★見つかったのは、検査役が**自分の操作ミスを正直に申告したから**。
   隠していたら地雷のまま残っていた（[[feedback_use_the_team_not_alone]]）。
 
+
+## ★「有効＝False」は実行を止めない（2026-08-31 実測）
+
+```
+⚙️自動処理レジスタ（Notion）の「有効」列    ★🔴🟡監視のトグル
+bin/daily_jobs.conf への登録                 ★実行のトグル
+＝ 別物。「有効=False にしてあるから動かない」は誤解
+```
+
+2026-08-31、`intake_notify.py` はレジスタの「有効=False」のまま **09:00 に本実行され、
+Slack へ実投稿された**（松本氏へ通知が届いた）。実害は無かった（Z列が空で台帳へは書かれず）が、
+**「Falseにしてあるから安全」で別の処理を止めたつもりになる再発リスクが残る。**
+
+- **★止めたいなら daily_jobs.conf / crontab の行そのものを外す。** レジスタでは止まらない。
+- ★Notion側の「備考」に「ドライラン実測のみ・9/1が初回発火予定」と書かれたまま
+  実物と食い違っていた ＝ [[reference_stale_premise_daily]] の再発。
+
 関連: [[project_sales_pipeline_workbook]] [[reference_sales_workbook_column_moves]]
 [[reference_kintone_csv_import_landmines]] [[reference_mac_mini_execution_env]]
 
