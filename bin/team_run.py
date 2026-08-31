@@ -29,6 +29,7 @@
   claude CLI さえあれば MacBook でも mini でも同じ編成で回る。
 """
 
+import io
 import os
 import re
 import sys
@@ -37,10 +38,58 @@ import time
 import subprocess
 import datetime
 
-REPO = os.path.expanduser('~/vivid-ai-hq')
+# ★スクリプト自身の位置から導く（2026-08-31）。~/vivid-ai-hq 固定だと、クラウド面や
+#   別ユーザー名の機械で「ファイルが無い」で落ちる。実測で踏んだので直した。
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RELAY = os.path.expanduser('~/.vivid-relay')
 CLAUDE = os.path.expanduser('~/.npm-global/bin/claude')
 TIMEOUT = 1500
+
+# ── 協調層の正本を読む（2026-08-31）────────────────────────────
+#   役割・読むもの・封筒の型・終了条件・人が入る点は bin/coordination/roster.json が正本。
+#   ★ここへ書き写さない。写した瞬間に二重管理になり、片方だけ直る事故が起きる。
+ROSTER_PATH = os.path.join(REPO, 'bin', 'coordination', 'roster.json')
+try:
+    with io.open(ROSTER_PATH, encoding='utf-8') as _f:
+        ROSTER = json.load(_f)
+except Exception as _e:
+    raise SystemExit('★協調層の正本が読めません ： %s\n  %s' % (ROSTER_PATH, _e))
+
+def roster_of(agent):
+    return ROSTER.get('agents', {}).get(agent, {})
+
+_INDEX_BY_AGENT = os.path.join(REPO, 'memory', 'INDEX_担当別.md')
+
+def reads_of(agent):
+    """その担当が常設で読むもの。
+    ★正本は memory/INDEX_担当別.md の表。roster.json にも agents/*.md にも写さない。
+      2026-08-31、roster.json 側へ書き写したところ、書いたその日に既存の表と3件ズレた
+      （ナミ・つる・モルガンズが INDEX_notion も読む点が落ちていた）。だから読みに行く。
+    表の書式 ： | 担当名 | `<agent>.md` | [INDEX_xxx](INDEX_xxx.md) ／ … |"""
+    try:
+        with io.open(_INDEX_BY_AGENT, encoding='utf-8') as f:
+            for line in f:
+                if not line.startswith('|'):
+                    continue
+                cols = [c.strip() for c in line.strip().strip('|').split('|')]
+                if len(cols) < 3 or ('`%s.md`' % agent) not in cols[1]:
+                    continue
+                found = re.findall(r'\((INDEX_[^)]+\.md)\)', cols[2])
+                if '全部' in cols[2]:
+                    found = ['INDEX_' + n for n in
+                             ['営業.md', '仕組み.md', 'notion.md', '発信.md',
+                              '担当と案件.md', '担当別.md']]
+                return ['memory/' + x for x in dict.fromkeys(found)]
+    except Exception:
+        pass
+    return []
+
+def envelope_spec():
+    return ROSTER.get('envelope', {})
+
+def max_rounds():
+    return ROSTER.get('termination', {}).get('max_rounds', 2)
+
 
 # ── 何の仕事か → 誰を呼ぶか（★ここが編成の正本）────────────────
 #   makers  : 並列で走る「作る役」。違う角度を持たせる
@@ -116,8 +165,15 @@ def validate_all():
 
 def run_agent(agent, task, angle, role):
     """1体を走らせる。★他の役の出力は渡さない（会話させない）"""
+    _reads = reads_of(agent)
+    _reads_block = ('\n'.join('  - ~/vivid-ai-hq/%s' % x for x in _reads)
+                    if _reads else '  （このagentは常設の読みものを持ちません）')
     prompt = """あなたは ふくち。グループの「%s」です。
 `~/vivid-ai-hq/.claude/agents/%s.md` を読んで、その人物として振る舞ってください。
+
+## 着手前に必ず読むもの（協調層の正本 roster.json で固定されています）
+%s
+★「どれを読むか」を自分で選ばないでください。上に挙がったものだけを読みます。
 
 ## 役割
 %s
@@ -135,9 +191,13 @@ def run_agent(agent, task, angle, role):
 根拠      … 実物を読んで確かめたことだけ。推測は「推測」と明記
 必須条件  … あなたの領域から見て、これが無いと成立しないもの
 懸念      … 見落とされそうなこと
+自信度    … high / medium / low
+確かめた経路 … 何経路で確かめたか。**1経路なら「1経路でしか確かめていない」と書く**
 ```
 600文字以内。日本語。**やっていないことをやったように書かない。**
-""" % (agent, agent, role, angle, task)
+★「すべて」「0件」「無い」「変わっていない」は、2経路で確かめた時だけ書いてよい。
+★他の担当へ質問を書かないでください。受け取るのは束ねる役だけで、往復はしません。
+""" % (agent, agent, _reads_block, role, angle, task)
     try:
         r = subprocess.run([CLAUDE, '-p', prompt], cwd=REPO,
                            capture_output=True, text=True, timeout=TIMEOUT)
@@ -196,10 +256,16 @@ def main():
 ## 各担当の所見（★作った本人の申告。信用せず実物で確かめること）
 %s
 
-## やること
-1. 所見のうち **実物で裏が取れないもの** を指摘する
-2. **過去に踏んだ地雷を踏んでいないか**（`~/vivid-ai-hq/memory/` を見る）
-3. 最後に **「この方針で進めてよいか」を一言で**。止めるべきなら止めると言う
+## やること（★roster.json の inspection.pass_a_blind に従う）
+1. **数字は1つ残らず、あなた自身が別経路で数え直す。**申告の値をそのまま採用しない。
+   実例 ： 「解消11件」の申告を突合したら実物は7件だった（2026-08-29）。
+   過剰修正は本人には成功に見えるので、申告には出てこない。別主体が数えるしかない。
+2. 所見のうち **実物で裏が取れないもの** を指摘する
+3. **「すべて」「0件」「無い」「変わっていない」が1経路の確認で書かれていないか**を見る
+4. **過去に踏んだ地雷を踏んでいないか**（`~/vivid-ai-hq/memory/` を見る）
+5. **依頼に含まれていたのに、どの所見にも出てこないもの**を探す。
+   ★「できません」は書けるが「忘れました」は本人にも見えない。落ちた指示は報告に出ない。
+6. 最後に **「この方針で進めてよいか」を一言で**。止めるべきなら止めると言う
 
 深刻な順に最大6件。①どこ ②何が問題か ③どの規範に反するか ④起きる事故。
 問題が無ければ「無い」と明言。読んでいない範囲があれば必ず書く。700文字以内。

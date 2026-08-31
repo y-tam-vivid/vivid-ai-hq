@@ -121,5 +121,55 @@ else
   say "  － bin/check_path_duplication.py が無い"
 fi
 
+say "── 9. 協調層（roster.json ⇄ team_run.py ⇄ 担当定義）"
+# ★2026-08-31 新設。「作ったが経路に載っていない」「正本を写して二重管理になった」を機械で止める。
+#   team_run.py は 2026-08-20 に作られ 8/31 まで一度も呼ばれず、同じ指摘が3回来た。
+ROSTER=bin/coordination/roster.json
+if [ ! -f "$ROSTER" ]; then
+  fail "協調層の正本が無い: $ROSTER"
+else
+  python3 -c "import json,io;json.load(io.open('$ROSTER',encoding='utf-8'))" 2>/dev/null \
+    && ok "roster.json が読める（JSONとして妥当）" || fail "roster.json が壊れている"
+
+  # ★今日踏んだ地雷。担当が読むものの正本は memory/INDEX_担当別.md だけ。
+  #   roster.json へ書き写した当日に3件ズレた（ナミ・つる・モルガンズの INDEX_notion が落ちた）。
+  if grep -q '"reads"' "$ROSTER"; then
+    fail "roster.json に \"reads\" がある。担当が読むものの正本は memory/INDEX_担当別.md の1枚だけ"
+  else
+    ok "担当が読むものは INDEX_担当別.md に一本化されている"
+  fi
+
+  # 編成表に出る担当が roster.json と agents/*.md の両方に実在するか
+  miss=$(python3 - <<'EOF' 2>/dev/null
+import importlib.util, os, json, io
+spec = importlib.util.spec_from_file_location("tr", "bin/team_run.py")
+tr = importlib.util.module_from_spec(spec); spec.loader.exec_module(tr)
+names = set()
+for pat, name, makers, checker in tr.TEAM:
+    names.update(a for a, _ in makers); names.add(checker)
+names.update(a for a, _ in tr.DEFAULT[1]); names.add(tr.DEFAULT[2])
+bad = [n for n in sorted(names)
+       if n not in tr.ROSTER.get("agents", {})
+       or not os.path.exists(os.path.join(".claude/agents", n + ".md"))]
+print(" ".join(bad))
+EOF
+)
+  if [ -n "$miss" ]; then
+    fail "編成表の担当が roster.json か agents/ に無い: $miss"
+  else
+    ok "編成表の担当が roster.json と agents/ の両方に実在する"
+  fi
+
+  # ★本丸：作っただけで呼ばれていないものを検出する
+  if grep -rqs "team_run" .claude/skills/fukuchi-core/SKILL.md; then
+    ok "team_run.py が規範から呼ばれている（入口に載っている）"
+  else
+    fail "team_run.py がどこからも呼ばれていない。作っただけで経路に載っていない"
+  fi
+
+  python3 bin/team_run.py --dry "検査用のダミー依頼" >/dev/null 2>&1 \
+    && ok "team_run.py --dry が通る" || fail "team_run.py --dry が落ちる"
+fi
+
 say ""
 [ $NG -eq 0 ] && { say "✅ ズレなし"; exit 0; } || { say "❌ ズレを検出。上記を解消してから commit すること"; exit 1; }

@@ -1,0 +1,135 @@
+{
+  "_": "協調層の正本。誰が何を担当し、何を読み、何を出し、誰へ渡し、いつ止まり、どこで人が入るかを決める。",
+  "_authority": "fukuchi-core の散文と食い違ったら、このファイルが正。散文は説明であって仕様ではない。",
+  "_why": "2026-08-31 有璽氏「役割だけちゃんと決めて、ボトルネックになるところだけ、こちらが確認するような設計にすればいい」。旧規範は『AI同士を会話させない』と禁じただけで代わりの受け渡し形式を決めず、間を有璽氏が毎回運ぶ構造になっていた。",
+  "_runner": "bin/team_run.py がこれを読んで編成・実行する。手で担当を選ばない。",
+  "_reads_source": "★各担当が常設で読むものは memory/INDEX_担当別.md が正本。ここには書かない。2026-08-31、このファイルに reads を書いた直後、既存の正本と3件ズレていた（ナミ・つる・モルガンズが notion も読む点が落ちた）。作った当日にズレた＝二重管理は規律では防げないことの実例。",
+  "version": "1.0",
+  "updated": "2026-08-31",
+
+  "envelope": {
+    "_": "担当から担当へ渡してよい唯一の形。これ以外の受け渡し（往復の相談・その場の合意形成）は禁止。",
+    "_rule": "受け取った側は差出人へ返信しない。束ねる役へ出すだけ。往復させると止まらず、残らず、高い。",
+    "required": [
+      "conclusion:結論を1文で",
+      "grounds:根拠（実測ならコマンドと値）",
+      "must:自分の領域から見た必須条件",
+      "risk:懸念",
+      "confidence:high|medium|low",
+      "routes:確かめた経路の数と中身（1経路なら『1経路でしか確かめていない』と明記）"
+    ],
+    "forbidden": [
+      "相手への質問",
+      "未実測の数字",
+      "『すべて』『0件』『変わっていない』を1経路で断定すること"
+    ]
+  },
+
+  "agents": {
+    "secretary": {
+      "name": "ビビ", "role": "中央窓口・受付と振り分け・束ねて1本で出す",
+      "decides": ["誰に振るか", "人へ出す1本の形"],
+      "must_not": ["自分で実装する", "自分で検査する", "担当を飛ばして一人で完結する"],
+      "_note": "手を動かさない。投げて束ねる。ここを破ると『一人で抱えた』になる。"
+    },
+    "cko": {
+      "name": "ロビン", "role": "束ねる役・ナレッジ設計・会議準備",
+      "decides": ["合意点／対立点／まだ分からない点 の切り分け"],
+      "is_aggregator": true
+    },
+    "cfo": {
+      "name": "ナミ", "role": "財務・KPI・請求",      "inspects": "財務", "domain_has_right_answer": true
+    },
+    "legal": {
+      "name": "センゴク", "role": "契約・法務・期日",      "inspects": "法務", "domain_has_right_answer": true
+    },
+    "dev-producer": {
+      "name": "ステラ", "role": "開発統括・割り振り",      "inspects": "コード", "domain_has_right_answer": true
+    },
+    "system-developer": {
+      "name": "ピタゴラス", "role": "バックエンド・API・DB・インフラ・データ連携", "domain_has_right_answer": true
+    },
+    "web-developer": {
+      "name": "リリス", "role": "サイト・LP・フロント・CMS・SEO", "domain_has_right_answer": true
+    },
+    "app-developer": {
+      "name": "エジソン", "role": "アプリ・プロトタイプ・UX", "domain_has_right_answer": true
+    },
+    "data-auditor": {
+      "name": "つる", "role": "台帳・DBの整合を見る", "inspects": "データ",
+      "_gate": "AIが台帳へ書き込む前は必ずここを通す。通さず書いたら差し戻し。"
+    },
+    "automation-watchdog": {
+      "name": "ドーベルマン", "role": "自動処理の番人", "inspects": "自動処理",
+      "_gate": "新しい cron・routine・GASトリガーを本番へ載せる前は必ずここを通す。"
+    },
+    "design": {
+      "name": "フランキー", "role": "デザイン・情報設計・見せ方"
+    },
+    "pr": {
+      "name": "モルガンズ", "role": "広報PR・発信"
+    },
+    "researcher": {
+      "name": "クローバー博士", "role": "社外にある知（文献・統計・法令・最新技術）",
+      "_standing_order": "★2026-08-31 有璽氏「本来はそちらから提示してもらえればいい」。外部の新しいやり方は人が渡すのを待たず、こちらから月次で出す。"
+    }
+  },
+
+  "flow": {
+    "_": "許される受け渡しの向き。ここに無い経路は通さない。",
+    "entry": "secretary",
+    "edges": [
+      { "from": "secretary", "to": "*workers*", "type": "envelope", "parallel": true,
+        "_": "並列で投げる。担当同士は互いに見ない（同じ型で並べる）" },
+      { "from": "*workers*", "to": "cko", "type": "envelope",
+        "_": "束ねる役へ出すだけ。差出人へ返信しない" },
+      { "from": "cko", "to": "*inspectors*", "type": "conflict_only",
+        "_": "対立点だけを領域の検査役へ回す" },
+      { "from": "*inspectors*", "to": "secretary", "type": "verdict" },
+      { "from": "secretary", "to": "human", "type": "single_report",
+        "_": "人へは必ず1本。分けて出さない" }
+    ],
+    "forbidden_edges": [
+      { "from": "*workers*", "to": "*workers*", "reason": "往復になる。止まらず、残らず、高い" },
+      { "from": "*any*", "to": "self", "reason": "作った本人が検査してはいけない" },
+      { "from": "*workers*", "to": "human", "reason": "人へ出す口は窓口1つ。分けて出さない" }
+    ]
+  },
+
+  "inspection": {
+    "_": "検査は blind を1周目にする。2026-08-29に1回実演し、そのとき新しい欠陥が1件見つかった。",
+    "pass_a_blind": {
+      "gives": ["diff", "実物"],
+      "withholds": ["作った本人の報告文", "申告した件数", "『できました』の主張"],
+      "_why": "申告を先に読ませると、報告に無いもの（落とした指示・過剰修正）が見えない。実例＝『解消11件』の申告が実物では7件だった。"
+    },
+    "pass_b_context": { "gives": ["背景", "申告"], "_": "Aで洗い出した後にだけ渡す" },
+    "self_inspection": "禁止"
+  },
+
+  "termination": {
+    "_": "止まる条件を先に決めないと永遠に回る。",
+    "max_rounds": 2,
+    "on_unresolved": "決められない理由を『情報／判断／権限』のどれかに分類して人へ返す",
+    "timeout_minutes": 30,
+    "on_malformed_envelope": "型違反は受け取らず、差出人へ1回だけ返す。2回目は束ねる役が欠落として記録する"
+  },
+
+  "human_gates": {
+    "_": "人が入るのはここだけ。ここ以外で人待ちが出たら、それは設計ではなく権限の穴。塞ぐ対象であって報告して待つ対象ではない。",
+    "approval_required": [
+      "外へ出る（メール送信・Slack投稿・PR配信・公開）",
+      "お金（課金・契約・発注）",
+      "正本の削除（kintone・マスタの行削除・Notionページの削除）",
+      "規範の変更（fukuchi-core・このファイル・Notion運用ルール）",
+      "人に配るもの（社員向けの案内・ルールの周知）",
+      "大きな分岐（設計の方向転換・やり方の全面変更）"
+    ],
+    "also": "2周して決まらないとき",
+    "not_a_gate": [
+      "AIが実行できないから人にやってもらう（＝権限の穴。塞ぐ）",
+      "念のための確認（＝可逆なら自分で進める）",
+      "一手ごとの承認（＝溜めて1回にする）"
+    ]
+  }
+}
