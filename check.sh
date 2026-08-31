@@ -180,6 +180,22 @@ EOF
   python3 bin/team_run.py --dry "検査用のダミー依頼" >/dev/null 2>&1 \
     && ok "team_run.py --dry が通る" || fail "team_run.py --dry が落ちる"
 
+  # ★仕様(roster.json)と実装(team_run.py)の一致を機械で検証する（2026-08-31 新設）。
+  #   有璽氏「監査役に毎度毎度指摘されてたら意味ない。ならないように設計しろ」。
+  #   実測：1周目と2周目に検査役が見つけた欠陥を、これは即座に検出する（逆検算済み）。
+  if [ -f bin/coordination/verify_spec.py ]; then
+    vs=$(python3 bin/coordination/verify_spec.py 2>&1)
+    if [ $? -eq 0 ]; then
+      ok "仕様⇄実装の一致 $(echo "$vs" | grep -o '一致 [0-9]* ／ 不一致 [0-9]* ／ 未検証 [0-9]*')"
+      echo "$vs" | grep '△' | sed 's/^/      /'
+    else
+      fail "仕様と実装が食い違っています:"
+      echo "$vs" | grep '✗' | sed 's/^/      /'
+    fi
+  else
+    fail "bin/coordination/verify_spec.py が無い"
+  fi
+
   # ★検査4（担当を通さず一人で実装）の敵対的実測。作っただけで呼ばれないのを避け、
   #   ここから毎回叩く（2026-08-31 チーム検査の指摘④「変更前の全件実行記録が無い」）。
   if [ -f bin/hooks/test_check4.py ]; then

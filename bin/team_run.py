@@ -58,7 +58,7 @@ def _find_claude():
     return 'claude'
 
 CLAUDE = _find_claude()
-TIMEOUT = 1500
+TIMEOUT = 1500          # ★下で roster.json の termination.timeout_minutes に合わせて上書きする
 
 # ── 協調層の正本を読む（2026-08-31）────────────────────────────
 #   役割・読むもの・封筒の型・終了条件・人が入る点は bin/coordination/roster.json が正本。
@@ -106,6 +106,11 @@ def max_rounds():
     return ROSTER.get('termination', {}).get('max_rounds', 2)
 
 
+# ★終了条件は roster.json が正本。ここへ数字を書き写さない（2026-08-31 verify_spec.py が
+#   「roster=30分 だが実装 TIMEOUT=1500秒(25分)」の食い違いを検出した）。
+TIMEOUT = int(ROSTER.get('termination', {}).get('timeout_minutes', 25)) * 60
+
+
 # ── 何の仕事か → 誰を呼ぶか（★ここが編成の正本）────────────────
 #   makers  : 並列で走る「作る役」。違う角度を持たせる
 #   checker : ★作る役とは必ず別。「通す／止める」まで判定させる
@@ -131,9 +136,13 @@ TEAM = [
      'dev-producer'),
     (r'契約|法務|規約|コンプラ|個人情報|機微',
      '法務',
-     [('legal', '日本法と契約実務の観点で'),
+     # ★legal（センゴク）を作る役に入れない（2026-08-31 verify_spec.py が検出）。
+     #   入れると法務領域の検査役が自分自身になり fallback（つる）へ落ち、
+     #   センゴクが検査役として一度も呼ばれない。dev-producer と全く同じ型で、
+     #   3周のチーム検査では誰も気づかなかった。機械が即座に見つけた。
+     [('cko', '過去の契約・決定との整合の観点で'),
       ('cfo', '金額・支払条件・与信の観点で')],
-     'data-auditor'),      # ★legalを検査役にすると作る役と同じになる（2026-08-20 実測で発見）
+     'legal'),
     (r'発信|広報|プレス|sns|投稿|記事',
      '広報',
      [('pr', '対外発信と炎上リスクの観点で'),
