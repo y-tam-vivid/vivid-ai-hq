@@ -39,7 +39,7 @@
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
 - [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／**形式外value(UUID)は9日目・累計31回(8/25=1 8/26=13 8/27=3 8/28=7 8/29=0 8/30=0 8/31=1 9/1=6)。押した人にエラーが返り続けている＝別アプリのボタン。★0が2日続いたのは直ったからでなく誰も押さなかっただけ。★8/29に書いた「次に読んだ人がapi_app_idをログへ出す」は grep実測0件＝入っていない。担当を名指しした＝ピタゴラス／検査ステラ**／貼った鍵のlog平文は未revoke／**★scopeは「足してSave」では効かない。再インストールまでが1セット。実測は auth.test の x-oauth-scopes ヘッダ(本文には出ない)**
-- [バックオフのリセットが早すぎる](reference_retry_backoff_resets_too_early.md) — ★9/2 Socket Modeが19秒で9回再接続(8回 too_many_websockets)。原因はSlackでなくこちら＝1秒で張り直すので古いソケットが生きたまま数えられる。`backoff=1`が「ソケットが開いた時点」でリセットされ指数バックオフが一度も効かない。**見るのは切断の件数でなく「秒数が増えているか」。同じ数字が3つ並べば黒**。★9/2 08:40 つるがピタゴラスへ発注済み(記録だけでは2時間後に再発した→[[reference_a_warning_nobody_owns]]5つ目の型)
+- [バックオフのリセットが早すぎる](reference_retry_backoff_resets_too_early.md) — ★9/2 Socket Modeが19秒で9回再接続(8回 too_many_websockets)。原因はSlackでなくこちら＝1秒で張り直すので古いソケットが生きたまま数えられる。`backoff=1`が「ソケットが開いた時点」でリセットされ指数バックオフが一度も効かない。**見るのは切断の件数でなく「秒数が増えているか」。同じ数字が3つ並べば黒**。★9/2 08:43 修正済(hello受信時にリセットへ移動・ステラ検査済)。残＝backoffが実際に伸びる確認は次の自然発生待ち
 - [md→Word変換](reference_md_to_docx.md) — bin/md2docx.py。★pandoc/LibreOfficeは無い。python-docxを両機へ導入済／変換後は読み返して数える
 - [日本語ファイル名はNFD](reference_japanese_filename_normalization.md) — macOSのファイル名はNFD。NFC文字列でgrep/in判定すると静かに0件になる。★担当の申告と検算が食い違ったら、まず検算側を疑う（両機のフォント在庫も実測記載）
 - [fresh eyes 2パス方式](reference_fresh_eyes_two_pass.md) — 検問インフラ限定。★8/29初実演＝A疑義10件→Bで消えたのは2件(実測で消した)・Bで新規1件。Aが0件でもBを省かない／依頼文で型を指定しないと使われない
