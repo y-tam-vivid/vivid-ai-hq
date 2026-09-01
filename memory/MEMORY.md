@@ -60,7 +60,7 @@
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — 8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本
-- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★表示だけで警告にしない型／★探針が実状態依存だと正常でも🔴
+- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★表示だけで警告にしない型／memoryの「次の人へ」は担当を名指し
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
 - [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/人の手を無くす。★返事は出した経路へ
