@@ -30,5 +30,5 @@
 - [イベント運用スキル群](project_event_skills_suite.md) — ★8/28導入・両機14本。**8/29 Word/PowerPoint/PDF/ffmpeg整備完了(②③④)。①snspipeフォントはdiff提示・承認待ち**／**Notion🗓️イベント管理は9列しかなく推測禁止5項目の置き場が無い**／工程は必ず全部通るわけではない(報告書までは一体)
 - [ブランドテーマ3種](reference_brand_themes.md) — ふくち。/119番/tane.の実データは揃っている(作り直さない)／**★tane.の配色がDriveとNotionで5色とも食い違い・未決**／Notionのブランドガイドは「110番」のまま古い／NPOは専用VI無し
 - [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **★サイトはTOP1枚しか無い**(料金・住所は画面のどこにも出ていない・カードは無反応)／**★2026-09-03 WordPress(orange-works.co)へ寄せる案が出て未決＝方式そのものが宙に浮いている。STUDIOならAI代行不可・WPならAPIで全部組める**／正本は`~/orangeworks-portfolio/HANDOFF.md`
-- [LIFE STAND UP サイト(WordPress)](project_lifestandup_website_wordpress.md) — ★9/3 top-page 1本の分解完了・見た目不変を3経路で実測(置き場~/lifestandup-wp・ステラ検査待ち)／方式=完全オリジナルの独立テーマ(Emanon子テーマにしない)／工数62〜112hへ下方修正／**★20本の関門はCSSの食い違い148セレクタ(.fv-sub12通り)＝意図か時期差かの判断待ち**／**★写真は撮影済み・未完は選定だけ**／301が11本要る
+- [LIFE STAND UP サイト(WordPress)](project_lifestandup_website_wordpress.md) — ★9/3 top-page1本を分解・見た目不変を3経路で実測(~/lifestandup-wp・ステラ検査中)／方式=完全オリジナルの独立テーマ／工数52〜95h／**★CSSは共通化しない=全20本一致は21個だけ。色は全一致で揃っている(前報の「トークン不揃い」は訂正)**／**★写真は撮影済み・未完は選定だけ**／301が11本
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない
