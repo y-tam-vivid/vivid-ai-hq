@@ -125,8 +125,13 @@ metadata:
 **★2026-09-03 時点の待ち**：**さくらのコントロールパネルには入れる。WordPress だけ
 ログイン情報が無い**（有璽氏が担当者へ確認中）。届くまでは読み取りしかしない
 （wp-json の GET は認証不要で通る）。
-★担当者を待たずに入る道がある → さくら公式 https://help.sakura.ad.jp/rs/2813/
-（WordPressのユーザーID・メールアドレス・パスワードを確認／再発行する手順）
+**★2026-09-03 再発行を試みて失敗。原因は実測で特定済み ── ログイン画面が消えている**
+（`/wp-login.php` が404＝All In One WP Security でURLが変更されている）。
+**次にやること＝さくらの phpMyAdmin で `wp_options` の `aio_wp_security_configs` を読み、
+変更後のログインURLを取り出す**（読むだけ）。手順は [[reference_group_blogs_and_cms]]。
+
+**★この案件はここで一時停止。ログイン情報が分かり次第、再開する**（有璽氏）。
+再開時に最初に叩くのは `python3 tools/wp_import_works.py --inspect`（読むだけ）。
 
 ## ★既存サイトを読んで分かったこと（2026-09-03・REST APIで本文取得）
 
