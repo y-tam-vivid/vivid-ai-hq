@@ -36,12 +36,27 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
-### 【ピタゴラス 2026-09-03 夜】有璽氏⇄AIの判断依頼をSlackでプッシュ型にする（ビビ依頼）── 実装中
+### 【ピタゴラス 2026-09-03 夜】有璽氏⇄AIの判断依頼をSlackでプッシュ型にする（ビビ依頼）── ✅実装・ドライラン完了。残＝最初の1通の承認とステラ検査
 
-対象 `~/.vivid-relay/ask_hub.py`（新設・書く）／`~/.vivid-relay/slack_socket.py`（追記のみ・書く）。
-**台帳・Notion・kintoneへは書かない。Slackへの実投稿はしない（--previewのみ）。**
-cron/daily_jobs への登録はしない。`slack_pending.json`（notify.pyのask機構）には
-**一切触らない**＝営業パイプラインを塞がない設計。
+`~/.vivid-relay/ask_hub.py`（新設）＋`slack_socket.py`（追記のみ・原本は
+`slack_socket.py.bak_askhub_20260903`）。**台帳・Notion・kintoneへは1文字も書いていない。
+Slackへは1件も実投稿していない**（api_postを差し替えたドライランのみ）。
+cron/daily_jobs 未登録。**`slack_pending.json` には触っていない**＝営業パイプラインを塞がない。
+
+```
+仕組み  ボタン → 既存の slack_socket.py の interactive 経路（営業と同じ）
+        自由記述 → Slackのモーダル（views.open→view_submission）。同じ経路に乗るので
+                  新しいスコープもイベント購読も要らない
+        逃げ道 → モーダルが開けなければ「DMに直接書いて」。slack_inbox.py(cron*/5)が拾う
+        宛先 → ask_hub.ROUTES の1か所だけ。いまは種別に関わらず全部DM。分割は保留
+実測    ①ask_hub単体10ケース ②slack_socket回帰5ケース。受付シートへの書込0件・
+        Slack実送信0件を、呼び出し記録とファイルのshasum不変の2経路で確認
+再起動  launchctl kickstart -k → pid 89425・19:56:25「接続確立（hello受信）」
+```
+
+**🔴別件で見つけた実害**：`slack_pending.json` に本日15:00の未回答が残っており、
+`notify.pending()` が今この瞬間も「判断待ち」を返す＝findings_escalate の出口が塞がっている。
+**私は触っていない**（答えるのは有璽氏の役目）。
 
 ### 【ピタゴラス 2026-09-03】findings_tracker のsource振り分け＋業務データ指摘の自動エスカレーション（ステラ設計・優先1〜5）── ✅実装・実測・ステラ検査「条件つき」→条件3点対応済み
 
