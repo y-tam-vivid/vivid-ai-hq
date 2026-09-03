@@ -96,6 +96,35 @@ AIOSEO、Header Footer Elementor、**All In One WP Security**、Code Snippets、
 ★All In One WP Security は**アプリケーションパスワードを無効化する設定を持つ**。
 発行できない場合はまずここを疑う。
 
+### ★★ログイン画面が消されている（2026-09-03 実測）── 再発行に失敗する原因
+
+有璽氏がパスワード再発行を試みて失敗した。**原因はこれ。**
+
+```
+実測（curl・2026-09-03）
+  /wp-login.php                        404  ★「ページが見つかりませんでした」が返る
+  /wp-login.php?action=lostpassword    404  ★再発行の画面にも辿り着けない
+  /wp-admin/                           403  ★WordPress自体は生きている
+  /login  /admin                       404
+```
+
+**標準のログインURLが存在しない＝All In One WP Security の「ログインページURL変更」
+（Rename Login Page）が有効。** 別のURLに変えられている。そのURLを知らないと入口が無い。
+
+**★次回の再開点 ── 変更後のURLは、さくらの phpMyAdmin から読むだけで分かる。**
+
+```
+1  さくらのコントロールパネル → phpMyAdmin → WordPressのデータベース
+2  wp_options テーブル（接頭辞が wp_ 以外のこともある）
+3  option_name が aio_wp_security_configs の行を開く
+4  値は長い1行。その中の login_page_slug（または似た名前）を目で探す
+   → その文字列が、いまのログインURL  https://orange-works.co/<その文字列>
+5  そのURLを開けば、通常のログイン画面と「パスワードをお忘れですか？」が出る
+```
+
+★**読むだけ。書き換えない。** プラグインのフォルダ名を変えて無効化する手もあるが、
+セキュリティ設定が一時的に全部外れるので勧めない。
+
 ### ★wp-json が開いている＝AIがページと記事を作れる
 
 STUDIO（GUI操作でAI代行不可）と**決定的に違う点**。WordPress 側なら、ページ作成・
