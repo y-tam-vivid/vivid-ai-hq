@@ -187,3 +187,16 @@ infinite の3件（.deco-star-1 wiggle / .deco-char-1 bob / .md-1 bob）を止�
 → 「止めました」を人が書かない。機械が数えた結果を貼る
 ```
 → [[reference_hooks_enforce_what_discipline_cannot]]（規律に依存する対策は、規律が切れた回に効かない）
+
+#### ★止め忘れの真因 ── SIGTERM では finally も atexit も走らない（2026-09-03 実測）
+
+「try/finally に閉じた」と書いた**直後にもう一度残った。**原因が分かった。
+
+```
+finally / atexit  ★SIGTERM で殺されると走らない（Pythonが例外を上げずに落ちるため）
+対処              signal.signal で SIGTERM/SIGINT を捕まえ、止めてから走査結果を出す
+```
+**★「try/finally に入れた」は対策の完了ではない。** 落とされ方によっては通らない経路がある。
+**入れたあとに、実際にその殺し方で試す。**（今回はSIGTERMで殺してポートが残るのを実測した）
+いまは `scan_ports()` がスクリプトの finally で必ず出るので、
+**「止めました」を人が書く運用ではなくなった。**

@@ -523,3 +523,15 @@ Slack       auth.test を叩いた（点）      → 「経路は生きている
 [[feedback_one_route_is_not_verification]] [[reference_ledger_cleanup_triage]]
 [[reference_pending_decision_does_not_pause_the_pipeline]] [[reference_ran_is_not_succeeded]]
 
+
+## ★「全部そうだ」を数えずに書いた（2026-09-03・LIFE STAND UP）
+
+```
+書いた   「20本すべての <title> が『◯◯｜LIFE STAND UP』で終わる」
+         → これを根拠に「フォルダ名はILIFEだが中身は施設のサイトで確定」と断定し、
+           有璽氏へもそう報告した
+実物     ★18/20。recruit-values は末尾に「 採用」、top-page は逆順
+```
+**結論（施設のサイトである）は変わらなかったが、根拠の数字が違っていた。**
+**★「すべて」と書くときは数える。** 目で数本見て同じ形だったことを全数の根拠にしない。
+→ [[feedback_one_route_is_not_verification]]
