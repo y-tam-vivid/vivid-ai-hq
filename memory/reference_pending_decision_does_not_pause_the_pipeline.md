@@ -35,5 +35,60 @@ metadata:
 - **★レジスタの `有効=False` は実行を止めない。** あれは監視の対象外にするだけで、
   cron / daily_jobs は独立に走る。実測：この行は `有効=False` のまま本番投稿した。
 
+---
+
+## ★逆向きの事故 ── 機械の「判断待ち」は、人が答えても解除されない（2026-09-03 実地）
+
+上は「人が止めたつもりでも機械が走る」。**今回は真裏で、機械が止まったまま人の答えが届かなかった。**
+
+```
+2026-08-20 09:34  notify.ask() が「台帳→Notion の同期を載せてよいか」を Slack へ投げ、
+                  slack_pending.json を書いた
+                  ★notify.pending() が None 以外を返す間、後続は一切先へ進まない設計
+2026-09-03 15時台 ★14日間そのまま。この1件が findings_escalate.py の出口を塞ぎ続けていた
+                  （系統Aの指摘3件＝6日連続の重複21組ほかが、1件も人へ届いていなかった）
+```
+
+**Why:** `answered` を立てられるのは `slack_inbox.py`（Slackスレッドの返信を読む）**だけ**。
+有璽氏はこの日 Claude Code の会話で「載せましょう」と答えた。**答えは確かに存在したのに、
+機械が見ている場所には無かった。** slack_inbox.py は 9/3 14:30 まで正常稼働していた
+（＝壊れていない。見る場所が1つしか無かった）。
+
+**★さらに悪いのは、塞がっていることが誰にも見えなかったこと。** `pending()` は
+「判断待ちがある」としか言わない。**いつからか・何を塞いでいるかを誰も出していない。**
+
+**How to apply:**
+
+- **★`ask()` を呼ぶ設計にするなら、答えを受け取る口を2つ以上持つ。** Slackスレッドだけに
+  依存しない（会話で答えられた場合に永久に届かない）。→ [[feedback_one_route_is_not_verification]] と同じ形。
+- **★judgment待ちには寿命を持たせる。** `findings_escalate.py` の `PENDING_STALE_HOURS=24`
+  はこの型への正しい対処だが、**それ自体が塞がれた pending の下流に居たため一度も効かなかった。**
+  寿命の判定は、塞がれる側ではなく塞ぐ側（`notify.pending()`）に置く。
+- **★毎朝の報告に「何日塞がっているか」を出す。** 沈黙は正常と区別がつかない
+  → [[reference_a_warning_nobody_owns]] [[reference_heartbeat_proves_life_not_results]]。
+- 解除は `slack_pending.json` へ `answered` / `answered_text` / `answered_at` を書く
+  （ビビが手で書いてよい。バックアップを取ってから、書いた後に `notify.pending()` が
+  None を返すことを実測する）。
+
+## ★同じ日に踏んだ「申告と実物の食い違い」（2026-09-03）
+
+pending を解除して `findings_escalate.py` を初めて通したら、**即座に落ちた。**
+
+```
+実測  経路1 実行     TypeError: open_findings() got an unexpected keyword argument 'category'
+      経路2 ソース   findings_tracker.py に SOURCE_CATEGORY は 0 件。open_findings に category 引数なし
+                     bin/hooks と .vivid-relay の2本は sha256 完全一致 ＝ 配布漏れではなく★未実装
+```
+
+**呼ぶ側（findings_escalate.py）だけができていて、呼ばれる側が無かった。**
+担当は「実装・ドライラン確認済み」と報告していた。**ドライランは、塞がれた pending の手前で
+早期 return していたため、壊れている行まで到達していなかった。**
+
+- **★「ドライランが通った」は「全部の行を通った」ではない。** 途中で return する経路があると、
+  その先は未実行のまま緑になる。**どこまで到達したかを出力で示させる。**
+- **★呼ぶ側と呼ばれる側は別々に確かめる。** 片方だけを見て「実装済み」と読まない。
+
 関連 [[reference_dangerous_entrypoints]] [[reference_monitor_must_exclude_parked]]
 [[feedback_stop_asking_just_do_it]] [[project_intake_slack_reply]]
+[[feedback_one_route_is_not_verification]] [[reference_a_warning_nobody_owns]]
+[[feedback_use_the_team_not_alone]]

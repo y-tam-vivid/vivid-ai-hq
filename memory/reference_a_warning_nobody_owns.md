@@ -244,7 +244,40 @@ hook_session_writeback.py の中身        新しい探針が通るか
 - ★設計は担当へ出す。**ここでビビが一人で作ると、また同じ型を踏む**
   （[[feedback_use_the_team_not_alone]]）。
 
+## ★6つ目の型 ── 不整合を直したら、届いていた経路まで切れた（2026-09-03 実地）
+
+**「混ざっているのは不整合だから直す」は正しい。だが混ざっていたおかげで届いていたものがある。**
+
+```
+これまで   self_audit.py（毎朝08:40・crontab で稼働中・実行ログ103件）が
+           open_findings() を全件で呼んでいた
+           ＝ 系統B（仕組みの自己点検）に系統A（業務データ）が混入していた
+           ＝ 不整合だが、結果として系統Aの指摘は毎朝出ていた
+
+今日直した  self_audit.py:217 へ category='B' を追加。混入は解消
+            実測：_open_findings_summary() は「（3日以上開いたままの指摘は無い）」を返す
+
+★その結果   系統A の担当は findings_escalate.py だが、実測4経路すべて 0 件
+              crontab 0 ／ daily_jobs.conf 0 ／ launchd 0 ／ 実行ログ 0
+            ＝ 重複21組・法人番号空59件・受付7日放置を毎日拾う経路が、この修正で消えた
+```
+
+**Why:** 直す側は「混入を除いた」としか見ていない。**除いた先に受け皿があるかを見ていない。**
+分離のリファクタは、分けた片方が宙に浮きやすい。
+
+**How to apply:**
+
+- **★フィルタを足す前に「除外される側は誰が拾うのか」を実測で確かめる。**
+  受け皿が「実装済み・未登録」なら、それは受け皿ではない。**登録されて初めて受け皿になる。**
+- **★直す順序を逆にする。** ①受け皿を先に自動実行へ載せる ②動くことを1回見る
+  ③それからフィルタを掛ける。逆にすると、その間だけ誰も見ない期間ができる。
+- **★「不整合の解消」は、それ自体では改善の証拠にならない。**
+  直す前と後で「人へ届く件数」を並べる。減ったなら、減ってよい理由を言えるようにする。
+- ★この型は [[reference_monitor_must_exclude_parked]]（偽陽性で埋もれる）とも
+  上の「正しく鳴っているのに拾われない」とも違う。**鳴る仕組みそのものを、善意で外した**型。
+
 関連: [[reference_heartbeat_proves_life_not_results]] [[reference_ran_is_not_succeeded]]
 [[reference_delivered_but_unread]] [[project_automation_register]]
 [[reference_monitor_must_exclude_parked]] [[reference_hooks_enforce_what_discipline_cannot]]
 [[feedback_use_the_team_not_alone]] [[reference_retry_backoff_resets_too_early]]
+[[feedback_never_write_an_unmeasured_number]]

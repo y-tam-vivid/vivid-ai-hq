@@ -44,6 +44,33 @@ import sys
 STATE = os.path.expanduser('~/.vivid-relay/open_findings.json')
 NUM = re.compile(r'\d+')
 
+# ★2026-09-03 ピタゴラス追加（ビビ依頼・findings_escalate.py が要求する系統分離）。
+#   系統A ＝ 業務データの指摘（人の判断が要る＝有璽氏のDMへ上げてよい）
+#   系統B ＝ 仕組みの自己点検の指摘（self_audit.py の役割内。DMへは上げない）
+#   ★未登録の source は 'B'（＝findings_escalate.py が拾わない側）へ倒す（category_of() 参照）。
+#   ★2026-09-03 ステラ検査・条件③：この「B」は"安全側"ではなく"サイレント側"と呼ぶのが正確。
+#     "安全"と呼べるのは findings_escalate.py（系統Aだけを人へ自動エスカレーションする
+#     スクリプト）が実際に稼働している前提のときだけ。その前提はいま崩れている
+#     （findings_escalate.py は daily_jobs/cron に未登録＝走っていない。WORKING.mdの
+#     該当ブロック参照）。前提が崩れていてもいなくても、Bへ落ちた指摘は
+#     findings_escalate.py に拾われない＝有璽氏へは自動では届かない、という事実は変わらない。
+#   ★新しい source を SOURCE_CATEGORY へ足すときは、必ずこの辞書へ明示的に登録すること。
+#     登録を忘れると、その source の指摘は黙って 'B'（サイレント側）へ落ち、
+#     誰にも自動では届かなくなる（本人はエスカレーションされていることを期待していても）。
+SOURCE_CATEGORY = {
+    'ledger_report': 'A',
+    'action_catalog': 'B',
+    'inspector_miss': 'B',
+    'single_route_claim': 'B',
+}
+
+
+def category_of(source):
+    """source の系統を返す。未登録の source は 'B'（＝findings_escalate.py が
+    拾わない・人へは自動で届かないサイレント側）に倒す。上のSOURCE_CATEGORY直前の
+    コメント参照。新しい source を足すときはSOURCE_CATEGORYへの登録を忘れないこと。"""
+    return SOURCE_CATEGORY.get(source, 'B')
+
 
 def _normalize(text):
     """数字を # に伏せて、指摘の「種類」を安定的に識別するキーにする"""
@@ -155,8 +182,14 @@ def clear(key, note=''):
     return True
 
 
-def open_findings(min_streak_days=0):
+def open_findings(min_streak_days=0, category=None):
     """いま open な指摘（streak_days >= min_streak_days）を新しい順で返す
+
+    ★2026-09-03 ピタゴラス追加：category 引数（'A' / 'B' / None）。
+      None（既定）なら従来どおり全件を返す＝★後方互換を壊さない
+      （dashboard_data.py・dashboard_build.py・ledger_report.py・inspector_misses.py・
+      self_audit.py はいずれも category を渡さずに呼んでおり、挙動は変わらない）。
+      'A' か 'B' を渡すと category_of(r['source']) がそれと一致する行だけに絞る。
 
     ★2026-08-31 修正（ビビが実物のopen_findings.jsonを読んで発見した欠陥）：
       track() の戻り値は 'text' というキー名を使うが（docstring 19-24行目の使用例参照）、
@@ -176,6 +209,8 @@ def open_findings(min_streak_days=0):
     state = _load()
     rows = [dict(v) for v in state.values()
             if v.get('open') and v.get('streak_days', 0) >= min_streak_days]
+    if category is not None:
+        rows = [r for r in rows if category_of(r.get('source')) == category]
     rows.sort(key=lambda r: -r.get('streak_days', 0))
     for r in rows:
         r['text'] = r.get('last_text', '')
@@ -187,6 +222,9 @@ def _main():
     ap.add_argument('--list', action='store_true')
     ap.add_argument('--clear')
     ap.add_argument('--note', default='')
+    ap.add_argument('--category', choices=['A', 'B'], default=None,
+                     help='系統で絞り込む（A=業務データ／B=仕組みの自己点検）。'
+                          '省略時は従来どおり全件')
     args = ap.parse_args()
 
     if args.clear:
@@ -194,7 +232,7 @@ def _main():
         print('クリアしました' if ok else '★該当キーが見つかりません： %s' % args.clear)
         return
 
-    rows = open_findings()
+    rows = open_findings(category=args.category)
     if not rows:
         print('開いている指摘はありません')
         return

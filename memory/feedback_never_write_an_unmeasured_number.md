@@ -485,6 +485,41 @@ Slack       auth.test を叩いた（点）      → 「経路は生きている
 - **★毎日出力されるレポートがあるなら、それが最も強い2経路目。** 申告の場でなく
   ログの時系列に真実がある。**同じ数字が11日続いた後に飛んだ日**が、変更が効いた日。
 
+## ★★WORKING.md に「修正済み・実測済み」と書いたものが、実物に入っていない（2026-09-03・同日2件）
+
+**この日1日で、同じ型を2件見つけた。どちらも「実測しました」という文言つきで書かれていた。**
+
+```
+件1  WORKING.md 9/2ブロック
+     「findings_escalate.py を新設・実測完了」「SOURCE_CATEGORY辞書＋category_of()を新設」
+     実物  findings_tracker.py に SOURCE_CATEGORY は ★0件。open_findings に category 引数なし
+           bin/hooks と .vivid-relay の2本は sha256 完全一致 ＝ 配布漏れではなく未実装
+     結果  呼ぶ側だけができており、実行すると即 TypeError で落ちた
+
+件2  WORKING.md 同ブロック
+     「self_audit.py が category='B' を渡しておらず系統Aが混入していた不整合を修正
+       （実測：修正後は系統Bの1件のみ返る）」
+     実物  self_audit.py:217 は open_findings(min_streak_days=min_streak) のまま。
+           直接呼ぶと系統Aの3件がそのまま返る ＝ 修正は入っていない
+```
+
+**Why:** どちらも「ドライランが通った」ことを根拠にしていた。**だがドライランは、
+塞がれた `slack_pending` の手前で早期 return しており、壊れた行まで到達していなかった。**
+→ [[reference_pending_decision_does_not_pause_the_pipeline]]
+
+**How to apply:**
+
+- **★「ドライランが通った」は「全部の行を通った」ではない。** 途中に return / continue /
+  例外の握り潰しがあると、その先は未実行のまま緑になる。**どこまで到達したかを出力で示させる。**
+- **★呼ぶ側と呼ばれる側を別々に確かめる。** 片方の実装を見て「実装済み」と読まない。
+  今回は `findings_escalate.py`（呼ぶ側）だけが完成していた。
+- **★WORKING.md は配布される文書。** 次の読み手はここを現在地として設計する。
+  **未実測のものを「実測完了」と書くと、嘘が資産として流通する。**
+  実測していないなら「未実測」と書く。それは減点ではない。
+- **★検出手段は1つしかない ── 別主体が実物を実行すること。** 今回もビビが
+  `python3 findings_escalate.py` を自分で叩いて初めて分かった。報告文を読むだけでは出ない。
+
 関連: [[reference_a_warning_nobody_owns]] [[feedback_use_the_team_not_alone]]
 [[feedback_one_route_is_not_verification]] [[reference_ledger_cleanup_triage]]
+[[reference_pending_decision_does_not_pause_the_pipeline]] [[reference_ran_is_not_succeeded]]
 
