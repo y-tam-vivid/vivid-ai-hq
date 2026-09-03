@@ -281,3 +281,25 @@ hook_session_writeback.py の中身        新しい探針が通るか
 [[reference_monitor_must_exclude_parked]] [[reference_hooks_enforce_what_discipline_cannot]]
 [[feedback_use_the_team_not_alone]] [[reference_retry_backoff_resets_too_early]]
 [[feedback_never_write_an_unmeasured_number]]
+
+## ★「未確認」と正直に申告された項目を、窓口が拾わなかった（2026-09-03）
+
+LIFE STAND UP サイトの実装で、**作る側も検査役も、同じ限界を毎回申告していた。**
+
+```
+リリス   「Windows / iOS / Android の実機は未確認（macOS Chrome 150 のみ）」
+         「モバイル表示は1471px幅でしか見ていない＝1経路のみ」
+ステラ   「Windows/iOS/Android の実機 未確認」
+ビビ     ★申告を報告に載せただけで、確かめる工程を誰にも割り当てなかった
+結果     ★有璽氏が最初のレビューでスマホ幅の見切れを発見した
+```
+
+**★正直な申告は、拾われて初めて意味を持つ。** 「未確認」と書いてある項目は
+**そのままでは誰の仕事でもない。** 窓口が「誰がいつ確かめるか」を決めるまで、警告は無に等しい。
+
+- **★申告された限界には、その場で担当と期限を付ける。** 付けられないなら
+  「いま確かめない」と決めて、**そう書く**（放置と区別する）。
+- **★人が最初に見つけたということは、機械の検査が届いていない軸があるということ。**
+  今回で言えば「横スクロールが出ていないか」を**測る工程が1つも無かった**。
+  再現条件が分かっている不具合は、次から機械で測る。
+  → [[reference_verify_outcome_not_mechanism]]（軸が1本なら、その外は素通りする）
