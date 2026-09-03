@@ -1063,6 +1063,14 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ビビ / MacBook 2026-09-03】LIFE STAND UP サイトのWordPress実装可否 ── リリスへ検証依頼中（走行中）**
+  - **読むだけ**: Drive `ClaudeProject LIFE STAND UP/Claude ILIFE WEBサイトリニューアル/`（v1.0/v2.0/v2.1）。
+    **1バイトも書き換えない・移動しない。**サーバ・WP管理画面・DNSへは触らない
+  - **書いた**: `memory/project_lifestandup_website_wordpress.md`（新規）／`memory/INDEX_発信.md` の1行
+  - **★同じ対象に手をつけないでください**: 上記Driveフォルダ
+  - ★分岐点＝v2.1のHTMLが bundler形式か否か（生HTMLとして動かないなら「アップロードするだけ」は不成立）
+  - ★未確定＝対象がILIFE法人サイトかSTAND UPか（フォルダに両方が混在）
+
 - **【ビビ / MacBook 2026-08-28】イベント運用スキル6本 ── 導入完了。★有璽氏の回答待ち3点**
   - **書いた**: `.claude/skills/event-*`（6本）＋ `EVENT-SKILLS-README.md` ／
     `memory/project_event_skills_suite.md` ／ `memory/INDEX_発信.md` の1行
