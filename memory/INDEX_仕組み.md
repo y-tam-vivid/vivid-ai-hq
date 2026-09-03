@@ -39,9 +39,11 @@
 - [本数で切ると希少な版が消える](reference_retention_by_count_deletes_the_wrong_ones.md) — 残す単位は日ごと最新1本
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
-- [Slack通知の作法](reference_slack_notification_rules.md) — 宛先/手段/条件/書式を1枚に集約(9/3新設・従来3箇所に散在)。**★DM固定・チャンネル禁止／notify.pyを通す／検査は`VIVID_NOTIFY_OFF=1`必須(過去に本物へ8件誤送信)／有璽氏はコピー不可なのでlink=で渡す**／**★機微の線引き(金額はSlackに書かずNotionリンクへ)は当方の導出＝有璽氏の承認が未取得**
+- [Slack通知の作法](reference_slack_notification_rules.md) — 宛先/手段/条件/書式を1枚に集約(9/3新設・従来3箇所に散在)。**★経路は2つ＝報告tell()／判断ask()。ask()は1回1件・tell()は「返信不要」を自動付与**／DM`D0AT4NQ6X7D`固定・チャンネル禁止／検査は`VIVID_NOTIFY_OFF=1`必須(過去に本物へ8件誤送信)／有璽氏はコピー不可なのでlink=で渡す／**🔴金額はSlackに書かずNotionリンクへ＝当方の導出で承認未取得。確認はビビが実施・結果待ち**
 - [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／**形式外value(UUID)は9日目・累計31回(8/25=1 8/26=13 8/27=3 8/28=7 8/29=0 8/30=0 8/31=1 9/1=6)。押した人にエラーが返り続けている＝別アプリのボタン。★0が2日続いたのは直ったからでなく誰も押さなかっただけ。★8/29に書いた「次に読んだ人がapi_app_idをログへ出す」は grep実測0件＝入っていない。担当を名指しした＝ピタゴラス／検査ステラ**／貼った鍵のlog平文は未revoke／**★scopeは「足してSave」では効かない。再インストールまでが1セット。実測は auth.test の x-oauth-scopes ヘッダ(本文には出ない)**
+- [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — ★2026-09-03 稼働・実地2件通過。`ask_hub.ask()`で有璽氏のDMへボタン投稿→slack_socket.pyのinteractiveで受ける／「その他」はSlackのモーダル（新スコープ・購読不要）／**★発行は必ずminiから＝台帳`ask_hub_queue.json`が受信側にしか無い。MacBookから投げると「受付番号が見つかりません」になる**／**★notify.pyのslack_pending.jsonとは別物。こちらは誰も止めない**／宛先は`ROUTES`1か所・営業以外はDM・チャンネル分割は基準未決で保留／cron未登録・ステラ検査未了
 - [バックオフのリセットが早すぎる](reference_retry_backoff_resets_too_early.md) — ★9/2 Socket Modeが19秒で9回再接続(8回 too_many_websockets)。原因はSlackでなくこちら＝1秒で張り直すので古いソケットが生きたまま数えられる。`backoff=1`が「ソケットが開いた時点」でリセットされ指数バックオフが一度も効かない。**見るのは切断の件数でなく「秒数が増えているか」。同じ数字が3つ並べば黒**。★9/2 08:43 修正済(hello受信時にリセットへ移動・ステラ検査済)。**★9/3 07:50 自然発生で検証完了＝1→2→…→300と正しく伸びた。だが断絶は9秒→23分41秒へ悪化し24分間ボタンが死んだ（心拍は緑のまま）。「速すぎる再接続が原因」の仮説は支持されず。上限300秒は復旧の遅さの下限でもある。残＝上限見直し/jitter/連続失敗の警報の3点、まだ誰にも投げていない**
 - [md→Word変換](reference_md_to_docx.md) — bin/md2docx.py。★pandoc/LibreOfficeは無い。python-docxを両機へ導入済／変換後は読み返して数える
+- [銀行明細CSVの形3種](reference_bank_csv_formats.md) — 楽天個人4列/りそな21列(★日付2種混在)/楽天法人=全銀協20列。裏取りはトレーラー件数／平成は自動判別できない
 - [日本語ファイル名はNFD](reference_japanese_filename_normalization.md) — macOSのファイル名はNFD。NFC文字列でgrep/in判定すると静かに0件になる。★担当の申告と検算が食い違ったら、まず検算側を疑う（両機のフォント在庫も実測記載）
 - [fresh eyes 2パス方式](reference_fresh_eyes_two_pass.md) — 検問インフラ限定。★8/29初実演＝A疑義10件→Bで消えたのは2件(実測で消した)・Bで新規1件。Aが0件でもBを省かない／依頼文で型を指定しないと使われない

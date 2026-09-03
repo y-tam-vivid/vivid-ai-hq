@@ -49,8 +49,9 @@
 - [通知は押せる形にする](feedback_write_for_the_reader.md) — ★届くだけでは不足。営業以外はDM／分割は1日30件×3日まで保留
 - [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — **真因は速さのために確かさを落としていること(記憶から数字を埋める)**。数える/揃えるを部品に固め呼ぶだけにする／日付はnorm_date()を通した値だけ／件数は「443社(会社名がある行)」と数え方を添える／**★有璽氏の設計＝毎回数えず1か所(dashboard_data.json・読み口facts.py)へ集約し読むだけにする。別々に数えると人ごとに違う答えが出る**／★変種＝APIの`ok:false`を見ず空配列を「0件」と読み、権限があるのに「無い」と報告した(条件を欲張ると権限のある方まで落ちる)／**★部品を置いただけでは既存経路は変わらない。書き込む側から先に置換する（読む側だけ直すと揃って見えて汚れは増える）**／**★「解消11件」の申告を突合したら7件だった。過剰修正は本人には成功に見えるので申告に出ない＝別主体で読むしかない**
-- [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 検証3つ合格で断絶9秒→24分。**★9/3も23.7分再発＝未修正。上限300秒を下げる**
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別の方法で数え直す／**★経路を増やす前にノイズ床を測る=同じ物を2回測る。差が同桁なら判定不能と書いて捨てる**
+- [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 検証3つ合格で断絶9秒→24分。**★9/3 上限300→30秒へ。次の再発で確認**
+- [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — ★9/3稼働。`ask_hub.ask()`／営業以外はDM／**発行は必ずminiから**
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別法で数え直す／**★列挙は絞らず全部出す。自分で決めた検索語の外は見えない**
 - [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — ★別の面のファイルは人が落とすまで実体ゼロ。配布はgit
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**／**★2026-08-29「ギャッやるなよ。誰かにやらせろ」＝2回目。★「存在しません」で止めるな＝スキル名でなく①スキル②bin/③pip④過去実績のgrepで数える（Word変換は既にbin/md2docx.pyが在った）**
@@ -74,7 +75,7 @@
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ。予定作成は意図的にask／代替は.ics／**★担当も書けないことがある(allowにEditがあってもdontAskで拒否)。規範の制限と権限の制限が重なると誰も触れない領域ができる→resumeでなく新規起動で試す**／**★拒否は3層(フック/権限/OSサンドボックス)。「operation not permitted」はsettings.jsonでは直らない**
-- [バックアップの置き場まで1セット](reference_backups_in_volatile_places.md) — ★scratchpad/tmpは控えにならない。置き場を指示に明記。既定は~/.vivid-relay/
+- [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所に置かない。「まるごと」では漏れる＝対象を名指し
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 固定URLは有料でしか塞げない。MiddlewareのBasic認証で無料のまま塞ぐ
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
