@@ -1230,6 +1230,12 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
   - **★私の不備**: 前ターンで止めたはずの検証サーバ8731を立て直して止め忘れていた。今回停止・3経路で確認
   - **★同じ対象に手をつけないでください**: `~/lifestandup-wp/` ／ v2.1フォルダ
 
+- **【フランキー / MacBook 2026-09-03】LIFE STAND UP 写真の background-position 決定 ── 走行中**
+  - **読むだけ**: Drive 共有ドライブの写真32枚 ＋ `masked/` の加工版。**元ファイルは触らない**
+  - **書く**: `~/lifestandup-photo-plan/crop/`（トリミング再現画像・ローカルのみ）
+  - **★触らない**: `~/lifestandup-wp/` と `photos.json`（リリスの領域）。**値は報告で渡す**
+  - リリスの受け皿：photos.json の各枠に `position` 欄（既定 center）。★320px幅が最悪ケース
+
 - **【ビビ / MacBook 2026-08-28】イベント運用スキル6本 ── 導入完了。★有璽氏の回答待ち3点**
   - **書いた**: `.claude/skills/event-*`（6本）＋ `EVENT-SKILLS-README.md` ／
     `memory/project_event_skills_suite.md` ／ `memory/INDEX_発信.md` の1行
