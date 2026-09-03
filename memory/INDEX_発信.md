@@ -29,4 +29,4 @@
 - [グループ5法人のブログとCMS](reference_group_blogs_and_cms.md) — **ILIFE/ビビッド/オレンジワークス=WordPress・ふくち。=STUDIO・NPO=Jimdo**。★ビビッドはwww付きが正／原稿はCMSごとに形を変えて渡す
 - [イベント運用スキル群](project_event_skills_suite.md) — ★8/28導入・両機14本。**8/29 Word/PowerPoint/PDF/ffmpeg整備完了(②③④)。①snspipeフォントはdiff提示・承認待ち**／**Notion🗓️イベント管理は9列しかなく推測禁止5項目の置き場が無い**／工程は必ず全部通るわけではない(報告書までは一体)
 - [ブランドテーマ3種](reference_brand_themes.md) — ふくち。/119番/tane.の実データは揃っている(作り直さない)／**★tane.の配色がDriveとNotionで5色とも食い違い・未決**／Notionのブランドガイドは「110番」のまま古い／NPOは専用VI無し
-- [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **STUDIO無料・本体WordPressとは別物**。WORKS42件一覧まで完成／残=カルーセル削除・料金と連絡先の確定・並び順／**★STUDIOはCSVインポート不可＝手入力・構築はGUI操作でAI代行不可**／素材と原稿は`~/orangeworks-portfolio/`
+- [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **STUDIO無料・本体WordPressとは別物**。WORKS42件＋フォーム稼働／🔴3つの理由のイラストが黒背景のまま・一覧下に空白2画面／残=料金と連絡先の確定・並び順の打込み(番号は台帳に用意済み)／**★構築はGUI操作でAI代行不可**／正本は`~/orangeworks-portfolio/HANDOFF.md`
