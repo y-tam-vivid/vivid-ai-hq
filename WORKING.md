@@ -1089,13 +1089,6 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
     意図か時期差かは**デザイン判断**でこちらでは決められない。工数が12〜20h動く
   - **★同じ対象に手をつけないでください**: `~/lifestandup-wp/` ／ v2.1フォルダ
 
-- **【フランキー / MacBook 2026-09-03】LIFE STAND UP 写真の掲載箇所への割り当て案 ── 走行中**
-  - **読むだけ**: Drive `ClaudeProject LIFE STAND UP/` 配下の画像素材とHTML 20本。
-    **1バイトも書き換えない・移動しない・アップロードしない**
-  - **書く**: `~/lifestandup-photo-plan/`（新設・ローカルのみ）。★`~/Downloads` には置かない
-  - **★触らない**: `~/lifestandup-wp/`（リリスが実装中）／本番サーバ・WP管理画面／台帳・Notion・kintone
-  - 成果物＝割り当て案（第1候補＋次点）／掲載同意の確認リスト／不足カットの列挙
-
 - **【ビビ / MacBook 2026-08-28】イベント運用スキル6本 ── 導入完了。★有璽氏の回答待ち3点**
   - **書いた**: `.claude/skills/event-*`（6本）＋ `EVENT-SKILLS-README.md` ／
     `memory/project_event_skills_suite.md` ／ `memory/INDEX_発信.md` の1行
