@@ -48,3 +48,30 @@ Jimdo       同上。文章ブロックと画像ブロックを交互に置く�
            → [[reference_notion_ddl_wipes_description]]
 ```
 - 関連 → [[feedback_press_release_is_not_done_at_distribution]] ／ [[reference_tane_brand]]
+
+## ★オレンジワークスのドメインは2つあり、別物（2026-09-03 実測）
+
+```
+https://orange-works.co    200  ★本体。WordPress + Elementor・11ページ
+                                wp-json 200 ＝ REST API が開いている
+https://orange-works.org   200  ★別物（トップHTMLのハッシュが .co と一致しない）
+                                wp-json 404 ／ wp-login.php 403 ／ /news は301
+                                タイトルは .co とほぼ同じで1文字違い
+                                （「スキル習得を」 vs 「スキルの習得を」）＝旧サイトの疑い
+```
+
+**★ポートフォリオサイトの実績台帳（`~/orangeworks-portfolio/deliverables/studio_works.csv`）は
+自社実績の公開URLに `.org` を入れている。** どちらを載せるかは未確認。
+
+**.co の既存ページ11枚**（REST APIで実測）── home / about / news / contact / faq /
+recruit / forbeginners / forbusinesses / makemarket / gyakutaiboushi / privacy-policy
+
+- ★**`makemarket`（芽育マーケットについて）は既にある。** 芽育の導線を新設する前にここを見る
+- ★**`forbusinesses`（企業の方へ）がある。** 制作実績を載せるならこの下が自然
+
+### ★wp-json が開いている＝AIがページと記事を作れる
+
+STUDIO（GUI操作でAI代行不可）と**決定的に違う点**。WordPress 側なら、ページ作成・
+カスタム投稿・画像アップロードまで API で回せる。**必要なのは管理者の
+Application Password 1本**（通常のログインパスワードではない）。
+→ [[project_orangeworks_portfolio_site]] で 2026-09-03 に移行を検討開始
