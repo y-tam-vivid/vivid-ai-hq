@@ -15,7 +15,7 @@
 - [朝の要対応に切る口が無い](feedback_briefing_needs_an_off_switch.md) — 除外ルールページを新設し8/22から様子見中。14日超は消さず畳む
 - [秘書ビビ＋進捗報告](project_secretary_agent.md) — agents/secretary.md＋毎朝8時ブリーフィング。報告は機械(12/18時DM・変化なしは送らない)と手の2層
 - [請求書に毎回いるもの](reference_invoice_requirements.md) — インボイス必須6項目／★登録番号が未確認で止まる／端数処理は税率ごとに1回／前払は発行日が対象月の前月
-- [CFOナミ](project_cfo_agent.md) — ★8/31 大枠確定＝中間ハブが正本・案Yで按分は月末1回。★スウェルとリアンは別法人格／唯一のブロッカーは「誰が入力するか」未回答
+- [CFOナミ](project_cfo_agent.md) — ★9/3 確定＝丙(AIが下ごしらえ・人は確認)／粒度は中／案Yで按分は月末1回。★残＝明細をどう渡すかの経路が無い
 - [CLOセンゴク](project_legal_agent.md) — agents/legal.md。日本法ラッパー。法務ハブ構築済／プラグイン導入は未実行
 - [施設運営点検の委託契約v1.1](project_facility_inspection_contract.md) — 甲wakoku/乙ビビッド。★A案確定・レッドライン17本を反映中／追加費用4,000円・対象期間は指定申請日から約2年数ヶ月／士業法リスクは下書き非実施で低下
 - [CKOロビン](project_cko_agent.md) — agents/cko.md。会議準備を裏方で作る(毎朝7:40)。Phase B=議事録DB連携待ち
