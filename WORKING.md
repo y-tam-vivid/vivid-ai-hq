@@ -36,6 +36,42 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ピタゴラス 2026-09-03】findings_tracker のsource振り分け＋業務データ指摘の自動エスカレーション（ステラ設計・優先1〜5）── ✅実装・実測・ステラ検査「条件つき」→条件3点対応済み
+
+対象 `~/.vivid-relay/{findings_tracker.py, findings_escalate.py(新設), self_audit.py}`。
+cron/daily_jobsへの登録はしていない（依頼どおり。登録はドーベルマンの検査後）。
+台帳・Notion・kintoneへは1文字も書いていない。Slackへは実投稿していない
+（`VIVID_NOTIFY_OFF=1`でのミュート機構とドライランで実測確認）。
+
+```
+優先1  source振り分け        ✅完了。SOURCE_CATEGORY辞書＋category_of()を新設。
+                            open_findings(category=)・CLI --category を追加（後方互換）
+優先2  findings_escalate.py  ✅新設・実測完了。系統A・streak≥3日を深刻な順に
+                            notify.ask()へ。上限2件/日。実行1回は最大1件のみ
+                            （notify.pyのPENDING単一ファイル制約のため）
+優先3  系統B分離の指針       「今すぐ新スクリプトを作れ」ではなく将来の設計指針と解釈。
+                            self_audit.pyのdocstringへ明記（コードロジック変更なし）
+優先4  clear()を自己申告で呼ばない  findings_escalate.pyは一切呼ばない設計（grep実測）
+優先5  レジスタへ心拍新設     ★実施せず。「Notionへ1文字も書かない」という制約と
+                            文面上矛盾すると判断し保留。cron登録のタイミング
+                            （ドーベルマン検査後）に合わせるのが自然と考える。要確認
+優先6  週1の壊れ検知          未着手（依頼どおり後回し）
+```
+
+**★実装中に発見した重大な既存問題**：`slack_pending.json` に2026-08-20付（2週間前）の
+未回答pendingが残ったままで、`notify.pending()`は今も「判断待ちあり」と判定する。
+notify.py本体は変更せず、findings_escalate.py側で鮮度チェック（24時間・実測前の設計値）
+して対処。
+
+**ステラ検査「載せてよい（条件つき）」→条件3点、すべて対応・実測済み**：
+①stale判定したpendingへanswered マーカーを書いてから無視する（有璽氏が古い質問へ
+遅れて番号だけ返信した場合の誤処理リスクへの対処。notify.py本体は変更せず）
+②PENDING_STALE_HOURS=24も実測前の設計値である旨を明記
+③self_audit.py `_open_findings_summary()`がcategory='B'を渡しておらず系統Aの指摘が
+混入していた不整合を修正（実測：修正後は系統Bの1件のみ返る）
+
+**★MacBookは未配布**（`~/.vivid-relay/`はgit管理外）。
+
 ### 【ピタゴラス 2026-09-02】slack_socket.py 再接続バックオフ修正（つる依頼）── ✅実装・再起動・実測完了。ステラ検査依頼中
 
 対象 `~/.vivid-relay/slack_socket.py` の1箇所（run_forever・backoffリセット位置）のみ。
