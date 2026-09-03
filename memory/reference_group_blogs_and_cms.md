@@ -62,7 +62,11 @@ https://orange-works.org   200  ★別物（トップHTMLのハッシュが .co 
 
 **★正しいのは `.co`（2026-09-03 有璽氏）。`.org` は使わない。**
 実績台帳（`~/orangeworks-portfolio/deliverables/studio_works.csv`）が自社実績の公開URLに
-`.org` を入れていたので `.co` へ直した。**サーバはエックスサーバー。**
+`.org` を入れていたので `.co` へ直した。
+
+**★サーバは「さくらのレンタルサーバ」**（2026-09-03 有璽氏。当方は最初エックスサーバーと
+記録したが誤り）。**★グループの法人ごとにサーバ会社が違う。1社の手順を他社へ流用しない。**
+バックアップの取り方も管理画面もサーバ会社ごとに別物。
 
 **.co の既存ページ11枚**（REST APIで実測）── home / about / news / contact / faq /
 recruit / forbeginners / forbusinesses / makemarket / gyakutaiboushi / privacy-policy
