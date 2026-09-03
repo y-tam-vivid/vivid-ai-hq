@@ -60,14 +60,37 @@ https://orange-works.org   200  ★別物（トップHTMLのハッシュが .co 
                                 （「スキル習得を」 vs 「スキルの習得を」）＝旧サイトの疑い
 ```
 
-**★ポートフォリオサイトの実績台帳（`~/orangeworks-portfolio/deliverables/studio_works.csv`）は
-自社実績の公開URLに `.org` を入れている。** どちらを載せるかは未確認。
+**★正しいのは `.co`（2026-09-03 有璽氏）。`.org` は使わない。**
+実績台帳（`~/orangeworks-portfolio/deliverables/studio_works.csv`）が自社実績の公開URLに
+`.org` を入れていたので `.co` へ直した。**サーバはエックスサーバー。**
 
 **.co の既存ページ11枚**（REST APIで実測）── home / about / news / contact / faq /
 recruit / forbeginners / forbusinesses / makemarket / gyakutaiboushi / privacy-policy
 
 - ★**`makemarket`（芽育マーケットについて）は既にある。** 芽育の導線を新設する前にここを見る
 - ★**`forbusinesses`（企業の方へ）がある。** 制作実績を載せるならこの下が自然
+
+### ★★実績を載せる器は、既に入っている（2026-09-03 実測・新しく作らない）
+
+テーマは **Rife Free**（ポートフォリオ向けの無料テーマ）。その付属機能として、
+**STUDIOで作ったのと同じ構造が最初から入っていた。**
+
+```
+投稿タイプ  work    「ワーク」   ★0件（空）   ← 実績42件はここへ入る
+            album   「アルバム」  ★0件（空）
+            people  （groupタクソノミーの対象として存在）
+分類        work_genre  ← カテゴリ7種（Webサイト/グラフィック/ロゴ・VI/名刺/年賀状/
+                          企業ビジュアル/イラスト）はここへ入る
+既存の中身   投稿31件 ／ 固定ページ11枚 ／ メディア194点
+```
+
+**★「実績の器が無いから作る」ではない。空の器が既にある。** 中身を入れるだけ。
+→ fukuchi-core「新しい仕組みの採否は二重管理が増えないかで決める」
+
+**入っているプラグイン**（REST の namespace から実測）── Elementor（+ AI/One）、
+AIOSEO、Header Footer Elementor、**All In One WP Security**、Code Snippets、NPS Survey。
+★All In One WP Security は**アプリケーションパスワードを無効化する設定を持つ**。
+発行できない場合はまずここを疑う。
 
 ### ★wp-json が開いている＝AIがページと記事を作れる
 
