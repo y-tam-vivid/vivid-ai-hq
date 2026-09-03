@@ -44,6 +44,22 @@ import sys
 STATE = os.path.expanduser('~/.vivid-relay/open_findings.json')
 NUM = re.compile(r'\d+')
 
+# ★2026-09-03 ピタゴラス追加（ビビ依頼・findings_escalate.py が要求する系統分離）。
+#   系統A ＝ 業務データの指摘（人の判断が要る＝有璽氏のDMへ上げてよい）
+#   系統B ＝ 仕組みの自己点検の指摘（self_audit.py の役割内。DMへは上げない）
+#   ★未登録の source は安全側（B＝人へ飛ばさない方）へ倒す（category_of() 参照）。
+SOURCE_CATEGORY = {
+    'ledger_report': 'A',
+    'action_catalog': 'B',
+    'inspector_miss': 'B',
+    'single_route_claim': 'B',
+}
+
+
+def category_of(source):
+    """source の系統を返す。未登録の source は 'B'（人へは飛ばさない側）に倒す。"""
+    return SOURCE_CATEGORY.get(source, 'B')
+
 
 def _normalize(text):
     """数字を # に伏せて、指摘の「種類」を安定的に識別するキーにする"""
@@ -155,8 +171,14 @@ def clear(key, note=''):
     return True
 
 
-def open_findings(min_streak_days=0):
+def open_findings(min_streak_days=0, category=None):
     """いま open な指摘（streak_days >= min_streak_days）を新しい順で返す
+
+    ★2026-09-03 ピタゴラス追加：category 引数（'A' / 'B' / None）。
+      None（既定）なら従来どおり全件を返す＝★後方互換を壊さない
+      （dashboard_data.py・dashboard_build.py・ledger_report.py・inspector_misses.py・
+      self_audit.py はいずれも category を渡さずに呼んでおり、挙動は変わらない）。
+      'A' か 'B' を渡すと category_of(r['source']) がそれと一致する行だけに絞る。
 
     ★2026-08-31 修正（ビビが実物のopen_findings.jsonを読んで発見した欠陥）：
       track() の戻り値は 'text' というキー名を使うが（docstring 19-24行目の使用例参照）、
@@ -176,6 +198,8 @@ def open_findings(min_streak_days=0):
     state = _load()
     rows = [dict(v) for v in state.values()
             if v.get('open') and v.get('streak_days', 0) >= min_streak_days]
+    if category is not None:
+        rows = [r for r in rows if category_of(r.get('source')) == category]
     rows.sort(key=lambda r: -r.get('streak_days', 0))
     for r in rows:
         r['text'] = r.get('last_text', '')
@@ -187,6 +211,9 @@ def _main():
     ap.add_argument('--list', action='store_true')
     ap.add_argument('--clear')
     ap.add_argument('--note', default='')
+    ap.add_argument('--category', choices=['A', 'B'], default=None,
+                     help='系統で絞り込む（A=業務データ／B=仕組みの自己点検）。'
+                          '省略時は従来どおり全件')
     args = ap.parse_args()
 
     if args.clear:
@@ -194,7 +221,7 @@ def _main():
         print('クリアしました' if ok else '★該当キーが見つかりません： %s' % args.clear)
         return
 
-    rows = open_findings()
+    rows = open_findings(category=args.category)
     if not rows:
         print('開いている指摘はありません')
         return

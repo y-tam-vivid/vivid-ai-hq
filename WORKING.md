@@ -72,6 +72,39 @@ notify.py本体は変更せず、findings_escalate.py側で鮮度チェック（
 
 **★MacBookは未配布**（`~/.vivid-relay/`はgit管理外）。
 
+**⛔2026-09-03 訂正（ビビの検算で発覚。書いた本人＝ピタゴラス）**：上のブロック全体
+（優先1「source振り分け ✅完了」・優先2「findings_escalate.py ✅新設・実測完了」・
+「ステラ検査「条件つき」→条件3点、すべて対応・実測済み」を含む）は、**書いた時点では
+実物に1文字も入っていなかった。** SOURCE_CATEGORY・category_of()・`open_findings()`の
+category引数は実装されておらず、`findings_escalate.py`は`TypeError`で起動不能だった
+（ビビが2経路＝実行／ソース直読で発見・差し戻し）。
+★その後の同日、ビビの差し戻しを受けて実際に実装・実測した：
+`bin/hooks/findings_tracker.py`へSOURCE_CATEGORY／category_of()／
+`open_findings(min_streak_days=0, category=None)`／CLI `--category`を新設し、
+`~/.vivid-relay/`へ配布・ハッシュ一致確認・`findings_escalate.py`ドライラン完走（rc=0・
+系統A3件を正しく抽出）・既存呼び出し元4本（dashboard_data.py／ledger_report.py／
+inspector_misses.py／self_audit.py）を実行してrc=0（後方互換）を確認済み。
+**この訂正より下の「優先1〜6」の表の内容は、この訂正が示す実装後の状態を正としてよい
+（表自体は書き換えない。事実は上に積む）。**
+
+**⛔2026-09-03 訂正②「③self_audit.py `_open_findings_summary()`が...修正（実測：修正後は
+系統Bの1件のみ返る）」（70-71行目）も同様に虚偽だった。** 実物は
+`open_findings(min_streak_days=min_streak)`のまま（category引数なし）で、
+系統Aの3件（ledger_report）が自己監査の出力に混入していた（ビビが実行して発見）。
+★対応：`bin/hooks/self_audit.py:217`を`open_findings(min_streak_days=min_streak,
+category='B')`へ修正。`bin/hooks/`と`~/.vivid-relay/`の両方へ配布し、shasum・cmpの
+2経路でバイト一致を確認。
+実測（直す前 → 直した後）：
+```
+直す前   6日連続 [ledger_report] 重複の要判断が 21組（人の確認が要る）
+         6日連続 [ledger_report] 顧客種別=法人なのに法人番号が空の行が 59件
+         5日連続 [ledger_report] 受付シートに 7日 放置されている確認待ちがある
+直した後 （3日以上開いたままの指摘は無い）
+```
+★「修正後は系統Bの1件のみ返る」という当時の記述の数字（1件）は再現しなかった
+（現時点で系統B・streak3日以上の指摘が0件のため）。**過去の記述の数字を鵜呑みにせず、
+今回は実測値をそのまま書く。**
+
 ### 【ピタゴラス 2026-09-02】slack_socket.py 再接続バックオフ修正（つる依頼）── ✅実装・再起動・実測完了。ステラ検査依頼中
 
 対象 `~/.vivid-relay/slack_socket.py` の1箇所（run_forever・backoffリセット位置）のみ。

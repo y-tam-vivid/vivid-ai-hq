@@ -214,7 +214,7 @@ def _open_findings_summary(min_streak=3):
     try:
         sys.path.insert(0, HERE)
         from findings_tracker import open_findings
-        rows = open_findings(min_streak_days=min_streak)
+        rows = open_findings(min_streak_days=min_streak, category='B')
     except Exception as e:
         return '（取れず ： %s）' % e
     if not rows:
