@@ -47,7 +47,16 @@ NUM = re.compile(r'\d+')
 # ★2026-09-03 ピタゴラス追加（ビビ依頼・findings_escalate.py が要求する系統分離）。
 #   系統A ＝ 業務データの指摘（人の判断が要る＝有璽氏のDMへ上げてよい）
 #   系統B ＝ 仕組みの自己点検の指摘（self_audit.py の役割内。DMへは上げない）
-#   ★未登録の source は安全側（B＝人へ飛ばさない方）へ倒す（category_of() 参照）。
+#   ★未登録の source は 'B'（＝findings_escalate.py が拾わない側）へ倒す（category_of() 参照）。
+#   ★2026-09-03 ステラ検査・条件③：この「B」は"安全側"ではなく"サイレント側"と呼ぶのが正確。
+#     "安全"と呼べるのは findings_escalate.py（系統Aだけを人へ自動エスカレーションする
+#     スクリプト）が実際に稼働している前提のときだけ。その前提はいま崩れている
+#     （findings_escalate.py は daily_jobs/cron に未登録＝走っていない。WORKING.mdの
+#     該当ブロック参照）。前提が崩れていてもいなくても、Bへ落ちた指摘は
+#     findings_escalate.py に拾われない＝有璽氏へは自動では届かない、という事実は変わらない。
+#   ★新しい source を SOURCE_CATEGORY へ足すときは、必ずこの辞書へ明示的に登録すること。
+#     登録を忘れると、その source の指摘は黙って 'B'（サイレント側）へ落ち、
+#     誰にも自動では届かなくなる（本人はエスカレーションされていることを期待していても）。
 SOURCE_CATEGORY = {
     'ledger_report': 'A',
     'action_catalog': 'B',
@@ -57,7 +66,9 @@ SOURCE_CATEGORY = {
 
 
 def category_of(source):
-    """source の系統を返す。未登録の source は 'B'（人へは飛ばさない側）に倒す。"""
+    """source の系統を返す。未登録の source は 'B'（＝findings_escalate.py が
+    拾わない・人へは自動で届かないサイレント側）に倒す。上のSOURCE_CATEGORY直前の
+    コメント参照。新しい source を足すときはSOURCE_CATEGORYへの登録を忘れないこと。"""
     return SOURCE_CATEGORY.get(source, 'B')
 
 
