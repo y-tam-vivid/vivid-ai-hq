@@ -192,6 +192,38 @@ d. Slack 有璽氏のDMに実際に投稿があるか（最終確認・本人に
 備考へ確認結果（a〜dの実測）を追記すること。
 ```
 
+**【つる 2026-09-04 08:45】⑮の初回発火を確認した。★a・bは合格。c・dは不合格。有効=Trueにはまだできない。**
+
+```
+a  daily_jobs_state/findings_escalate.done   ✅ 09-04 08:30（定刻08:15→巡回で08:30に起動）
+b  vivid-daily-jobs.log                       ✅「起動:…試行1/3」→「完了:… (rc=0)」
+c  ⚙️レジスタの最終実行が9/4付か             ❌ null のまま。心拍が1度も着弾していない
+d  Slack DMへ実投稿があるか                   ❌ 送信0件。系統A 3件は誰にも届いていない
+```
+
+**c の原因＝心拍名の1文字不一致。**スクリプトの `PROC_NAME` が
+`業務データ指摘の自動エスカレーション`（短い）で、レジスタ行名は
+`系統A（業務データ）指摘の自動エスカレーション（findings_escalate.py）`。
+実測2経路 ＝ ①本実行ログ「レジスタに『業務データ指摘の…』が無い。行を新規作成はしない」
+②`heartbeat_names_check.py` 単体実行「登録漏れ」。
+→ **ピタゴラスへ投げて修正済み**（`~/.vivid-relay/findings_escalate.py:82`）。
+つるが独立に3経路で検算：ソース直読／`heartbeat_names_check.py`「異常なし・スクリプト31本・
+レジスタ57行」／Pythonで行名と文字列完全一致 True。控え
+`~/.vivid-relay/_backups/findings_escalate.py.bak_20260904-tsuru`。
+**★着弾の実証は明朝08:15の次回発火まで持ち越し。** それを見るまで「有効」をTrueにしないこと。
+
+**d の原因＝別件。**`slack_pending.json` に9/3 15:00の未回答が残っており、
+findings_escalate が「新しい判断待ち（24時間以内）が残っています」で送信を止めた。
+**有璽氏は9/3 20:14に ask_hub のボタンで答えている**（`ask_hub_queue.json` の
+`2df0d8` = status:answered「1 確認しました（対応します）」）。
+ask_hub は設計として `slack_pending.json` に触らないため、**答えたのに塞がったまま**だった。
+→ つるが `slack_pending.json` へ `answered` を書いて解除（控え
+`_backups/slack_pending.json.bak_20260904-tsuru`・`notify.pending()` が None を返すことを実測）。
+**★これは応急処置。経路は直っていない**（次に ask_hub で答えても同じことが起きる）。
+型と直し方 → `memory/reference_pending_decision_does_not_pause_the_pipeline.md`
+「★口を増やしても直らなかった」節。**★寿命の起点が「最後に聞いた時刻」なので、
+催促するほど期限が延びる**構造も同節に記載。設計の分岐なので つる は直していない。
+
 ### 【ピタゴラス 2026-09-02】slack_socket.py 再接続バックオフ修正（つる依頼）── ✅実装・再起動・実測完了。ステラ検査依頼中
 
 対象 `~/.vivid-relay/slack_socket.py` の1箇所（run_forever・backoffリセット位置）のみ。
