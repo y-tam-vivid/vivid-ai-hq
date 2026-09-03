@@ -76,6 +76,7 @@
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ。予定作成は意図的にask／代替は.ics／**★担当も書けないことがある(allowにEditがあってもdontAskで拒否)。規範の制限と権限の制限が重なると誰も触れない領域ができる→resumeでなく新規起動で試す**／**★拒否は3層(フック/権限/OSサンドボックス)。「operation not permitted」はsettings.jsonでは直らない**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所に置かない。「まるごと」では漏れる＝対象を名指し
+- [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 固定URLは有料でしか塞げない。MiddlewareのBasic認証で無料のまま塞ぐ
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
