@@ -9,6 +9,12 @@ metadata:
 
 配布用HTML（Claudeデザイン書き出しの"bundler"自己完結形式）をFigma編集可能デザインへ変換する繰り返しワークフロー。福地サイト・スタンドアップ・プライバシーポリシーを同形式で変換済み。
 
+**★2026-09-03 追記 ── 「Claudeデザインの書き出し＝bundler形式」と決めつけない。**
+LIFE STAND UP サイトの v2.1（20本）は**bundlerではなく生のHTML＋生のCSS**だった
+（実測：`grep -c '__bundler'` が20本すべて0／可視テキスト合計59,940文字／ブラウザで完全描画）。
+同じ「Claudeデザイン」でも書き出し形式が違う。**着手前に `grep -c '__bundler'` で1回数える。**
+bundlerでなければ、この移行手順そのものが不要になる → [[project_lifestandup_website_wordpress]]
+
 **bundler形式の構造**: `<script type="__bundler/manifest">`(フォントbase64・十数MB)＋`__bundler/template`(JSONエスケープされた実HTML文字列)。実デザインCSS/markupは全体の数%のみ。JSで展開するためFigma/プラグインは生ファイルを読めない。
 
 **変換手順**:

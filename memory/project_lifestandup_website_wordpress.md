@@ -1,71 +1,204 @@
 ---
 name: project_lifestandup_website_wordpress
-description: LIFE STAND UP のウェブサイトはSTUDIOでなくWordPressで作る。デザインは完成済みでHTMLをアップロードする方針。実物はDriveのClaudeProject配下
+description: LIFE STAND UPサイトはWordPressで実装可能。HTML20本はbundlerでなく生HTML＝Figma不要。実装の正本は既存の引き継ぎ書。真のブロッカーは写真ゼロ
 metadata:
   type: project
 ---
 
-# LIFE STAND UP ウェブサイト構築（WordPress方針）
+# LIFE STAND UP ウェブサイト構築（WordPress）
 
-**2026-09-03 有璽氏の指示。** 検証を開始した段階で、方式はまだ確定していない。
+**2026-09-03 有璽氏の指示 → 同日リリスが検証完了。「WordPressで可能」で確定。**
 
-## 有璽氏が示した前提（この日に足された事実）
+## 有璽氏が示した前提（2026-09-03 に足された事実）
 
 ```
 方式        ★STUDIO ではなく WordPress に実装する
 デザイン     ★すでにある程度完成している。作り直す対象ではない
 渡し方      ★デザインを HTML 形式にしてアップロードさせる形
 過去の型     STUDIO のときは Figma 経由で STUDIO に落としていた
-            ＝今回は「Figma を経由しない」ことが方針として含まれる
 ```
 
-**★「デザインは完成している」を軽く扱わない。** 依頼は実装方式の検証であって、
-デザインの作り直し・作り足しではない → [[feedback_dont_remake_what_was_approved]]
+## ★実装の正本は「新しく作る設計」ではない ── 既に存在する
 
-## 実物の置き場（2026-09-03 実測。パスの実在を確認済み）
+```
+引き継ぎ書_フェーズ2_WordPress実装.md
+  … Claude ILIFE WEBサイトリニューアル/LIFE STAND UPのWebサイトリニューアル設計引き継ぎ書260529/
+```
+**2026-05-25作成・全項目網羅。URL設計・フェーズ1〜3・既存ドメイン維持の方針まで書いてある。**
+ゼロから設計を起こさない → [[reference_delivered_but_unread]]
+
+## 実物の置き場（2026-09-03 実測）
 
 有璽氏が渡した Drive リンク `1YJWq21N4ZgC3gAvpwuPb4o4sP040REle` は
-**Drive for Desktop のエイリアス**（mimeType `application/drive-fs.osx.alias`）で、
-指している実体はフォルダ「Claude ILIFE WEBサイトリニューアル」
-（Drive上の実フォルダID `1GVKzwE2DNRKx4M9YALTFBW1knhp4DMs5`）。
+**Drive for Desktop のエイリアス**。実体は Drive フォルダ `1GVKzwE2DNRKx4M9YALTFBW1knhp4DMs5`。
 
 ```
 ~/Library/CloudStorage/GoogleDrive-y_tam@vivid-global.com/マイドライブ/
   Downloads書類アーカイブ/01_AI・開発/ClaudeProject LIFE STAND UP/
     Claude ILIFE WEBサイトリニューアル/
-      ├ ClaudeDesign v1.0 / v2.0 / v2.1     設計書(md)。v2.1が最新・handover 23本
-      ├ ILIFE WEBサイトリニューアル v1.0 / v2.0 / v2.1   成果物HTML
-      └ top_page_wireframe.html ほか
+      ├ ILIFE WEBサイトリニューアルv2.1/   ★確定HTML 20本（v2.1が最新）
+      ├ ClaudeDesign v2.1/02_design_system_v2_1.md   デザインシステム
+      ├ LIFE STAND UPのWebサイトリニューアル設計引き継ぎ書260529/   ★実装の正本
+      └ ILIFE既存WEBサイトリニューアルv2.0/   法人サイト側。提案書とサイトマップのみ・HTML無し
 ```
 
-**v2.1 に18ページ分のHTMLが実在**（top-page / stand-up-top / stand-up-programs /
-stand-up-daily-schedule / guide-top / guide-flow / guide-pricing / guide-area / guide-faq /
-testimonials / about-ilife / about-staff / about-company / contact / news / privacy-policy /
-recruit-top / recruit-interview / recruit-apply / recruit-values）。30KB〜140KB。
+## ★bundler形式ではなかった（5経路で一致）
 
-## ★最初に確かめる点 ── 既知の地雷
+```
+grep -c '__bundler'      20本すべて 0
+構造カウント             全20本 doctype=1 / <style>=1 / base64=0
+可視テキスト量           1,375〜5,332文字/本・合計59,940文字（bundlerならほぼ0になる）
+ブラウザ描画             top-page / contact を実際に開き、完全に描画されるのを実見
+先頭が生の <!doctype>    Google Fonts の<link>＋CSS変数ベタ書き。JS展開が要らない
+```
 
-Claudeデザインの書き出しHTMLは **bundler形式**（`<script type="__bundler/manifest">` に
-フォントbase64が十数MB、`__bundler/template` に JSONエスケープされた実HTML文字列）で、
-**JSで展開するため生ファイルは静的HTMLとして機能しない** ── これは既に実測済みの事実
-→ [[project_html_to_figma_pipeline]]
+**★同じ「Claudeデザイン」でも書き出し形式が違う。** [[project_html_to_figma_pipeline]] の
+bundler地雷は**この案件には当てはまらない**。デコード作業はゼロ。
+→ **Figma は1度も通らない。STUDIOのときに要った中間言語が、WordPressでは不要になる。**
 
-**この形式のままなら「HTMLをアップロードする」は成立しない。** デコードして実HTML/CSSを
-取り出す工程が必ず要る。**ここの判定が方式選択の分岐点。**
+## 本番前に必ず外すもの（全20本に入っている・表示には一切寄与しない）
 
-## ★未確定 ── 有璽氏に確認が要る
+```
+React 18.3.1 development.js ／ ReactDOM development.js ／ @babel/standalone（約3MB）
+tweaks-panel.jsx（Claude上で色をいじる編集パネル）／ image-slot.js（4本）
+★残して公開するとLCPが確実に落ちる。削除は単純作業
+```
 
-- **対象はどこまでか。** 有璽氏は「LIFE STAND UP のサイト」と言ったが、実物のフォルダは
-  「ILIFE WEBサイトリニューアル」で、**ILIFE法人サイトと STAND UP（放課後等デイ）の
-  両方のページが混在している**。どちらが今回の対象かで工数もドメインも変わる。
-- 既存の ILIFE 本体サイト `https://i-life-fukushi.com` は**既にWordPress**
-  → [[reference_group_blogs_and_cms]]。新サイトをそこへ載せるのか、別インスタンスか。
+## 方式は案B（カスタムテーマ）で確定
+
+| | A:静的HTMLを置く | **B:カスタムテーマ** | C:Elementor |
+|---|---|---|---|
+| 再現度 | 100% | **95〜100%** | 60〜75% |
+| 工数(内部推計) | 25〜38h | **165〜250h** | 185〜260h |
+| 職員が更新 | **ゼロ** | お知らせ・スタッフ・声 | 全部（＝壊せる） |
+
+**★Cは案Bより高くつくのに再現度が落ちる。** 装飾クラス（en-bubble/polaroid/tape-vertical/
+abc-block）とインラインSVG525個がビルダーの部品に無く、結局HTMLウィジェットに貼るだけになる。
+
+## 動的化するのは4つだけ（残り16ページは固定ページ）
+
+```
+CPT「お知らせ」   news.html。★CSSクラス news-cat event/important/activity/other が
+                  既にある＝そのままタクソノミー4項目にできる
+標準投稿          活動ブログ（HTMLには無いが既存サイトにメニュー「活動風景」が実在）
+CPT「スタッフ」    about-staff。image-slot 1個＝顔写真枠
+CPT「保護者の声」  testimonials（image-slot 6個）／recruit-interview も同構造
+★法定開示         news内に「自己評価」「虐待防止」「支援プログラム」の記述が実在。
+                  行政が判定者＝更新漏れが指摘対象。PDF＋リマインドを運用側に持たせる
+フォーム2本        contact / recruit-apply。★既存サイトに Contact Form 7 が既に入っている
+```
+
+**★引き継ぎ書と実物にズレ1件。** 引き継ぎ書は「`<form>`を使わずonClick方式」と書くが、
+**v2.1の実物には `<form action=...method=post>` が実在**。v2.0時点の記述で、v2.1で直された。
+**実装時は実物を正とする** → [[feedback_read_the_artifact_not_the_copy]]
+
+## 既存サイトの実測（2経路一致・管理画面には触れていない）
+
+```
+https://i-life-fukushi.com/   HTTP 200 ／ nginx ／ wp-json のlinkヘッダ＝WordPress
+テーマ    Emanon Pro（親）＋ emanon-business（子テーマ運用あり）★有料テーマ・既に保有
+プラグイン Contact Form 7 ／ emanon-blocks ／ Jetpack ／ Site Kit ／ GA4
+title     「top - (株)ILIFE / LIFE STAND UP」＝★現行は1サイトで法人と施設を兼ねている
+固定ページ 11本（page-sitemap.xml）。新20本とURLが全部違う → ★301リダイレクト11本が必須
+          うち2本は日本語URL（/評価表の提示・/職員募集）＝パーセントエンコードで書く
+```
+
+## ★スコープ ── 実物は「LIFE STAND UPのサイト」で確定
+
+フォルダ名は「ILIFE WEBサイトリニューアル」だが、**20本すべての `<title>` が
+「◯◯｜LIFE STAND UP」で終わる**。`about-ilife` は法人サイトのトップではなく
+「運営法人はこういう会社です」ページ。**フォルダ名で判断しない。**
+
+**★決定（2026-09-03 有璽氏）── 案ア。法人サイトと分けない。**
+
+有璽氏の言葉：
+> 「コアはこのライフスタンドアップという施設の紹介になります。そこに運営法人のiLifeの
+> 情報も載せます。理由としては、今現状、iLifeで行っている施設はこのスタンドアップのみの
+> ためです。ですので、このスタンドアップの情報を充実させて集客等を行っていく。
+> ということを戦略的にやっていきたい。」
+
+```
+コア        LIFE STAND UP（放課後等デイサービス）の施設紹介
+ILIFE       ★運営法人として「載せる」。並列の主役にはしない
+なぜ        ★ILIFEが運営する施設はいま STAND UP 1つだけ。だから分ける理由が無い
+目的        施設の情報を充実させて集客する ＝ このサイトは集客動線であって会社案内ではない
+```
+
+**★この理由は将来変わりうる前提を含んでいる。** 2つ目の施設ができた時点で
+「法人サイトと施設サイトを分ける」議論が復活する。**いま分けないのは、施設が1つだから。**
+→ 設計時に施設ページを増やせる形（CPTまたはディレクトリ設計）にしておく。
+
+**★情報の優先順位はこの一言で決まる。** 迷ったら「集客に効くか」で判断する。
+ILIFE側の記述を増やす方向へは倒さない。**採用も含め、主役は施設。**
+
+（不採用となった案イ：法人サイトと施設サイトを分ける。`ILIFE既存WEBサイトリニューアルv2.0`
+の提案書はこの案のもの。**★捨てない。施設が増えたときに戻ってくる**）
+
+## ★確定要件（2026-09-03 有璽氏。ここは「将来の可能性」ではなく設計の前提）
+
+```
+方式          ★カスタムテーマで承認済み（「推奨のカスタムテーマで問題ないです」）
+
+集客は2軸     ★「集客」の一語で片付けない。導線を2本引く
+                ① 利用者獲得（保護者向け）── guide系・programs・testimonials
+                ② 採用（求職者向け）    ── recruit系
+              どちらの軸のページかを意識して情報設計する
+
+施設数の増加   ★「想定している」＝確定要件。将来の仮定ではない
+              「コンセプトが変わらなければシンプルに施設数を増やすような形」
+              → 施設を1件ずつ足せる構造で作る（CPT「施設」など）。
+                2施設目でテーマを作り直す形にしない
+              ★ただし今は1施設。過剰に汎用化して初期実装を重くしない
+
+BPOサービス等  ★今後、他のBPOサービス等のURLへこのサイトからリンクを貼る
+              → 外部サービスへの導線を後から足せる場所を設計に織り込む
+                （フッター/グローバルナビの拡張余地）。今すぐ作るものではない
+```
+
+## 写真 ── ★「撮影が未了」ではない。**撮影は済んでいる。未完なのは選定**
+
+**2026-09-03 有璽氏「素材の写真はすでに撮影済みです。ただ、その実際どれをどの部分に
+掲載するかの選定は完了していないです。そのあたりを任せれるならお願いをしたい」**
+
+```
+★2026-09-03 のビビの誤り：HTMLに<img>が2種類しか無いのを見て「写真ゼロ＝撮影が未着手」と
+  報告した。実際は撮影済みで、HTMLに入っていないだけだった。
+  → 成果物の中に無いことを、世の中に無いことの証拠にしない
+  → [[feedback_one_route_is_not_verification]]
+
+HTML側の実測（これは正しい）
+  <img src> は logo-ilife.png / logo-stand-up.png の2種類だけ
+  本文の写真はCSSで作ったダミー領域（画面に [写真A] メインビジュアル と出る）
+  image-slot が14個空（about-staff 1／recruit-interview 6／recruit-top 1／testimonials 6）
+
+★やることは「撮影の手配」ではなく「撮影済み素材 → 掲載箇所の割り当て」。
+  有璽氏はこの選定をこちらへ任せる意向。★掲載同意の確認は別途要る（子ども・保護者・スタッフ）
+```
+
+## ★優先順位（2026-09-03 有璽氏）
+
+> 「まずはこのHTML、WordPressの形でサイトが動く状況を作っていきたい」
+
+**動く形を先に作る。写真の選定は後追いでよい。** 選定待ちで実装を止めない。
+
+## 未確認（リリスが正直に申告した限界）
+
+```
+サーバー環境（PHP版・ステージング・バックアップ）  引き継ぎ書も「田村様にてご確認ください」
+Emanon Pro のライセンス有効期限                  子テーマか完全オリジナルかがこれで変わる
+既存ブログの投稿数（post-sitemap.xml 未取得）      移行本数で工数が動く
+モバイル表示                                    1471px幅でしか見ていない＝1経路のみ
+20本すべての描画                                実見は top-page と contact の2本のみ
+uploads/_旧版/ の別系統                          未調査
+```
 
 ## 状態
 
 ```
-2026-09-03  ビビが実物を特定・リリス(web-developer)へ検証7項目を依頼（走行中）
-            台帳・Notion・kintone・サーバへは1文字も書いていない
+2026-09-03  検証完了（リリス）。対象フォルダは1バイトも触っていない（mtime全て2026-05-29のまま）
+            サーバー・WP管理画面・DNS・台帳・Notion・kintone へは書いていない
+            ★次の一手の候補＝top-page.html 1本だけをPHP分割して工数精度を上げる（未着手・要判断）
 ```
 
-関連 → [[project_orangeworks_portfolio_site]]（こちらはSTUDIO。混同しない）
+関連 → [[project_orangeworks_portfolio_site]]（こちらはSTUDIO・別物）／
+[[reference_group_blogs_and_cms]]（ILIFEは既にWordPress）
