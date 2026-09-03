@@ -145,6 +145,25 @@ ABOUT・CONTACT・連絡先   ★作らなくてよい。/about/ と /contact/ �
 
 WordPress版の原稿 → `~/orangeworks-portfolio/deliverables/wp_site_copy.md`
 
+## ✅ 構成が決まった（2026-09-03 有璽氏）
+
+```
+/works/          ★サイト直下。実績一覧＝営業ではこのURLだけを案内する
+/works/<slug>/   実績の詳細（42件）
+/works/service/  デザイン制作のご依頼（できること・料金・流れ）
+ご依頼の窓口      ★既存の /contact/ へ飛ばす。フォームは新設しない（届き先は1本のまま）
+```
+
+**★★「ポートフォリオサイトとして独立した形で運用できるように」（有璽氏）。**
+同じWordPress内に置くが、見え方を本体から独立させる。就労支援のトーンに引っ張られない。
+道具は **Header Footer Elementor**（実測：REST namespace に `hfe/v1`）で
+`/works/` 配下だけ専用ヘッダーに差し替える。あとで別ドメインへ切り出せる形にしておく。
+
+**★既存の実績5件（/about/ と /about/forbusinesses/）はそのまま並走させる**（有璽氏の判断）。
+当方は二重管理を理由に1本化を提案したが、決定は並走。**蒸し返さない。**
+ズレる前提で設計する ── 既存5件は手書きの静的ブロック、`/works/` は work から生成。
+**互いに参照しない。**
+
 **STUDIO版は作り直しになる。** 42件の入力は台帳CSVから再投入できるので損失は小さい。
 → ドメインの実測は [[reference_group_blogs_and_cms]]
 
