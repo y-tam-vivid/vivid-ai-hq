@@ -36,6 +36,13 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ピタゴラス 2026-09-03 夜】有璽氏⇄AIの判断依頼をSlackでプッシュ型にする（ビビ依頼）── 実装中
+
+対象 `~/.vivid-relay/ask_hub.py`（新設・書く）／`~/.vivid-relay/slack_socket.py`（追記のみ・書く）。
+**台帳・Notion・kintoneへは書かない。Slackへの実投稿はしない（--previewのみ）。**
+cron/daily_jobs への登録はしない。`slack_pending.json`（notify.pyのask機構）には
+**一切触らない**＝営業パイプラインを塞がない設計。
+
 ### 【ピタゴラス 2026-09-03】findings_tracker のsource振り分け＋業務データ指摘の自動エスカレーション（ステラ設計・優先1〜5）── ✅実装・実測・ステラ検査「条件つき」→条件3点対応済み
 
 対象 `~/.vivid-relay/{findings_tracker.py, findings_escalate.py(新設), self_audit.py}`。
