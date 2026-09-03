@@ -30,4 +30,4 @@
 - [イベント運用スキル群](project_event_skills_suite.md) — ★8/28導入・両機14本。**8/29 Word/PowerPoint/PDF/ffmpeg整備完了(②③④)。①snspipeフォントはdiff提示・承認待ち**／**Notion🗓️イベント管理は9列しかなく推測禁止5項目の置き場が無い**／工程は必ず全部通るわけではない(報告書までは一体)
 - [ブランドテーマ3種](reference_brand_themes.md) — ふくち。/119番/tane.の実データは揃っている(作り直さない)／**★tane.の配色がDriveとNotionで5色とも食い違い・未決**／Notionのブランドガイドは「110番」のまま古い／NPOは専用VI無し
 - [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **STUDIO無料・本体WordPressとは別物**。WORKS42件＋フォーム稼働／🔴3つの理由のイラストが黒背景のまま・一覧下に空白2画面／残=料金と連絡先の確定・並び順の打込み(番号は台帳に用意済み)／**★構築はGUI操作でAI代行不可**／正本は`~/orangeworks-portfolio/HANDOFF.md`
-- [LIFE STAND UP サイト(WordPress)](project_lifestandup_website_wordpress.md) — ★STUDIOでなくWordPress・Figma経由なし・完成済デザインをHTMLで投入。実物はDrive「Claude ILIFE WEBサイトリニューアル」v2.1に18ページ／**bundler形式なら生HTMLは動かない＝方式の分岐点**／★対象がILIFE法人かSTAND UPか未確定
+- [LIFE STAND UP サイト(WordPress)](project_lifestandup_website_wordpress.md) — ★可能で確定。v2.1のHTML20本はbundlerでなく生HTML＝**Figma不要**／方式は案B(カスタムテーマ165〜250h)／**★実装の正本は既存の引き継ぎ書260529。新しく設計を起こさない**／既存i-life-fukushi.comはEmanon Pro+CF7・301が11本要る／**★真のブロッカーは写真ゼロ(image-slot14個が空)**／**★9/3決定=法人と施設を分けない(ILIFEの施設はSTAND UP1つだけ)。主役は施設・迷ったら集客に効くかで判断**
