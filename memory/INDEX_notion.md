@@ -9,7 +9,7 @@
 - [claude.aiログ→Notion移行](project_claude_ai_logs_to_notion_migration.md) — 約15Projectの議論ログを📚ナレッジDBへ。パイロットの空ページ作成済・流し込み待ち
 - [AI活用ログDB統合(案A)](project_ai_log_db_consolidation.md) — 単一台帳化。Phase1完了／Phase2(発信ネタDB統合・投稿生成)は保留
 - [締切ダッシュボード](project_deadline_dashboard.md) — タスク/法務期日DBに🚦Formula、📆で横断。ビビ朝に🔴🟡集約
-- [組織マスター4DB](reference_org_master_4db.md) — 組織軸の正本(部門/法人/部署/PJ)。担当者マスターのRelation張替は未実施
+- [組織マスター4DB](reference_org_master_4db.md) — 組織軸の正本(部門/法人/部署/PJ)。★法人マスターにSWELL SOCIETYの行が無く「＝旧」表記も不正確(9/3判明・修正は未承認)
 - [組織マスターの所在とコード](reference_org_master_notion.md) — 4DBのdata source ID。施設運営は15-300/15-400へ再コード化済
 - [Relation双方向化の地雷](reference_notion_relation_dual_landmine.md) — one-way→DUAL変換で既存値が全件消失。新規列は最初からDUALで作る
 - [DDLは説明文を消す](reference_notion_ddl_wipes_description.md) — ALTER COLUMN SETで選択肢を足すと列の説明が空になる。触る前に控える／ADD COLUMNは安全

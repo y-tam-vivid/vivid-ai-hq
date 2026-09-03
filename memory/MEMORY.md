@@ -22,7 +22,7 @@
 - [Mac miniの実行環境](reference_mac_mini_execution_env.md) — 裏側の実行機。Python3.9系／claudeは`~/.npm-global/bin/claude`／到達確認は肯定形で聞く
 - [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語
 - [名乗る](feedback_say_who_you_are.md) — ★有璽氏は誰と話しているか分からなくなる。区切りで名乗り直す／自分がビビなら外へ回さない
-- [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 社内は「本人/田村さん」不可／★対外は肩書き「代表」・グループ名が先で個社が後。制作物の実物を自動で正としない
+- [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／対外は「代表」・グループ名が先／**★制作物の実物を自動で正としない(2回目)**
 - [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨する
 - [思考OS Skill](project_thinking_os_skill.md) — 10レンズ＋6要素骨格をローカルSkill化。/thinking-osで全モデル共通
 - [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。並べて聞く／**★既存の器を「足りない」と決めつけない。列名が同じでも意味は同じでない(会場=エリアだった)。対処は変えるでなく足す**
@@ -42,14 +42,14 @@
 - [体制はビビ窓口＋ハブ参照](working-via-ai-agents-and-notion-hub.md) — 作業はビビ中央窓口経由＋AIナレッジハブ参照で進める
 - [AI資産カタログ](ai-asset-catalog.md) — Drive`AI資産_正本/`を正本と宣言済＝vivid-ai-hqの設計と要調整
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
-- [確認は溜めて1回](feedback_batch_the_checks.md) — 承認が要るのは6項目だけ。入れたものはその場でminiにも入れる
+- [確認は溜めて1回](feedback_batch_the_checks.md) — 承認6項目だけ／両機に入れる／**★溜めるのは確認。報告は溜めず進んだ時点で出す**
 - [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。理由＋やりますかまで／★人へ渡す手順は「挿入位置」でなく置き換え後の全文で。実物が1行に収まっており「次の行に」が構文エラーを生んだ(2026-08-23)
 - [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — 既定は自分で進める／★進める分を判断待ちに積むと停滞が人のせいに見える
-- [読む人の言葉で書く](feedback_write_for_the_reader.md) — 配る文書に実装名を出さない／公開ページに人名も書かない=権限構造が漏れる／**★判断を仰ぐ行も同じ。並べた4件のうち1件だけ「意味がわからん」と返ったのは難易度でなく、その行だけ主語が社内の道具の名前だったから**
+- [読む人の言葉で書く](feedback_write_for_the_reader.md) — 配る文書に実装名を出さない／公開ページに人名も=権限構造が漏れる／判断を仰ぐ行も主語を道具の名にしない／**★「反映した」と書くな。原稿に書いただけを相手は「画面に出た」と読む。どこで見えるかを1行で言う(見えないなら見えないと)**
 - [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — **真因は速さのために確かさを落としていること(記憶から数字を埋める)**。数える/揃えるを部品に固め呼ぶだけにする／日付はnorm_date()を通した値だけ／件数は「443社(会社名がある行)」と数え方を添える／**★有璽氏の設計＝毎回数えず1か所(dashboard_data.json・読み口facts.py)へ集約し読むだけにする。別々に数えると人ごとに違う答えが出る**／★変種＝APIの`ok:false`を見ず空配列を「0件」と読み、権限があるのに「無い」と報告した(条件を欲張ると権限のある方まで落ちる)／**★部品を置いただけでは既存経路は変わらない。書き込む側から先に置換する（読む側だけ直すと揃って見えて汚れは増える）**／**★「解消11件」の申告を突合したら7件だった。過剰修正は本人には成功に見えるので申告に出ない＝別主体で読むしかない**
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 検証3つ合格で断絶9秒→24分。**★9/3も23.7分再発＝未修正。上限300秒を下げる**
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／権限が無い≠届かない／2>/dev/nullは判定材料を捨てる／**★0件が出たら同じ条件で数え直さない。別の方法で数える（日本語ファイル名はNFDでgrepが静かに0件になる→[[reference_japanese_filename_normalization]]）**
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別の方法で数え直す／**★経路を増やす前にノイズ床を測る=同じ物を2回測る。差が同桁なら判定不能と書いて捨てる**
 - [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — ★別の面のファイルは人が落とすまで実体ゼロ。配布はgit
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**／**★2026-08-29「ギャッやるなよ。誰かにやらせろ」＝2回目。★「存在しません」で止めるな＝スキル名でなく①スキル②bin/③pip④過去実績のgrepで数える（Word変換は既にbin/md2docx.pyが在った）**
@@ -72,6 +72,7 @@
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ。予定作成は意図的にask／代替は.ics／**★担当も書けないことがある(allowにEditがあってもdontAskで拒否)。規範の制限と権限の制限が重なると誰も触れない領域ができる→resumeでなく新規起動で試す**／**★拒否は3層(フック/権限/OSサンドボックス)。「operation not permitted」はsettings.jsonでは直らない**
+- [バックアップの置き場まで1セット](reference_backups_in_volatile_places.md) — ★scratchpad/tmpは控えにならない。置き場を指示に明記。既定は~/.vivid-relay/
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 固定URLは有料でしか塞げない。MiddlewareのBasic認証で無料のまま塞ぐ
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し

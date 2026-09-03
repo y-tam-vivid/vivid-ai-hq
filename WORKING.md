@@ -1154,6 +1154,39 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ビビ / MacBook 2026-09-03】LIFE STAND UP サイトのWordPress実装可否 ── リリスへ検証依頼中（走行中）**
+  - **読むだけ**: Drive `ClaudeProject LIFE STAND UP/Claude ILIFE WEBサイトリニューアル/`（v1.0/v2.0/v2.1）。
+    **1バイトも書き換えない・移動しない。**サーバ・WP管理画面・DNSへは触らない
+  - **書いた**: `memory/project_lifestandup_website_wordpress.md`（新規）／`memory/INDEX_発信.md` の1行
+  - **★同じ対象に手をつけないでください**: 上記Driveフォルダ ／ `~/lifestandup-wp/`（試作の置き場・新設）
+  - ✅ v2.1のHTML**20本**は bundlerでなく**生HTML**（5経路一致）＝**Figma不要**。方式は案B(カスタムテーマ)
+  - ✅ **有璽氏決定＝法人と施設を分けない**（ILIFEの施設はSTAND UP1つだけ・主役は施設・目的は集客）
+  - ★**実装の正本は既存の引き継ぎ書260529**。新しく設計を起こさない
+  - ✅ **確定要件（9/3）**：カスタムテーマ承認／**施設数の増加は想定済み＝1件ずつ足せる構造**／
+    **集客は2軸（利用者獲得・採用）で導線を分ける**／将来BPOサービス等へのリンクを足す余地を残す
+  - ★**訂正**：「写真ゼロ＝撮影が未着手」はビビの誤り。**撮影は済んでいる。未完なのは選定だけ**
+  - いま：リリスがトップ1本を試作中／フランキーが素材の洗い出しと割り当て案（読むだけ）
+    → ステラ検査（cross-check）→ 20本へ進むかの判断
+  - ★フランキーは `~/lifestandup-wp/` に触らない（リリスの作業領域）
+
+- **【リリス / MacBook 2026-09-03】LIFE STAND UP top-page.html のテーマ分解（試作1本）── ✅完了。ステラ検査待ち**
+  - **成果物**: `~/lifestandup-wp/theme/lifestandup/`（style.css・functions.php・header/front-page/footer.php）
+    ＋ `~/lifestandup-wp/README.md`（判断・実測・見積り・判断待ち5件）
+  - **Driveの元フォルダは1バイトも触っていない**（sha256一致＋全HTMLのmtimeが2026-05-29のまま＝2経路）
+  - 本番サーバ・WP管理画面・DNS・ドメイン／台帳・Notion・kintone へは書いていない。検証サーバは停止確認済み
+  - **★見た目は変わっていない**（DOM差分=意図した2点のみ／計算後スタイル25要素は0バイト差）
+  - **★画素比較は判定に使えない**（同ページ2回撮影で2,827px差＝ノイズ床。差3,222pxは同じ桁）
+  - **🔴20本へ進む前の関門**: CSSの食い違い148セレクタ（`.fv-sub`12通り・`:root`4通り）。
+    意図か時期差かは**デザイン判断**でこちらでは決められない。工数が12〜20h動く
+  - **★同じ対象に手をつけないでください**: `~/lifestandup-wp/` ／ v2.1フォルダ
+
+- **【フランキー / MacBook 2026-09-03】LIFE STAND UP 写真の掲載箇所への割り当て案 ── 走行中**
+  - **読むだけ**: Drive `ClaudeProject LIFE STAND UP/` 配下の画像素材とHTML 20本。
+    **1バイトも書き換えない・移動しない・アップロードしない**
+  - **書く**: `~/lifestandup-photo-plan/`（新設・ローカルのみ）。★`~/Downloads` には置かない
+  - **★触らない**: `~/lifestandup-wp/`（リリスが実装中）／本番サーバ・WP管理画面／台帳・Notion・kintone
+  - 成果物＝割り当て案（第1候補＋次点）／掲載同意の確認リスト／不足カットの列挙
+
 - **【ビビ / MacBook 2026-08-28】イベント運用スキル6本 ── 導入完了。★有璽氏の回答待ち3点**
   - **書いた**: `.claude/skills/event-*`（6本）＋ `EVENT-SKILLS-README.md` ／
     `memory/project_event_skills_suite.md` ／ `memory/INDEX_発信.md` の1行
