@@ -107,6 +107,61 @@ category='B')`へ修正。`bin/hooks/`と`~/.vivid-relay/`の両方へ配布し�
 
 **★系統Aの自動エスカレーション経路は現在稼働していない（findings_escalate.py 未登録）。
 重複21組・法人番号空59件・受付7日放置は、いま誰にも自動では届かない。**
+**⛔2026-09-03 訂正：この行は下の⑬⑭で解消した。daily_jobs.confへ登録済み・レジスタにも
+行を作成済み（有効=Falseのまま）。明朝08:15が初回発火。確認手順は本ブロック末尾参照。**
+
+**⑪バックアップの置き場所（2026-09-03 ビビ指摘・規範の穴への対応）**：
+`bin/hooks/findings_tracker.py.bak_pitagorasu_20260903`・`self_audit.py.bak_pitagorasu_20260903`
+の2件を `~/.vivid-relay/_backups/` へ移動（削除ではない）。
+★以降、`bin/hooks/`配下でAIが取るバックアップは全て `~/.vivid-relay/_backups/` へ置く
+運用に統一する。理由：`bin/hooks/`はgit管理下でcommit履歴自体が復帰経路になり、
+`.bak_*`をリポジトリに残すとStopフックが「未コミットが残っている」で毎ターン誤爆する
+（`.gitignore`で無視する案Aも検討したが、git管理下に一時ファイルが恒久的に残る設計は
+避けた）。`~/.vivid-relay/`はそもそもgit管理外で、バックアップという性質と場所が一致する。
+
+**⑫findings_escalate.py の戻り値バグ修正（2026-09-03 ドーベルマン検査・条件①）**：
+`main()` が常に `return 0` を返し、Slack送信失敗時も daily_jobs.sh の同日中リトライ
+（最大3回）が効かない不具合を修正。`failed` フラグを新設し、`notify.ask()` が失敗した
+ときだけ非ゼロを返す（「送るものが無かった」「pending待ちで送らなかった」は正常終了0の
+まま）。実測（notify.askをモンキーパッチ・実際のSlack投稿はしていない）：
+```
+失敗ケース  notify.ask→False固定  main(dry=False) 戻り値 = 1
+成功ケース  notify.ask→True固定   main(dry=False) 戻り値 = 0
+```
+テストで作成された `findings_escalate_state.json` は削除し、明朝の初回実行に影響を
+残さないクリーンな状態へ戻した（削除確認：`ls`で存在しない・その後のドライランで
+3件とも「本日未送信」に戻っていることを確認）。バックアップは `~/.vivid-relay/_backups/
+findings_escalate.py.bak_pitagorasu_20260903_2`。
+
+**⑬bin/daily_jobs.conf へ登録**：`08:15	findings_escalate	/usr/bin/python3
+$HOME/.vivid-relay/findings_escalate.py --run --beat`（タブ区切り）。位置は crontab の
+`ledger_report`(08:10) より後・`self_audit`(08:25) より前。crontab直書きは使わず
+daily_jobs.confへ寄せた。実測：`od -c`でタブ文字(\t)であることを確認・
+`IFS=$'\t' read`でも `hhmm=[08:15] name=[findings_escalate] cmd=[...]` と3フィールドへ
+正しく分離されることを確認（2経路一致）。
+
+**⑭⚙️自動処理レジスタへ新規行（2026-09-03・Notionへの書き込みをこの1件に限り許可）**：
+ページ https://app.notion.com/p/3d07b1568b5781cfa197fa44d001718e
+処理名「系統A（業務データ）指摘の自動エスカレーション（findings_escalate.py）」。
+備考へ「読むだけ（dry）では心拍を打たない。`--run --beat`のときだけ」を明記。
+**有効=Falseのまま**（intake_notifyと同じ手順。明朝の初回発火確認後にTrueへ）。
+実測：経路1=notion-fetchで再取得（有効="__NO__"・既知（対応保留）="__YES__"を確認）／
+経路2=notion-query-data-sources(SQL)で同項目を取得（同じ値）→ 一致。
+
+**⑮明朝08:15の初回発火の確認手順（次に見る人が迷わないための4点。intake_notifyのときと同じ形）**：
+```
+a. ls -la ~/.vivid-relay/daily_jobs_state/findings_escalate.done
+   （実行済みマーク・08:15頃のはず。定刻を過ぎた最初の巡回で走るため多少遅れうる）
+b. grep findings_escalate ~/Library/Logs/vivid-daily-jobs.log
+   （ディスパッチのログ。rc=0で完了しているか確認）
+c. Notion⚙️レジスタ（上記ページURL）の「最終実行」「メッセージ」「最終結果」が
+   9/4付で更新されているか（fetchで再取得して確認）
+d. Slack 有璽氏のDMに実際に投稿があるか（最終確認・本人に見える形）
+   ★これが初回の本番投稿。系統Aの3件（重複21組・法人番号空59件・受付7日放置）のうち
+   streak最大のもの（重複21組・6日連続）が最初に上がるはず
+確認できたら：Notion⚙️レジスタの「有効」をTrueへ切替・「既知（対応保留）」をFalseへ・
+備考へ確認結果（a〜dの実測）を追記すること。
+```
 
 ### 【ピタゴラス 2026-09-02】slack_socket.py 再接続バックオフ修正（つる依頼）── ✅実装・再起動・実測完了。ステラ検査依頼中
 
