@@ -1078,11 +1078,16 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
     → ステラ検査（cross-check）→ 20本へ進むかの判断
   - ★フランキーは `~/lifestandup-wp/` に触らない（リリスの作業領域）
 
-- **【リリス / MacBook 2026-09-03】LIFE STAND UP top-page.html のWordPressテーマ分解（試作1本）── 走行中**
-  - **書く**: `~/lifestandup-wp/`（新設・ローカルのみ）。**Driveの元フォルダは読むだけ**
-  - **触らない**: 本番サーバ・WP管理画面・DNS・ドメイン／台帳・Notion・kintone
-  - ★同じ対象に手をつけないでください: `ILIFE WEBサイトリニューアルv2.1/top-page.html`
-  - 完成後はステラ（開発統括）へ検査を回す（自己採点にしない）
+- **【リリス / MacBook 2026-09-03】LIFE STAND UP top-page.html のテーマ分解（試作1本）── ✅完了。ステラ検査待ち**
+  - **成果物**: `~/lifestandup-wp/theme/lifestandup/`（style.css・functions.php・header/front-page/footer.php）
+    ＋ `~/lifestandup-wp/README.md`（判断・実測・見積り・判断待ち5件）
+  - **Driveの元フォルダは1バイトも触っていない**（sha256一致＋全HTMLのmtimeが2026-05-29のまま＝2経路）
+  - 本番サーバ・WP管理画面・DNS・ドメイン／台帳・Notion・kintone へは書いていない。検証サーバは停止確認済み
+  - **★見た目は変わっていない**（DOM差分=意図した2点のみ／計算後スタイル25要素は0バイト差）
+  - **★画素比較は判定に使えない**（同ページ2回撮影で2,827px差＝ノイズ床。差3,222pxは同じ桁）
+  - **🔴20本へ進む前の関門**: CSSの食い違い148セレクタ（`.fv-sub`12通り・`:root`4通り）。
+    意図か時期差かは**デザイン判断**でこちらでは決められない。工数が12〜20h動く
+  - **★同じ対象に手をつけないでください**: `~/lifestandup-wp/` ／ v2.1フォルダ
 
 - **【フランキー / MacBook 2026-09-03】LIFE STAND UP 写真の掲載箇所への割り当て案 ── 走行中**
   - **読むだけ**: Drive `ClaudeProject LIFE STAND UP/` 配下の画像素材とHTML 20本。
