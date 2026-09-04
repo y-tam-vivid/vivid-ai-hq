@@ -1673,6 +1673,39 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
     **残るスコープ**：3段目4クラス（`.tl-row`/`.step-item`/`.tlv-row`/`.news-item`）は
     有璽氏確認中のため未着手のまま。それ以外の横あふれ・重なりの網羅的な全ページ計測は
     今回は行っていない（②の型に限定して対応）
+  - **3段目3件（①`.tlv-row` ②`.tl-row` ③`.step-item`）── ✅有璽氏の判断どおり実装完了**
+    （`.news-item`は継続保留）。**スマホ幅（540px以下）のみに閉じている。PC幅は1pxも変えていない
+    （3件とも実測で確認：①②はCSSが540pxブロック内に閉じているとコードで確認、③は
+    computed style実測でPC幅1440pxのposition/transform/T値が修正前後で完全一致）**
+    ①stand-up-daily-schedule.css `.tlv-row`：760px以下ブロックが3列(auto 40px 1fr)のまま
+    だったのを、540px以下で1列(display:block)へ。棒(`.tlv-line`)は`display:none`
+    （★有璽氏が名指しで「なくしていい」と言った例外・装飾維持の原則には反しない）。
+    DOM順が時刻→棒→カードなので棒を消すだけで時刻→カードの順になる（並べ替え不要）。
+    カード幅100%で画面いっぱいに。実測：時刻バッジ上・カード下・幅342px(390px時)を確認
+    ②style.css `.tl-row`（トップ「1日の流れ」）：①と同型。`.timeline::before`（縦の
+    点線・擬似要素）を非表示、`.tl-row{display:block}`。★グローバルセレクタなので
+    `body.lsu-top-page`スコープを付けて他ページへ影響しないようにした。実測：「下校後」
+    の下に「お迎え」が幅342pxで続くことを確認
+    ③recruit-top.css `.step-item`：**実装中に既存の構造バグを発見**（正直に報告）。
+    style.css（bodyスコープ無しのグローバル）に別画面(`.step-card`)用の
+    `.step-num{position:absolute;top:-22px;left:50%;transform:translateX(-50%)
+    rotate(-4deg)}`が定義されており、recruit-top.css側の`.step-num`はこのプロパティを
+    一切上書きしていなかったため、採用ステップの番号バッジ(STEP1〜5)が**PC幅・SP幅とも
+    画面外(bodyタグ基準の絶対配置、top=-24px)へ飛んで表示されていなかった**（実測で
+    発見）。有璽氏が「左に余白がある」と見えたのは、この番号消失が原因だった可能性が高い。
+    ★PC幅は1pxも変えない制約があるため、`position:static`の打ち消しは540px以下限定
+    （PC幅側の同バグは今回は直さず、この報告のみに留める）。番号復活後、左右の余白差
+    （実測7px）はgrid列幅60px→46pxへ絞って解消（左右とも19pxで一致）。番号位置が変わった
+    ぶん接続線・矢印の位置(`.step-connector::before`/`-arrow`)も番号の真下へ実測で合わせ
+    直した。390px/320pxとも目視・実測で確認
+    実測：①②③とも重なり検査で新規増加0件（top-page 42/44/47・stand-up-daily-schedule
+    6/7/7・recruit-top 7/7/7、いずれも既存要素のみで3クラス関連の重なり0件）。横あふれ
+    390/360pxとも0px、320pxは既存の既知issueのみ（新規0件）。全CSS20本の括弧チェック
+    合格・サーバ2経路停止確認済み。バックアップ`_backup/20260904-3dan/`
+    撮影：`review/3dan_after/`へ日本語ファイル名で3枚格納
+    （①1日のスケジュール詳細_tlv-row_修正後_390px.png／
+    ②トップ1日の流れ_tl-row_修正後_390px.png／
+    ③採用ステップ_step-item_修正後_390px.png）
   - **既存ブログ134本 移行時のコメント欄 ── ✅対応完了（有璽氏決定・Slack #311115「付けない」）**
     実装：①新テーマの記事・お知らせページにはコメント表示コード自体が元から無い
     （`singular.php`に`comments_template()`呼び出しなし・page.php/single.phpとも同じ
