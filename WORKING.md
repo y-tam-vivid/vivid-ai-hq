@@ -1421,6 +1421,20 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ピタゴラス / MacBook 2026-09-04】予実 判定結果ファイル(1行1取引)の新設 ── 着手（ビビ依頼）**
+  - **背景**: Notion予実管理DBは27行・870,798円で実在（SQL実測: `SELECT COUNT(*),SUM(実績)`）。
+    ★下の「予実の設計」ブロックが「未投入」と書いていたのは**版ズレ**（本日中に投入済みだった）
+  - **対象**: Drive「月次明細」`1Bi__0ikWAys7p3DMl97yAteDUgDSNNwv` 配下の実データ（**読むだけ**）／
+    5月判定済みxlsx（**読むだけ**）。★フォルダは法人・口座別サブフォルダへ再編済み実測
+    （ILIFE_楽天銀行／ビビッド_楽天銀行／SWELL_楽天銀行／個人_楽天銀行／個人_りそな銀行／
+    個人_PayPay／個人_American Expressカード／ILIFE_関西みらい銀行／個人_楽天カード／2026-09）
+  - **やること**: 新規ファイル `判定結果_2026-08.csv`（1行1取引・判定根拠＋確信度つき）を
+    月次明細フォルダ配下へ追加するのみ。**Notion・元CSV/PDFへは1文字も書かない**
+  - **★同じ対象に手をつけないでください**: Notion予実管理DB（読みは可）／
+    Drive月次明細フォルダの既存ファイル（新規1ファイル追加のみ・既存へは触らない）
+  - 下の「【ビビ→ナミ→つる / MacBook 2026-09-03】予実の設計」ブロックと対象が重なる。
+    ★衝突ではなく後続作業（集計は完了・その根拠ログが無いという指摘への対応）と理解して進める
+
 - **【ビビ / MacBook 2026-09-03】LIFE STAND UP サイトのWordPress実装可否 ── リリスへ検証依頼中（走行中）**
   - **読むだけ**: Drive `ClaudeProject LIFE STAND UP/Claude ILIFE WEBサイトリニューアル/`（v1.0/v2.0/v2.1）。
     **1バイトも書き換えない・移動しない。**サーバ・WP管理画面・DNSへは触らない
@@ -1776,6 +1790,19 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
     確認：実際の有効テーマはEmanon Business）。7箇所に⛔型の訂正注記を追加（消さずに
     経緯を残す）。判断（独立テーマ化の理由）自体は変更なし、テーマ名の事実誤認のみ訂正
     サーバー停止確認（lsof残プロセス0・phpプロセス0の2経路）済み
+    **★2026-09-04追記：有璽氏がPHP8.3.33へ本番実施済み・完了。①〜⑥（バックアップ確認/
+    プラグイン更新/切替/4ページ確認/残り更新）全部完了。検証環境8.3.32とパッチ違いのみ
+    ＝前提の食い違い解消。この件は完了。**
+
+- **【リリス / MacBook 2026-09-04】LIFE STAND UP CPT実装(news/staff/voice)＋フォーム2本＋
+  法定開示固定ページ ── 着手（設計は骨子確定済み・functions.php 122-193行目参照）**
+  対象：`theme/lifestandup/functions.php`（CPT/taxonomy登録）／
+  `page-templates/news.php`（お知らせ一覧をCPTループ化）／
+  `page-templates/about-staff.php`・`recruit-top.php`（staff CPTを両軸から引く）／
+  `page-templates/testimonials.php`・`recruit-interview.php`（voice CPTをvoice_kindで分岐）／
+  `page-templates/contact.php`・`recruit-apply.php`（フォーム2本）／
+  法定開示の新規固定ページ1本（news.php内SEC.3の入口カードのリンク先）
+  ★ブログの一覧・記事ページ（Claude Design再依頼中）・写真2枠(voice-1/voice-3)には触らない
 
 - **【リリス / MacBook 2026-09-04】LIFE STAND UP スマホ幅3件修正(①②③)＋撮影 ── ✅完了**
   - 前半(撮影のみ)を✅完了後、有璽氏のスクショ書き込みで①②③の修正依頼。②は一度「消してよい」と
