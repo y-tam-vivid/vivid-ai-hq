@@ -57,6 +57,12 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ピタゴラス 2026-09-04】ask_hub.py の api_post() に通信例外の再試行を実装中 ── 着手
+
+対象は `~/.vivid-relay/ask_hub.py` のみ。今日2回（15:00 ValueError・17:00 SSL handshake
+timeout）通知が黙って消えた件への対応。バックアップ後に着手。台帳・Notion・kintoneへは
+書かない。Slackへは実投稿しない（api_post をモックして検証）。
+
 ### 【ピタゴラス 2026-09-04】notify.ask()をask_hub.ask()へ委譲・tell()の判断語警告 ── 実装・実測完了。ビビ経由でステラ検査待ち
 
 有璽氏指摘「選択式で依頼していたのに記述式に変わってる」を受けた対応。**実装したのは
@@ -1794,15 +1800,34 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
     プラグイン更新/切替/4ページ確認/残り更新）全部完了。検証環境8.3.32とパッチ違いのみ
     ＝前提の食い違い解消。この件は完了。**
 
-- **【リリス / MacBook 2026-09-04】LIFE STAND UP CPT実装(news/staff/voice)＋フォーム2本＋
-  法定開示固定ページ ── 着手（設計は骨子確定済み・functions.php 122-193行目参照）**
-  対象：`theme/lifestandup/functions.php`（CPT/taxonomy登録）／
-  `page-templates/news.php`（お知らせ一覧をCPTループ化）／
-  `page-templates/about-staff.php`・`recruit-top.php`（staff CPTを両軸から引く）／
-  `page-templates/testimonials.php`・`recruit-interview.php`（voice CPTをvoice_kindで分岐）／
-  `page-templates/contact.php`・`recruit-apply.php`（フォーム2本）／
-  法定開示の新規固定ページ1本（news.php内SEC.3の入口カードのリンク先）
-  ★ブログの一覧・記事ページ（Claude Design再依頼中）・写真2枠(voice-1/voice-3)には触らない
+- **【リリス / MacBook 2026-09-04】LIFE STAND UP ① CPT実装(news/staff/voice) ── ✅完了**
+  （② フォーム2本・③ 法定開示固定ページは次段）
+  **実物確認で骨子と1点食い違いを発見・方針変更**：骨子は「CPT 'staff' は about-staff.php と
+  recruit-top.php の両方から個人スタッフを引く」だったが、実物ではabout-staff.phpの
+  「スタッフ構成」は個人でなく5つの役割（職種）の固定説明、recruit-top.phpにはスタッフ
+  一覧セクション自体が無かった。個人データとして実在したのはrecruit-interview.phpの
+  Q&Aインタビュー4名（U/K/X/Dさん）。→CPT 'staff' はrecruit-interviewを実体として登録し、
+  about-staff.phpはCPT化しない（空の投稿を量産しないため）
+  **実装内容**：`functions.php`にCPT 3種（news/staff/voice）とtaxonomy 2種
+  （news_cat/voice_kind）・post_meta 9種を登録。`page-templates/news.php`
+  （お知らせ一覧）・`testimonials.php`（保護者の声5件→voice_kind=guardian）・
+  `recruit-interview.php`（スタッフインタビュー4件→CPT staff、Q&A×4はpost_contentへ
+  HTML構造ごと保存）をCPTループへ置き換え。**CPTが0件のあいだは原本の静的コンテンツを
+  そのまま出すフォールバック設計**（写真枠の「無ければ変えない」と同じ思想）。装飾
+  （カード色・回転角度・テープ位置等）はCPT側にmetaを持たせず、テンプレート側で
+  パターン配列を順に回す方式（過剰に汎用化しない＝骨子の方針どおり）
+  **実測**：3CPTともテスト投稿を1件作成→一覧に正しく反映（news:日付/カテゴリ/タイトル、
+  voice:タイトル/本文/続柄/星5/写真ラベル、staff:役職タグ/氏名/経歴/Q&A構造/メッセージ）
+  →目視確認→削除して残件数0を確認、の手順で3件とも検証。PHP警告/エラーは全工程で0件。
+  **PC幅の画素一致**：CPT実装前後で3ページとも比較し、voice/recruit-interviewは差分0px。
+  news.phpは1箇所差分を発見（正直に報告）── news-cms-noteの案内文を実装時に書き換え、
+  しかも実装名「CPT」を画面文言に出してしまっていた。元の文言に戻して修正→再比較で
+  3ページとも差分0pxを確認
+  **重なりの新規増加**：CPT実装前後で同一クエリを実行し3ページ×3幅で全て完全一致
+  （news 3/4/4・testimonials 10/10/10・recruit-interview 10/10/9）＝新規増加0件
+  括弧チェック合格・サーバ2経路停止確認済み。バックアップ`_backup/20260904-cpt/`
+  ★ブログの一覧・記事ページ（Claude Design再依頼中）・写真2枠(voice-1/voice-3)には
+  触っていない
 
 - **【リリス / MacBook 2026-09-04】LIFE STAND UP スマホ幅3件修正(①②③)＋撮影 ── ✅完了**
   - 前半(撮影のみ)を✅完了後、有璽氏のスクショ書き込みで①②③の修正依頼。②は一度「消してよい」と
