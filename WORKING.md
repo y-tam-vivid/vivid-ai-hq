@@ -1344,10 +1344,11 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 **★先方へメールを送る必要はありません**（当方が下書きを作りましたが破棄しました。
 記憶に「prefectureが効く」と既に書いてあったのを読み落としたためです）。
 
-- **【リリス / MacBook 2026-09-04】LIFE STAND UP「540px以下で2列のまま」を20ページで数える ── 調査中（★まだ直さない）**
-  - ③フッターと同じ型（グリッドが540px以下でも2列以上のまま）が他にもあるかを横断調査中。
-    対象: `~/lifestandup-wp/theme/lifestandup/`（CSS19本＋page-templates19本＋front-page.php、
-    grep/readのみ・書き込みなし）。**件数をビビへ報告してから、まとめて直すかを決める**
+- **【リリス / MacBook 2026-09-04】LIFE STAND UP 3段階の1段目 `.promises-grid` 540px対応 ── 実装中**
+  - 調査（41件検出）済み → ビビの方針「3段階・1段目は`.promises-grid`のみ」を受けて着手。
+    既存の360px以下!important指定を540pxへ拡張（インラインstyleに勝つ手は前任と同じ）。
+    対象: `theme/lifestandup/assets/css/stand-up-top.css`。バックアップ済み
+    `_backup/20260904-promises-grid/`。2段目(.level-grid等6クラス)・3段目(保留4クラス)は未着手
 
 - **【リリス / MacBook 2026-09-04】LIFE STAND UP スマホ幅3件修正(①②③)＋撮影 ── ✅完了**
   - 前半(撮影のみ)を✅完了後、有璽氏のスクショ書き込みで①②③の修正依頼。②は一度「消してよい」と
