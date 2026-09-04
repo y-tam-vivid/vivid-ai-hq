@@ -1776,6 +1776,19 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
     確認：実際の有効テーマはEmanon Business）。7箇所に⛔型の訂正注記を追加（消さずに
     経緯を残す）。判断（独立テーマ化の理由）自体は変更なし、テーマ名の事実誤認のみ訂正
     サーバー停止確認（lsof残プロセス0・phpプロセス0の2経路）済み
+    **★2026-09-04追記：有璽氏がPHP8.3.33へ本番実施済み・完了。①〜⑥（バックアップ確認/
+    プラグイン更新/切替/4ページ確認/残り更新）全部完了。検証環境8.3.32とパッチ違いのみ
+    ＝前提の食い違い解消。この件は完了。**
+
+- **【リリス / MacBook 2026-09-04】LIFE STAND UP CPT実装(news/staff/voice)＋フォーム2本＋
+  法定開示固定ページ ── 着手（設計は骨子確定済み・functions.php 122-193行目参照）**
+  対象：`theme/lifestandup/functions.php`（CPT/taxonomy登録）／
+  `page-templates/news.php`（お知らせ一覧をCPTループ化）／
+  `page-templates/about-staff.php`・`recruit-top.php`（staff CPTを両軸から引く）／
+  `page-templates/testimonials.php`・`recruit-interview.php`（voice CPTをvoice_kindで分岐）／
+  `page-templates/contact.php`・`recruit-apply.php`（フォーム2本）／
+  法定開示の新規固定ページ1本（news.php内SEC.3の入口カードのリンク先）
+  ★ブログの一覧・記事ページ（Claude Design再依頼中）・写真2枠(voice-1/voice-3)には触らない
 
 - **【リリス / MacBook 2026-09-04】LIFE STAND UP スマホ幅3件修正(①②③)＋撮影 ── ✅完了**
   - 前半(撮影のみ)を✅完了後、有璽氏のスクショ書き込みで①②③の修正依頼。②は一度「消してよい」と
