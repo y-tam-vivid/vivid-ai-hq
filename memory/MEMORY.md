@@ -52,7 +52,7 @@
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 検証3つ合格で断絶9秒→24分。**★9/3 上限300→30秒へ。次の再発で確認**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — ★出口3本。翌朝に記述式へ戻る。判断はask_hub一本・報告に混ぜない
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別法で数え直す／**★列挙は絞らず全部出す。自分で決めた検索語の外は見えない**
-- [別マシンとは直接やり取り不可](reference_two_sessions_built_the_same_thing.md) — ★別の面のファイルは人が落とすまで実体ゼロ。配布はgit
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★DM1通でslack_inboxがビビをもう1体起動。9/4に改修が巻き戻った
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**／**★2026-08-29「ギャッやるなよ。誰かにやらせろ」＝2回目。★「存在しません」で止めるな＝スキル名でなく①スキル②bin/③pip④過去実績のgrepで数える（Word変換は既にbin/md2docx.pyが在った）**
 - [手順書が読まれない理由](reference_why_manuals_are_not_read.md) — ★一度間違えると二度と読まれない。○×を求めると信頼が下がる
