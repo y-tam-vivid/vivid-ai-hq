@@ -36,6 +36,73 @@
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
 
+### 【ピタゴラス 2026-09-04】notify.ask()をask_hub.ask()へ委譲・tell()の判断語警告 ── 実装・実測完了。ビビ経由でステラ検査待ち
+
+有璽氏指摘「選択式で依頼していたのに記述式に変わってる」を受けた対応。**実装したのは
+`~/.vivid-relay/notify.py` のみ**（ask/pending/tellの3関数）。`ask_hub.py` は1文字も
+編集していない（mtime不変で確認）。`findings_escalate.py` はdocstring注記1箇所のみ
+追記（ロジックは無改修・バイト一致でコード部分の同一性を確認）。台帳・Notion・kintoneへは
+1文字も書いていない。cron/daily_jobs登録はしていない（既存のfindings_escalate 08:15登録は
+そのまま・変更していない）。
+
+```
+① notify.ask()→ask_hub.ask()へ委譲   ✅完了・実測済み
+   呼び出し元は grep で全数確認：notify.ask()はfindings_escalate.py 1箇所のみ
+   （notify.tell()は7箇所・別途③）。シグネチャ・戻り値(bool)は不変＝無改修で動く
+② slack_pending.jsonの設計判断（★依頼どおり明記）
+   ask_hub.pyは「誰も止めない」設計のまま無改修。「塞ぐ役」はnotify.py側に残した。
+   answeredの正をask_hub_queue.json一本化（notify.pending()がask_hub.answer_of(ask_id)
+   を都度問い合わせる）。理由：今回のnotify.PENDING単独判定だと「ask_hubのボタンで
+   答えたのにslack_pending.jsonだけ未回答のまま」という9/3〜9/4に実際に起きた事故が
+   構造的に再発するため。旧形式(ask_id無し)のslack_pending.jsonへの後方互換あり
+③ tell()判断語警告   ✅完了・実測済み。まずは警告のみ（stderr・ブロックしない）
+   実データ2経路：self_audit.log(16ブロック)0件／memory_sweep.log(16ブロック)2件
+   ヒット（9/2「投げますか」9/3「判断を仰ぎます」＝いずれも実際にtell()で送信された
+   本物の判断依頼＝真陽性。誤検知は今回のサンプルに0件）
+④ tell()呼び出し元の洗い出し   ✅完了（列挙のみ・直していない）
+   7箇所：memory_sweep.py(1)／notion_customer_upsert.py(4・固定テンプレ)／
+   promote_minutes.py(1・固定テンプレ)／self_audit.py(1)／progress_report.py(1・固定)
+   ★動的生成(AIサブプロセスの自由出力をそのままtell()へ渡す)構造なのは
+   memory_sweep.py(ロビン)とself_audit.py(つる)の2つだけ。他5箇所は固定文字列で
+   判断語混入リスクなし
+```
+
+**🔴正直な申告：検証中に事故を1件起こした。** ask_hub.ask()委譲のテスト中、
+notify.tell()側の`_post()`をモックし忘れ、テストメッセージ「テスト報告／判断を仰ぎます」が
+**実際に有璽氏の本物のSlack DMへ投稿された**（1788480262.542569）。1分以内に気づき
+`chat.delete`で削除・DM履歴で消えたことを確認したが、**プッシュ通知は一瞬届いた可能性がある**。
+同時にask_hub.ask()委譲テストでも実物`ask_hub_queue.json`へテストデータ(048083)が
+混入したが、こちらもバックアップ後に検出・削除・3件へ復元済み（バックアップ
+`~/.vivid-relay/_backups/ask_hub_queue.json.bak_pitagorasu_test_pollution_20260904-0905`）。
+以降のテストは`api_post`と`_post`の両方を確実にモックし、実物ファイルは退避してから
+書き込みテストするよう改めた。
+
+**★次回自動実行への影響**：findings_escalate.pyは`daily_jobs.conf`08:15に既に登録済み
+（今回の変更前から）。次回発火時、notify.ask()経由でask_hub.ask()が呼ばれ、
+**初めて本番でボタン付きメッセージが投稿される**（従来のtext形式ではなく）。
+自動発火自体は既存の登録どおりで、今回新たに登録したものではない。
+
+バックアップ `~/.vivid-relay/_backups/{notify.py,findings_escalate.py,memory_sweep.py,
+self_audit.py}.bak_pitagorasu_20260904-0901`（後者2つは結局無変更）。
+**★MacBookは未配布**（`~/.vivid-relay/`はgit管理外）。
+**自己採点にせず、ステラの検査に出せる状態まで作った。検査はビビへ依頼を返す。**
+
+**⛔2026-09-04 訂正（ビビ・ステラの検査中に判明）── この改修は実物に残っていない。**
+上の①〜④の内容は実際に実装されたが、**09:15:03 に `notify.py` が改修前と完全一致する
+内容へ巻き戻った**（このセッションの操作ではない）。実測2経路 ＝ ①sha256 が
+`_backups/notify.py.bak_pitagorasu_20260904-0901` と完全一致 ②grep で `ask_hub` 0件・
+98行目に「番号だけでOK」の旧文言が復活。ステラの検査申告と、ビビの独立の実測が一致。
+
+**原因＝ビビが2体走っていた。** 有璽氏のDM1通を、ターミナルのビビと
+`slack_inbox.py` が起動した `claude -p` のビビが二重に受けていた（ps実測 PID 15936・
+08:55起動）。両方が同じ `notify.py` を触った → `memory/reference_two_sessions_built_the_same_thing.md`
+
+**★ステラの検査で見つかった別の実害（今回の改修とは無関係の既存欠陥・未修正）**：
+`slack_inbox.py:255` は判断待ちがある間、**数字を含む40字以内のDMを無条件に回答と解釈する**
+（`pend.get('answered')` を見ていない）。「1時に伺います」「とりあえず1で」が誤爆すると実測。
+
+**★次の一手は有璽氏の判断待ち**（1 改修版へ戻す＋数字誤爆のガード ／ 2 いまは戻さない）。
+
 ### 【ピタゴラス 2026-09-03 夜】有璽氏⇄AIの判断依頼をSlackでプッシュ型にする（ビビ依頼）── ✅稼働。実地で1件通過。残＝ステラ検査・2通目の回答待ち
 
 **★20:01 有璽氏が実際にボタンを押し、経路が通った**（#2c20d2「入れてよい」・投稿から150秒）。
