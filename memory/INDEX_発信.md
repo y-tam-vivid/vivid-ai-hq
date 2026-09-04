@@ -31,4 +31,5 @@
 - [ブランドテーマ3種](reference_brand_themes.md) — ふくち。/119番/tane.の実データは揃っている(作り直さない)／**★tane.の配色がDriveとNotionで5色とも食い違い・未決**／Notionのブランドガイドは「110番」のまま古い／NPOは専用VI無し
 - [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **★サイトはTOP1枚しか無い**(料金・住所は画面のどこにも出ていない・カードは無反応)／**★2026-09-03 WordPress(orange-works.co)へ寄せる案が出て未決＝方式そのものが宙に浮いている。STUDIOならAI代行不可・WPならAPIで全部組める**／正本は`~/orangeworks-portfolio/HANDOFF.md`
 - [LIFE STAND UP サイト(WordPress)](project_lifestandup_website_wordpress.md) — ★9/3 トップ1本完成(実WP有効化・再現度0px)。**applyTweaksは8版＝top-pageの結果を横展開するな**／**★文言2本は採用する側が逆(指定はaudit_tweaks.py冒頭)**／図案A/C/Dはarchive/へ保管後に削除／CSSは共通化しない／内部リンク310本／工数58〜107h／**Emanon Proのフォルダを消さない**
+- [LIFE STAND UP 写真の運用](project_lifestandup_website_wordpress.md) — ★9/4 有璽氏「公開前なら一旦載せて後で差し替え」＝枠待ちをやめた／**★入れたら必ず目で見る。CSSの詳細度とショートハンドで写真が隠れる・切れる（実地2件）**／公開直前の確認2点＝全枠の○と板書の英文（英語スタッフ判定）
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない
