@@ -1115,15 +1115,25 @@ MySQLバックアップ  サーバーパネル → データベース → 「MyS
 ```
 i-life-fukushi.com/public_html/
   wp-config.php（権限600）／wp-admin／wp-content／wp-includes  ＝ ★本番はここ。標準構成
-  script          ★標準のWordPressには無いフォルダ。中身は未確認
-  xserver_php     エックスサーバーの標準
+  script ／ xserver_php   ★エックスサーバーの標準（初期ドメイン側にも同じものがある）
   .user.ini       ★9/4 17:04 更新 ＝ PHPを8.3へ切り替えた痕跡（この時刻と一致）
 ★サブフォルダに test / stg / blog / wp のようなものは無い
-  ＝ ★i-life-fukushi.com 側に2つ目のWordPressは存在しない
+
+xs20210924.xsrv.jp/public_html/   ★初期ドメイン
+  .htaccess ／ .user.ini ／ default_page.png ／ index.html  ← ★これだけ
+  ＝ ★契約時のままの初期状態。WordPress は入っていない
+  ★.user.ini が 2022-01-01 のまま＝こちらではPHP切替が起きていない（本番側とだけ一致）
 ```
 
-**★残る候補は `xs20210924.xsrv.jp`（サーバーの初期ドメイン）。**左のツリーに実在するが
-未展開。ここを開けば `xs20210924_wp1` の正体が決まる。無ければ「使われていない残骸」。
+**✅ `xs20210924_wp1` は使われていないデータベースの残骸**（2026-09-04 確定）。
+2つのドメインとも WordPress の実体は本番1つだけ。
+**★ステージングは無い。**本番でいきなり切り替えることになる ── PHPの切替は済んだが、
+**テーマを差し替えるときも同じ条件。**バックアップ（14日＋手動）が唯一の戻し道。
+
+**⛔ こちらの誤りを1件訂正**：「`script` は標準のWordPressには無いフォルダ」と書いたが、
+**初期ドメイン側にも同じ `script` があった＝エックスサーバーの標準。**
+★1箇所だけ見て「標準に無い」と判断したのが誤り。**2箇所目を見て分かった。**
+→ [[feedback_one_route_is_not_verification]]
 
 **🔴 データベースが2つある。** MariaDB10.5 の下に
 ```
