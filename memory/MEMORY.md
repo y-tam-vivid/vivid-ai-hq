@@ -51,7 +51,7 @@
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — **真因は速さのために確かさを落としていること(記憶から数字を埋める)**。数える/揃えるを部品に固め呼ぶだけにする／日付はnorm_date()を通した値だけ／件数は「443社(会社名がある行)」と数え方を添える／**★有璽氏の設計＝毎回数えず1か所(dashboard_data.json・読み口facts.py)へ集約し読むだけにする。別々に数えると人ごとに違う答えが出る**／★変種＝APIの`ok:false`を見ず空配列を「0件」と読み、権限があるのに「無い」と報告した(条件を欲張ると権限のある方まで落ちる)／**★部品を置いただけでは既存経路は変わらない。書き込む側から先に置換する（読む側だけ直すと揃って見えて汚れは増える）**／**★「解消11件」の申告を突合したら7件だった。過剰修正は本人には成功に見えるので申告に出ない＝別主体で読むしかない**／**★9/4「残り18ページ」が実物では1ページ。「そのクラスを持つ数」を「直っていない数」として書いた。分母を2段で書く**
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 検証3つ合格で断絶9秒→24分。**★9/3 上限300→30秒へ。次の再発で確認**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — 🔴9/4 2回目＝**全担当の恒久ルール**（ボタン一本・報告に混ぜない）／**★押されても聞いた側へ返らない。投げたら毎回 answer_of() を見に行く（催促させたら負け）**
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別法で数え直す／★列挙は絞らず全部出す／**★9/4「1本しか開いていない」と書きながら同じ文で「0件」と断定＝限界の申告は免罪符でない。実際は1件あった**
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別法で数え直す／★列挙は絞らず全部出す／**★限界の申告は免罪符でない(「1本しか開いていない」と書きつつ「0件」と断定→実際は1件)**／**★有璽氏が数字に違和感を示したら記憶を弁護せず数え直す(42件→実測892件)**
 - [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★9/4に notify.py が**5回**巻き戻り。MacBook側だけ・miniは無事＝実行機は無傷／原因未特定(claude 20本)／対処は検知のみ・自動復元しない
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**／**★2026-08-29「ギャッやるなよ。誰かにやらせろ」＝2回目。★「存在しません」で止めるな＝スキル名でなく①スキル②bin/③pip④過去実績のgrepで数える（Word変換は既にbin/md2docx.pyが在った）**
@@ -71,7 +71,7 @@
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動／★材料の発言欄は38%が偽物。本文を読む
-- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 「PR動画」1語で動画を作り込んだ。形式/本数/出口を先に確定する
+- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化（docx/pptxもbin/にある）**
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ。予定作成は意図的にask／代替は.ics／**★担当も書けないことがある(allowにEditがあってもdontAskで拒否)。規範の制限と権限の制限が重なると誰も触れない領域ができる→resumeでなく新規起動で試す**／**★拒否は3層(フック/権限/OSサンドボックス)。「operation not permitted」はsettings.jsonでは直らない**
