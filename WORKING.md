@@ -1394,12 +1394,6 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
   - **★私の不備**: 前ターンで止めたはずの検証サーバ8731を立て直して止め忘れていた。今回停止・3経路で確認
   - **★同じ対象に手をつけないでください**: `~/lifestandup-wp/` ／ v2.1フォルダ
 
-- **【フランキー / MacBook 2026-09-04】LIFE STAND UP ブログ記事ページの設計 ── 走行中**
-  - **読むだけ**: 確定HTML 20本（v2.1）／既存サイト i-life-fukushi.com/blog。**1バイトも書き換えない**
-  - **書く**: `~/lifestandup-photo-plan/blog/`（調査結果・比較画像。ローカルのみ）
-  - **★触らない**: `~/lifestandup-wp/`（リリスの領域）／本番サーバ／台帳・Notion・kintone
-  - ★新規デザインを起こす前に、20本の中の流用可能な形を実物で数える
-
 - **【ビビ / MacBook 2026-08-28】イベント運用スキル6本 ── 導入完了。★有璽氏の回答待ち3点**
   - **書いた**: `.claude/skills/event-*`（6本）＋ `EVENT-SKILLS-README.md` ／
     `memory/project_event_skills_suite.md` ／ `memory/INDEX_発信.md` の1行
