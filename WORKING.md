@@ -1588,8 +1588,28 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
     .tlv-row=stand-up-daily-schedule詳細タイムライン／.news-item=newsお知らせ一覧）。
     Driveの別フォルダ「3段目_どれのこと」へコピー・sha256全4件一致確認済み
     ✅完了。撮り直し・Drive上書き済み（sha256全21件一致）
-  - ④残り18ページの計測 ── 実装中。横あふれ・重なり・②の型の残存を全ページで測定中
-    （まだ直さない・一覧化してから方針）
+  - ④残り18ページの計測 ── 全20ページ×3幅=60ケースの重なり検査を実行済み(60/60取得)。
+    ★優先順位変更（有璽氏）により①写真の流し込みを優先、④の一覧化は保留中
+  - **①写真の流し込み（photos.json経由）✅一部完了・2枚は保留して報告**
+    実装：voice-2(front-page.php・Photo-184)／su-fv-main(stand-up-top.php・Photo-198)
+    の2枚。既存の`lsu_photo_class`/`lsu_photo_style`（functions.php）の仕組みを使用、
+    `tools/lsu_photos.py`の安全機構（masked版強制）を通した。採用前に原寸で1枚ずつ検分。
+    **★保留**：fv-main(217)／fv-hand(218)。板書に"Question: Do you going to..."という
+    英文が写っており、memory記載のPhoto-100の誤り（Do you going to → 正しくはAre you
+    going to）と同種の疑いがある。トップページ最重要位置のため独断で通さず、英語スタッフ
+    または有璽氏の確認待ち。voice-1/voice-3は元々`photo:null`（候補未受領）のため対象外
+    **★実装中に発見・修正した2件のCSSバグ（正直に報告）**：
+    ①`fv-photo-inner.has-photo`が共通style.cssだけでは詳細度不足でプレースホルダー文字が
+    写真に重なって表示（stand-up-top.css側に詳細度の高いルールを追加して解消）
+    ②`.voice-card.v2 .voice-photo{background:linear-gradient(...)}`という**ショートハンド**
+    宣言が、後方にある`.voice-photo.has-photo{background-size:cover;...}`と同じ詳細度・
+    後勝ちのはずなのに実機で競合し、写真が正しくcoverされず主題（手元）が完全にフレーム
+    アウトして表示された（`:not(.has-photo)`でショートハンド自体を無効化して解消・実測確認）
+    実測：新しい重なり検査で3件検出（`fv-photo-inner`×`cert-badge`テキスト）→ 目視確認の
+    結果、円形クリップにより視覚的な重なりは無い誤検出と判断（矩形判定の限界）。PC幅は
+    写真表示も含めて目視確認済み（意図した変更のため差分ゼロの主張はしていない）。
+    全CSS20本の括弧チェック合格・サーバ2経路停止確認済み。バックアップ
+    `_backup/20260904-photos/`
   - **仕上げ2件 ✅完了**：①新設 `check_css_braces.py`（開き/閉じ括弧数チェック・
     今後CSS編集のたびに通す。README.md「11.引き継ぎ」に事故の経緯とあわせて明記）を
     実行し、theme/lifestandup配下20本すべて一致を確認。②スクリーンショット撮り直し
