@@ -11,3 +11,7 @@ bin/vendor/
 #   今日 untracked / 未コミットで同期が2回止まっている（reference_two_sessions_built_the_same_thing）
 bin/hooks/.hook_last_notify.json
 # ★landmines.json は git 管理下（配布に必要）。除外しないこと
+
+# 機微を含む中間ファイル（2026-09-04 混入事故）
+*.pkl
+*.csv
