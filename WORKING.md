@@ -172,6 +172,26 @@ findings_escalate.pyの記述（38-46行目「notify.ask()の中身はask_hub.as
 改修した」）は今回の再実装内容と整合しているため、findings_escalate.py自体は無改修
 のまま（依頼どおり）。
 
+**🔴🔴追加の緊急申告：作業中、MacBook側だけが3回巻き戻った。mini側は無事だった。**
+時系列（実測）：
+```
+10:45:05  notify.py 初回Write → 直後 grep 0件（旧版）に戻っていた
+10:47:47  notify.py 再Write → 直後は正しく反映(224行)。以降テスト完了まで安定
+10:53:28  WORKING.md をcommit直後 → notify.py が再び0件(124行)に巻き戻り。
+          ★このときmini側を確認したところ notify.py は無事(224行のまま)。
+          self_audit.py・memory_sweep.py もMacBook側だけ旧版(ask_hub関連0件)へ
+          巻き戻っていた（sha256突合で発覚）。mini側は3ファイルとも無事
+```
+**MacBook側でのみ・複数回・大きなツール呼び出しの直後というタイミングで発生している。**
+原因は特定できていない（ps auxで複数のClaudeプロセスがMacBook上で稼働していることは
+確認したが、どのプロセスが書き換えたかまでは特定していない。lsofでは書込み中のプロセスを
+捕まえられなかった＝発生が一瞬で終わる）。git側にも他セッションの着手宣言は見当たらず、
+vivid-relay配下を同期するcron/launchdジョブも無いことは確認済み（launchctl list・crontab -l・
+LaunchAgents一覧で確認）。★mini側からscpで3回とも復元し、10秒以上の安定を確認して
+作業を終えた。**この現象自体が、③（巻き戻り検知）がなぜ要るかの実例そのもの。**
+次にこのファイル群を触る人は、MacBook側の実物を無条件に信用せず、mini側とのsha256突合を
+先にすることを強く推奨する。
+
 **★次回自動実行への影響**：findings_escalate.pyは`daily_jobs.conf`08:15に既に登録済み
 （今回の変更前から）。次回発火時、notify.ask()経由でask_hub.ask()が呼ばれ、
 **初めて本番でボタン付きメッセージが投稿される**（従来のtext形式ではなく）。
