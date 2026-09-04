@@ -98,6 +98,80 @@ notify.tell()側の`_post()`をモックし忘れ、テストメッセージ「�
 以降のテストは`api_post`と`_post`の両方を確実にモックし、実物ファイルは退避してから
 書き込みテストするよう改めた。
 
+**【ピタゴラス 2026-09-04 午前・再着手】有璽氏2回目の指摘を受け①〜④に対応 ── 実装・実測完了。ステラ検査待ち**
+
+対象：`~/.vivid-relay/notify.py`（MacBook・mini 両方）／`~/.vivid-relay/slack_inbox.py`（mini専用・
+MacBookには元々存在しない）／`~/.vivid-relay/self_audit.py`（両方）／`~/.vivid-relay/memory_sweep.py`
+（両方）。**台帳・Notion・kintoneへは1文字も書いていない。Slackへ実投稿は0件**（後述の1回の事故を除き
+`ask_hub.ask`・`notify._post`・`ask_hub.api_post` は全テストで確実にモックした）。cron/daily_jobs
+への新規登録はしていない。
+
+```
+準備   実測：指定バックアップ`_backups/notify.py.bak_pitagorasu_20260904-0901`は
+       `_backups/`ディレクトリごと両機に存在しなかった（find実測）＝改修後の版はどこにも
+       残っていなかった。作り直した。書く前に4ファイルとも両機の現行版を
+       `_backups/*.bak_pitagorasu_20260904-1_{macbook,mini}` へ控えてから着手した
+
+① notify.py 作り直し   ✅完了・実測済み
+   ask()の中身をask_hub.ask()へ委譲（呼び出し方・戻り値boolは不変）。pending()の
+   answered判定の正をask_hub_queue.json側へ（ask_hub.answer_of()へ都度問い合わせ、
+   問い合わせ失敗時は旧ファイルの中身へフォールバック、旧形式ask_id無しにも後方互換）。
+   tell()に判断語(CLAIM_WORDS)検出時のstderr警告を追加。
+   実測12ケース（T1〜T12）：muted時の戻り値／判断語検出／ask()成功・失敗・例外の3系統／
+   pending()の新形式・旧形式・後方互換・問い合わせ失敗フォールバックの4系統。
+   ★MacBookからのask()呼び出しはask_hub._require_receiver()でRuntimeErrorになり
+   Falseを返すことも実測確認（SLACK_APP_TOKENがminiにしかないため。既存の制約で
+   notify.py側では回避していない。判断が要る自動処理はminiのcronでのみ動かす）
+
+② slack_inbox.py:255 数字誤爆ガード（mini専用）   ✅完了・実測済み
+   `if pend and nums and len(t)<=40` へ `not pend.get('answered')` を追加。
+   実測：answered済みpendingへの「1時に伺います」「とりあえず1で」が誤爆しない
+   ことを確認（T1・T2）。★T4で判明：未回答状態での自然文中の数字誤爆（40字以内・
+   数字を含めば無条件一致という構造自体の弱さ）は依頼の範囲外の別問題として残る
+   （ステラが指摘したのは「answered判定の欠落」の1点で、それは解消した）
+
+③ 巻き戻り検知   ✅実装・実測済み
+   self_audit.py へ `_notify_ask_hub_check()` を新設。notify.pyを実際に読み、
+   `import ask_hub`+`ask_hub.ask(`／`CLAIM_WORDS`+`contains_judgment_words` の
+   両方が実在するかを確認。無ければ「★巻き戻り疑い」を返す。collect()・
+   プロンプト・検査項目6（★人が要るへ入れさせる。機械が勝手に復元しない設計）に
+   組み込み済み。実測：現行版notify.py→正常判定／バックアップ済みの旧版
+   （巻き戻り後と同一内容）→正しく「★巻き戻り疑い」を検出、の両方を確認。
+   ★cron未登録（self_audit.py自体の登録タイミングは既存運用のまま・今回変更なし）
+
+④ tell()から判断語が出ていく経路   ✅self_audit.py／memory_sweep.pyの2箇所で実装・実測済み
+   両ファイルとも、tell()呼び出し直前でnotify.contains_judgment_words(out)を判定し、
+   Trueならask_hub.ask()（ボタン付き・選択肢は汎用の「確認しました／いまは保留」＋
+   ask_hub標準の「その他」）へ回す。ask_hub側が失敗（例外・posted=False）したら
+   tell()へフォールバックする（何も届かないよりまし）。実測3ケース（T15〜T17）：
+   判断語ありでask_hub経由／判断語なしでtell()のまま／ask_hub失敗時のフォールバック。
+   ★他5箇所（notion_customer_upsert.py×4・promote_minutes.py・progress_report.py）は
+   固定テンプレで判断語混入リスクが無いため対象外（9/4朝の列挙どおり・変更なし）
+
+配布   4ファイルとも両機sha256完全一致を確認（notify.py／self_audit.py／memory_sweep.py／
+       slack_inbox.pyはmini専用なので両機一致の対象外）。mini側でdry-run実行し
+       self_audit.py（プロンプト8345文字）・memory_sweep.py（16303文字）とも
+       正常に組み立ち・claudeサブプロセスは呼ばれないことを確認（ドライランのため）
+```
+
+**🔴正直な申告：作業中にnotify.pyへの最初のWriteが「反映されたのに直後に旧版へ戻る」
+現象が1回発生した。** 10:45:05にWriteし、その約1分後にgrep実測したところ0行・124行
+（旧版そのもの）に戻っていた。原因は特定できていない（この時間帯にps auxで複数の
+Claudeプロセスが起動していたことは確認したが、どのプロセスが触ったかまでは特定できず、
+git側にも他セッションの着手宣言は無かった）。**もう一度Writeし、間を置かず即座に
+grepで確認したところ今度は正しく反映され（224行）、以降は安定していた。** これは
+まさに③（巻き戻り検知）の必要性を裏付ける実例として正直に記録する。
+
+**実物ファイルへの影響**：`ask_hub_queue.json`（未回答のec25ed=ビビの別件含む）・
+`slack_pending.json` とも、テスト前に両機で退避（`_backups/*.pretest_20260904-1030`）
+した上で、テスト自体はモックで完結させたため書き込みは発生していない。作業終了時点で
+退避版とdiffなし＝無傷を確認した。
+
+**★次アクション**：ステラの検査へ出す（cross-check）。検査依頼はビビへ返す。
+findings_escalate.pyの記述（38-46行目「notify.ask()の中身はask_hub.ask()へ委譲するよう
+改修した」）は今回の再実装内容と整合しているため、findings_escalate.py自体は無改修
+のまま（依頼どおり）。
+
 **★次回自動実行への影響**：findings_escalate.pyは`daily_jobs.conf`08:15に既に登録済み
 （今回の変更前から）。次回発火時、notify.ask()経由でask_hub.ask()が呼ばれ、
 **初めて本番でボタン付きメッセージが投稿される**（従来のtext形式ではなく）。
