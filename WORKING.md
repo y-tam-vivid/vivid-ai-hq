@@ -1610,25 +1610,32 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
     ✅完了。撮り直し・Drive上書き済み（sha256全21件一致）
   - ④残り18ページの計測 ── 全20ページ×3幅=60ケースの重なり検査を実行済み(60/60取得)。
     ★優先順位変更（有璽氏）により①写真の流し込みを優先、④の一覧化は保留中
-  - **①写真の流し込み（photos.json経由）✅一部完了・2枚は保留して報告**
-    実装：voice-2(front-page.php・Photo-184)／su-fv-main(stand-up-top.php・Photo-198)
-    の2枚。既存の`lsu_photo_class`/`lsu_photo_style`（functions.php）の仕組みを使用、
-    `tools/lsu_photos.py`の安全機構（masked版強制）を通した。採用前に原寸で1枚ずつ検分。
-    **★保留**：fv-main(217)／fv-hand(218)。板書に"Question: Do you going to..."という
-    英文が写っており、memory記載のPhoto-100の誤り（Do you going to → 正しくはAre you
-    going to）と同種の疑いがある。トップページ最重要位置のため独断で通さず、英語スタッフ
-    または有璽氏の確認待ち。voice-1/voice-3は元々`photo:null`（候補未受領）のため対象外
-    **★実装中に発見・修正した2件のCSSバグ（正直に報告）**：
+  - **①写真の流し込み（photos.json経由）✅完了（fv-main/fv-handも実装済み）**
+    実装：voice-2(front-page.php・Photo-184)／su-fv-main(stand-up-top.php・Photo-198)／
+    fv-main(stand-up-top.php・Photo-217masked版)／fv-hand(stand-up-top.php・Photo-218
+    masked版)の4枚。既存の`lsu_photo_class`/`lsu_photo_style`（functions.php）の仕組みを
+    使用、`tools/lsu_photos.py`の安全機構（masked版強制）を通した。採用前に原寸で1枚ずつ検分。
+    **★fv-main/fv-handは有璽氏の運用ルール（公開前は一回掲載してダメなら差し替える。公開
+    しないので不可逆にならない）に従い実装。**板書の英文の正しさ（"Question: Do you going
+    to..."）は「入れない理由」ではなく「公開前に確認する項目」としてビビがmemoryに登録済み
+    （リリスは英文の正誤判定をしない）。voice-1/voice-3は`photo:null`（候補未受領・推測で
+    埋めない）で対象外のまま＝photos.json全6枠中、実装対象4枠・候補なし2枠（voice-1・voice-3）
+    **★実装中に発見・修正した3件のCSSバグ（正直に報告）**：
     ①`fv-photo-inner.has-photo`が共通style.cssだけでは詳細度不足でプレースホルダー文字が
     写真に重なって表示（stand-up-top.css側に詳細度の高いルールを追加して解消）
     ②`.voice-card.v2 .voice-photo{background:linear-gradient(...)}`という**ショートハンド**
     宣言が、後方にある`.voice-photo.has-photo{background-size:cover;...}`と同じ詳細度・
     後勝ちのはずなのに実機で競合し、写真が正しくcoverされず主題（手元）が完全にフレーム
     アウトして表示された（`:not(.has-photo)`でショートハンド自体を無効化して解消・実測確認）
+    ③fv-main/fv-hand実装時、`.polaroid .ph`/`.polaroid-a .ph`/`.polaroid-b .ph`にも同型の
+    ショートハンド競合が存在すると事前に発見（実害が出る前に`:not(.has-photo)`で対処）
     実測：新しい重なり検査で3件検出（`fv-photo-inner`×`cert-badge`テキスト）→ 目視確認の
-    結果、円形クリップにより視覚的な重なりは無い誤検出と判断（矩形判定の限界）。PC幅は
-    写真表示も含めて目視確認済み（意図した変更のため差分ゼロの主張はしていない）。
-    全CSS20本の括弧チェック合格・サーバ2経路停止確認済み。バックアップ
+    結果、円形クリップにより視覚的な重なりは無い誤検出と判断（矩形判定の限界）。fv-main/
+    fv-hand実装前後で重なり検査を突合し新規増加0件を実測（390px:10→10・360px:12→12・
+    320px:14→14）。横あふれは390px/360pxとも0px、320pxは既存の既知issue（写真とは無関係・
+    「直さないと決めた」既存決定と一致）。PC幅はポラロイド2枚（キャプション「みんなで えいご
+    あそび」「できた！」付き）が正しく表示されることを目視確認済み。
+    全CSS20本の括弧チェック合格（2回実施）・サーバ2経路停止確認済み。バックアップ
     `_backup/20260904-photos/`
   - **仕上げ2件 ✅完了**：①新設 `check_css_braces.py`（開き/閉じ括弧数チェック・
     今後CSS編集のたびに通す。README.md「11.引き継ぎ」に事故の経緯とあわせて明記）を
