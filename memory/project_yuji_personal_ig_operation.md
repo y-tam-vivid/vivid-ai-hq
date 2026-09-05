@@ -456,3 +456,18 @@ AI活用発信ネタDB  当事者性の一次情報（自社）。ストック�
   **fetch でプロパティの実値を読んで、それを引用して答える**
 - **★見えない原因は、たいていビューの設定。**テーブルビューだと file 列は小さく出るだけ。
   ギャラリーの COVER に指定して初めて「一覧で見える」になる
+
+## ★Notion へファイルを送るときに踏んだ2つ（2026-09-05 実測）
+
+```
+✗ scratchpad のファイルが消えていた   セッションを跨ぐと消える。
+                                     curl は HTTP=000 で無言で失敗し、Notion側は status:"pending" のまま
+                                     → ★送ったあと必ず status を読む。"uploaded" 以外は失敗
+✗ 動画で content_type 不一致          枠は application/mp4 で取られるのに、
+                                     curl の -F は既定で application/octet-stream を送る
+                                     → ★-F "file=@<path>;type=application/mp4" と明示する
+```
+
+- **★「送った」と「入った」は別。**update-page で
+  `has an invalid status of pending. Only uploaded files are expected.` が出て初めて発覚した
+- 動画も file列に入る（8秒リールで1〜3MB。単発アップロードは20MiBまで）
