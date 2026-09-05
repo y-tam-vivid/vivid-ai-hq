@@ -22,10 +22,10 @@
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す／★手段の語彙は3箇所に散る(フォーム/90のK列/Notionチャネル)。90に連絡手段の列は無い
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
-- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★作れる。大阪絞り914は9市除外の意図が不明。判断5点待ち
+- [他種別テレアポリスト](project_telapo_list_other_services.md) — ✅作った(13タブ10,982行)。★名寄せ候補81件は未統合／残=トーク書き分け
 - [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体
 - [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない
-- [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — 【解消】miniにGoogle認証が無くGASを人が貼っていた。いまはOAuthで直接読み書きできる
+- [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — ★認証は有璽氏本人のOAuth(サービスアカウントでない)＝作った物は共有不要／共有ドライブはsupportsAllDrives必須
 - [営業ワークブックは戻せる状態に](feedback_sales_workbook_hands_off.md) — AIが書くときだけ①BU→②diff→③承認→④実行
 - [営業ワークブック](project_sales_pipeline_workbook.md) — ★営業は一度も触っていない＝開かせる1回が要る／投稿側intake_notify.pyは未実行
 - [SalesBreaker API](reference_salesbreaker_engagement_api.md) — ★2026-08-28 contract=turn82。list/get系は403。中身を読めるのは templates/preview と saved-lists/preview だけ

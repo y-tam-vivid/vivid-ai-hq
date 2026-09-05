@@ -49,4 +49,29 @@ mini の実測結果
 
 **ログイン・認証情報の入力は代行しない**規約があるため ①②はAI側で実施できない。**鍵が置かれた後の実装・設定・検証はすべてAI側で行う。**
 
+## ⛔2026-09-05 訂正 ── 解消したのはサービスアカウントではなく「有璽氏本人のOAuth」
+
+**上の「解消の道」は実際に採られた形と違う。** 実測（2026-09-05・mini）：
+
+```
+経路1  sheets_client の KEY_PATH（google_service_account.json）  → ★存在しない
+       TOKEN_PATH（google_token.json）                          → 存在する
+経路2  drive.about().get(fields='user')                          → y_tam@vivid-global.com
+→ 一致。★いま動いている認証は 有璽氏本人のOAuthトークン
+```
+
+**ここから2つ、実務が変わる。**
+
+- **★AIが作ったファイルは「共有」しなくても有璽氏が見える。**所有者が本人だから。
+  「サービスアカウントが作ったので共有が要る」という前提で手順を組むと、要らない工程が増える。
+  ただし**置き場が共有ドライブなら権限はドライブから継承される**ので、確認は
+  `drive.permissions().list()` で読み返す（2026-09-05 実測：有璽氏 role=organizer）。
+- **★共有ドライブ上のファイルは `supportsAllDrives=True` が無いと Drive API が 404 を返す。**
+  Sheets API では読めるので「共有されていない」と誤診しやすい。**404 を「無い」の証拠にしない。**
+
+**★Skill `sheets-access` の「鍵の扱い」節はこの訂正を反映していない**
+（`~/.vivid-relay/google_service_account.json` を実体と書いている）。
+`.claude/skills/` 配下はAIから書けないため、修正は人の手が要る
+→ [[reference_permissions_are_part_of_the_environment]]
+
 関連 [[reference_mac_mini_execution_env]] [[project_automation_register]] [[project_sales_workbook_read_first]] [[feedback_read_the_artifact_not_the_copy]]
