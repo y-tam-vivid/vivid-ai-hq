@@ -53,6 +53,24 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-05 夜】営業台帳の指摘 ④①②③（有璽氏のボタン回答4件）── 着手
+
+**有璽氏が17:26〜17:27にSlackで押した4件（#5bbcb0 保留／#a3a71e 01からも消す／
+#e509fe AIの判断で変更してよい／#497cbd まず中身を全部見せて）に対応する。**
+
+```
+④ 受付シート41行目の中身   ★読むだけ → ask_hub のボタンで出す（Slack実投稿はこの1件のみ）
+① 毎朝の点検の警告から3件を外す（期限なし・画面には残す）  ★書くのは点検側だけ
+②③ 台帳への書き込みは★実行しない。差分を出して止まる（つる検査はビビが手配）
+```
+
+**★触らない**：00_企業マスタ・01_顧客詳細・受付シート（書き込み）／Notion・kintone／
+`~/.vivid-relay/{stall_watch.py, notify.py}`／`bin/hooks/hook_interactive_guard.py`／
+テレアポリスト関連3本＋新規ファイル。
+
+**★同じ対象に手をつけないでください**: `~/.vivid-relay/ledger_report.py` ／
+`~/.vivid-relay/ledger_dupes.py` ／ `bin/hooks/findings_tracker.py`
+
 ### 【ピタゴラス / mini 2026-09-05 夕】層3（解除）── ボタンを押したら詰まりが解ける ── ✅完了。ステラ検査待ち
 
 **書いたのは `~/.vivid-relay/notify.py` と `bin/hooks/self_audit.py`（＋その複製）だけ。**
@@ -115,16 +133,47 @@ FAXの先頭0落ち         ★直った（2経路）。電話は無傷。事業
 報告全文 `~/.vivid-relay/saleslist_tsuru3.log` ／ 記録 `memory/project_telapo_list_other_services.md`。
 **★つるは新ファイルを直していない。修正はピタゴラス側。**
 
-### 【ピタゴラス / mini 2026-09-05 夜】層2（予防）非対話セッションの AskUserQuestion を機械で止める ── 着手（書く）
+### 【ピタゴラス / mini 2026-09-06】つる3周目の🟡2件＋検索文字列のゆれを直す ── 着手（書く）
 
-**書くのは `bin/hooks/hook_interactive_guard.py`（新設）と `~/.vivid-relay/layer2_result.md` だけ。**
-控えは `~/.vivid-relay/_backups/` へ。**settings.json へは登録しない**（人の手・要承認。手順は全文で書き残す）。
-**Slackへ実投稿しない**（`notify._post` と `ask_hub.api_post` の両方をモック）。
-台帳・Notion・kintone へは書かない。
+**書いてよいのは新ファイル `1PXBlBraJrbDH0habkDeRGJT4U5NSRE03BsUXrT_ZbDA` の
+「★このリストの作り方と限界」タブと「★要判断_同一法人の候補」タブだけ。**
+①新タブの数字3つ（束ねた組数・法人名だけ一致・名称の食い違い）②要判断のI列⇔J列の矛盾
+③I列の検索文字列が実物に当たらない行。**書く前にDriveへ複製する。RAWで書く。**
+
+**★触らない**：事業所単位5タブ・法人単位6タブ・活動FB・テレアポトーク・★修正ログ／
+既存3本（見本・抽出元2本）／ＨＡＬＥ株式会社の行（有璽氏の判断待ち）。
+台帳・Notion・kintone へ書かない。Slack へ投稿しない。
+
+**★同じ対象に手をつけないでください**: 新ファイル `1PXBlBraJrbDH0habkDeRGJT4U5NSRE03BsUXrT_ZbDA`
+
+### 【ピタゴラス / mini 2026-09-05 夜】層2（予防）非対話の AskUserQuestion を機械で止める ── ✅実装・実測完了。★登録は人の手待ち
+
+**報告書 → `~/.vivid-relay/layer2_result.md`。** 書いたのは新規フック1本＋複製、
+`memory/reference_detect_noninteractive_session.md`（新規）、`memory/INDEX_仕組み.md` の1行、この欄。
+**settings.json へは登録していない**（要承認）。**Slackへは1件も投稿していない**
+（★そもそも `notify` も `ask_hub` も import していない＝投稿する経路が無い。AST で確認）。
+
+```
+判定    ★CLAUDE_CODE_ENTRYPOINT の1本だけ。cli=対話 ／ sdk-cli=非対話
+        3経路で確認（実体のコード ／ 実機A/B ／ transcript 25,261行の entrypoint欄）
+        ★agent_id は使えない（実測）。メイン/サブは分かるが対話/非対話は分からない
+        ★isatty・CHILD_SESSION・CLAUDECODE も全部 両モードで同値＝使えない
+振る舞い 非対話→★ブロック(exit2＋逃げ道3つ) ／ 対話→★警告のみ ／ 判定不能→通す(fail-open)
+検算    サブエージェント14件 ＋ ★ピタゴラスが独立に9項目、どちらも全合格。★誤検知 0/6
+        本物のログは汚していない（HOME差替。log はいまも存在しない＝未発火）
+```
+
+**🔴 依頼文の前提が1つ違う（層1・層3にも効く）**
+**`claude -p` に AskUserQuestion は存在しない**（実測2経路）。mini の非対話 6,723行での
+呼び出しも**0件**。**22分の停止をこれで説明できない** ── 実際に止めるのは承認ダイアログ側。
+代わりに起きるのは「本文に番号を並べて『番号だけ返して』で終わる」型＝**有璽氏が3回止めている記述式。
+★PreToolUse では捕まえられない（Stop側の話・当方スコープ外）。**
+
+**★人の判断待ち**: ①登録するか（推奨＝`bin/setup_hooks.sh` の SPEC へ1行。両機へ自動。
+settings.json 直編集は片機のみ）②対話側の警告を出してよいか ③前提の訂正を層1/層3へどう反映するか。
 
 **★同じ対象に手をつけないでください**: `bin/hooks/hook_interactive_guard.py`
-**★こちらは触りません**: `hook_permission_slack.py`（層？）／`~/.vivid-relay/stall_watch.py`（層1）／
-`~/.vivid-relay/notify.py`（層3）
+**★こちらは触っていません**: `hook_permission_slack.py`／`stall_watch.py`（層1）／`notify.py`（層3）
 
 ### 【ピタゴラス / mini 2026-09-05 夕】走行中の claude -p の無言を検知する役（層1）── ✅実装・実測完了。検査待ち
 
