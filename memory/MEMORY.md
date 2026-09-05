@@ -86,5 +86,5 @@
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
-- [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — **関係法人のブログ・SNS投稿文と画像の作成までが1セット**（2026-08-25）。対象は📱発信アカウント台帳を読んで毎回リスト化・投稿の実行者は当面 有璽氏
+- [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — 文面と画像まで1セット／★施設IGに業界の話は不可
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
