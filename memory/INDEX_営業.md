@@ -23,6 +23,7 @@
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
 - [他種別テレアポリスト](project_telapo_list_other_services.md) — 13タブ作成。★活動FBに放デイ実績が混入=つる検査中／名寄せ81件未統合
+- [営業は3本が並走](project_sales_three_streams.md) — ①台帳整備(★8日停滞) ②テレアポリスト ③数値管理(別の面で議論中・こちらに記録なし)。★9/5「分ける」を有璽氏が検討中＝対象未確定。窓口ビビ/実行mini は動かない
 - [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体
 - [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない
 - [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — ★認証は有璽氏本人のOAuth(サービスアカウントでない)＝作った物は共有不要／共有ドライブはsupportsAllDrives必須
