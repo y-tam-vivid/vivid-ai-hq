@@ -10,7 +10,7 @@
 - [Downloads→Drive本棚](project_downloads_archive_system.md) — 受け皿17分類。sort_downloads.pyが週次(要フルディスクアクセス)
 - [カレンダー テンプレ挿入](project_calendar_template_autofill.md) — GASで自動挿入。タイトル【種別】で振り分け＝命名ルールが前提
 - [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入する。触ったファイルを明示・commitは束ねる側が打つ
-- [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない／★枝分かれはff-onlyでは永久に解けない（自動merge＋衝突ならabort）
+- [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない／★枝分かれはff-onlyでは永久に解けない（自動merge＋衝突ならabort）／**🔴9/5 2回目＝機械は設計どおり止まったが誰も解かなかった。真因は🔴の説明文が「未コミット」決め打ちで、未コミット0だと打つ手が無いように読めること。🔴を見たらまず`git status --porcelain|wc -l`と rev-list を叩き、0件なら自分で`git merge origin/main`**
 - [対話か claude -p かの見分け方](reference_detect_noninteractive_session.md) — ★`CLAUDE_CODE_ENTRYPOINT` の1本だけ（cli=対話／sdk-cli=非対話）。agent_id・isatty・CHILD_SESSIONは全部使えないと実測。transcriptにも同じ欄があり誤検知率を事前に測れる
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★自動配布にした結果、逆に`~/.vivid-relay/`を直すと15分後に黙って巻き戻る。触る前に`bin/hooks/`に同名が無いか見る
 - [crontabは書けない](reference_cron_write_blocked_in_session.md) — ★日次ジョブの正本はbin/daily_jobs.conf。8/23も未解消／ssh越しなら書ける
