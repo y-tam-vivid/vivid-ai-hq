@@ -53,6 +53,23 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-05】LIFE STAND UP ブログ（お知らせ）の実装 ── 着手
+
+有璽氏「デモサイト側のまだ不足している部分、ブログの部分だったりも実装させておいて」。
+対象は `~/lifestandup-wp/`（mini へ移設済み）。デザインの正本は mini の `~/design_handoff_v2.0/`。
+
+```
+書く   theme/lifestandup/single-news.php（新規・記事ページ）
+       theme/lifestandup/assets/css/news-detail.css（新規）
+       theme/lifestandup/page-templates/news.php（一覧・サムネイル付きへ）
+       theme/lifestandup/assets/css/news.css（.news-thumb の6行）
+       theme/lifestandup/functions.php（記事ページのCSS結線）
+触らない  本番サーバー・WP管理画面・DNS／台帳・Notion・kintone／build_pages.py の SRC
+```
+
+**★同じ対象に手をつけないでください**: `~/lifestandup-wp/theme/lifestandup/` ／
+`~/design_handoff_v2.0/`（読むだけ）
+
 > 2026-08-19 に整理した。**完了したものは落とし、残件だけを置く。**
 > 経緯は ⑥ディスカッションログ「営業案件管理スプレッドシートの設計」
 > `3ab7b1568b5781dca1b3c453f27c7bd9` の日付セッションに全部ある。
