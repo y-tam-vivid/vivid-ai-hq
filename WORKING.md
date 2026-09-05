@@ -53,6 +53,62 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-05 夜】仮公開サイトの出し直し ── ✅完了。一覧に実データ5本が並んだ
+
+**https://lifestandup-preview.vercel.app（lsu-staff / standup2026）が最新の中身で生きている。**
+本番サーバー・WP管理画面・DNS／台帳・Notion・kintone へは1文字も書いていない。Slackへは完了報告1本のみ。
+
+```
+★真因は「重さ」でも「ファイル名」でもなかった ── readyState=BLOCKED
+   作成APIの応答  "The deployment was blocked because Vercel couldn't find
+                  a Git account for the commit author."（COMMIT_AUTHOR_REQUIRED）
+   ★CLIはBLOCKEDを「まだ終わっていない」と読んで永久に待つ。エラーは出ない
+   真因＝mini の git user.email が★グローバルもリポジトリも未設定で、
+         git が「ユーザー名@ホスト名」を自動生成し commit author にしていた
+   ★アップロードは 35.1MB を6秒で完走していた（"All files uploaded" がログに在る）
+```
+
+**★2経路で確定した** ①作成APIの `readyStateReason` ②**同一の252ファイル・38MB を
+git管理外へコピーして deploy → READY**。★3経路目＝`git config --global user.email` を
+正しく設定し、その著者で1回 commit したあと **リポジトリの中から deploy → READY**（真因の修正を実証）。
+
+**⛔前セッションの見立て「`--exclude='*%*'` で通ったからファイル名が原因」は誤り。**
+実際に変わっていたのは**コピー先が git 管理外だったこと**。切り分けの操作が別の条件も同時に変えていた。
+
+```
+実測（★人に渡すURLで測った。個別デプロイURLでは測っていない）
+  ① 合言葉なし              401
+  ② lsu-staff/standup2026   200
+  ③ 一覧の実データ 5本とも 200（★halloween / bowling / octopus / spring / summer）
+  ④ 記事の写真              img 18〜50枚・先頭画像とも 200
+```
+
+**★直した実害を1件**：一覧が `/lets-make-octopus-rice-crackers-%e3…%ef%bc%81/` を
+指したまま**404**だった（フォルダ名だけ手で短縮し、HTML内のリンクを直していなかった）。
+単一エンコードの8箇所（7ファイル）を置換。★二重エンコード4箇所は触っていない（下記）。
+控え `~/lifestandup-wp/_backup/octopus_slug_20260905-1812/`。
+
+**🔴 直していないこと（判断が要る／範囲外）**
+① **SNSシェアと oEmbed が `127.0.0.1:8750` を指したまま。** パーセントエンコードされた形は
+   書き出し時の置換に当たらない。**本番のドメインが未確定なので、いま埋めると誤った値が焼き付く。**
+   閲覧・確認には影響しない（押したときだけ）
+② **`static-preview/.vercel/project.json` は今も `static-preview` プロジェクトを指している。**
+   ★`--project lifestandup-preview` を付け忘れると別プロジェクトへ出る。手順書には書いてある
+③ **`crawl_static.py` の短縮スラッグ対応表はピタゴラスへ委譲中**（役割の検問がこのセッションを
+   「ビビ」と誤検出し .py を書けない）。★入るまでは、書き出し直すと同じ404が戻る
+
+`~/lifestandup-wp` は README 15-9〜15-11 を新設して commit・push 済み（041d427）。
+**★同じ対象に手をつけないでください**: `~/lifestandup-wp/static-preview/` ／
+Vercelプロジェクト `lifestandup-preview` ／ `~/lsu-deploy-20260905/`（出し直し用のコピー）
+
+### 【ピタゴラス / mini 2026-09-05 夜】crawl_static.py の短縮スラッグ対応表（リリス依頼）── 着手
+
+対象は `~/lifestandup-wp/crawl_static.py` の1本だけ。`static-preview/` の中身・本番サーバー・
+WP管理画面・DNS・台帳・Notion・kintoneへは触らない。Slackへ投稿しない。実行はしない
+（構文チェックと単体検証のみ）。控え `_backup/crawl_static.py.bak_pitagorasu_20260905`。
+
+**★同じ対象に手をつけないでください**: `~/lifestandup-wp/crawl_static.py`
+
 ### 【ピタゴラス / mini 2026-09-05 夜】Slackへ出る経路を全部数えて「押せる形」に揃える（ビビ依頼・有璽氏4回目）── 着手
 
 **★数えるのが本体。**Slackへ出る経路を全件洗い、判断を求めるのに押せないものを直す。
@@ -169,6 +225,18 @@ FAXの先頭0落ち         ★直った（2経路）。電話は無傷。事業
 
 報告全文 `~/.vivid-relay/saleslist_tsuru3.log` ／ 記録 `memory/project_telapo_list_other_services.md`。
 **★つるは新ファイルを直していない。修正はピタゴラス側。**
+
+### 【ピタゴラス / mini 2026-09-06】テレアポリスト ①ＨＡＬＥをNGにする ②既存顧客との重なりを洗う ── 着手（書く）
+
+**書いてよいのは新ファイル `1PXBlBraJrbDH0habkDeRGJT4U5NSRE03BsUXrT_ZbDA` だけ。書く前にDriveへ複製する。**
+①有璽氏の指示（2026-09-05・松原市の条件を満たすことをビビが実測）でＨＡＬＥ2法人5行をNGにする。
+新タブ「★NG_架電しない先」を作り、元の5行は**消さず**「最新ステータス」へ `NG（架電しない）` を入れる。
+②`00_企業マスタ`（**読むだけ・1文字も書かない**）と法人番号／会社名／電話で突合し、
+新タブ「★NG候補_既存顧客との重なり」へ**候補として**出す（機械はNGへ入れない・人が○を付ける）。
+**★事業所単位5タブ・法人単位6タブの行数は変えない。**見本・抽出元2本／Notion・kintone へは書かない。
+Slack へ投稿しない。書き込みは **RAW**。
+
+**★同じ対象に手をつけないでください**: 新ファイル `1PXBlBraJrbDH0habkDeRGJT4U5NSRE03BsUXrT_ZbDA`
 
 ### 【ピタゴラス / mini 2026-09-06】つる3周目の🟡2件＋検索文字列のゆれ ── ✅完了
 
@@ -511,6 +579,10 @@ Edit/Write 0回）。横あふれ15/15合格・重なり9/9で count=0。サー�
 
 対象は上と同じ `~/lifestandup-wp/`。★調査④は実装しない（読むだけ）。①③はコード修正あり。
 本番サーバー・WP管理画面・DNS／台帳・Notion・kintone／Slack投稿は触らない。
+
+**⛔2026-09-05 夜 解決。** 真因は BLOCKED（commit author が Vercel に無い）。
+出し直し済みで、一覧に実データ5本が並んでいる。**上のリリスのブロックを見ること。**
+**★下の「まだ通っていない」以降は過去の状態。消さずに残すが、判断の根拠にしない。**
 
 **🔴 （旧記載・下の新着手で対応中）③仮公開の出し直しだけ、まだ通っていない（2026-09-05 14時台）**
 

@@ -52,7 +52,8 @@
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — **★9/5再発で実測＝24分→67秒。真因(旧接続の残留)は未修正**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — 🔴9/4 2回目＝**全担当の恒久ルール**（ボタン一本・報告に混ぜない）／**★押されても聞いた側へ返らない。投げたら毎回 answer_of() を見に行く**／**★kindは8種のみ(開発/営業/福祉/広報/財務/法務/個人/その他)。予約通知が'経営'でValueError→1h40m気づかず。仕込む前にpreviewを1回通す**／**★9/5 端末の承認ダイアログはSlackでは解けない(返事は新セッションを起こすだけ)。有璽氏の決定＝運用でなく構造を直す。①通知へ機名 ②Slackで押せる形＝要承認・未着手**
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別法で数え直す／★列挙は絞らず全部出す／**★限界の申告は免罪符でない(「1本しか開いていない」と書きつつ「0件」と断定→実際は1件)**／**★有璽氏が数字に違和感を示したら数え直す。9/4は2回連続で外した(42→24→実測627)。表計算は1枚目だけ数えない／行数でなく「使える列が埋まった行」**／**★逆に「その認識で合っている」と言われたら測らない。裏取りは自分の推測にだけ当てる**
-- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — 🔴9/5 miniも巻き戻り(notify等3本・控えも旧版)。検知役が先に消える／判断が今も記述式
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ⛔9/5 notify巻き戻りの真因は別と判明。型自体は実在
+- [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
 - [担当が落ちる真因はスリープ](feedback_use_the_team_not_alone.md) — ⛔「1体を長く使うと落ちる」は**誤診**（分割しても3体落ちた）。★真因はMacBookのスリープ。**長い作業はminiで走らせる**→[[reference_offload_long_work_to_mini]]
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**／**★2026-08-29「ギャッやるなよ。誰かにやらせろ」＝2回目。★「存在しません」で止めるな＝スキル名でなく①スキル②bin/③pip④過去実績のgrepで数える（Word変換は既にbin/md2docx.pyが在った）**
@@ -82,7 +83,7 @@
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★止まりはログでなくtranscriptで見る。対応づけは指示文(起動時刻は4割誤る)
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
-- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 401=生/404=中身無。★deploy --prodは固定URLを付替えない。alias setが要る
+- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — ★終わらないdeployはBLOCKED(commit author未登録)が真因。重さでない
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)

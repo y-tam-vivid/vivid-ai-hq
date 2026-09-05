@@ -249,3 +249,48 @@ mini 側で作業していて気づかず、下に同じ話を足してしまっ
 本家の原寸を落とすと **139枚で48MB**（うち111枚が1024px超）。
 `sips --resampleWidth 1024` で **31MB** になり、**見え方も既存サイトに近づく**。
 **仮公開は確認のたびに出し直す器なので、重さは毎回効く。入口で削る。**
+
+## 🔴🔴 「終わらないデプロイ」の真因は BLOCKED ── 中身でも大きさでもない（2026-09-05 mini 実測）
+
+**★上の「大きい静的サイトは上がりきる前に沈黙する」「UNKNOWN はビルド中」も、
+この節で説明がつく。重さのせいではなかった。**
+
+```
+実測（vercel deploy --debug の生ログ・deployment 作成APIの応答そのもの）
+  アップロード     35.1MB を ★6秒で完走（"All files uploaded" がログに在る）
+  作成APIの応答    "readyState":"BLOCKED"   ← QUEUED でも BUILDING でもない
+  理由             "The deployment was blocked because Vercel couldn't
+                    find a Git account for the commit author."
+  seatBlock        COMMIT_AUTHOR_REQUIRED / isVerified:false
+  commitMeta       田村有璽 <yuji_macmini@tamurayuujinoMac-mini.local>
+```
+
+- **★CLI は BLOCKED を「まだ終わっていない」と読んでイベント待ちに入り、永久に返らない。**
+  エラーも出ない。**だから「重いから遅い」に見える。**
+- **★`vercel ls` の `UNKNOWN` は BLOCKED も含む。**「ビルド中」と読むと必ず外す。
+  **状態は一覧でなく作成APIの応答（`readyStateReason`）で読む。**
+- **真因＝mini の git 識別子が空だった。** `git config user.email` が
+  グローバルもリポジトリも未設定 → git が `user@ホスト名` を自動生成し、
+  **Vercel のアカウントに存在しないメールが commit author になっていた。**
+  Vercel は **HEAD の commit author** を見るので、リポジトリ内から deploy すると必ず刺さる。
+- **★2経路で確定した。** ①APIの `readyStateReason` ②**同一の252ファイル・38MB を
+  git 管理外のディレクトリへコピーして deploy → `READY`**（git メタデータが付かないため）。
+
+**⛔ここで一度、誤った真因に辿り着きかけた（残す）** ── 前セッションは
+「`--exclude='*%*'` で4ファイル除いたら8秒で通った」から**ファイル名が原因**と見立てた。
+**実際に変わっていたのは「除いたこと」ではなく「コピー先が git 管理外だったこと」。**
+★**切り分けの操作が、意図しない条件まで同時に変えていた。**
+→ [[feedback_one_route_is_not_verification]]
+
+**How to apply**
+
+```
+1  デプロイ前に  git config user.email が本物か見る（mini は 2026-09-05 に
+                 y_tam@vivid-global.com をグローバル設定した）
+2  それでも刺さる  HEAD の commit author は過去のもの。★設定は未来の commit にしか効かない
+                 → 正しい著者で新しく1回 commit するか、git 管理外のコピーから出す
+3  詰まったら    ★待たない。別ターミナルで `vercel inspect <URL>` を叩き、
+                 status が BLOCKED でないかを先に見る
+```
+
+[[reference_dangerous_entrypoints]]（名前と挙動が違う入口）
