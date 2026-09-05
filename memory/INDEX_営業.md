@@ -11,7 +11,7 @@
 - [kintoneは行番号≠レコード番号](reference_kintone_subtable_rows.md) — サブテーブル継続行を数えないと行参照が全部ズレる。エラーは出ない
 - [toC顧客台帳](project_toc_customer_ledger.md) — Notion完結。個人顧客マスター＋提案商談。将来=人物マスター中心
 - [法人番号は申請不要で取れる](reference_corp_number_bulk_download.md) — 全件DLは申請なしで今日から使える。Web-API IDだけが2週間〜1か月
-- [台帳掃除は価値判定してから](reference_ledger_cleanup_triage.md) — 重複14組は真の重複0・機械で直せるのは15件。★B-0076クラスタは掃除でなく設計問題
+- [台帳掃除は価値判定してから](reference_ledger_cleanup_triage.md) — ★8/31の削除で14→21組へ増えた(備考の決着が消え01に行が残る)
 - [あいまい照合の設計](reference_fuzzy_match_design.md) — ★1文字違いは距離であって類似ではない(直/正で別人を結合)。誤りの実例で試す／キーは複数持つ
 - [法人番号の真因は社名欄](reference_ledger_name_blocks_corp_match.md) — 施設名同居/誤記/連結で突合が死ぬ。★絞り込みと適格性検査を混ぜない
 - [指数表記は計算で戻さない](reference_recover_exponential_corp_number.md) — toFixedでの復元は禁止。全件データで1社に絞れたときだけ確定
@@ -22,7 +22,9 @@
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す／★手段の語彙は3箇所に散る(フォーム/90のK列/Notionチャネル)。90に連絡手段の列は無い
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
-- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★9/5夜 法人単位を事業所単位から組み直し 3,271→3,506社(Ａ型31→233・府外本社177社が載った)。つる2周目の検査待ち
+- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★つる2周目=条件つき。中身は合格／要判断・修正ログの行番号が無効
+- [架電前に台帳と突き合わせる](reference_call_list_must_be_matched_against_ledger.md) — ★外部リストは架ける前に00と突合。掃除の価値は用途で変わる（突合に使うなら空欄は見逃しに直結）
+- [行番号の参照は組み直しで腐る](reference_row_reference_rots_on_rebuild.md) — 人へ渡す一覧は法人番号で指す。注記は無効行の上か行内へ
 - [見本の複製に前案件の実績が残る](reference_sample_copy_keeps_past_results.md) — 数式が値に焼き付く。複製した器はread_formulas()で1回開く
 - [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体
 - [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない
