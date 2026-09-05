@@ -49,10 +49,10 @@
 - [通知は押せる形にする](feedback_write_for_the_reader.md) — ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
 - [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — **真因は速さのために確かさを落としていること(記憶から数字を埋める)**。数える/揃えるを部品に固め呼ぶだけにする／日付はnorm_date()を通した値だけ／件数は「443社(会社名がある行)」と数え方を添える／**★有璽氏の設計＝毎回数えず1か所(dashboard_data.json・読み口facts.py)へ集約し読むだけにする。別々に数えると人ごとに違う答えが出る**／★変種＝APIの`ok:false`を見ず空配列を「0件」と読み、権限があるのに「無い」と報告した(条件を欲張ると権限のある方まで落ちる)／**★部品を置いただけでは既存経路は変わらない。書き込む側から先に置換する（読む側だけ直すと揃って見えて汚れは増える）**／**★「解消11件」の申告を突合したら7件だった。過剰修正は本人には成功に見えるので申告に出ない＝別主体で読むしかない**／**★9/4「残り18ページ」が実物では1ページ。「そのクラスを持つ数」を「直っていない数」として書いた。分母を2段で書く**
-- [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 検証3つ合格で断絶9秒→24分。**★9/3 上限300→30秒へ。次の再発で確認**
+- [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — **★9/5再発で実測＝24分→67秒。真因(旧接続の残留)は未修正**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — 🔴9/4 2回目＝**全担当の恒久ルール**（ボタン一本・報告に混ぜない）／**★押されても聞いた側へ返らない。投げたら毎回 answer_of() を見に行く**／**★kindは8種のみ(開発/営業/福祉/広報/財務/法務/個人/その他)。予約通知が'経営'でValueError→1h40m気づかず。仕込む前にpreviewを1回通す**
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別法で数え直す／★列挙は絞らず全部出す／**★限界の申告は免罪符でない(「1本しか開いていない」と書きつつ「0件」と断定→実際は1件)**／**★有璽氏が数字に違和感を示したら数え直す。9/4は2回連続で外した(42→24→実測627)。表計算は1枚目だけ数えない／行数でなく「使える列が埋まった行」**／**★逆に「その認識で合っている」と言われたら測らない。裏取りは自分の推測にだけ当てる**
-- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★9/4に notify.py が**5回**巻き戻り。MacBook側だけ・miniは無事＝実行機は無傷／原因未特定(claude 20本)／対処は検知のみ・自動復元しない
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — 🔴9/5 miniも巻き戻り(notify等3本・控えも旧版)。検知役が先に消える／判断が今も記述式
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
 - [担当が落ちる真因はスリープ](feedback_use_the_team_not_alone.md) — ⛔「1体を長く使うと落ちる」は**誤診**（分割しても3体落ちた）。★真因はMacBookのスリープ。**長い作業はminiで走らせる**→[[reference_offload_long_work_to_mini]]
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**／**★2026-08-29「ギャッやるなよ。誰かにやらせろ」＝2回目。★「存在しません」で止めるな＝スキル名でなく①スキル②bin/③pip④過去実績のgrepで数える（Word変換は既にbin/md2docx.pyが在った）**
@@ -78,6 +78,7 @@
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)。指示だけを根拠にせず、成功報告には指示の在処まで書く**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。bin/hooksの控えは_backups/へ。名指しで保存する
+- [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [miniへAIごと投げる](reference_offload_long_work_to_mini.md) — ★スリープで全停止(5体)。ssh+nohupでclaude -pが動く(9/5実測)。会話はここのまま
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
