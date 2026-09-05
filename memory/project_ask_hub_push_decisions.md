@@ -279,3 +279,57 @@ ask_hub のボタン        Slackで押す → interactive経路で答えが返�
 - **★第1段だけ入れて「直った」と言わない。** 直ったと言える事実は
   「有璽氏がMacBookを閉じたまま承認を返せた」。部品の言葉で判定しない
   → [[reference_verify_outcome_not_mechanism]]
+
+---
+
+## ★★4回目の指摘 ── 今度は「1通」でなく「全体がそろっていない」（2026-09-05 有璽氏）
+
+> 「**クリックするだけのタイプであれば、私でも確認は取れます。今はSlack側への
+> 通知方法がバラバラです。なので、それはクリックして答えれるような状況にしてください。**
+> それを**AI、Vivi側が徹底してくれれば、こちらは答えやすいので答えます。**」
+
+**★1〜3回目は「1つの通知が記述式に戻った」。4回目は範囲が違う ──「全部を数えて揃えろ」。**
+1通ずつ直すのをやめ、**Slackへ出る経路を全件洗った**（結果は
+`~/.vivid-relay/notify_unify_result.md` の表）。
+
+### ★4回目になった理由は「直していなかったから」ではない。3回直して3回消えたから
+
+```
+真因（2026-09-05 実測2経路）
+  bin/vivid-sync.sh:194 が */15 で bin/setup_hooks.sh を★無条件に呼ぶ
+  setup_hooks.sh:38-47 が bin/hooks/*.py を ~/.vivid-relay/ へ★上書きコピーする
+  ＝ ~/.vivid-relay/notify.py だけを直すと、15分以内に bin/hooks/ の旧版で消える
+★9/4の「ビビが2体走っていた」は誤診。同じ日に直した bin/hooks/self_audit.py は生きている
+```
+
+**→ `notify.py` の正本を `bin/hooks/` 側へ移した。** 詳細と見分け方は
+[[reference_fix_where_git_reaches]]（★同じ型は 2026-08-27 に既に書かれていて、読まれなかった）。
+
+### いまの経路（2026-09-05 夜・実測）
+
+```
+◎押せる   ask_hub.ask() ／ notify.ask()（★ask_hub へ委譲し直した）／
+          findings_escalate（08:15）／ stall_watch（未登録）／ intake_notify（営業ch）／
+          GAS議事録botの承認
+✕押せない  hook_permission_slack（★構造的に返せない・別セッションが改修中）／
+          self_audit・memory_sweep の tell()（AIの自由出力・いまは stderr 警告のみ）／
+          notion_minutes_duplicate_report・automation_inventory_check（#09チャンネル宛）
+```
+
+### ★徹底の担保は「新しいフック」ではなく「既に走っている検査」へ足した
+
+**★フックを足しても settings.json への登録が人の手待ちで、登録されるまで0本と同じ。**
+実例 ── 層2の `hook_interactive_guard.py` は 9/5 に実装・実測まで済んで**いまも未登録**。
+
+```
+入れたもの  bin/hooks/self_audit.py の _buttonless_dm_check()（毎朝08:40・登録済みの経路）
+判定        有璽氏のDMのIDを持つ ＋ chat.postMessage を叩く ＋ ★blocks（ボタン）が無い
+            ＝この3つのANDに当たる .py が、既知の3本より増えたら人の目に入れる
+できないこと GAS・シェルは見ていない／tell()経由の判断語は見ていない（実行時のstderr担当）
+```
+
+- **★「ボタンは blocks でしか出せない」を代理指標にした。**文字列の有無で見るだけなので
+  完全ではないが、**登録の人手を1つも増やさずに毎朝効く**方を採った。
+- **★壊して1回確かめた**（該当する .py を一時ディレクトリに置くと鳴る）。
+  正常しか出せない検査になっていないことを実測した → [[reference_a_warning_nobody_owns]]
+- **★通し検証はまだ**。本物のボタンを押す確認は、`findings_escalate` に対象が出た朝まで持ち越し。

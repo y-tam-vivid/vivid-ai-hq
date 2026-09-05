@@ -159,3 +159,36 @@ git で配れないもの    ~/.claude/settings.json（機械ローカル・フ�
   （実行と上書きの間に時間差があるだけ）→ [[feedback_one_route_is_not_verification]]
 - 直し方：`bin/hooks/` 側を直す → `bash bin/setup_hooks.sh`（冪等）で配り直す →
   **配布先を grep して一致を確かめる**。これで MacBook へも git 経由で自動で届く。
+
+## 🔴 上の節は 2026-08-27 に書かれていた。それから3回、同じ形で消えた（2026-09-05 実測）
+
+**★新しい知見ではない。既に書いてあることが読まれなかった、という事実が知見。**
+
+```
+2026-08-27  上の節「配布先を直すと15分後に黙って巻き戻る」を記録した
+2026-09-04  notify.py の ask_hub 委譲を ~/.vivid-relay 側だけで改修 → ★消えた（同日中に3回）
+2026-09-05  層3 が同じ改修を ~/.vivid-relay 側だけでやり直した   → ★また消えた
+2026-09-05  実測：notify.py は5コピーとも sha 5c3de558・5,002バイト・ask_hub 0件
+```
+
+**★誤診が1日流通した。** 9/4 は原因を「ビビが2体走って同じファイルを触った」と結論し、
+索引にもそう載った（[[reference_two_sessions_built_the_same_thing]]）。**実際の犯人は
+`setup_hooks.sh` の無条件 cp。** 同じ日に直した `bin/hooks/self_audit.py` は**生き残っている** ──
+差は「git 管理下に書いたかどうか」の1点だけで、セッションの数とは関係が無かった。
+
+```
+消えた   ~/.vivid-relay/notify.py だけを直した      → bin/hooks/notify.py（旧版）で上書き
+残った   bin/hooks/self_audit.py を直した           → git → setup_hooks.sh が配る側になった
+```
+
+- **★見分け方は1行。** 触る前に `ls ~/vivid-ai-hq/bin/hooks/<同じ名前>`。
+  **在れば、`~/.vivid-relay/` 側は配布先＝書いても消える。**
+  いま同名があるのは20本（`notify.py` `self_audit.py` `memory_sweep.py`
+  `findings_tracker.py` `hook_*.py` ほか）。
+- **★memory に書いても読まれなかった。** だから 2026-09-05 は
+  **`bin/hooks/notify.py` の冒頭 docstring に直接書いた**（そのファイルを開く人は必ず読む）。
+  規範を「読む規律」に預けない → [[reference_why_manuals_are_not_read]]
+  [[reference_hooks_enforce_what_discipline_cannot]]
+- **★「sha256 が両側で一致した」は、その瞬間の事実にすぎない。**
+  配布先を直した場合、一致は「上書きがまだ来ていない」を意味することがある。
+  **15分以上あけて2回数える**か、正本側を直したことを根拠にする。

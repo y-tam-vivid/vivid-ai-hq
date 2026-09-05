@@ -90,6 +90,7 @@ def collect():
     out['role_guard'] = _role_guard_summary()
     out['open_findings'] = _open_findings_summary()
     out['notify_ask_hub'] = _notify_ask_hub_check()
+    out['buttonless_dm'] = _buttonless_dm_check()
     return out
 
 
@@ -262,6 +263,68 @@ def _notify_ask_hub_check():
     return '（notify.py は ask_hub 連携を保持している）'
 
 
+# ★DMへ「押せない形」で投げるコードが増えていないか（2026-09-05 新設）
+#   有璽氏の4回目の指摘 ──「今はSlack側への通知方法がバラバラです。
+#   クリックして答えれるような状況にしてください」への機械側の担保。
+#
+#   ★なぜ新しいフックを作らなかったか ： フックは settings.json への登録が人の手待ちで、
+#     登録されるまで0本と同じ（層2の hook_interactive_guard が実際にその状態）。
+#     この自己監査は既に毎朝08:40の cron に載っている＝人の手を1つも増やさずに効く。
+#
+#   ★見るのは「有璽氏のDMへ chat.postMessage していて blocks（ボタン）が無い .py」。
+#     下の3本は理由があって押せない形のまま＝許可リスト。それ以外が出たら人へ出す。
+DM_ID = 'D0AT4NQ6X7D'
+BUTTONLESS_ALLOWED = {
+    'notify.py': '報告 tell() 専用の送信口。判断 ask() は ask_hub へ委譲済み',
+    'slack_inbox.py': '有璽氏のDMへの応答（こちらから判断を求めない）',
+    'hook_permission_slack.py': '★承認ダイアログの通知。構造的に押せない ＝ 別途改修の対象',
+}
+SCAN_DIRS = (os.path.expanduser('~/.vivid-relay'),
+             os.path.expanduser('~/vivid-ai-hq/bin/hooks'))
+
+
+def _buttonless_dm_check():
+    """有璽氏のDMへ、ボタンの無い形で投げるコードが新しく増えていないかを見る。
+
+    ★判定は3つのAND ： ①DMのIDを持つ ②chat.postMessage を叩く ③blocks が無い。
+      ボタンは Slack の blocks でしか出せないので、③が「押せない」の代理指標になる。
+
+    ★できないこと（正直に書く）：
+      ・Python 以外（GAS・シェル）は見ていない。議事録botのGASは対象外
+      ・notify.tell() 経由で「判断語つきの報告」を出す経路はここでは捕まらない
+        （それは notify.contains_judgment_words() が実行時に stderr へ出す担当）
+      ・文字列の有無で見るだけ。実際に実行されるかは見ていない
+    """
+    found, seen = [], set()
+    for d in SCAN_DIRS:
+        try:
+            names = sorted(os.listdir(d))
+        except Exception:
+            continue
+        for n in names:
+            if not n.endswith('.py') or n in seen:
+                continue
+            try:
+                src = open(os.path.join(d, n), encoding='utf-8').read()
+            except Exception:
+                continue
+            if DM_ID not in src or 'chat.postMessage' not in src:
+                continue
+            seen.add(n)
+            if "'blocks'" in src or '"blocks"' in src:
+                continue
+            if n not in BUTTONLESS_ALLOWED:
+                found.append('%s ： %s' % (n, os.path.join(d, n)))
+    if found:
+        return ('★有璽氏のDMへ、ボタンの無い形で投げるコードが %d本 増えています\n'
+                '%s\n'
+                '  ★判断を求めるものなら ask_hub.ask()（ボタン付き）へ移すこと。\n'
+                '    報告なら notify.tell() を使い、判断語を1つも入れないこと。'
+                % (len(found), '\n'.join('   ・' + f for f in found)))
+    return ('（増えていない。押せない形のまま残っているのは既知の%d本だけ ： %s）'
+            % (len(BUTTONLESS_ALLOWED), '／'.join(sorted(BUTTONLESS_ALLOWED))))
+
+
 def main(dry=True, beat=False):
     d = collect()
     today = datetime.date.today().isoformat()
@@ -332,8 +395,18 @@ def main(dry=True, beat=False):
 ```
 %s
 ```
-★この改修は 2026-09-04 に5回、09-05 に1回、別セッションの手で巻き戻っている。
+★この改修は 2026-09-04 と 09-05 に、完成の直後に消えたことが3回ある。
 巻き戻ると「有璽氏がボタンを押しても、翌朝また同じことを聞かれる」状態に戻る。
+★真因は 2026-09-05 に特定した ── `bin/setup_hooks.sh` が15分ごとに
+`bin/hooks/*.py` を `~/.vivid-relay/` へ上書きコピーするので、配布先だけを直すと消える。
+**正本は `bin/hooks/` 側。**（当初「別セッションが同時に触った」と説明していたが誤り）
+
+### ★有璽氏のDMへ「押せない形」で投げるコードが増えていないか
+```
+%s
+```
+★有璽氏の指示（2026-09-05・4回目）「クリックして答えれるような状況にしてください」。
+判断を求めるのに押せない通知が新しく増えたら、ここに出る。
 
 ## 検査してほしいこと
 
@@ -389,7 +462,7 @@ def main(dry=True, beat=False):
        d['scripts'][:2000], d['warnings'][:2500] or '（なし）',
        d['git_no_review'][:1500], d['working_md_markers'][:1500],
        d['role_guard'][:500], d['open_findings'][:1500],
-       d['notify_ask_hub'][:800])
+       d['notify_ask_hub'][:800], d['buttonless_dm'][:800])
 
     if dry:
         print('---- ドライランなので、つるを呼ばない ----')

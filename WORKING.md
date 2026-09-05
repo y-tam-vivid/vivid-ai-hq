@@ -109,27 +109,48 @@ WP管理画面・DNS・台帳・Notion・kintoneへは触らない。Slackへ投
 
 **★同じ対象に手をつけないでください**: `~/lifestandup-wp/crawl_static.py`
 
-### 【ピタゴラス / mini 2026-09-05 夜】Slackへ出る経路を全部数えて「押せる形」に揃える（ビビ依頼・有璽氏4回目）── 着手
+### 【ピタゴラス / mini 2026-09-05 夜】Slackへ出る経路を全部数えて「押せる形」に揃える（ビビ依頼・有璽氏4回目）── ✅完了。ステラ検査待ち
 
-**★数えるのが本体。**Slackへ出る経路を全件洗い、判断を求めるのに押せないものを直す。
-**書いてよいのは `bin/hooks/notify.py`（＋配布先 `~/.vivid-relay/notify.py`）と、
-判断を出す側の呼び出し元だけ。**Slackへ実投稿しない（`_post`・`api_post` の両方をモック）。
+**報告書 → `~/.vivid-relay/notify_unify_result.md`（①経路の表 全24件／②直したもの／
+③hook_permission_slack の状態／④徹底の仕組み／★まだ押せず残っている経路）。**
+**書いたのは `bin/hooks/{notify.py, self_audit.py}` と memory 3本・WORKING.md・報告書だけ。**
+**★Slackへの実投稿0件**（`notify._post` と `ask_hub.api_post` の両方を「呼ばれたら例外」に
+差し替えて測った）。台帳・Notion・kintone へは1文字も書いていない。
 
 ```
-🔴着手直後に真因を1つ特定した ── これが「notify.py が4回巻き戻る」の正体
+🔴真因を特定した ── これが「notify.py が3回巻き戻る」の正体（★9/4の「2セッション」説は誤診）
    bin/vivid-sync.sh:194 が */15 で bin/setup_hooks.sh を★無条件に呼ぶ
    setup_hooks.sh:38-47 が bin/hooks/*.py を ~/.vivid-relay/ へ★上書きコピーする
    ＝ ~/.vivid-relay/notify.py だけを直すと、15分以内に bin/hooks/ の旧版で消える
-   実測：notify.py は5コピーとも sha 5c3de558・5,002バイト・ask_hub 0件＝層3の改修は消滅
-   ★対して self_audit.py は層3の改修が生きている（bin/hooks 側にも書いたから）
-   → ★直す場所は bin/hooks/ 側。~/.vivid-relay/ だけを直さない
+   実測2経路 ①5コピーとも sha 5c3de558・ask_hub 0件 ②層3の検知役が「巻き戻り疑い」
+   ★同じ日に直した bin/hooks/self_audit.py は生きている＝差は git 管理下かどうかの1点
+   → ★正本を bin/hooks/notify.py へ移した。冒頭 docstring に経緯を書いた
 ```
 
-**★触らない**：`ask_hub.py`／`stall_watch.py`／`ledger_report.py`／
-`hook_interactive_guard.py`／`hook_permission_slack.py`（読むだけ）／台帳・Notion・kintone／
-cron・daily_jobs への登録／settings.json への登録。
+```
+②直した   ask() を ask_hub.ask() へ委譲（★出せなくても記述式へ落とさない）／
+          pending() の answered の正を ask_hub_queue.json へ／tell() の判断語警告／
+          link_pending()・blocked_hours を復元。呼び方と戻り値は不変＝呼び出し元は無改修
+          実測：出荷版でモック35件 全合格・findings_escalate ドライラン rc=0・
+          巻き戻り検知が「疑い」→「保持している」へ反転・両側 sha256 一致
+③承認DG   ★未改修。機名/セッションは0件。WORKING.md:413 の別セッション宣言どおり読むだけ
+④徹底     ★新しいフックは作らなかった（登録が人の手待ちで0本と同じになる。層2が実例）。
+          代わりに毎朝08:40の self_audit.py へ `_buttonless_dm_check()` を新設＝
+          「DMへ blocks 無しで投げる .py」が4本目に増えたら人の目に入る。
+          ★壊して確かめた（一時ディレクトリに1本置くと鳴る）＝正常しか出せない検査ではない
+```
 
-**★同じ対象に手をつけないでください**: `bin/hooks/notify.py` ／ `~/.vivid-relay/notify.py`
+**🔴まだ押せないまま残っている経路（報告書に全件）**：`hook_permission_slack.py`（別セッション）／
+`self_audit.py`・`memory_sweep.py` の `tell()`（AIの自由出力・いまは stderr 警告のみ）／
+`notion_minutes_duplicate_report.py`・`automation_inventory_check.py`（#09 チャンネル宛）／
+GAS 議事録bot（Apps Script 側・当方からは触れない）。
+
+**★check.sh 項目8（△非ブロック）が `config.env` の二重定義を出す。**実測で「私の変更で
+顕在化した」ことまで確かめた（旧版に戻すと消える）。実体の重複は `bin/manus.py:52` に
+前からあり、消すにはそちらを触ることになるのでスコープ外として止めた。
+
+**★同じ対象に手をつけないでください**: `bin/hooks/notify.py` ／ `bin/hooks/self_audit.py` ／
+`~/.vivid-relay/{notify.py, self_audit.py}`
 
 ### 【ピタゴラス / mini 2026-09-05 夜】営業台帳の指摘 ④①②③ ── ✅④①完了。②③は差分だけ（つる検査待ち）
 
