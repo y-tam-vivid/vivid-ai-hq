@@ -65,6 +65,48 @@ DM = 'D0AT4NQ6X7D'    有璽氏とのDM（notify.py:26）
 - **★「削除したから無かったこと」にしない。**プッシュ通知は取り消せない。
   消せたのは履歴だけ。申告には**回数**を書く（1件と書いて2回だった）。
 
+## ②-b ★mini へ ssh で投げた処理から notify.py を呼ぶとき（2026-09-05 実測）
+
+MacBookのスリープ対策で**実作業を mini へ投げる既定**になった
+（→ [[reference_offload_long_work_to_mini]]）。その経路で通知を出すときの落とし穴。
+
+### 🔴 ミュートの環境変数は ssh 越しに渡らない
+
+`_muted()` を呼んで実測した（**送信はしていない**）。
+
+```
+A) VIVID_NOTIFY_OFF=1 ssh mini '… python3 …'         → False  🔴渡らない
+B) ssh mini '… VIVID_NOTIFY_OFF=1 python3 …'         → True   ✅正しい形
+C) ssh mini '… python3 …'                            → False  （本番＝送る側）
+```
+
+**★Aは「ミュートしたつもりで本物の有璽氏のDMへ飛ぶ」形。** 手元で export しても
+sshは既定で環境変数を送らない（SendEnv/AcceptEnv 未設定のため）。
+**必ず ssh に渡すコマンド文字列の中へ書く。** nohup で切り離す場合も同じ。
+
+```bash
+# 検査・ドライラン
+ssh mini 'cd ~/.vivid-relay && VIVID_NOTIFY_OFF=1 nohup python3 <script>.py > ~/.vivid-relay/<name>.log 2>&1 &'
+```
+
+過去2回の誤送信（8件・ask_hubで2回）と**同じ型が、新しい経路で再発する**。
+経路が増えたら、止め先も増えているかを毎回確かめる。
+
+### mini 側は文脈を持たない ── 指示文に作法を書く
+
+mini で起動する `claude -p` は**別セッションで、この会話を知らない。**
+notify.py を呼ばせるなら、指示文に次を明記する（書かなければ守られない）。
+
+```
+置き場   /Users/yuji_macmini/.vivid-relay/notify.py   ★ユーザー名が違う。~ で書く
+経路     判断が要る → ask()  ／  報告 → tell()
+ミュート 検査なら VIVID_NOTIFY_OFF=1 をコマンド内に書く（上記A参照）
+宛先     DM固定。チャンネルへ投げない
+```
+
+★mini側のセッションも fukuchi-core と Stopフックは効く（ビビが2026-09-05 に実測）。
+だが**この規則ファイルは分野索引の下**にあり、自動では読まれない。**指示文で名指しする。**
+
 ## ③ 条件 ── 経路で条件が違う
 
 ```

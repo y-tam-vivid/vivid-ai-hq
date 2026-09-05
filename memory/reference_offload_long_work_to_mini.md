@@ -137,3 +137,31 @@ LLMが要る      ★新しい摘要をどう分類するか＝全体のごく�
 
 関連 [[project_cfo_agent]]（この型を踏んだ実例・480件）
 ／[[reference_mac_mini_execution_env]]／[[reference_delivered_but_unread]]（規範に書いてあったのに使わなかった）
+
+## 🔴 miniへ移せない作業がある ── 素材の在り処で決まる（2026-09-05 実測）
+
+LIFE STAND UP の写真の流し込みを mini へ移そうとして、**移せなかった。**
+
+```
+実測  ssh mini 'ls -d ~/lifestandup-wp'        → ★無い
+      ssh mini 'ls -d ~/lifestandup-photo-plan' → ★無い
+      ssh mini 'claude --version'               → 2.1.261（★AIは在る）
+```
+
+**★AIが在ることと、作業ができることは別。素材が要る。**
+
+```
+◎ 移せる  ★素材がgitに入っている作業
+          規範・記憶・agents定義／vivid-ai-hq 配下／
+          ★GitHubへ上げたもの（clone できる。例: lifestandup-wp）
+✕ 移せない ★git管理外の素材を使う作業
+          ~/lifestandup-photo-plan/（写真266枚・masked/・確認シート）
+          ~/Downloads/ の受け取り物／MacBook固有の認証が要るもの
+```
+
+- **★投げる前に `ssh mini 'ls -d <素材のパス>'` を1回叩く。** 無ければ移せない。
+- **★移せない作業はMacBookで走らせるしかない＝スリープのリスクを負う。**
+  そのときは**工程を小さく切る**（短ければスリープに当たる確率が下がる）。
+  ★これは原因への対策ではなく、当たる面積を減らす話。混同しない。
+- ★根本的に直すなら**素材をgitかDriveの同期下へ置く**。ただし写真266枚は重く、
+  **機微（児童の写真）でもある。安易にgitへ入れない。**
