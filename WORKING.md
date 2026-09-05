@@ -53,19 +53,27 @@
 
 ## Mac mini セッション
 
-### 【リリス / mini 2026-09-05】LIFE STAND UP ブログ（お知らせ）の実装 ── 着手
+### 【リリス / mini 2026-09-05】LIFE STAND UP ブログ（お知らせ）の実装 ── ✅完了・push済み（c7284a0）
 
 有璽氏「デモサイト側のまだ不足している部分、ブログの部分だったりも実装させておいて」。
-対象は `~/lifestandup-wp/`（mini へ移設済み）。デザインの正本は mini の `~/design_handoff_v2.0/`。
+**本番サーバー・WP管理画面・DNS／台帳・Notion・kintone へは1文字も書いていない。**
 
 ```
-書く   theme/lifestandup/single-news.php（新規・記事ページ）
-       theme/lifestandup/assets/css/news-detail.css（新規）
-       theme/lifestandup/page-templates/news.php（一覧・サムネイル付きへ）
-       theme/lifestandup/assets/css/news.css（.news-thumb の6行）
-       theme/lifestandup/functions.php（記事ページのCSS結線）
-触らない  本番サーバー・WP管理画面・DNS／台帳・Notion・kintone／build_pages.py の SRC
+記事ページ  single-news.php ＋ assets/css/news-detail.css（新規）
+一覧        page-templates/news.php をサムネイル付き・ページ送り付きへ
+その他      assets/css/news.css ／ functions.php ／ footer.php ／ README.md（14節を新設）
+実測        17ページ HTTP200・PHP警告0／横あふれ10通り0px／記事ページの重なり0件
+            PC幅1440は触っていない5ページを変更前後で撮り ★sha256が5本とも一致
 ```
+
+**★踏んだ地雷2つ（次に触る人へ）**
+- `news.css` を正本から丸ごと再生成すると、9/3 に手で足したスマホ幅の対策が消える。
+  **差分の行だけ当てること**（実測で気づいて回避した）。
+- `aspect-ratio` には **`height:auto` を必ず添える**。WordPress は `<img width height>` と
+  属性で寸法を書き出すので、添えないと比率指定が無視される（16:9の枠が 718×600 で出ていた）。
+
+**★有璽氏の判断待ち1件（Slackのボタン `#0de8d1`）**
+活動ブログ（既存134本）も同じ記事デザインにするか。押されるまで `single.php` は今のまま。
 
 **★同じ対象に手をつけないでください**: `~/lifestandup-wp/theme/lifestandup/` ／
 `~/design_handoff_v2.0/`（読むだけ）
