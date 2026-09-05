@@ -22,7 +22,7 @@
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す／★手段の語彙は3箇所に散る(フォーム/90のK列/Notionチャネル)。90に連絡手段の列は無い
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
-- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★つる2周目=条件つき。中身は合格／要判断・修正ログの行番号が無効
+- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★つる3周目=載せてよい。3,495社/7,646事業所。🔴ＨＡＬＥの片方の番号は別法人（要判断）／新タブの数字3つが実物と不一致
 - [架電前に台帳と突き合わせる](reference_call_list_must_be_matched_against_ledger.md) — ★外部リストは架ける前に00と突合。掃除の価値は用途で変わる（突合に使うなら空欄は見逃しに直結）
 - [行番号の参照は組み直しで腐る](reference_row_reference_rots_on_rebuild.md) — 人へ渡す一覧は法人番号で指す。注記は無効行の上か行内へ
 - [見本の複製に前案件の実績が残る](reference_sample_copy_keeps_past_results.md) — 数式が値に焼き付く。複製した器はread_formulas()で1回開く
