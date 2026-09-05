@@ -59,7 +59,7 @@
 - [手順書が読まれない理由](reference_why_manuals_are_not_read.md) — ★一度間違えると二度と読まれない。○×を求めると信頼が下がる
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — ★3回目。提案/作成の前にmemoryとNotionを数える。「無いから作る」禁止
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
-- [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★誤爆源は規範どおりの.bakがgit下に残ること。9/3 _backups/へ移し決着
+- [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★9/5 役割検問がminiの担当セッションを誤検出(agent_id無=ビビと断定)。mini恒久化と噛み合わず
 - [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全。規範配下をread-onlyへ
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — 8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
@@ -82,7 +82,7 @@
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/5恒久化。MacBookで担当を起こさない。🔴寝ると窓口も止まる＝報告の出口はSlackにする
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
-- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 401=生/404=中身無。★9/5 lsu仮公開が404。空かは推測・Vercel側は未見
+- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 401=生/404=中身無。★deploy --prodは固定URLを付替えない。alias setが要る
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
