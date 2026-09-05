@@ -22,7 +22,7 @@
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す／★手段の語彙は3箇所に散る(フォーム/90のK列/Notionチャネル)。90に連絡手段の列は無い
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
-- [テレアポリスト 他サービス種別](project_telapo_list_other_services.md) — ★列は見本と完全一致＝作り変え不要。抽出元に放デイは0件／法人単位の種別はカンマ連結で重複。大阪の件数は実測済み
+- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★作れる。大阪絞り914は9市除外の意図が不明。判断5点待ち
 - [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体
 - [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない
 - [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — 【解消】miniにGoogle認証が無くGASを人が貼っていた。いまはOAuthで直接読み書きできる

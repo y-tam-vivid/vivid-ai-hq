@@ -153,3 +153,28 @@ CLI にも deploymentType を `all` にする口が無い。**プランの壁で
   ③主要ページが200。→ [[feedback_one_route_is_not_verification]]
 
 [[project_lifestandup_website_wordpress]] [[reference_delivered_but_unread]]
+
+## ⛔訂正・原因が判明した（2026-09-05 有璽氏）── `deploy --prod` だけでは固定URLが付け替わらない
+
+上の「404 NOT_FOUND の原因＝書き出し物を上げていない／出力ルート違い（推測）」は**外れ**。
+**実際の原因は、本番デプロイを打っても `<project>.vercel.app` が新しい配備を指さなかったこと。**
+
+```
+やったこと         npx vercel deploy --prod --yes --scope <team>
+起きたこと         配備そのものは成功し、固有URL（…-xxxx.vercel.app）では見える
+                   ★固定URL lifestandup-preview.vercel.app は 404 NOT_FOUND のまま
+直し方（★必須）   npx vercel alias set <deployの出力URL> <固定ホスト名> --scope <team>
+```
+
+- **★`--prod` は「本番として配備する」であって「固定URLを付け替える」を必ずしも含まない。**
+  名前が示す挙動と実際の挙動が違う入口 → [[reference_dangerous_entrypoints]]
+- **★確認は必ず「人に渡すURL」で行う。** deploy の出力に出た固有URLで200を見て
+  「出せた」と書くと、配った先だけが死ぬ。実測するホスト名を取り違えている。
+- 出し直しの締めは3点 ── ①合言葉なしで401 ②合言葉つきで200 ③主要ページが200。
+  **①を飛ばすと「保護がかかっているつもり」になる**（この節の冒頭と同じ話）。
+
+### ★静的書き出しは作り直す前に空にする（同日 実測で踏んだ）
+
+`~/lifestandup-wp/crawl_static.py` は**既に在るファイルを飛ばす**（アセットが
+`if out_path.exists(): continue`）。写真やCSSを差し替えても**古いものが残って出る**。
+**`static-preview/` を一度消してから作り直すこと。**
