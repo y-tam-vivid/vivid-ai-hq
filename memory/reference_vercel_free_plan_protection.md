@@ -18,6 +18,23 @@ vercel project protection enable --sso
   → ★有璽氏の確認: **その設定は有料プランのみ**（Hobby では選べない）
 ```
 
+## ★前回の実物がそのまま残っている（2026-09-05 実測）
+
+```
+~/.vivid-relay/kadoban_site/
+  index.html ／ ★middleware.js ／ vercel.json
+＝ ★Basic認証の実装を書き直さなくてよい。コピーして合言葉だけ差し替える
+```
+**★次に「社内向けに仮公開したい」が来たら、ここを見る。**ゼロから書かない。
+
+```
+道具の状況（同日 実測）
+  vercel CLI  ★入っていない
+  npm 10.8.2  ★ある（nvm経由 /Users/yujimac/.nvm/versions/node/v20.20.2）
+              ＝ sudo 不要で `npm i -g vercel` が通る見込み
+              ★brew は無く sudo も無い（この環境の制約）→ npm 経由が唯一の道
+```
+
 **Why:** Vercel の Deployment Protection は「本番の固定URLまで守る」部分が有料機能。
 CLI にも deploymentType を `all` にする口が無い。**プランの壁で、設定では解けない。**
 
