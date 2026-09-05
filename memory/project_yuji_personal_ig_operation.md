@@ -388,3 +388,34 @@ AI活用発信ネタDB  当事者性の一次情報（自社）。ストック�
   **設計正本で明確に否定されている**（一度使うと永久に抽出対象から外れるため）。
   正しくは**使用実績リレーション**（`使用実績_個人IG` 等）で回数と最終使用日を持つ
 - **★Notion が単一の正。** ローカルJSON（posts_data.json 等）を正にしない
+
+# ★Notion のファイル列へ画像を入れる手順（2026-09-05 実測・3回失敗して通した）
+
+有璽氏の承認で `個人Instagram 投稿アーカイブ` へ **`素材画像`（file型）** を1列追加した。
+未投稿の素材を「下書き」で入れ、**ギャラリー表示で一覧できる**ようにするため。
+
+```
+1  列を足す          notion-update-data-source
+                    statements: ADD COLUMN "素材画像" FILES
+2  画像を軽くする     sips で JPEG・長辺1200px（原寸PNGは3〜4MB／これで約250KB）
+3  アップロード枠を取る notion-create-file-upload → upload_url と authorization が返る
+4  実際に送る         curl -X POST "<upload_url>" -H "authorization: Bearer <token>" -F "file=@<path>"
+                    → status:"uploaded" と file_upload_id が返る
+5  ページを作る       ★notion-create-pages では file列に入れられない（下記）
+6  画像を入れる       notion-update-page / update_properties
+                    "素材画像": [{"type":"file_upload","file_upload":{"id":"<file_upload_id>"}}]
+```
+
+**★踏んだ順に3つ間違えた。**
+
+```
+✗ create-pages に "素材画像":["file-upload://<id>"]     → File ... not found
+✗ create-attachment を挟む                              → 同じ markdown_source が返るだけ・解決しない
+✗ create-pages に オブジェクト形式で渡す                  → Invalid input（スキーマが string/number/array of string のみ）
+✓ ページを作ってから update-page でオブジェクト形式       → 通った
+```
+
+- **★`markdown_source`（`file-upload://…`）はページ本文用。**プロパティ（file列）には使えない
+- **★create-pages と update-page でプロパティの受け付け型が違う。**
+  オブジェクトを渡せるのは **update-page だけ**。だから**2段階に分ける**
+- アップロードは 20MiB まで（単発）。ワークスペースの上限も別途かかる
