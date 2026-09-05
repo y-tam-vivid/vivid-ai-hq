@@ -22,7 +22,7 @@
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す／★手段の語彙は3箇所に散る(フォーム/90のK列/Notionチャネル)。90に連絡手段の列は無い
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
-- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★9/5 指摘①〜⑤を修正済(15タブ)。🔴法人単位Ａ型は379法人を31行に潰したバケツ＝設計の分岐で未修正
+- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★9/5夜 法人単位を事業所単位から組み直し 3,271→3,506社(Ａ型31→233・府外本社177社が載った)。つる2周目の検査待ち
 - [見本の複製に前案件の実績が残る](reference_sample_copy_keeps_past_results.md) — 数式が値に焼き付く。複製した器はread_formulas()で1回開く
 - [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体
 - [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない

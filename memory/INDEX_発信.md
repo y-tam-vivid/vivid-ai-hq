@@ -34,5 +34,6 @@
 - [LIFE STAND UP サイト(WordPress)](project_lifestandup_website_wordpress.md) — ★9/3 トップ1本完成(実WP有効化・再現度0px)。**applyTweaksは8版＝top-pageの結果を横展開するな**／**★文言2本は採用する側が逆(指定はaudit_tweaks.py冒頭)**／図案A/C/Dはarchive/へ保管後に削除／CSSは共通化しない／内部リンク310本／工数58〜107h／**Emanon Proのフォルダを消さない**
 - [LIFE STAND UP デザイン正本とブログ](project_lifestandup_website_wordpress.md) — ★9/5 正本は**mini の`~/design_handoff_v2.0/`**(Drive v2.1は別物・build_pages.pyのSRCは触らない)／🔴**「photo-gridは2列固定・3列不可」は誤り＝`.cols-3`が実在**(移行可否をこの理由で狭めない)
 - [LIFE STAND UP デモの掲載範囲とSNSリンク](project_lifestandup_website_wordpress.md) — ★9/5 有璽氏**デモのブログは5投稿でよい**（全件不要・既に5本）／🔴**IGリンクが2種混在**(functions.php=life.standup_official ／ front-page.phpにベタ書き=life_stand_up)。**本番にIGリンクは0件＝正解は本人にしか無い**。対処はベタ書きをlsu_sns()へ寄せる／**一覧が見える≠記事が開ける**
+- [LSU 記事の2系統](project_lifestandup_website_wordpress.md) — ★9/5 **ストック型(SEO)とフロー型を分ける**。実装せず案を出す／移送5本は「活動」／**URLは変えない**
 - [LIFE STAND UP 写真の運用](project_lifestandup_website_wordpress.md) — ★9/4 有璽氏「公開前なら一旦載せて後で差し替え」＝枠待ちをやめた／**★入れたら必ず目で見る。CSSの詳細度とショートハンドで写真が隠れる・切れる（実地2件）**／公開直前の確認2点＝全枠の○と板書の英文（英語スタッフ判定）
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない
