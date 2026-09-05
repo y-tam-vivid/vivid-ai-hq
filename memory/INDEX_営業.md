@@ -22,7 +22,7 @@
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す／★手段の語彙は3箇所に散る(フォーム/90のK列/Notionチャネル)。90に連絡手段の列は無い
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
-- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★載せてよい。3,495社/7,646事業所。9/6に🟡2件を解消（数字・I/J矛盾0行）。🔴残＝ＨＡＬＥの番号（有璽氏の判断）
+- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★載せてよい。3,495社/7,646事業所。9/6 ＨＡＬＥ5行をNG（元は消さず最新ステータス）。🔴残＝既存顧客との重なり21法人は候補どまり・★自社ILIFEも載っている
 - [架電前に台帳と突き合わせる](reference_call_list_must_be_matched_against_ledger.md) — ★外部リストは架ける前に00と突合。掃除の価値は用途で変わる（突合に使うなら空欄は見逃しに直結）
 - [行番号の参照は組み直しで腐る](reference_row_reference_rots_on_rebuild.md) — 一覧は法人番号で指す／★9/6 2回目=照合を正規化すると人がCtrl+Fで当てられない。合否は厳密一致で数える
 - [見本の複製に前案件の実績が残る](reference_sample_copy_keeps_past_results.md) — 数式が値に焼き付く。複製した器はread_formulas()で1回開く
