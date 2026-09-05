@@ -1475,6 +1475,14 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
+- **【リリス / MacBook 2026-09-05】仮公開サイト(静的書き出し→Vercel・Basic認証) ── 着手**
+  - 有璽氏依頼：スタッフに見せる仮公開。`_tools/`のローカルWordPressの実装を静的HTML化し、
+    Vercel(Basic認証)へ仮公開。写真の流し込み・フォーム中身には触らない（別担当と並走）
+  - **対象**: 新規ディレクトリ `~/lifestandup-wp/static-preview/`（書く）／
+    `~/lifestandup-wp/_tools/wordpress`（読むだけ・起動のみ）
+  - **触らない**: 本番サーバー・WP管理画面・DNS／台帳・Notion・kintone
+  - **★同じ対象に手をつけないでください**: `static-preview/`
+
 - **【リリス / MacBook 2026-09-05】見学・お問い合わせフォーム20項目 CF7貼付テキスト＋PDF説明書 ── ✅完了**
   - **成果物**（`~/lifestandup-wp/proposal/`・commit `92080ae`）:
     ①`見学お問い合わせフォーム_CF7貼付テキスト_20項目確定版.txt`（貼付用）
