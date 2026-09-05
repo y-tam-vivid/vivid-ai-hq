@@ -53,6 +53,13 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-05】承認ダイアログの通知を直す（ビビ依頼・有璽氏の指示）── 走行中
+
+有璽氏「現場の構造は改修したいね」。**①通知文へ機名・セッション・質問内容を入れる＝実装可（可逆）
+②Slackから承認そのものを返せるか＝★調査のみ・実装しない（設計の大きな分岐＝要承認）。**
+Slackへ実投稿しない（モックのみ）。台帳・Notion・kintoneへは書かない。
+**★同じ対象に手をつけないでください**: `hook_permission_slack.py`（両機）
+
 ### 【ピタゴラス / mini 2026-09-05】テレアポリストを他サービス種別へ広げられるか ── ✅判定完了（読むだけ）。有璽氏の判断5点待ち
 
 ビビ依頼「作れそうか確認して」。**3ファイルとも読むだけ。新規スプレッドシートは作っていない。
@@ -71,6 +78,36 @@
 判断5点・実測値の全部 → `memory/project_telapo_list_other_services.md`
 
 **★同じ対象に手をつけないでください**: 見本 `1x_KgLfPbre…`／抽出元2本（`1p61-pY7v…`／`1AWMNoofn3…`）
+
+### 【リリス / mini 2026-09-05】①crawl_static.py 日本語URL修正 ②static-preview/ Basic認証(middleware.js/vercel.json) ── ✅完了
+
+対象: `~/lifestandup-wp/crawl_static.py`（fetch()のみ）／
+`~/lifestandup-wp/static-preview/middleware.js`・`vercel.json`（新規）。
+**既存のstatic-preview配下HTML/画像・theme/・本番サーバー・Vercelデプロイ・Notion・台帳へは
+1文字も触っていない。**
+
+```
+① fetch()   urllib.parse.quote(path, safe="/%:?=&#") でパスのみエンコード。
+             out_pathは元url(デコード済み日本語)のまま変更なし
+             実測：再実行で全ページ21/21成功・アセット取得成功2/失敗0
+             （落ちていた2枚 LETSBOWLINGBOWLINGのコピー-1-{768x403,1024x538}.png が
+             static-preview/wp-content/uploads/2025/12/ に実在・PNG image data確認）
+② 認証      kadoban_site/{middleware.js,vercel.json}を雛形に、環境変数名のみ
+             LSU_PREVIEW_USER/LSU_PREVIEW_PASS へ差し替え。合言葉はソースに書いていない
+             node --check・JSON構文とも合格
+```
+
+サーバー(検証用php -S :8750)は停止・3経路(lsof/ps/curl)で0を確認。
+デプロイはしていない（Vercelへの反映は依頼元が実施）。
+
+### 【リリス / mini 2026-09-05】活動ブログ(標準投稿)の横あふれ・重なり検証 ── ✅完了
+
+新規 `check_overflow_blog.py`（雛形`check_overflow_forms.py`）／`check_overlap_blog.py`
+（雛形`check_overlap_3dan.py`）で `/blog/`・`/halloween-party-2025/`・
+`/lets-go-bowlingstand-up-2/` の3ページを検証。**テーマ・`_tools/wordpress`の中身へは
+1文字も書いていない**（git status実測：Mはthemeの既存未コミット差分のみ・自分はtheme配下に
+Edit/Write 0回）。横あふれ15/15合格・重なり9/9で count=0。サーバ後始末は2経路
+（lsof・ps）で0件を確認。
 
 ### 【リリス / mini 2026-09-05】LIFE STAND UP ブログ（お知らせ）の実装 ── ✅完了・push済み（c7284a0）
 
