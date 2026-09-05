@@ -1475,9 +1475,25 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
-- **【ピタゴラス / MacBook 2026-09-05】日本語出力への他言語文字混入を機械で検問（ビビ依頼）── 着手中**
-  - 対象: `bin/hooks/hook_session_writeback.py`（Stopフック・既存に検査4を追加）
-  - **同じ対象に手をつけないでください**: 上記ファイル ／ `~/.vivid-relay/hook_session_writeback.py`
+- **【ピタゴラス / MacBook 2026-09-05】日本語出力への他言語文字混入を機械で検問（ビビ依頼）── ✅実装・実測完了。ステラ検査依頼中**
+  - 対象: `bin/hooks/hook_session_writeback.py`（Stopフック・既存に検査4を追加。新規ファイルは作っていない）。
+    台帳・Notion・kintoneへは1文字も書いていない。Slackへ実投稿なし（HOME差し替えの隔離テストのみ）
+  - **実測**：実transcript26本・47,208アシスタント行を走査し検出35件・誤検知0件（全て真陽性）。
+    ★有璽氏が把握していた2件以外に、未報告・訂正の形跡が無い混入（Write/Edit経由でメモリ
+    ファイルへ残ったまま等）が複数見つかった。8ケースの回帰テストを両機で実行し8/8一致
+  - **設計判断**：依頼元（ビビ）は「まずは警告（ブロックしない）」を推していたが、Stop hookに
+    PreToolUseのadditionalContextのような「実行を許可しつつ情報だけ注入する」機能が無いため、
+    exit 2による1回だけの差し戻し（検査2/3と同型・stop_hook_activeなら2度目は通す）を採用。
+    判定基準がUnicode文字範囲という客観的なもので誤検知0/35だったことも根拠。詳細・限界は
+    `memory/reference_unicode_escape_kanji_swap.md` 末尾に明記
+  - 対象範囲：発話（text）に加え、Write/Edit/Bash/SendMessage/Agent等**全ツール**のinputを見る
+    （検査2/3用のSEARCH_TOOLS限定とは別に all_tool_calls を新設。実測でWrite/Edit・
+    SendMessageでも混入が発生していたため）
+  - 両機sha256完全一致確認済み（`~/.vivid-relay/hook_session_writeback.py`）。
+    ~/vivid-ai-hq/bin/hooks/側はcommit待ち（git経由でminiへ届く）
+  - **自己採点にせず、ステラの検査に出せる状態まで作った。検査依頼はビビへ返す。**
+  - **同じ対象に手をつけないでください**: `bin/hooks/hook_session_writeback.py` ／
+    `~/.vivid-relay/hook_session_writeback.py`
 
 - **【ピタゴラス / MacBook 2026-09-05】zaimu_classify.py 新設 ── ✅実装・本実行完了。要判断1点**
   - ビビ依頼（MacBookスリープで長時間処理が落ちる対策・機械判定はスクリプト化してminiへ切り離す）
