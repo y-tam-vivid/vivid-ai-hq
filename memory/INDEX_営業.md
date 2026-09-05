@@ -22,9 +22,9 @@
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す／★手段の語彙は3箇所に散る(フォーム/90のK列/Notionチャネル)。90に連絡手段の列は無い
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
-- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★つる3周目=載せてよい。3,495社/7,646事業所。🔴ＨＡＬＥの片方の番号は別法人（要判断）／新タブの数字3つが実物と不一致
+- [他種別テレアポリスト](project_telapo_list_other_services.md) — ★載せてよい。3,495社/7,646事業所。9/6に🟡2件を解消（数字・I/J矛盾0行）。🔴残＝ＨＡＬＥの番号（有璽氏の判断）
 - [架電前に台帳と突き合わせる](reference_call_list_must_be_matched_against_ledger.md) — ★外部リストは架ける前に00と突合。掃除の価値は用途で変わる（突合に使うなら空欄は見逃しに直結）
-- [行番号の参照は組み直しで腐る](reference_row_reference_rots_on_rebuild.md) — 人へ渡す一覧は法人番号で指す。注記は無効行の上か行内へ
+- [行番号の参照は組み直しで腐る](reference_row_reference_rots_on_rebuild.md) — 一覧は法人番号で指す／★9/6 2回目=照合を正規化すると人がCtrl+Fで当てられない。合否は厳密一致で数える
 - [見本の複製に前案件の実績が残る](reference_sample_copy_keeps_past_results.md) — 数式が値に焼き付く。複製した器はread_formulas()で1回開く
 - [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体
 - [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない

@@ -48,4 +48,4 @@
 - [銀行明細CSVの形3種](reference_bank_csv_formats.md) — 楽天個人4列/りそな21列(★日付2種混在)/楽天法人=全銀協20列。裏取りはトレーラー件数／平成は自動判別できない
 - [日本語ファイル名はNFD](reference_japanese_filename_normalization.md) — macOSのファイル名はNFD。NFC文字列でgrep/in判定すると静かに0件になる。★担当の申告と検算が食い違ったら、まず検算側を疑う（両機のフォント在庫も実測記載）
 - [fresh eyes 2パス方式](reference_fresh_eyes_two_pass.md) — 検問インフラ限定。★8/29初実演＝A疑義10件→Bで消えたのは2件(実測で消した)・Bで新規1件。Aが0件でもBを省かない／依頼文で型を指定しないと使われない
-- [申告が無くても差分は読める](reference_read_the_change_from_the_revision.md) — ★9/5実測。旧版は revisions の exportLinks で.xlsx化（get_mediaは404）。全セル突合＋行の増減はキーで説明
+- [申告が無くても差分は読める](reference_read_the_change_from_the_revision.md) — 旧版はrevisionsのexportLinksで.xlsx化（get_mediaは404）／★保険であって申告を省く根拠でない=最後に必ず報告を書く
