@@ -59,6 +59,74 @@ CLI にも deploymentType を `all` にする口が無い。**プランの壁で
   | GitHub Pages | private リポジトリの Pages は有料 |
   | 有料プランへ上げる | お金＝要承認。まず無料で解けるかを先に試す |
 
+## 🔴 配ったURLは黙って死ぬ（2026-09-05 有璽氏「デモサイト見れなくなってるよ」）
+
+**LIFE STAND UP の仮公開 `lifestandup-preview.vercel.app` が見えなくなった。実測は下のとおり。**
+
+```
+経路1  素のGET          404 NOT_FOUND（x-vercel-error: NOT_FOUND）
+経路2  合言葉つきGET     ★同じく 404 ＝ 合言葉やBasic認証の問題ではない
+対照   稼働盤 fukuchi-kadoban.vercel.app  → ★401（生きている・認証が効いている）
+```
+
+- **★401と404を混ぜない。** 401＝配備は在って認証で弾いている（正常）。
+  404＝**そのホスト名に配備が無い**（消えた／別名になった／本番に昇格していない）。
+  「見えない」の一言で保護の不具合と読むと、直す場所を間違える。
+
+### ⛔訂正（2026-09-05 ピタゴラス実測）── 404は1種類ではない。**2種類あって意味が逆**
+
+上の「404＝そのホスト名に配備が無い」は**足りない**。Vercel は `x-vercel-error` で
+2つを区別しており、**どちらかで直す場所が変わる。**
+
+```
+実測（3ホストの対照・同時刻）
+  lifestandup-preview.vercel.app       404 ★NOT_FOUND             ← 今回のこれ
+  zzz-nonexistent-test-9x8y7z…         404 ★DEPLOYMENT_NOT_FOUND  ← ホスト名が無い側
+  fukuchi-kadoban.vercel.app           401（対照・生きている）
+
+  ★NOT_FOUND ≠ DEPLOYMENT_NOT_FOUND
+    DEPLOYMENT_NOT_FOUND … そのホスト名に配備そのものが無い
+    NOT_FOUND            … ★ホスト名も配備も解決している。そのパスに中身が無い
+```
+
+- **★今回はホスト名が死んだのではない。**`/` `/index.html` `/stand-up/` `/news/`
+  `/_next/` の5経路すべて 404 NOT_FOUND。**中身が1枚も乗っていない側の壊れ方**（＝推測：
+  書き出し物を上げていない／出力ルート違い。どちらかまではこの実測では確定できない）。
+- **★Basic認証は1度も走っていない。**401 も `WWW-Authenticate` も返らない。
+  **合言葉を配り直しても直らない**（ここまでは実測）。
+  ★「middleware まで到達していない」は**この応答ヘッダー1経路からの推測**。
+  2経路目（Vercel の配備一覧・ビルドログ）は**ロビン・ピタゴラス・つるの3体とも権限を拒否され、
+  誰も見ていない。** → [[feedback_one_route_is_not_verification]]
+- **⛔「URLの記録が0件」も誤り。**grep したのが `vivid-ai-hq` 側だけだった。
+  実物は **`~/lifestandup-wp` の commit `24a60ca` の本文**に
+  「デプロイ先: https://lifestandup-preview.vercel.app (Basic認証・非公開)」と在る。
+  → **リポジトリが2つある案件で「0件」と言うときは、両方を数える。**
+    [[feedback_one_route_is_not_verification]]
+- **★静的書き出し `static-preview/` は .gitignore で履歴に入れていない**（同 commit で明記）。
+  ＝ **生成物は MacBook のディスク上にしか無い。**mini からは作り直せない
+  （元が `_tools/wordpress` のローカルWordPress＝これも `_tools/` ごと git 管理外）。
+  **配った器の再発行が、1台のマシンが起きていることに依存している。**
+  → [[reference_offload_long_work_to_mini]]
+- **⛔この行は誤り（上の「記録が0件も誤り」で訂正済み・消さずに残す）。**
+  数えた2経路が**どちらも `vivid-ai-hq` 側だけ**で、経路が2本あっても**同じ場所を2回数えていた**。
+  ★2経路とは「別の道」であって「別のコマンド」ではない。
+  ~~**★URLがどこにも記録されていなかった。** 2経路で0件 ── ①作業ツリーの全文grep
+  ②git全履歴の `-S` 検索。**Slackのメッセージと、そのセッションの記憶にしか無かった。**~~
+  **★ここから下は今も正しい** ── WORKING.md は「着手」のままで、完成もURLも書かれていない。
+  ＝ **セッションが終わった時点で、社内の誰も再発行先を辿れない状態だった。**
+- **★仮公開は「配って終わり」にできない。**これは写真32枠の○×確認を兼ねる器で、
+  スタッフが見るまでが仕事。**落ちていれば確認が止まる**（そして止まったことは黙っている）。
+
+**How to apply（次に仮公開を出す人へ）**
+
+```
+出した直後に   ① URLと保護の実測結果（401）を memory と WORKING.md の両方へ書く
+               ② ★合言葉は書かない（環境変数のまま）。書くのは「どこに在るか」
+生きているか   ③ ⚙️自動処理レジスタへ1行足し、素のGETが 401 を返すかを定期で見る
+               ★心拍と同じ理屈 ── 在庫（プロジェクトが在る）でなく応答で見る
+                 → [[reference_heartbeat_proves_life_not_results]]
+```
+
 関連: [[project_ops_dashboard_artifact]] [[reference_plaintext_credentials_handling]]
 [[feedback_verify_before_declining]]（できないと言う前に、別の道を数える）
 
@@ -83,3 +151,5 @@ CLI にも deploymentType を `all` にする口が無い。**プランの壁で
   （そちらはVercelのログイン保護が掛かっていて、そもそも挙動が違う）。
 - ★出し直したら毎回この3つを人に渡すURLで測る ── ①合言葉なし=401 ②合言葉あり=200
   ③主要ページが200。→ [[feedback_one_route_is_not_verification]]
+
+[[project_lifestandup_website_wordpress]] [[reference_delivered_but_unread]]
