@@ -50,7 +50,7 @@
 - [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — **真因は速さのために確かさを落としていること(記憶から数字を埋める)**。数える/揃えるを部品に固め呼ぶだけにする／日付はnorm_date()を通した値だけ／件数は「443社(会社名がある行)」と数え方を添える／**★有璽氏の設計＝毎回数えず1か所(dashboard_data.json・読み口facts.py)へ集約し読むだけにする。別々に数えると人ごとに違う答えが出る**／★変種＝APIの`ok:false`を見ず空配列を「0件」と読み、権限があるのに「無い」と報告した(条件を欲張ると権限のある方まで落ちる)／**★部品を置いただけでは既存経路は変わらない。書き込む側から先に置換する（読む側だけ直すと揃って見えて汚れは増える）**／**★「解消11件」の申告を突合したら7件だった。過剰修正は本人には成功に見えるので申告に出ない＝別主体で読むしかない**／**★9/4「残り18ページ」が実物では1ページ。「そのクラスを持つ数」を「直っていない数」として書いた。分母を2段で書く**／**★9/6 理由欄には「指示の在処」だけ書く。関係の推測を成果物へ残さない。社名の一部一致で自社と決めない（合同会社ＶＩＶＩＤ≠株式会社ビビッド・法人番号で確認）**
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — **★9/5再発で実測＝24分→67秒。真因(旧接続の残留)は未修正**
-- [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — 🔴9/5 4回目＝1通でなく**全経路を数えて揃えろ**。DMの判断は全部ボタンにした／★押されても聞いた側へ返らない＝毎回answer_of()／★kindは8種のみ・仕込む前にpreview／★承認ダイアログはSlackで解けない(別セッション改修中)／残＝tell()の自由出力2本と#09の2本
+- [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — 🔴9/5 4回目＝1通でなく**全経路を数えて揃えろ**。★真因は拾う人不在でなく「押せないものが混ざっている」＝クリックだけなら有璽氏は1〜3分で答える／DMの判断は全部ボタンにした／★押されても聞いた側へ返らない＝毎回answer_of()／★kindは8種のみ・仕込む前にpreview／★承認ダイアログはSlackで解けない(別セッション改修中)／残＝tell()の自由出力2本と#09の2本
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別法で数え直す／★列挙は絞らず全部出す／**★限界の申告は免罪符でない(「1本しか開いていない」と書きつつ「0件」と断定→実際は1件)**／**★有璽氏が数字に違和感を示したら数え直す。9/4は2回連続で外した(42→24→実測627)。表計算は1枚目だけ数えない／行数でなく「使える列が埋まった行」**／**★逆に「その認識で合っている」と言われたら測らない。裏取りは自分の推測にだけ当てる**
 - [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ⛔9/5 notify巻き戻りの真因は別と判明。型自体は実在
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
@@ -61,7 +61,7 @@
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — ★3回目。提案/作成の前にmemoryとNotionを数える。「無いから作る」禁止
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★9/5 役割検問がmini担当セッションを誤検出(agent_id無=ビビと断定)
-- [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全。規範配下をread-onlyへ
+- [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全。規範配下をread-onlyへ／**★9/5「対策は複数またがって用意して」＝層1検知・層2予防・層3解除を同時に。検知だけでは止まる回数は1回も減らない**
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — 8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本
@@ -81,11 +81,11 @@
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。bin/hooksの控えは_backups/へ。名指しで保存する
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
-- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★止まりはログでなくtranscriptで見る。対応づけは指示文(起動時刻は4割誤る)
+- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/5恒久化。MacBookで担当を起こさない／**🔴「miniが止まらないこと」が要件＝止まる型3つ(承認ダイアログ/30分打切り/判断待ちの塞ぎ)。⛔AskUserQuestion原因説は誤診＝非対話にそのツールは無い(実測)**／★止まりはログでなくtranscriptで見る。対応づけは指示文(起動時刻は4割誤る)
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — ★終わらないdeployはBLOCKED(commit author未登録)が真因。重さでない
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
-- [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — **関係法人のブログ・SNS投稿文と画像の作成までが1セット**（2026-08-25）。対象は📱発信アカウント台帳を読んで毎回リスト化・投稿の実行者は当面 有璽氏
+- [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — 文面と画像まで1セット／★施設IGに業界の話は不可
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない

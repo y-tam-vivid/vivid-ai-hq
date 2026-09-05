@@ -120,3 +120,15 @@ Cloudflare の "Attention Required" が返る**（User-Agent を付けても同�
 **大きめの生成物は、先に公開先（Drive等）へ置いて `source_url` で渡すのが素直。**
 「生成物はNotionへ添付」を守るときも、**正本の置き場が決まる前に添付しない**
 （決まる前に貼ると、後から二重管理になる）。
+
+## ★複数DBの同時クエリは Business プラン以上（2026-09-05 実測）
+
+`query-data-sources` に `data_source_urls` を**2つ以上**渡すと、こう返る。
+
+```
+This tool requires a Business plan or higher.
+```
+
+- **★1つずつなら通る。** 同じ日に単一DBのクエリは何度も成功している
+- **★突合したいときは、DBごとに引いてから手元で突き合わせる。**
+  SQL の UNION ALL / JOIN で一度に数えようとしない
