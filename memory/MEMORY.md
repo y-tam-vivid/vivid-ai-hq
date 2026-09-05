@@ -82,7 +82,7 @@
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/5恒久化。MacBookで担当を起こさない。🔴寝ると窓口も止まる＝報告の出口はSlackにする
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
-- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 固定URLは有料でしか塞げない。MiddlewareのBasic認証で無料のまま塞ぐ
+- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — Basic認証で塞ぐ／**★9/5 仮公開が404＝配備なし。URLの記録0件**
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
