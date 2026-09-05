@@ -61,3 +61,25 @@ CLI にも deploymentType を `all` にする口が無い。**プランの壁で
 
 関連: [[project_ops_dashboard_artifact]] [[reference_plaintext_credentials_handling]]
 [[feedback_verify_before_declining]]（できないと言う前に、別の道を数える）
+
+## 🔴 「デプロイした」と「そのURLで見えている」は別（2026-09-05 実地・有璽氏が発見）
+
+有璽氏「**そもそもデモサイトを見れない状態なのですが**確認してもらって」。
+
+```
+実測   https://lifestandup-preview.vercel.app/    ★404 NOT_FOUND
+       個別のデプロイURL                          302（Vercelのログイン画面へ飛ぶ）
+原因   `vercel deploy --prod` は新しいデプロイを作るが、
+       ★固定URL（別名/alias）を必ずそこへ付け替えるとは限らない。
+       別名が古いデプロイを指したまま残り、そのデプロイが消えて404になった
+直し   deploy で出たURLを拾い、★`vercel alias set <URL> <固定URL>` を明示的に実行する
+```
+
+- **★私は「200が返った」ことを1時間前に確認していた。それでも見られなくなった。**
+  ＝**公開は一度確かめて終わりではない。別名は後から外れる。**
+- **★デプロイの出力に固定URLは出ない。** 出るのは個別のデプロイURL。
+  **出力を見て「出せた」と判断すると、誰も見られない状態に気づけない。**
+- **★確かめるのは必ず「人に渡したURL」で。** 個別のデプロイURLで確認しても意味がない
+  （そちらはVercelのログイン保護が掛かっていて、そもそも挙動が違う）。
+- ★出し直したら毎回この3つを人に渡すURLで測る ── ①合言葉なし=401 ②合言葉あり=200
+  ③主要ページが200。→ [[feedback_one_route_is_not_verification]]
