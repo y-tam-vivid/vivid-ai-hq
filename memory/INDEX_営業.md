@@ -23,7 +23,7 @@
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
 - [他種別テレアポリスト](project_telapo_list_other_services.md) — 13タブ作成。★活動FBに放デイ実績が混入=つる検査中／名寄せ81件未統合
-- [営業は3本が並走](project_sales_three_streams.md) — ①台帳整備(★8日停滞) ②テレアポリスト ③KPI設計。★9/5 ③の引き継ぎ書v2.0が到着＝**未確定・整合未測定が前提**。★ぶつかる4点(母数900は誤り/改修対象が衝突/活動FBが汚れている/担当がつる＝検査役)。最優先は判断A・B
+- [営業は3本が並走](project_sales_three_streams.md) — ★9/5 有璽氏の設計＝**経路で分ける(福祉テレアポは新型・パートナー等は従来通り)＋間にAIの精査を1回挟む**。順番は①KPI⇄リストの整合②営業へ伝える③台帳紐付けは別途。🔴クッションは既に2回作って2回とも詰まっている＝①何日で②誰に③どう上げ直すかを同時に決める
 - [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体
 - [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない
 - [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — ★認証は有璽氏本人のOAuth(サービスアカウントでない)＝作った物は共有不要／共有ドライブはsupportsAllDrives必須
