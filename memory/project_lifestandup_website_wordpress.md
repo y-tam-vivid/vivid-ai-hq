@@ -1908,3 +1908,18 @@ front-page.php:695,776 href="https://instagram.com/life_stand_up"   ★ベタ書
 
 - ★**Xのアカウントは無い**（有璽氏「Xについてはアカウントがないです。確か」）。
   共有ボタンの扱いはこの前提で決める。
+
+### ★フォントがページで違う理由 ── 同じ変数が2回定義されている（2026-09-06 実測）
+
+```
+--font-hand: "Kosugi Maru", "Kaisei Decol", "Noto Sans JP", sans-serif
+--font-hand: 'Yusei Magic', 'Kaisei Decol', var(--font-jp)      ★同じ名前で2つ
+--font-jp  : 'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif
+--font-en  : 'Inter',-apple-system,sans-serif
+```
+
+- **★ページ別に違うフォントを直書きしているのではない。**変数は1つのつもりで、
+  **中身が2種類ある。**どちらが効くかは読み込み順で決まるため、ページによって見え方が変わる。
+- 使用数は実測 ── 手書き風 482／英字 228／ゴシック 26。**手書き風が主役の設計。**
+- ★直すのは「ページごとにフォントを指定し直す」ではなく **`--font-hand` の定義を1つに寄せる**。
+  1か所直せば全ページに効く。**当てずっぽうにページを触らない。**
