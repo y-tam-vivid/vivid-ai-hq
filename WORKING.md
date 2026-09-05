@@ -53,6 +53,42 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-05 夕】層3（解除）── ボタンを押したら詰まりが解ける ── ✅完了。ステラ検査待ち
+
+**書いたのは `~/.vivid-relay/notify.py` と `bin/hooks/self_audit.py`（＋その複製）だけ。**
+🔴`ask_hub.py`・`stall_watch.py`（層1）・層2の新設フック・`hook_permission_slack.py` は触っていない。
+台帳・Notion・kintone へは1文字も書いていない。**Slackへ実投稿0件**
+（`notify._post` と `ask_hub.api_post` の両方を「呼ばれたら例外」に差し替えて測った）。
+
+```
+実物で起きていたこと   17:26 有璽氏が #5bbcb0 のボタンを押していた
+                       17:33 それでも pending は ★9.1時間 塞がったまま ← 直す前
+                       17:33 改修＋結び直しの直後 → None               ← 直した後
+①戻した   ask()→ask_hub.ask()へ委譲（ボタン付き・記述式へは落とさない）／
+           pending() は answered の正を ask_hub_queue.json 側に置き answer_of() へ都度問い合わせ／
+           tell() の判断語警告／戻り値に blocked_hours（何時間塞がっているか）
+           実測：モック22件 全合格。findings_escalate ドライラン rc=0（既存の呼び出し元は無傷）
+           ★9/4の改修版はどこにも残っていなかった（控え2本とも旧版・sha256一致）＝作り直した
+②解いた   ★自動では解けなかった。件名が違い、機械には同一と判定できない
+           塞ぐ側『営業台帳の指摘（ledger_report・8日連続）』
+           ⇔ #5bbcb0『営業台帳 ① 毎朝の督促（8日連続）』
+           件名の近さで自動結合はしない（似た件名の古い #2df0d8 で誤って解ける）。
+           `link_pending()` を新設し、依頼元の明示を根拠に結んだ。★answered は立てていない
+③検知     self_audit.py へ `_notify_ask_hub_check()`（9/4版も巻き戻っていた）。
+           ★機械は復元しない・人の目に入れるだけ。実測：現行版→正常／旧版→「★巻き戻り疑い」
+```
+
+**🔴人の判断が要る3点**（詳細 `~/.vivid-relay/layer3_result.md`）
+① **MacBook へ notify.py を配布できていない**（mini→MacBook の ssh が無い・`~/.vivid-relay` は
+git 管理外）＝**両機同一ではない**。どう揃えるかは設計の分岐なので触っていない
+② **明朝08:15 の `findings_escalate` が、notify 経由で初めてのボタン付き投稿を出す**
+（対象1件・「顧客種別=法人なのに法人番号が空の行が 59件」8日連続）。止めるなら
+`daily_jobs.conf` の行を落とす ── ★文書に「判断待ち」と書くだけでは止まらない
+③ `link_pending()`（孤児を人の宣言で結ぶ形）を運用として認めるか
+
+控え `_backups/{notify.py,self_audit.py,slack_pending.json}.bak_layer3_20260905`
+**★同じ対象に手をつけないでください**: `~/.vivid-relay/notify.py` ／ `bin/hooks/self_audit.py`
+
 ### 【つる / mini 2026-09-05 17時台】テレアポリスト 3周目の検査 ── ✅完了。判定「★載せてよい」
 
 **読むだけで検査した。新ファイル・既存3本・台帳・Notion・kintone・Slackへ1文字も書いていない。**

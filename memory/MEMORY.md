@@ -66,7 +66,7 @@
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本
 - [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/3 混入を直したら届く経路ごと消えた／表示だけで警告にしない
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
-- [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★ボタンで答えてもpendingは残る。9/4も塞ぎ解除済
+- [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
 - [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/人の手を無くす。★返事は出した経路へ
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
