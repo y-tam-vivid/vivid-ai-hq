@@ -147,12 +147,17 @@ SEARCHED = re.compile(
 def _turn_messages(path):
     """直近の人の発言以降の、こちらの発話とツール入力を取り出す
 
-    戻り値: (said, tooled, tool_calls)
-      tooled       検査2用（従来どおり・文字列化したinput）
-      tool_calls   検査3用（★2026-08-29追加）。[(tool_name, input_dict), ...]
-                   ツール名と生の input を両方保持する（method_signature() が使う）
+    戻り値: (said, tooled, tool_calls, all_tool_calls)
+      tooled          検査2用（従来どおり・文字列化したinput）
+      tool_calls      検査3用（★2026-08-29追加）。[(tool_name, input_dict), ...]
+                      ツール名と生の input を両方保持する（method_signature() が使う）
+      all_tool_calls  検査4用（★2026-09-05追加）。[(tool_name, input_dict), ...]
+                      SEARCH_TOOLS に絞らず全ツールを記録する。検査2/3は「探した証拠」
+                      だけを見ればよいが、検査4（他言語スクリプト混入）は書く行為
+                      （Write/Edit/SendMessage/Agent等）でこそ実害が出るため対象を広げる
+                      （実測：Write/Editでのメモリファイル汚染、SendMessageでの実送信を確認）。
     """
-    said, tooled, tool_calls = [], [], []
+    said, tooled, tool_calls, all_tool_calls = [], [], [], []
     try:
         lines = open(path, encoding='utf-8').read().splitlines()
     except Exception:
@@ -195,10 +200,11 @@ def _turn_messages(path):
                 #   → 探す行為のツールだけを証拠に数える。書く行為は数えない。
                 nm = b.get('name', '')
                 inp = b.get('input', {}) or {}
+                all_tool_calls.append((nm, inp))
                 if nm in SEARCH_TOOLS or nm.startswith('mcp__'):
                     tooled.append(json.dumps(inp, ensure_ascii=False))
                     tool_calls.append((nm, inp))
-    return said, tooled, tool_calls
+    return said, tooled, tool_calls, all_tool_calls
 
 
 def check_asked_without_looking(payload):
@@ -206,7 +212,7 @@ def check_asked_without_looking(payload):
     tp = payload.get('transcript_path')
     if not tp or not os.path.isfile(tp):
         return None
-    said, tooled, _tool_calls = _turn_messages(tp)
+    said, tooled, _tool_calls, _all_tool_calls = _turn_messages(tp)
     if not said:
         return None
     body = '\n'.join(said)
@@ -351,7 +357,7 @@ def check_single_route_claim(payload):
     tp = payload.get('transcript_path')
     if not tp or not os.path.isfile(tp):
         return None
-    said, _tooled, tool_calls = _turn_messages(tp)
+    said, _tooled, tool_calls, _all_tool_calls = _turn_messages(tp)
     if not said:
         return None
     body = '\n'.join(said)
@@ -390,6 +396,100 @@ def check_single_route_claim(payload):
         '★同じ壊れた前提を2つの方式で読んでも同じ誤りに一致することがあります。',
         '方式を増やすことは「正しさの証明」ではなく「独立に確認した」という代理指標です。',
         '（意図して1方式で十分と判断した場合は、その理由を1行述べればそのまま終えられます）',
+    ]
+
+
+# ─────────────────────────────────────────────────────────────
+# 検査4 ── 日本語の出力に他言語の文字が混入していないか（2026-09-05 ビビ依頼）
+# ─────────────────────────────────────────────────────────────
+#
+# なぜ要るか（2026-09-05 有璽氏の指摘・実例。2日で2回）
+#   9/4  担当への依頼文        「особенно Yoast 18.5.1 と…」   ← 「特に」の位置にロシア語
+#   9/5  自分が叩くコマンドの中  「主要ページが живы か」        ← 「生きている」の位置
+#   どちらもエラーにならない。文として成立するので機械も人も止めない。
+#   読んだ相手が「意味が分からない」と言うまで気づけない。
+#   ★1回目のあと memory に「送る前に自分で1回読む」と書いた。翌日に破った。
+#   規律で止める対策は、書いた本人が翌日に破る → 機械で止めるしかない。
+#
+# ★実測（2026-09-05・このリポジトリの実transcript26本・47,208アシスタント行を走査）
+#   検出35件・誤検知0件（35件全て真陽性 ── キリル/ハングル/タイ/デーヴァナーガリー文字が
+#   単語として混入したもの以外は1件も無かった）。
+#   有璽氏が把握していた2件（依頼文・コマンド）以外に、**未報告・訂正の形跡が無い混入が
+#   複数見つかった**（例：Write/Edit経由でメモリファイル(.md)へ「второй」「можно」が
+#   混入したまま残っている・text発話中の「клean」「читаい」等）。
+#   ツール別内訳（35件）：text(発話) 14・Bash 8・Write/Edit 9・SendMessage 2・
+#   Agent 1・AskUserQuestion 1
+#   （注：14件のうち一部は「ロシア語が混入しました」という訂正報告自体が混入語を
+#   引用しているため再ヒットしたもの。実質的な新規混入と訂正の言及の両方を含む）
+#
+# 対象（★依頼は「発話だけか、担当への依頼文も含むか、コマンドも含むか」を問うていた）
+#   実測の結果、Write/Edit（ファイル内容）・SendMessage（外部送信）でも発生していたため、
+#   探索ツールに限定する SEARCH_TOOLS（検査2/3用）とは別に、all_tool_calls として
+#   全ツールの input を対象にする。対象は①アシスタントの発話（said）②全ツール呼び出しの
+#   input（Bash・Write・Edit・SendMessage・Agent・AskUserQuestion・mcp__* すべて）。
+#
+# 判定
+#   キリル文字・ハングル・タイ文字・デーヴァナーガリー文字の Unicode 範囲を正規表現で
+#   検出。★日本語の業務でこれらが正当に必要な場面はほぼ無いという想定どおり、
+#   実測でも誤検知は0件だった。
+#
+# ブロックするか警告のみか（★ビビの依頼は「まずは警告(ブロックしない)を推す」
+#   だったが、以下の理由で exit 2 による1回限りの差し戻しを採用する）
+#   ① Stop hook には PreToolUse の additionalContext のような「実行は許可しつつ
+#     追加情報だけ注入する」機能が無い。exit 0 のままログに記録するだけでは、
+#     有璽氏には一切伝わらない＝今回の依頼の核心「気づけない」を何も解決しない。
+#   ② 判定基準が Unicode の文字範囲という極めて客観的なもので解釈の余地が無く、
+#     実測で誤検知0/35（検査3＝CLAIM_WORDSの28%誤検知とは性質が違う。
+#     hook_output_guard の「88本で誤検知0件」と同水準の実測結果が最初から出ている）。
+#   ③ 検査2・3と同じ型を踏襲する（stop_hook_active なら2度目は通す＝無限ループに
+#     しない。意図的な多言語表記なら一言添えればそのまま終えられる）。
+#     「二度と直せない」という意味のブロックではない。
+#   ★限界（隠さず明記）：Stop hook はターン終了時にしか発火しない。Bashコマンドの
+#   実行や SendMessage での送信は、差し戻しの時点で既に完了している。
+#   「実行前に止める」ことはできず、「実行後・次の応答をする前に気づかせて訂正させる」
+#   効果に留まる。真に事前ブロックしたいなら PreToolUse 側で Bash/SendMessage/Agent
+#   専用の別の検問が要る（未実装・今回のスコープ外）。
+
+SCRIPT_MIX_RE = re.compile(
+    r'[Ѐ-ӿԀ-ԯ'      # キリル文字・キリル文字補助
+    r'가-힣ᄀ-ᇿ㄰-㆏'  # ハングル（音節・字母・互換字母）
+    r'฀-๿'                    # タイ文字
+    r'ऀ-ॿ]')                  # デーヴァナーガリー
+
+
+def check_script_mix(payload):
+    """検査4本体。混入があれば差し戻し文（list[str]）を返す。無ければ None。"""
+    tp = payload.get('transcript_path')
+    if not tp or not os.path.isfile(tp):
+        return None
+    said, _tooled, _tool_calls, all_tool_calls = _turn_messages(tp)
+    parts = list(said)
+    for _nm, inp in all_tool_calls:
+        try:
+            parts.append(json.dumps(inp, ensure_ascii=False))
+        except Exception:
+            parts.append(str(inp))
+    if not parts:
+        return None
+    body = '\n'.join(parts)
+    m = SCRIPT_MIX_RE.search(body)
+    if not m:
+        return None
+    idx = body.find(m.group(0))
+    snippet = body[max(0, idx - 20):idx + 20]
+    return [
+        '★日本語の出力に他言語の文字が混入しています（検査4）。',
+        '',
+        '検出文字: 「%s」（周辺: …%s…）' % (m.group(0), snippet.replace('\n', ' ')),
+        '',
+        '2026-09-04〜05に実際に有璽氏の目に触れた出力へ混入した実例があります',
+        '（担当への依頼文「особенно」／コマンド中の「живы」）。文として成立するため',
+        'エラーにならず、指摘されるまで気づけません。',
+        '',
+        '終える前に、該当箇所を実際に読み直し、意図した表記へ訂正してください。',
+        '',
+        '（固有名詞・URL・意図的な多言語表記であれば、その旨を1行述べれば',
+        'そのまま終えて構いません）',
     ]
 
 
@@ -432,6 +532,18 @@ def main():
             return 2
         else:
             log('検査3(観測のみ・未有効化)', '1経路断定を検出したがブロックしていない')
+
+    # ★検査4 ── 他言語スクリプトの混入（2026-09-05 ビビ依頼）。実測で誤検知0/35のため
+    #   検査2/3と異なり導入初日から有効（フラグではなく直接ブロックする）。
+    try:
+        lines4 = check_script_mix(payload)
+    except Exception as e:
+        lines4 = None
+        log('検査4で例外', str(e))
+    if lines4:
+        sys.stderr.write('\n'.join(lines4) + '\n')
+        log('★差し戻した(検査4)', '他言語スクリプト混入')
+        return 2
 
     if not os.path.isdir(os.path.join(REPO, '.git')):
         log('通した', 'リポジトリが無い')

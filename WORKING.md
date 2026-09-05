@@ -1475,6 +1475,10 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ピタゴラス / MacBook 2026-09-05】日本語出力への他言語文字混入を機械で検問（ビビ依頼）── 着手中**
+  - 対象: `bin/hooks/hook_session_writeback.py`（Stopフック・既存に検査4を追加）
+  - **同じ対象に手をつけないでください**: 上記ファイル ／ `~/.vivid-relay/hook_session_writeback.py`
+
 - **【ピタゴラス / MacBook 2026-09-05】zaimu_classify.py 新設 ── ✅実装・本実行完了。要判断1点**
   - ビビ依頼（MacBookスリープで長時間処理が落ちる対策・機械判定はスクリプト化してminiへ切り離す）
     を受け `~/.vivid-relay/zaimu_classify.py` を新設・**両機に配置**（sha256/diff一致確認済み）。

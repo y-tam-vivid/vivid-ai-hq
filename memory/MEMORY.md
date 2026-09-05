@@ -76,7 +76,7 @@
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化（docx/pptxもbin/にある）**
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
-- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ。予定作成は意図的にask／代替は.ics／**★担当も書けないことがある(allowにEditがあってもdontAskで拒否)。規範の制限と権限の制限が重なると誰も触れない領域ができる→resumeでなく新規起動で試す**／**★拒否は3層(フック/権限/OSサンドボックス)。「operation not permitted」はsettings.jsonでは直らない**
+- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)。指示だけを根拠にせず、成功報告には指示の在処まで書く**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。bin/hooksの控えは_backups/へ。名指しで保存する
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [miniへAIごと投げる](reference_offload_long_work_to_mini.md) — ★スリープで全停止(5体)。ssh+nohupでclaude -pが動く(9/5実測)。会話はここのまま
