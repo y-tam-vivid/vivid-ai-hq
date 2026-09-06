@@ -13,6 +13,7 @@
 - [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない／★枝分かれはff-onlyでは永久に解けない（自動merge＋衝突ならabort）／**🔴9/5 2回目＝機械は設計どおり止まったが誰も解かなかった。真因は🔴の説明文が「未コミット」決め打ちで、未コミット0だと打つ手が無いように読めること。🔴を見たらまず`git status --porcelain|wc -l`と rev-list を叩き、0件なら自分で`git merge origin/main`**
 - [対話か claude -p かの見分け方](reference_detect_noninteractive_session.md) — ★`CLAUDE_CODE_ENTRYPOINT` の1本だけ（cli=対話／sdk-cli=非対話）。agent_id・isatty・CHILD_SESSIONは全部使えないと実測。transcriptにも同じ欄があり誤検知率を事前に測れる
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★自動配布にした結果、逆に`~/.vivid-relay/`を直すと15分後に黙って巻き戻る。触る前に`bin/hooks/`に同名が無いか見る
+- [非対話ではPermissionRequestが鳴らない](reference_permission_request_hook_headless.md) — ★2026-09-06 実測10ケース＋実体の文字列。`claude -p`では承認フックが一度も発火せず、dontAskの自動拒否をallowで上書きもできない＝「Slackのボタンで端末の承認を代行」は非対話については成立しない。PreToolUseは非対話でも発火する（allow/deny/ask/deferを返せる）
 - [crontabは書けない](reference_cron_write_blocked_in_session.md) — ★日次ジョブの正本はbin/daily_jobs.conf。8/23も未解消／ssh越しなら書ける
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない

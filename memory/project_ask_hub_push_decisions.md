@@ -346,6 +346,42 @@ ask_hub のボタン        Slackで押す → interactive経路で答えが返�
 - **★timeout を超えたときに「通ってしまう」設計にしない。** 押されなければ拒否側へ倒す。
   許可側へ倒すと、**誰も見ていない時刻に承認が自動で通る**＝最後の砦が消える。
 
+### 🔴 実測でひっくり返った ── `claude -p` では PermissionRequest フックが発火しない（2026-09-06）
+
+**仕様は在る。だが `-p`（非対話）では一度も呼ばれなかった。**
+隔離環境（`CLAUDE_CONFIG_DIR=/tmp/prtest2/cfg`・claude 2.1.261・haiku）で6ケース実測：
+
+```
+A none ／ B allow ／ C deny ／ D 75秒待つ ／ E 170秒待つ ／ F async:true
+  → ★6ケースとも probe.log が生成されない＝フックが起動していない
+  ★Dは75秒待つ設計なのに 8秒 で終了＝探針プロセスが始まってさえいない（時間で裏が取れた）
+  --debug hooks でも PermissionRequest の痕跡 0件
+対照   同じ settings.json に置いた PreToolUse フックは★6ケースとも発火し、
+       session_id / cwd / transcript_path / permission_mode / tool_input を実際に受け取った
+       ＝ settings.json の読み込みもフック機構も生きている。PermissionRequest だけ動かない
+```
+
+**★だが「動かない」と断定してはいけない。実環境では動いている。**
+
+```
+Slackの実物   09-05〜09-06 のDMに「承認待ちで止まっています」が★8通
+              ＝ hook_permission_slack.py（PermissionRequest登録）が実際に発火した証拠
+違い          実環境＝★対話セッション（MacBook）／今回の実測＝`-p`（非対話）
+              実環境＝defaultMode: dontAsk ／ 実測＝default（PreToolUseのpayloadで確認）
+```
+
+**How to apply：**
+
+- **★「フックが登録されている」と「その場面で呼ばれる」は別。** イベント名で判断せず、
+  **止めたい場面と同じ入口で1回走らせて確かめる** → [[reference_dangerous_entrypoints]]
+- **★対照を必ず1本置く。** 今回 `PreToolUse` を並べたから「機構は生きている／
+  PermissionRequest だけ動かない」まで切り分けられた。**対照が無ければ
+  「settings.json の書き方を間違えた」で終わっていた。**
+- **★時間で裏を取る。** 「75秒待つ探針が8秒で終わった」は、ログの不在より強い証拠。
+  ログが無いのは「消えた」かもしれないが、**時間は嘘をつかない。**
+- ★`.claude` を含むパスは書き込みが塞がれているので、隔離実験は `CLAUDE_CONFIG_DIR` で作る
+  → [[reference_permissions_are_part_of_the_environment]]
+
 ### 🔴🔴 実測でひっくり返った ── このフックは**非対話では発火しない**（2026-09-06・2経路）
 
 ```
@@ -376,6 +412,13 @@ ask_hub のボタン        Slackで押す → interactive経路で答えが返�
   → [[reference_a_warning_nobody_owns]]（誰も拾わない警告は無に等しい）と同じ型の裏返し
 - **★「毎日きっちり同じ時刻・同じ内容」の通知を見たら、まず点検由来を疑う。**
   実セッションの承認が毎日同じ秒に同じコマンドで起きることはない。
+- **★直し方が1行で済む（2026-09-06 ピタゴラス／実測）── `session_id` の有無で分ける。**
+  点検の payload は `{"tool_name":"Bash","tool_input":{"command":"ls"}}` の**2キーだけ**。
+  一方 **本物の呼び出しには必ず `session_id` が入る**（隔離環境の PreToolUse で実ペイロードを
+  捕まえて確認：`session_id` `transcript_path` `cwd` `permission_mode` `tool_use_id` が来る）。
+  → **`session_id` が無ければ投稿しない。** `hook_selfcheck.py` にも `VIVID_NOTIFY_OFF` にも
+  依存しないので、**点検側を1行も触らずにニセが消える**（結合を増やさない）。
+  ★`suppressOutput` は今までどおり返すので、点検の合否判定は壊れない。
 - **★直す範囲が2つに割れた。**
   ①MacBookの対話セッション ＝ フックが発火する ＝ **ボタンで解ける（第2段の対象）**
   ②miniの `claude -p` ＝ **フックが発火しない ＝ この経路では救えない**
