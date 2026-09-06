@@ -37,4 +37,7 @@
 - [LSU 記事の2系統](project_lifestandup_website_wordpress.md) — ★9/5 **ストック型(SEO)とフロー型を分ける**。実装せず案を出す／移送5本は「活動」／**URLは変えない**
 - [LIFE STAND UP 写真の運用](project_lifestandup_website_wordpress.md) — ★9/4 有璽氏「公開前なら一旦載せて後で差し替え」＝枠待ちをやめた／**★入れたら必ず目で見る。CSSの詳細度とショートハンドで写真が隠れる・切れる（実地2件）**／公開直前の確認2点＝全枠の○と板書の英文（英語スタッフ判定）
 - [LSU 正は仮公開サイト](project_lifestandup_website_wordpress.md) — ★9/6 有璽氏**仮公開の設計をもとにWPを構築する**＝**原本との1px差は不具合でない**／原本の飾りは意図でないことがある(トップ3枚のカテゴリ表記)／**Xはアカウント無し=共有ボタンを外す**／IG正=life.standup_official／**電話は現場負担=LINE/フォームを前へ**／**課金が要る手(地図API・IG実投稿)は実装せず案で止める**
+- [LSU CSS変数は:rootだけ見ても見つからない](project_lifestandup_website_wordpress.md) — ★9/6 `--font-hand`の定義は**2つでなく23か所**（style.css2＋ページ別CSS21が`body.lsu-◯◯`へ再定義）。**htmlの変数を読むやり方では23分の2しか見えない**／**bodyへの再定義はstyle.cssから取り返せない＝定義を1つに寄せる以外に手が無い**／確認も描画で（10ページの実要素fontFamilyが1種類に揃ったこと）
+- [LSU 置いてある≠行ける](project_lifestandup_website_wordpress.md) — ★9/6 実害4件＝Xの共有ボタン(アカウント無し)／IGが3箇所ベタ書きで別垢／**トップの活動ブログ3枚がhref0本**／地図が文字だけの箱。**出す前にリンクを数える**（hrefの有無・押した先のHTTP）／URLと表示名を別々に書かない／**0件の一覧へ導線を出さない**
+- [LSU 地図のピンは座標で立てる](project_lifestandup_website_wordpress.md) — ★9/6 住所の文字列だとビル名が無く周辺を映すだけ。国土地理院ジオコーディング(無料・鍵不要)で34.561554,135.604538／**★1経路でしか確認できていない**(Nominatimは0件・zipcloudは町名まで)／白黒はgrayscaleで足りるが**★ピンと操作ボタンも灰色になる**。地図だけ白黒は地図APIで課金
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない

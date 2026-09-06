@@ -28,7 +28,7 @@
 - [行番号の参照は組み直しで腐る](reference_row_reference_rots_on_rebuild.md) — 一覧は法人番号で指す／★9/6 2回目=照合を正規化すると人がCtrl+Fで当てられない。合否は厳密一致で数える
 - [見本の複製に前案件の実績が残る](reference_sample_copy_keeps_past_results.md) — 数式が値に焼き付く。複製した器はread_formulas()で1回開く
 - [新リスト前に墓場を探す](reference_new_list_splits_judgment.md) — 「反映」を挟むと判断が2箇所に増える。06_テレアポリストがその死体／**★9/5 続報＝器を1つにしたのに移行先が空だった（09⑤=0件・40活動ログのTEL=0件）。現場は元の見本ファイルへ書いていた。決定は行数で確かめる**
-- [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない
+- [営業案件管理](project_sales_workbook_read_first.md) — ★SWELL統合は8/3にB-0380側で決着済(逆転指示は保留)／機械が新規判定して書かない／**★9/6 見出しは全シート2行目。1行目を見出しに読むと例外が出ず「0社」「0件」が返る（見出し行は探して決める）／実測=00は468社(法人277・空欄109・個人事業主82)・01はIDがある行386件。9/5の「387行」は誤り＝削除後の期待値は384でなく383**
 - [台帳作業の認証](reference_sheets_no_credentials_on_mini.md) — ★認証は有璽氏本人のOAuth(サービスアカウントでない)＝作った物は共有不要／共有ドライブはsupportsAllDrives必須
 - [営業ワークブックは戻せる状態に](feedback_sales_workbook_hands_off.md) — AIが書くときだけ①BU→②diff→③承認→④実行
 - [営業ワークブック](project_sales_pipeline_workbook.md) — ★営業は一度も触っていない＝開かせる1回が要る／投稿側intake_notify.pyは未実行
