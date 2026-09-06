@@ -89,6 +89,8 @@ def collect():
     out['working_md_markers'] = _working_md_marker_ages()
     out['role_guard'] = _role_guard_summary()
     out['open_findings'] = _open_findings_summary()
+    out['notify_ask_hub'] = _notify_ask_hub_check()
+    out['buttonless_dm'] = _buttonless_dm_check()
     return out
 
 
@@ -223,6 +225,106 @@ def _open_findings_summary(min_streak=3):
         r.get('streak_days', 0), r.get('source'), r.get('last_text')) for r in rows[:10])
 
 
+# ★見に行くのは「実際に動いている方」（~/.vivid-relay/notify.py）。
+#   このファイル自身は bin/hooks と ~/.vivid-relay の2箇所に置かれるが、
+#   HERE 基準で探すと、配布漏れのときに存在しない側を見て静かに合格する
+#   （2026-08-29 ステラ検査で指摘された「穴Aと同じ型」）。だから絶対パスで固定する。
+NOTIFY_LIVE = os.path.expanduser('~/.vivid-relay/notify.py')
+
+
+def _notify_ask_hub_check():
+    """★notify.py の ask_hub 連携が巻き戻っていないか（2026-09-05 layer3 で新設）
+
+    なぜ要るか ── この改修は 2026-09-04 に5回、09-05 に1回、**別セッションの手で
+    巻き戻った**（ビビが2体走り、両方が同じファイルを触った）。巻き戻ると
+    「判断依頼がボタンでなく記述式で出る」「ボタンを押しても pending が解けない」に
+    静かに戻る。誰も気づかないまま翌朝また同じことを聞かれる。
+    → memory/reference_two_sessions_built_the_same_thing.md
+
+    ★機械は復元しない。人の目に入れるだけ（＝つるの「人が要る」欄へ入れさせる）。
+      自動で書き戻すと、2体が交互に上書きし合う競争になる。
+    """
+    try:
+        src = open(NOTIFY_LIVE).read()
+    except Exception as e:
+        return '★notify.py を読めない（%s） ： %s' % (NOTIFY_LIVE, e)
+    missing = []
+    if 'import ask_hub' not in src or 'ask_hub.ask(' not in src:
+        missing.append('ask() を ask_hub へ委譲する部分（＝ボタン付きで出す）')
+    if 'ask_hub.answer_of(' not in src:
+        missing.append('pending() が答えを ask_hub へ問い合わせる部分'
+                       '（＝押しても解けない状態に戻る）')
+    if 'CLAIM_WORDS' not in src or 'def contains_judgment_words' not in src:
+        missing.append('tell() の判断語の警告')
+    if missing:
+        return ('★巻き戻り疑い ： %s に次が見当たらない\n%s\n'
+                '  ★機械では復元しない。人が実物を見て戻すこと'
+                % (NOTIFY_LIVE, '\n'.join('   ・' + m for m in missing)))
+    return '（notify.py は ask_hub 連携を保持している）'
+
+
+# ★DMへ「押せない形」で投げるコードが増えていないか（2026-09-05 新設）
+#   有璽氏の4回目の指摘 ──「今はSlack側への通知方法がバラバラです。
+#   クリックして答えれるような状況にしてください」への機械側の担保。
+#
+#   ★なぜ新しいフックを作らなかったか ： フックは settings.json への登録が人の手待ちで、
+#     登録されるまで0本と同じ（層2の hook_interactive_guard が実際にその状態）。
+#     この自己監査は既に毎朝08:40の cron に載っている＝人の手を1つも増やさずに効く。
+#
+#   ★見るのは「有璽氏のDMへ chat.postMessage していて blocks（ボタン）が無い .py」。
+#     下の3本は理由があって押せない形のまま＝許可リスト。それ以外が出たら人へ出す。
+DM_ID = 'D0AT4NQ6X7D'
+BUTTONLESS_ALLOWED = {
+    'notify.py': '報告 tell() 専用の送信口。判断 ask() は ask_hub へ委譲済み',
+    'slack_inbox.py': '有璽氏のDMへの応答（こちらから判断を求めない）',
+    'hook_permission_slack.py': '★承認ダイアログの通知。構造的に押せない ＝ 別途改修の対象',
+}
+SCAN_DIRS = (os.path.expanduser('~/.vivid-relay'),
+             os.path.expanduser('~/vivid-ai-hq/bin/hooks'))
+
+
+def _buttonless_dm_check():
+    """有璽氏のDMへ、ボタンの無い形で投げるコードが新しく増えていないかを見る。
+
+    ★判定は3つのAND ： ①DMのIDを持つ ②chat.postMessage を叩く ③blocks が無い。
+      ボタンは Slack の blocks でしか出せないので、③が「押せない」の代理指標になる。
+
+    ★できないこと（正直に書く）：
+      ・Python 以外（GAS・シェル）は見ていない。議事録botのGASは対象外
+      ・notify.tell() 経由で「判断語つきの報告」を出す経路はここでは捕まらない
+        （それは notify.contains_judgment_words() が実行時に stderr へ出す担当）
+      ・文字列の有無で見るだけ。実際に実行されるかは見ていない
+    """
+    found, seen = [], set()
+    for d in SCAN_DIRS:
+        try:
+            names = sorted(os.listdir(d))
+        except Exception:
+            continue
+        for n in names:
+            if not n.endswith('.py') or n in seen:
+                continue
+            try:
+                src = open(os.path.join(d, n), encoding='utf-8').read()
+            except Exception:
+                continue
+            if DM_ID not in src or 'chat.postMessage' not in src:
+                continue
+            seen.add(n)
+            if "'blocks'" in src or '"blocks"' in src:
+                continue
+            if n not in BUTTONLESS_ALLOWED:
+                found.append('%s ： %s' % (n, os.path.join(d, n)))
+    if found:
+        return ('★有璽氏のDMへ、ボタンの無い形で投げるコードが %d本 増えています\n'
+                '%s\n'
+                '  ★判断を求めるものなら ask_hub.ask()（ボタン付き）へ移すこと。\n'
+                '    報告なら notify.tell() を使い、判断語を1つも入れないこと。'
+                % (len(found), '\n'.join('   ・' + f for f in found)))
+    return ('（増えていない。押せない形のまま残っているのは既知の%d本だけ ： %s）'
+            % (len(BUTTONLESS_ALLOWED), '／'.join(sorted(BUTTONLESS_ALLOWED))))
+
+
 def main(dry=True, beat=False):
     d = collect()
     today = datetime.date.today().isoformat()
@@ -289,6 +391,23 @@ def main(dry=True, beat=False):
 %s
 ```
 
+### ★notify.py の ask_hub 連携が巻き戻っていないか
+```
+%s
+```
+★この改修は 2026-09-04 と 09-05 に、完成の直後に消えたことが3回ある。
+巻き戻ると「有璽氏がボタンを押しても、翌朝また同じことを聞かれる」状態に戻る。
+★真因は 2026-09-05 に特定した ── `bin/setup_hooks.sh` が15分ごとに
+`bin/hooks/*.py` を `~/.vivid-relay/` へ上書きコピーするので、配布先だけを直すと消える。
+**正本は `bin/hooks/` 側。**（当初「別セッションが同時に触った」と説明していたが誤り）
+
+### ★有璽氏のDMへ「押せない形」で投げるコードが増えていないか
+```
+%s
+```
+★有璽氏の指示（2026-09-05・4回目）「クリックして答えれるような状況にしてください」。
+判断を求めるのに押せない通知が新しく増えたら、ここに出る。
+
 ## 検査してほしいこと
 
 1. **cron に載っているのに動いていないもの**
@@ -315,6 +434,11 @@ def main(dry=True, beat=False):
    ・findings_tracker で3日以上開いたままの指摘があれば、それを最優先で扱う
      （[[reference_a_warning_nobody_owns]]「正しく鳴っているのに拾われない」型）
 
+6. **★notify.py の巻き戻り（2026-09-05 追加）**
+   上の材料に「★巻き戻り疑い」が出ていたら、**必ず「★人が要る」へ入れてください。**
+   ★あなたが自分で書き戻さないこと（2体が交互に上書きし合う競争になる）。
+   誰がいつ巻き戻したかは分からない前提で、「実物がこうなっている」とだけ報告する
+
 ## ★重要 ── 出したら終わりにしない
 
 指摘を **「自分で直せるもの」と「人の操作・判断が要るもの」に分けて**ください。
@@ -337,7 +461,8 @@ def main(dry=True, beat=False):
 """ % (d['crontab'][:3000], d['selfcheck'][:1500],
        d['scripts'][:2000], d['warnings'][:2500] or '（なし）',
        d['git_no_review'][:1500], d['working_md_markers'][:1500],
-       d['role_guard'][:500], d['open_findings'][:1500])
+       d['role_guard'][:500], d['open_findings'][:1500],
+       d['notify_ask_hub'][:800], d['buttonless_dm'][:800])
 
     if dry:
         print('---- ドライランなので、つるを呼ばない ----')

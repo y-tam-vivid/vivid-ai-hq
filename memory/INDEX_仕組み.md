@@ -10,18 +10,20 @@
 - [Downloads→Drive本棚](project_downloads_archive_system.md) — 受け皿17分類。sort_downloads.pyが週次(要フルディスクアクセス)
 - [カレンダー テンプレ挿入](project_calendar_template_autofill.md) — GASで自動挿入。タイトル【種別】で振り分け＝命名ルールが前提
 - [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入する。触ったファイルを明示・commitは束ねる側が打つ
-- [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない／★枝分かれはff-onlyでは永久に解けない（自動merge＋衝突ならabort）
+- [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない／★枝分かれはff-onlyでは永久に解けない（自動merge＋衝突ならabort）／**🔴9/5 2回目＝機械は設計どおり止まったが誰も解かなかった。真因は🔴の説明文が「未コミット」決め打ちで、未コミット0だと打つ手が無いように読めること。🔴を見たらまず`git status --porcelain|wc -l`と rev-list を叩き、0件なら自分で`git merge origin/main`**
+- [対話か claude -p かの見分け方](reference_detect_noninteractive_session.md) — ★`CLAUDE_CODE_ENTRYPOINT` の1本だけ（cli=対話／sdk-cli=非対話）。agent_id・isatty・CHILD_SESSIONは全部使えないと実測。transcriptにも同じ欄があり誤検知率を事前に測れる
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★自動配布にした結果、逆に`~/.vivid-relay/`を直すと15分後に黙って巻き戻る。触る前に`bin/hooks/`に同名が無いか見る
+- [非対話ではPermissionRequestが鳴らない](reference_permission_request_hook_headless.md) — ★2026-09-06 実測10ケース＋実体の文字列。`claude -p`では承認フックが一度も発火せず、dontAskの自動拒否をallowで上書きもできない＝「Slackのボタンで端末の承認を代行」は非対話については成立しない。PreToolUseは非対話でも発火する（allow/deny/ask/deferを返せる）
 - [crontabは書けない](reference_cron_write_blocked_in_session.md) — ★日次ジョブの正本はbin/daily_jobs.conf。8/23も未解消／ssh越しなら書ける
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
-- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**／**★心拍の宛先は行名の文字列一致。相乗り・beat無しで、動いているのに永久に🟡になる(8/27に2件)**／**★8/28 heartbeat_names_check の5件中4件が誤検知だった（PROC_NAME固定・行末コメント・自前beatラッパ）。修正済。同じ穴を4回踏んでいる＝次は正規表現を足さずastか自己申告へ**／**★「有効」フラグのズレは2回目。今回は常駐(Slack Socket Mode)で、人が手で起動した後もレジスタが2日間 有効=False＝永久に🔴が立たない状態だった。起動と登録は1セット**／**★9/1 毎朝の材料「ログの失敗N件」の中身を初実測＝10件中6件がSlackの正常なdisconnect。「異常でない」と別memoryで判定済みなのに self_audit.py がそれを読まないため12日間鳴り続けている。件数は tail -25 の窓で動くので増減も指標にならない。直すのはピタゴラス**
+- [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**／**★心拍の宛先は行名の文字列一致。相乗り・beat無しで、動いているのに永久に🟡になる(8/27に2件)**／**★8/28 heartbeat_names_check の5件中4件が誤検知だった（PROC_NAME固定・行末コメント・自前beatラッパ）。修正済。同じ穴を4回踏んでいる＝次は正規表現を足さずastか自己申告へ**／**★「有効」フラグのズレは2回目。今回は常駐(Slack Socket Mode)で、人が手で起動した後もレジスタが2日間 有効=False＝永久に🔴が立たない状態だった。起動と登録は1セット**／**★9/1 毎朝の材料「ログの失敗N件」の中身を初実測＝10件中6件がSlackの正常なdisconnect。「異常でない」と別memoryで判定済みなのに self_audit.py がそれを読まないため12日間鳴り続けている。件数は tail -25 の窓で動くので増減も指標にならない。直すのはピタゴラス**／**★9/5 指摘(findings)側にも「保留」を持てるようにした。clear(直った)とpark(人がいまは対応しないと決めただけ)を分離＝park は台帳から消さず・連続日数も伸ばさず・毎朝の画面に⏸で理由/決めた人/戻し方まで出す。戻すのは `findings_tracker.py --unpark "<key>"` の1手。営業台帳の3件を実際に保留にした（findings_escalate の対象0件＝明朝のSlack督促は出ない）**
 - [判断待ちは配布を止めない](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/1 intake_notifyが「人の目視を挟むか判断待ち」の最中にSlackへ本番投稿5件。文書の保留を機械は読まない／★レジスタの有効=Falseは実行を止めない(監視の対象外にするだけ)。止めるならdaily_jobs.confの行を止める
 - [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 常駐は一定間隔で心拍／心拍はmain()の外で包む。末尾は例外が素通り
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)／**★手順書に「まだ無い機能」を書いた。決着済みの設計を在るものとして扱った。人が読む文書の前に動線を1回自分で通す(2026-08-24)**
 - [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
-- [自動処理レジスタ(心拍)](project_automation_register.md) — ★心拍名は1文字違うと黙って失敗／★miniのlaunchdは0本＝plistが在るのは常駐の証拠でない／★法人番号月次更新を新設(0827)。9/1初回目視待ち
+- [自動処理レジスタ(心拍)](project_automation_register.md) — ★有効=Falseは故障でなく設計。備考を全文読む前に--beatを足すな(9/6)／心拍名は1文字違うと黙って失敗
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
 - [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — 1つしか選べない置き場に判断を置かない。3割超の偏りは既定値と疑う
 - [入力と出力先を先に見る](reference_ai_output_blamed_before_inputs.md) — ★フォールバックは工程ごとに散る(議事録で7個)。1本直しても潰れない
@@ -47,3 +49,4 @@
 - [銀行明細CSVの形3種](reference_bank_csv_formats.md) — 楽天個人4列/りそな21列(★日付2種混在)/楽天法人=全銀協20列。裏取りはトレーラー件数／平成は自動判別できない
 - [日本語ファイル名はNFD](reference_japanese_filename_normalization.md) — macOSのファイル名はNFD。NFC文字列でgrep/in判定すると静かに0件になる。★担当の申告と検算が食い違ったら、まず検算側を疑う（両機のフォント在庫も実測記載）
 - [fresh eyes 2パス方式](reference_fresh_eyes_two_pass.md) — 検問インフラ限定。★8/29初実演＝A疑義10件→Bで消えたのは2件(実測で消した)・Bで新規1件。Aが0件でもBを省かない／依頼文で型を指定しないと使われない
+- [申告が無くても差分は読める](reference_read_the_change_from_the_revision.md) — 旧版はrevisionsのexportLinksで.xlsx化（get_mediaは404）／★保険であって申告を省く根拠でない=最後に必ず報告を書く
