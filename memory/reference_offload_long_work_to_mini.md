@@ -508,3 +508,23 @@ Slack  「承認待ちで止まっています（端末で「はい／いいえ�
 - ★実体は `status_report.py` の `_live_agents()`。判定は `agent_watchdog` と**同じ2信号**を
   使い回している（**二重管理にしない**）。控えは `_backups/status_report.py.bak_vivi_20260906`。
 - **★有璽氏は Slack に「状況」と書くだけ。**AIを起こさないので数秒で返る。
+
+## 🔴 mini の認証が切れると、担当を1体も起こせない（2026-09-07）
+
+```
+ログの最後   Failed to authenticate: OAuth session expired and could not be refreshed
+影響         ★claude -p が即終了。走っているように見えることもない
+```
+
+- **★ログインし直しは、画面（TTY）が要る。**`ssh mini 'claude'` では出ない ──
+  入力が無いと `--print` の扱いになり
+  `Error: Input must be provided either through stdin or as a prompt argument` で終わる。
+  **★私はこれを有璽氏に打たせて空振りさせた。**
+- **★正しい形は `ssh -t`**（擬似端末を割り当てる）。
+  ```
+  ssh -t mini '~/.npm-global/bin/claude /login'
+  ```
+- **★人へ渡すコマンドは、渡す前に自分で1回通す。**
+  → [[feedback_verify_before_declining]]（人へ渡す手順は置き換え後の全文で）
+- ★見張り（`agent_watchdog.py`）は「0体」としか出ない。**認証切れと、単に暇なのを区別できない。**
+  ★次に足すなら「起こそうとして即死したか」を見る仕組み。いまは無い。
