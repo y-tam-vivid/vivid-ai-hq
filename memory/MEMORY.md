@@ -80,7 +80,7 @@
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。bin/hooksの控えは_backups/へ。名指しで保存する
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
-- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/5恒久化。MacBookで担当を起こさない／**🔴9/5「miniが止まらないように」が要件化。止まる型3つ(承認ダイアログ/30分打切り/判断待ちの塞ぎ)。⛔AskUserQuestionが原因は誤診＝非対話にそのツールは無い(実測)。判定は CLAUDE_CODE_ENTRYPOINT。★止まったかはログでなく transcript の mtime で見る／**★9/6 投げた直後に無言で死ぬことがある(同じ指示文で2回死に3回目に生存＝非決定的)。ログには起動時の2行しか残らない。必ず20〜30秒後にpgrepで生存を確認する**
+- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/5恒久化。MacBookで担当を起こさない／**🔴9/5「miniが止まらないように」が要件化。止まる型3つ(承認ダイアログ/30分打切り/判断待ちの塞ぎ)。⛔AskUserQuestionが原因は誤診＝非対話にそのツールは無い(実測)。判定は CLAUDE_CODE_ENTRYPOINT。★止まったかはログでなく transcript の mtime で見る／**★9/6 投げた直後に無言で死ぬことがある(同じ指示文で2回死に3回目に生存＝非決定的)。ログには起動時の2行しか残らない。必ず20〜30秒後にpgrepで生存を確認する。★機械化＝`~/.vivid-relay/run_agent.sh <指示文> <名前> [上限] [slack]`。完走報告は既定で出さない(ボタンが沈む)・失敗だけ必ず出す**
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 401=生/404=中身無。★deploy --prodは固定URLを付替えない。alias setが要る
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
