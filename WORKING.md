@@ -53,6 +53,47 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-06 16時台】承認ダイアログの★通し確認 ── 機械側は合格。★有璽氏がボタンを押すのを待っている
+
+**★16:08:40 に有璽氏のDMへ実投稿しました（#a09b43・依頼で許可された1通）。16:38 まで待ちます。**
+押していただくと、止まっている Bash が実際に走ります。**押されるまでは「通った」と書きません。**
+
+```
+16:02  ★機械側は合格   隔離した対話TUIで承認ダイアログを踏ませ、ボタンの答え「許可する」で
+                        allow が返り、止まっていた Bash が実際に走った（proof_a.txt が実在）
+16:08  ★本物のSlackへ  #a09b43 ・ 本物のフック ・ timeout=1800（1780秒待つ）・回答待ち
+⛔訂正  09:40 の実投稿 #e84bd3 は台帳が status=open / answer=null ＝★誰も押していない。
+        「押しても効かなかった」ではない。沈黙を不成立の証拠にしない
+🔴自分の事故  16:12 に `ps|grep` が1回空振りしたのを「落ちた」と読み、★生きているボタンを
+        畳んだ。16:15 に3経路（ps -p 2506／フック pid 2583／lsof）で生存を確定させ元に戻した。
+        ★pid が分かっているなら pid で見る。grep のパターンで探さない
+②実測  待てたのは★580秒（timeout 600 − 20）。★600超で待つかは別セッションで実測中
+④実測  ★MacBookは台帳が別機なので、投稿できても答えが戻らない（コードで2経路）
+```
+
+**★同じ対象に手をつけないでください**: `/tmp/pt_e2e/` ／ `/tmp/pt_live/`（16:38まで）／
+`bin/hooks/hook_permission_slack.py`（③の改修を別エージェントが実施中）／
+`~/.vivid-relay/approval_dialog_result.md`（★追記のみ）
+
+### 【ピタゴラス / mini 2026-09-06 昼】承認ダイアログの★通し確認（実機で1回通す）── 着手
+
+**上の2ブロック（settings.json の async 外し／フックの実装）の続き＝残っていた「通し確認」をやる。**
+判定は部品ではなく「有璽氏が MacBook を閉じたまま、Slack から mini の承認を返せる」の1文。
+
+```
+★書いてよい  bin/hooks/hook_permission_slack.py（正本）＋その控えを _backups/ へ
+              ~/.vivid-relay/hook_permission_slack.py（複製）
+              /tmp/permtest_e2e/ 配下（★隔離環境。本物の設定・台帳を汚さない）
+              ~/.vivid-relay/approval_dialog_result.md（★追記のみ・上書き禁止）
+★書かない    ask_hub.py ／ slack_socket.py ／ notify.py ／ stall_watch.py
+              ~/.claude/settings.json（★既に有璽氏の許可で修正済み。これ以上触らない）
+              台帳（00/01/02/40）・受付シート・Notion・kintone
+Slack        ★通し確認 1通だけ実投稿してよい（依頼元の明示）。それ以外は投稿しない
+```
+
+**★同じ対象に手をつけないでください**: `bin/hooks/hook_permission_slack.py`（両機）／
+`/tmp/permtest_e2e/` ／ `~/.vivid-relay/approval_dialog_result.md`
+
 ### 【ビビ / mini 2026-09-06 10:4x】settings.json の async を外した ── ✅mini完了。★MacBookと通し確認が残
 
 **有璽氏「許可する」を受けて、下のピタゴラスのブロックの残件①を実行した。**

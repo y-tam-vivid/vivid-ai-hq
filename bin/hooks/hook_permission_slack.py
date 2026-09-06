@@ -45,6 +45,10 @@
        有璽氏が戻ってきても端末で許可し直せなくなるので、そうしない
   ④ 押せる人 ： ask_hub の宛先表（ROUTES）が唯一の出口＝有璽氏のDMのみ
   ⑤ 押し間違え ： 「拒否」は可逆（もう一度やらせればよい）。「許可」は不可逆になりうるので①②で守る
+  ⑥ 2026-09-06 追加 ： ★内容を全部見せられないものは遠隔で許可させない。
+       Bashは長すぎるコマンド（SHOW_MAX超）、Write/Editは中身が長すぎる（CONTENT_MAX超）、
+       組み立てた detail が長すぎて Slack側で末尾が切れる（DETAIL_BUDGET超）場合は
+       ボタンを出さず notify_only へ回す（＝有璽氏は端末で中身を見てから押すしかない）
 
 ★できないこと（正直に）
   ・Bash の中身は完全には見分けられない（`bash -c "$(...)"` のような包み方は素通りする）
@@ -93,6 +97,14 @@ MIN_TIMEOUT = 60     # 秒。登録の timeout がこれ未満なら遠隔承認
 WAIT_MARGIN = 20     # 秒。登録の timeout より必ず手前で自分から返る
 POLL_SEC = 2
 MAX_WAIT = 3000
+
+# ★内容を全部見せられないものは遠隔で許可させない（2026-09-06 有璽氏の線引き）
+# 人が後から数字だけ変えられるよう1か所にまとめる。
+SHOW_MAX = 300        # 文字。Bashのコマンドをこの長さまで見せる
+CONTENT_MAX = 600     # 文字。Write/Edit の中身をこの長さまで見せる
+DETAIL_BUDGET = 900   # 文字。ask_hub.py の DETAIL_MAX と同じ値にすること。
+                      # ★片方だけ変えると、Slackの画面では末尾が切れているのに
+                      # ボタンは出る、という食い違いが起きる
 
 MACHINES = (('mac-mini', 'Mac mini'), ('macbook', 'MacBook'))
 
@@ -174,20 +186,60 @@ def post(text):
 
 
 def brief(tool, inp):
-    """何を承認しようとしているかを1〜2行で"""
+    """何を承認しようとしているかを1〜2行で
+
+    ★戻り値は (body, cut) の2つ。cut は「見せ切れなかった理由」の文字列
+    （見せ切れたなら空文字）。★内容を全部見せられないものは、遠隔では
+    許可させない（main() 側で cut を見て notify_only へ回す）。
+    """
     if tool == 'Bash':
-        cmd = str(inp.get('command', ''))[:300]
+        cmd = str(inp.get('command', ''))
         desc = str(inp.get('description', ''))
-        return ('```%s```' % cmd) + (('\n' + desc) if desc else '')
-    if tool in ('Write', 'Edit', 'NotebookEdit'):
-        return '`%s`' % inp.get('file_path', '（不明）')
+        cut = ''
+        shown = cmd
+        if len(cmd) > SHOW_MAX:
+            shown = cmd[:SHOW_MAX]
+            cut = 'コマンドが長すぎる（%d文字）' % len(cmd)
+        body = ('```%s```' % shown) + (('\n' + desc) if desc else '')
+        return body, cut
+    if tool == 'Edit':
+        old = str(inp.get('old_string', ''))
+        new = str(inp.get('new_string', ''))
+        path = inp.get('file_path', '（不明）')
+        cut = ''
+        total = len(old) + len(new)
+        show_old, show_new = old, new
+        if total > CONTENT_MAX:
+            half = CONTENT_MAX // 2
+            show_old, show_new = old[:half], new[:half]
+            cut = '書き換える中身が長すぎる（%d文字）' % total
+        body = ('`%s`\n変更前 ：\n```%s```\n変更後 ：\n```%s```'
+                % (path, show_old, show_new))
+        return body, cut
+    if tool in ('Write', 'NotebookEdit'):
+        path = inp.get('file_path', '（不明）')
+        content = str(inp.get('content', '') or inp.get('new_source', ''))
+        cut = ''
+        shown = content
+        if len(content) > CONTENT_MAX:
+            shown = content[:CONTENT_MAX]
+            cut = '書き込む中身が長すぎる（%d文字）' % len(content)
+        body = '`%s`\n```%s```' % (path, shown)
+        return body, cut
     if tool.startswith('mcp__'):
         parts = tool.split('__')
         svc = parts[1] if len(parts) > 1 else '?'
         act = parts[2] if len(parts) > 2 else '?'
-        return '%s の %s' % (svc, act)
+        return '%s の %s' % (svc, act), ''
     keys = list(inp.keys())[:4]
-    return ('引数 ： %s' % ' / '.join(keys)) if keys else ''
+    body = ('引数 ： %s' % ' / '.join(keys)) if keys else ''
+    # ★keys だけ並べて許可させない ── 本文らしき長い値があるのに出せていないなら cut を立てる
+    cut = ''
+    for k, v in inp.items():
+        if isinstance(v, str) and len(v) > CONTENT_MAX:
+            cut = '「%s」の中身が長く、この種類のツールでは表示に対応していない' % k
+            break
+    return body, cut
 
 
 def where(d):
@@ -407,12 +459,17 @@ def main():
     if not w['session']:
         return {'suppressOutput': True}
 
-    body = brief(tool, inp)
+    body, cut = brief(tool, inp)
     r = reg()
     ok, why = can_ask(r)
     blocked = never_remote(tool, inp)
     if blocked:
         ok, why = False, '★遠隔では許可しない種類 ： %s' % blocked
+    if ok and cut:
+        ok, why = False, '★遠隔では許可しない ： 内容を全部は見せられない（%s）' % cut
+    if ok and len(head(w)) + len(tool) + len(body) > DETAIL_BUDGET:
+        # ★組み立てた detail が長すぎて Slack 側で末尾が切れる＝全部見せられていない
+        ok, why = False, '★遠隔では許可しない ： 内容を全部は見せられない（表示欄に収まらない）'
     if ok:
         return remote(w, tool, body, r)
     return notify_only(w, tool, body, why)
