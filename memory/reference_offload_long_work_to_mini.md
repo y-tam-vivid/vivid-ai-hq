@@ -305,6 +305,31 @@ ssh mini 'pgrep -fl "claude -p"'
   → [[feedback_one_route_is_not_verification]]。**ログを途中まで読んで「何も無い」と言わない。**
 - **★`claude --version` が返ることを「AIが動く」の根拠にしない。**
   バージョンは認証なしで返る。**通るかどうかは、実際に1回通して確かめる。**
+#### ✅ 直し方 ── `claude setup-token` で1年トークンを作る（2026-09-07 実測・所要3分）
+
+**★ブラウザ認証は要らなかった。**リフレッシュ用のトークンがまだ有効なら、その場で作れる。
+
+```bash
+# ★TTYが要る。ssh から直接叩いても何も出ない（1回それで空振りした）
+ssh mini 'nohup script -q ~/tmp.log ~/.npm-global/bin/claude setup-token > /dev/null 2>&1 < /dev/null &'
+# 15秒待ってログを読む → sk-ant-oat01-… が出る
+```
+
+```
+置き場   ~/.vivid-relay/config.env   （600・git管理外）
+         ~/.zshenv                    （600・zsh -lc でも対話でも効く）
+         行は  CLAUDE_CODE_OAUTH_TOKEN=sk-ant-oat01-…
+確認     claude auth status → loggedIn:true / authMethod:"oauth_token"
+         ★最小プロンプトを3回通して、3回とも答えが返ることまで見る
+```
+
+- **🔴 トークンが平文でログに出る。** `script` のログを**必ず消す**。
+  ★2026-09-07、`cat -v` で読んだため**この会話のtranscriptとtool-resultsキャッシュにも
+  平文で残った**（有効期限1年）。→ [[reference_tool_results_cache_keeps_secrets]]。
+  **★次からは `grep -o` で先頭だけ出す／Pythonで読んで直接ファイルへ書き、画面に出さない。**
+- **★有効期限は1年。**次に切れるのは 2027-09。**⚙️自動処理レジスタに期限の行を持たせるべき**（未実施）。
+- ★`claude --version` は認証なしで返る。**動く根拠にしない。**
+
 - ★投げ直し（`run_agent.sh`）は**この型には効かない。**何回投げても認証は直らない。
   ★**ランチャーは5回投げて失敗をSlackへ出す**ので、無言にはならない（設計どおり）。
   だが**「投げ直せば直る型」と「人の手が要る型」を分けて出せていない。**次はそこを直す。
