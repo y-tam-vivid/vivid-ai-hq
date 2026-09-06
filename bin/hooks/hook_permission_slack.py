@@ -185,6 +185,27 @@ def post(text):
         log('★投稿できなかった ： %s' % e)
 
 
+def _kv_preview(inp):
+    """dict(tool_input) の中身を CONTENT_MAX まで見せる（JSON化）。
+
+    ★mcp__ とその他（keysしか分からないツール）の両方から呼ぶ共通処理。
+    ここに書く長さチェックを他の分岐へコピーしないこと。
+    戻り値は (見せる文字列, cut)。空 dict なら ('', '')。
+    """
+    if not inp:
+        return '', ''
+    try:
+        text = json.dumps(inp, ensure_ascii=False)
+    except Exception:
+        text = str(inp)
+    cut = ''
+    shown = text
+    if len(text) > CONTENT_MAX:
+        shown = text[:CONTENT_MAX]
+        cut = '引数の中身が長すぎる（%d文字）' % len(text)
+    return shown, cut
+
+
 def brief(tool, inp):
     """何を承認しようとしているかを1〜2行で
 
@@ -226,19 +247,17 @@ def brief(tool, inp):
             cut = '書き込む中身が長すぎる（%d文字）' % len(content)
         body = '`%s`\n```%s```' % (path, shown)
         return body, cut
+    # ★mcp__ とその他は同じ扱い ── inp の中身を実際に見せる。長ければ cut を立てる。
+    #   （長さチェックは _kv_preview() の1か所だけに書く。ここで2度書かない）
     if tool.startswith('mcp__'):
         parts = tool.split('__')
         svc = parts[1] if len(parts) > 1 else '?'
         act = parts[2] if len(parts) > 2 else '?'
-        return '%s の %s' % (svc, act), ''
-    keys = list(inp.keys())[:4]
-    body = ('引数 ： %s' % ' / '.join(keys)) if keys else ''
-    # ★keys だけ並べて許可させない ── 本文らしき長い値があるのに出せていないなら cut を立てる
-    cut = ''
-    for k, v in inp.items():
-        if isinstance(v, str) and len(v) > CONTENT_MAX:
-            cut = '「%s」の中身が長く、この種類のツールでは表示に対応していない' % k
-            break
+        label = '%s の %s' % (svc, act)
+    else:
+        label = '引数'
+    kv, cut = _kv_preview(inp)
+    body = ('%s\n```%s```' % (label, kv)) if kv else label
     return body, cut
 
 
