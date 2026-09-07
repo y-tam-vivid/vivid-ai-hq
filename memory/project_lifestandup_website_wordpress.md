@@ -2142,3 +2142,32 @@ stand-up-top.css・recruit-top.css の**3本にしか効いていなかった**�
 ③「ヘッダーが右端固定でない」は `.nav-menu`がposition:fixedでflexフローから抜けるため
 `.nav-inner`にmargin-left:autoを持つ要素が実質消えていたのが原因（`.nav-cta`へ移設）。
 → 詳細（実測値・スクリーンショット） `~/lifestandup-wp/review/header_nav/`
+
+### ★2026-09-07 リリス追記 ── ①全ページ統一の原則 ②activate_theme.php罠 ③crawl_static.py罠4例目
+
+有璽氏「一つ前の件もそうですが、全ページで統一してください。特別な理由がなければ
+全ページで統一をしてください」＝新しい恒久原則。**1ページだけ直して報告しない。
+着手前に「同じ型が何ページあるか」を数え、報告に分母つき件数を書く。**
+→ [[feedback_uniform_unless_reason]]
+
+**★罠：`_tools/wordpress`環境ではCSS編集後 `./php activate_theme.php` を再実行しないと
+ローカル検証サーバーに反映されない。** 9/5の`deploy.py`罠（別環境）と同型・別の道具。
+1回実行して以降は自動反映されると誤解し、②③⑥の検証で3回踏んだ（測ったのに変化が
+無いように見え、原因調査に時間を溶かした）。**CSSを1文字でも変えたら次の1手は必ず
+activate_theme.php。** style.css本体だけでなくassets/css/配下も対象（当初「本体だけ」
+と誤認したが実測で両方とも影響を確認）。
+
+**★罠（既知の型・4例目）：`crawl_static.py`は「既存ファイルは飛ばす」仕様。**
+CSS/JSを変更しても、static-preview配下に同名ファイルが既にあると再取得されない。
+デプロイ→本番URLのCSSをcurlで直接確認して初めて「①〜⑥が全部未反映」と発覚した
+（vercel deployは正常応答・READYだったのでデプロイ自体は疑わなかった）。
+`find static-preview/.../lifestandup -name "*.css" -o -name "*.js" | xargs rm -f`
+→ 再crawlで解決。**デプロイ後の確認は「200が返るか」だけでなく「変更した中身が
+実際に配信CSSに入っているか」までcurlで見ること。** 過去3例
+（README 14-2 deploy.py／16-0 stand-up-top.css個別削除／18-4 useful/index.html）
+に続く同型。★毎回別の症状で気づいており、罠自体をチェックリスト化していない。
+
+**★grid `align-items:center` の相互作用：** 片方のカラムの高さ（margin-top等）を
+変えると、**もう片方のカラムの位置も連動して動く**（実測では変化量の約半分）。
+単純な線形計算は成立せず、実測→補正→再実測を反復して収束させる必要がある
+（/stand-up/programs/ のポラロイド位置調整で、写真とパンくずの両方がこの影響を受けた）。
