@@ -53,6 +53,32 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-07 夜】稼働盤を10分おきへ（有璽氏「リアルタイムは無理なん？」・案A）── ✅完了
+
+有璽氏の決定「案A（今日中）＋案Bへの移行で良い」。**書いたのは
+`bin/kadoban_deploy.sh`・`bin/run_with_timeout.py`（新規）・`bin/daily_jobs.conf`
+（kadoban行8本を削除・コメントで移行先を明記）・crontab（`*/10`で新規登録）だけ。**
+台帳・Notion・kintoneへは1文字も書いていない。`~/lifestandup-wp/`・`stall_watch.py`・
+`vivi_patrol.py`は触っていない。
+
+```
+①詰まりの手当て  ✅実測完了。run_with_timeout.py(os.setsid+os.killpg)でdeploy・env ls
+                とも既定300秒×2回まで、2回連続タイムアウトでSlack通知+exit 1。
+                隔離環境で実測：詰まり時rc=1・7秒で終了／二重起動時は後発rc=0でスキップ／
+                stale lock奪取／正常系rc=0・401確認、すべて確認済み
+★踏んだ罠      コマンド置換$(deploy)内のexitはサブシェルだけ終わりrc=0で完走する不具合を
+                1回作った→戻り値+グローバル変数方式に直した→[[reference_bash_subshell_exit_pitfall]]
+②crontab登録    ✅実測完了。2026-08-20時点で無応答だった書き込みが直っていた（RC=0・10秒で返る・
+                無変更で書き戻しdiff一致で確認）。daily_jobs.confは「1日1回」設計のため
+                10分おきには使えないと判断し、crontab直接*/10へ（stall_watch.pyと同型）
+③案B            設計のみ提示・実装せず。~/.vivid-relay/kadoban_realtime_案B.md
+④初回発火       ✅20:20:14に本番発火を確認。Vercelデプロイ完走(10秒でReady)・
+                認証なしHTTP 401・「Basic認証が効いている。中身を載せたままにする」で正常終了。
+                アイコン13/13運搬・ロック解放も確認済み。心拍名は変更していない
+```
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【ピタゴラス / mini 2026-09-07】法人番号 一覧シート作成（有璽氏「一覧のシートを作って、まとめて○×」）── ✅完了
 
 `~/.vivid-relay/consolidate_result.md`・`corpno_A_result.md` の17件（人が見れば決まる）を

@@ -25,7 +25,7 @@
 - [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 常駐は一定間隔で心拍／心拍はmain()の外で包む。末尾は例外が素通り
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)／**★手順書に「まだ無い機能」を書いた。決着済みの設計を在るものとして扱った。人が読む文書の前に動線を1回自分で通す(2026-08-24)**
-- [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
+- [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／**★9/7 crontab直接`*/10`で定期生成登録済み(daily_jobs.confから移行)。詰まり対策(タイムアウト+ロック)実測済み。案B(真のリアルタイム化)は設計のみ未実装**
 - [自動処理レジスタ(心拍)](project_automation_register.md) — ★有効=Falseは故障でなく設計。備考を全文読む前に--beatを足すな(9/6)／心拍名は1文字違うと黙って失敗／★心拍を打たないスクリプトは登録漏れ検知の対象外(9/7・agent_watchdog.py未申告本番稼働の実例)
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
 - [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — 1つしか選べない置き場に判断を置かない。3割超の偏りは既定値と疑う
@@ -44,6 +44,7 @@
 - [本数で切ると希少な版が消える](reference_retention_by_count_deletes_the_wrong_ones.md) — 残す単位は日ごと最新1本
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
+- [コマンド置換内のexitは効かない](reference_bash_subshell_exit_pitfall.md) — `OUT="$(func)"`内のexitはサブシェルだけ終わりrc=0で完走する。詰まり対策は戻り値+グローバル変数で。★隔離テストはPATH優先順位に注意(/usr/local/binが$HOME/.npm-global/binより先)
 - [Slack通知の作法](reference_slack_notification_rules.md) — 宛先/手段/条件/書式を1枚に集約(9/3新設・従来3箇所に散在)。**★経路は2つ＝報告tell()／判断ask()。ask()は1回1件・tell()は「返信不要」を自動付与**／DM`D0AT4NQ6X7D`固定・チャンネル禁止／**★9/4 ask()はask_hub委譲＝ボタンで出る（記述式は廃止）**／検査は`VIVID_NOTIFY_OFF=1`必須。**関数のモックで代用しない＝委譲で出口が2つになり9/4に本番へ2回飛んだ**(過去にも8件誤送信)／有璽氏はコピー不可なのでlink=で渡す／**🔴金額はSlackに書かずNotionリンクへ＝当方の導出で承認未取得。確認はビビが実施・結果待ち**／**🔴9/5実測 ssh越しに`VIVID_NOTIFY_OFF=1`は渡らない(手元exportは無効=ミュートしたつもりで本物のDMへ飛ぶ)。sshに渡すコマンド文字列の中に書く**
 - [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／**形式外value(UUID)は9日目・累計31回(8/25=1 8/26=13 8/27=3 8/28=7 8/29=0 8/30=0 8/31=1 9/1=6)。押した人にエラーが返り続けている＝別アプリのボタン。★0が2日続いたのは直ったからでなく誰も押さなかっただけ。★8/29に書いた「次に読んだ人がapi_app_idをログへ出す」は grep実測0件＝入っていない。担当を名指しした＝ピタゴラス／検査ステラ**／貼った鍵のlog平文は未revoke／**★scopeは「足してSave」では効かない。再インストールまでが1セット。実測は auth.test の x-oauth-scopes ヘッダ(本文には出ない)**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — ★2026-09-03 稼働・実地2件通過。`ask_hub.ask()`で有璽氏のDMへボタン投稿→slack_socket.pyのinteractiveで受ける／「その他」はSlackのモーダル（新スコープ・購読不要）／**★発行は必ずminiから＝台帳`ask_hub_queue.json`が受信側にしか無い。MacBookから投げると「受付番号が見つかりません」になる**／**★notify.pyのslack_pending.jsonとは別物。こちらは誰も止めない**／宛先は`ROUTES`1か所・営業以外はDM・チャンネル分割は基準未決で保留／cron未登録・ステラ検査未了
