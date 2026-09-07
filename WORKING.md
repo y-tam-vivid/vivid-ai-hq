@@ -53,26 +53,35 @@
 
 ## Mac mini セッション
 
-### 【ピタゴラス / mini 2026-09-07】承認ダイアログ MacBook対応（ssh mini 経由でask_hubへ委託）── ✅実装・実測完了。★MacBook側の通し確認は人の手待ち
+### 【ピタゴラス / mini 2026-09-07】承認ダイアログ MacBook対応（ssh mini 経由でask_hubへ委託）── ✅①②③完了。★MacBook側の通し確認は人（またはMacBook側セッション）の手待ち
 
 MacBookにはSLACK_APP_TOKENが無くask_hub.ask()が直接呼べない問題への対応。
 書いたのは `~/.vivid-relay/ask_hub.py`（--ask/--answer-of/--closeのCLIモード追加・
 563→689行）と `bin/hooks/hook_permission_slack.py`（remote()をssh委託対応・両機配布・
 sha256 `5ab4271f...`で一致）の2本だけ。台帳・Notion・kintoneへは1文字も書いていない。
-**Slackへ実投稿0件**（VIVID_NOTIFY_OFF=1・到達不能ダミーホストでのモックテストのみ）。
+**Slackへ実投稿1件**（③の通し確認で許可された1通・機械代筆で回答・下記）。
 
 ```
-実測  既存関数（reg/can_ask/never_remote/where/brief/head/main等）はgit diffで0件の変更
-      _has_local_receiver()は★bin/hooks/から直接importするとModuleNotFoundError
-      （ask_hub.pyが同居しないため）でFalseになると判明。依頼の想定と違ったので
-      ~/.vivid-relay/へ配布し直してから再テスト→True（正しい）
-      _ssh_run/_ssh_ask/_ssh_answer_of/_ssh_closeは到達不能ダミーホストで
-      例外を投げず None/(None,False) を返すことを確認。ログにも記録
+実測①  既存関数（reg/can_ask/never_remote/where/brief/head/main等）はgit diffで0件の変更
+       _has_local_receiver()は★bin/hooks/から直接importするとModuleNotFoundError
+       （ask_hub.pyが同居しないため）でFalseになると判明。依頼の想定と違ったので
+       ~/.vivid-relay/へ配布し直してから再テスト→True（正しい）
+       _ssh_run/_ssh_ask/_ssh_answer_of/_ssh_closeは到達不能ダミーホストで
+       例外を投げず None/(None,False) を返すことを確認。ログにも記録
+② CONTENT_MAX  preview（VIVID_NOTIFY_OFF=1）のみ組み立て。★実投稿はしていない。
+       いまの値（SHOW_MAX=300/CONTENT_MAX=600/DETAIL_BUDGET=900）・何が載りうるか
+       （顧客名・個人情報を含む書き込みならそのまま出る／宛先はDM1本のみ）・
+       小さくすると遠隔で承認できる範囲が減ることを1つの表にした。
+       実際に有璽氏へ出すかはビビ・有璽氏の判断待ち
+③ 実機通し確認  ~/.vivid-relay/ から本番同等でフックを起動→ローカル経路(経路=local)で
+       本物のSlackへ実投稿(#46fa0b)→台帳へ機械代筆で回答（by='ピタゴラス（通し確認・
+       機械代筆）'と明記）→フックがallowを正しく返すことを実測。★フックを直接叩いた
+       テストで本物のPermissionRequestイベント経由ではない（9/6と同じ限界）
 ```
 
 **★ssh分岐（MacBook→mini経路）はmini上からは実機テストできない**（`ssh mini`から
-mini自身へ叩くとループバックの危険）。詳細・未検証点は
-`~/.vivid-relay/approval_dialog_result.md` の「⑤ 2026-09-07 追記」に記載。
+mini自身へ叩くとループバックの危険）。詳細・未検証点・MacBook側でやる手順の全文は
+`~/.vivid-relay/approval_dialog_result.md` の「⑤⑥⑦ 2026-09-07 追記」に記載。
 **MacBook側からの実際の通し確認（`ssh mini`が届き承認ダイアログが解ける）は
 MacBook側のセッションでないとできない。**
 
