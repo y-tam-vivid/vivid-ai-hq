@@ -53,6 +53,75 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-07】タブレット幅の測り方修正・②A〜F・③ハンバーガー・④DL不具合 ── ✅完了。commit c187489・push済み。仮公開へ反映済み
+
+有璽氏がスマホ・タブレット幅で見つけた不具合5種＋ハンバーガーメニューの要望への対応。
+**書いたのは `~/lifestandup-wp/` 配下のみ（theme/lifestandup/・crawl_static.py）。**
+本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+①測り方   ★重なり検査はスマホ3点(390/360/320)のみでタブレット域を1度も測っていなかった。
+          帯を掃く実測（iframe経由・500px未満はlsu-frame.html必須）で全ページ確認し直した。
+          ★副産物の発見：500px未満をE.shoot()へ直接指定するとChromeは実際には500pxで
+          描画する（ビューポート幅の下限）。iframeを使わない過去の"390px"測定は誤り
+          の疑いがある → memory/reference_endpoints_pass_middle_breaks.md に追記済み
+②A-F     A 吹き出しが見出し・パンくずに重なる(5ページ)→z-index対策を980px帯にも拡張＋
+            位置調整。真因はstyle.cssの.tape-verticalグローバル漏れ(body.lsu-top-page
+            スコープ欠落)。同型のネストバグ(recruit-top.cssで540px以下が閉じずに
+            980px系がネスト＝効いていなかった)も発見・修正
+          B プログラム写真(prog-poly)の左端見切れ→コンテナ位置とp-blueのleft調整
+          C 採用パンくず中央寄せ→左寄せへ（ネストバグ修正の副産物として顕在化）
+          D「Our Voices!」右端見切れ(left:420px固定)→修正。★スタッフの右手が写真の
+            右端で切れる件は原因特定(クロップ位置=background-position)まで済んだが、
+            photos.jsonの既存ルール「position値はフランキーが実物を見て決める」に
+            従い実装せず、実測画像を添えて報告のみ
+          E お知らせ縦テープが横に寝る→修正／F トップの縦テープが本文を覆う→
+            980px幅では文字数(14文字)が収まらないため非表示に変更（意匠を消す判断）
+③ナビ    スマホ幅用ハンバーガーメニュー新設（checkbox方式・JS無し）。既存.nav-menuを
+          流用し複製しない。★position:fixed+transform要素がscrollWidthを押し広げる
+          既知の癖を踏み、htmlへoverflow-x:hiddenを追加して解消
+④DL不具合 crawl_static.pyのPAGESに無いURL(/useful/記事2本・/tag/4本等)がasset扱いされ
+          page_out_path()を経由せず生ファイル保存→ダウンロードになっていた。
+          拡張子の有無で判定する形に修正。同型のゴミファイル(長い日本語スラッグの
+          自己canonical由来・/feed系)も全部解消
+実測      PC幅(1440px)は①②③とも sha256 完全一致で不変を確認。全ページiframe経由で
+          横あふれ0pxを確認。仮公開URL：①合言葉なし401 ②合言葉あり200 ③主要10ページ200
+```
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-07】担当起動を1本化＝run_agent.sh（有璽氏「構造を作って止まらないようにしてください」）── ✅完了
+
+**書いたのは `~/.vivid-relay/run_agent.sh`（新規）と memory 2本（reference_offload_long_work_to_mini.md
+追記・MEMORY.md索引1行）だけ。** `stall_watch.py`（見張り・既存）は触っていない。
+台帳・Notion・kintoneへは1文字も書いていない。cronへは未登録（人／窓口が呼ぶ部品）。
+
+```
+使い方   ~/.vivid-relay/run_agent.sh <担当名> <指示文ファイル> [作業ディレクトリ]
+         例: run_agent.sh lilith ~/.vivid-relay/lilith_0908.txt ~/lifestandup-wp
+A AskUserQuestion封じ  --disallowedTools=AskUserQuestion（=区切り必須。psで実測確認済み）
+B 認証確認            軽いプローブを起動前に同期実行。認証切れの文言があれば起動せずnotify.tell
+C 切り離し            trap ''HUP + disown。ssh切断・親終了でも死なない
+D 通信系のみ再試行     Connection reset/SSL timeout/HttpError 503等は最大3回。
+                     ValueError等のコードバグ・4xxは再試行しない（実物ログ11ケースで単体検証済み）
+E/F ログ統一・起動記録  ~/.vivid-relay/<担当名>_<日付>.log／run_agent_launch.log（1行台帳）
+```
+
+**★実測できたこと**：C/D/E/Fは複数回の起動テストで正常動作を確認（rc=0完了・再試行判定の
+単体テスト11/11一致）。Aは`--disallowedTools`が公式サポート済みフラグでpsでも正しく
+コマンドラインに渡ることは確認したが、**実際に拒否される瞬間の直接証拠は取れなかった**。
+Bは認証切れの状態を意図的に作るのはリスクが高いため実施していない（正常時の動作は確認済み）。
+
+**🔴最重要の副次発見**：軽いテスト指示（AskUserQuestion確認／README要約／Slack投稿のみ）を
+run_agent.sh経由で3回実行したところ、**3回ともmemory/reference_endpoints_pass_middle_breaks.md
+（他セッションの書きかけ）への言及だけをしてrc=0で正常終了**し、指示した作業（Slack投稿等）は
+一切実行されなかった。「止まる」ではなく「意図と違う動作で正常終了する」という別カテゴリの
+障害で、**どの見張り（stall_watch含む）にも掛からない型**。原因は未特定（推測に留め、
+フック自体の調査はスコープ外として行っていない）。詳細は
+`memory/reference_offload_long_work_to_mini.md`「✅2026-09-07 ピタゴラス」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【ピタゴラス / mini 2026-09-07】見本ファイルの一本化・法人番号40件の整理（ビビ依頼）── ✅完了
 
 有璽氏の決定（2026-09-07・Slack #da14c1「見本ファイルは新リストへ一本化する」）を受けた対応。
