@@ -121,6 +121,60 @@ Cloudflare の "Attention Required" が返る**（User-Agent を付けても同�
 「生成物はNotionへ添付」を守るときも、**正本の置き場が決まる前に添付しない**
 （決まる前に貼ると、後から二重管理になる）。
 
+### ★訂正 ── upload_url への curl POST は通る（2026-09-06 実測）
+
+上の「使えない upload_url へのPOST（Cloudflare）」は**いま成立しない。**
+同日に **34ファイル**（画像29・動画5）を `upload_url` へ multipart POST し、全件
+`status:"uploaded"` を受けた。Cloudflare の壁は1度も出ていない。
+
+```
+枠を作る    POST /v1/file_uploads   {filename, content_type}
+送る        curl -X POST <upload_url> -H Authorization -H Notion-Version
+                 -F "file=@<path>;type=<content_type>"
+            ★content_type は枠と curl で一致させる。ずれると弾かれる
+            （動画は application/mp4。octet-stream にすると失敗した）
+確かめる    ★応答の status を必ず読む。"uploaded" 以外は失敗として扱う
+            （scratchpad が消えていて curl が HTTP=000 で無言失敗し、
+              Notion側は "pending" のまま残った事故がある）
+貼る        ページを作ってから update-page で
+            {"files":[{"type":"file_upload","file_upload":{"id":"…"}}]}
+            ★create-pages の時点で file_upload:// を渡すと "not found" になる
+```
+
+**★2026-08-22 の記録を消していない。** あのとき本当に弾かれた。
+仕様か経路が変わったので、**古い方を根拠に「できない」と言わない**。
+
+## ★MCPが「Updated」と返しても、実際には変わっていないことがある（2026-09-06 実測）
+
+**同じ日に2つ踏んだ。どちらもエラーを出さずに成功を返す。**
+
+```
+① notion-update-data-source で列を足す
+   返り値      "Updated data source: …"      ★成功に見える
+   実際        列は増えていない。返り値の schema をよく見ると入っていない
+   露見        そのDBへ書き込んだら 400
+               「素材画像 is not a property that exists.」で9件全滅
+   直し方      API直で足す
+               PATCH /v1/data_sources/{id}  {"properties":{"素材画像":{"files":{}}}}
+   検算        応答の properties にその名前が含まれるかを見る
+
+② notion-create-view / update-view の設定
+   渡した引数  filter / card_preview_property / visible_properties
+   実際        ★この3つは存在しない引数。additionalProperties が許容なので
+               エラーにならず、黙って捨てられる
+   正しい形    configure に DSL を1本渡す
+               FILTER "ステータス" = "下書き"; COVER "素材画像";
+               SHOW "投稿タイトル", "カテゴリ", "ステータス", "画像メモ"
+   検算        fetch し直して advancedFilter と cover が入っているか見る
+```
+
+- **★「Updated」は作業が済んだ証拠にならない。** 別経路で読み直すまで済んでいない
+  → [[feedback_one_route_is_not_verification]]
+- **★引数名を思い込みで書かない。** 通ったのに効かないときは、まず
+  ToolSearch でそのツールの定義を読む。今回はそこに `configure` DSL の全仕様があった
+- **★列が無い状態で作ったビューは、あとから直しても入らないことがある。**
+  順序は「列を足す → 実在を検算 → ビューを作る」
+
 ## ★複数DBの同時クエリは Business プラン以上（2026-09-05 実測）
 
 `query-data-sources` に `data_source_urls` を**2つ以上**渡すと、こう返る。

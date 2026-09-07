@@ -38,27 +38,25 @@
 - [生成物はNotionへ添付](feedback_generated_files_attach_notion.md) — 該当ページへ実ファイル添付(DL可)。一時領域に放置しない
 - [読むもの一覧は地図でない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る
 - [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — 作る前に3〜5行で形を出す。抽象語(図/整理)が出たら合図
-- [実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(隣列を見る)／★渡すのは行でなくセル／**★有璽氏が言うのは症状。原因は別(「左に余白」の真因は番号バッジが画面外へ飛んでいた)。直す前に実物で1回見る**／**★9/5 縮小画像で見た目を判定しない。図形は潰れても“それらしく”見える。原寸で切り出す**
+- [実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(隣列を見る)／★渡すのは行でなくセル／**★有璽氏が言うのは症状。原因は別(「左に余白」の真因は番号バッジが画面外へ飛んでいた)。直す前に実物で1回見る**／**★9/6 DB名を事業名と読み違え別アカウントの器へ5本書いた。列が一致=同じ器ではない。書く前に既存2〜3件を読む**
 - [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測で1回確かめる／★止めたあとにドライランを通すと実害の中身が分かる(54v3は既存21件を二重に書くところだった)／**日付・IDの突合は正規化してから数える。同じ列で書式が混在し偽陰性が出る**
 - [体制はビビ窓口＋ハブ参照](working-via-ai-agents-and-notion-hub.md) — 作業はビビ中央窓口経由＋AIナレッジハブ参照で進める
 - [AI資産カタログ](ai-asset-catalog.md) — Drive`AI資産_正本/`を正本と宣言済＝vivid-ai-hqの設計と要調整
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
-- [確認は溜めて1回](feedback_batch_the_checks.md) — 承認6項目だけ／両機に入れる／**★溜めるのは確認。報告は溜めず進んだ時点で出す**
-- [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。理由＋やりますかまで／★人へ渡す手順は「挿入位置」でなく置き換え後の全文で。実物が1行に収まっており「次の行に」が構文エラーを生んだ(2026-08-23)
-- [承認を求めすぎるな](feedback_stop_asking_just_do_it.md) — 既定は自分で進める／★9/4 待ちの置き場は5つ以上・「なし」の前に全部数える／**★9/6 Slackへ「進めます」と返した所でセッションが死に2時間34分無音。承りましたを単独で送るな＝担当を起こしてから送る**
+- [確認は溜めて1回](feedback_batch_the_checks.md) — 承認6項目だけ／両機に入れる／**★溜めるのは確認。報告は溜めず進んだ時点で出す／★9/7「随時共有して」＝毎回の応答の冒頭に走行中の状態を3行置く。聞かれてから出さない・生ログは貼らない**
+- [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。理由＋やりますかまで／★人へ渡す手順は「挿入位置」でなく置き換え後の全文で。実物が1行に収まっており「次の行に」が構文エラーを生んだ(2026-08-23)／**🔴9/7 素のターミナルへ渡すコマンドに`!`を付けない＝zshでは否定演算子。`! cd A && bash B`はBが実行されない。`!`はClaude Codeの入力欄だけ**
+- [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — **🔴9/7「中途半端に止まるのが良くない。動けるものから手を動かせ。全部解決してたら止まっていい」＝止まってよいのは残件0のときだけ。「どちらを先に？」「ついでに直しますか？」は禁止＝両方やる/聞かずに直す。担当が走る間も窓口は手を止めない**／★積むと停滞が人のせいに見える
 - [読む人の言葉で書く](feedback_write_for_the_reader.md) — 配る文書に実装名を出さない／公開ページに人名も=権限構造が漏れる／判断を仰ぐ行も主語を道具の名にしない／**★「反映した」と書くな。原稿に書いただけを相手は「画面に出た」と読む。どこで見えるかを1行で言う(見えないなら見えないと)**
 - [通知は押せる形にする](feedback_write_for_the_reader.md) — ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
 - [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — **真因は速さのために確かさを落としていること(記憶から数字を埋める)**。数える/揃えるを部品に固め呼ぶだけにする／日付はnorm_date()を通した値だけ／件数は「443社(会社名がある行)」と数え方を添える／**★有璽氏の設計＝毎回数えず1か所(dashboard_data.json・読み口facts.py)へ集約し読むだけにする。別々に数えると人ごとに違う答えが出る**／★変種＝APIの`ok:false`を見ず空配列を「0件」と読み、権限があるのに「無い」と報告した(条件を欲張ると権限のある方まで落ちる)／**★部品を置いただけでは既存経路は変わらない。書き込む側から先に置換する（読む側だけ直すと揃って見えて汚れは増える）**／**★「解消11件」の申告を突合したら7件だった。過剰修正は本人には成功に見えるので申告に出ない＝別主体で読むしかない**／**★9/4「残り18ページ」が実物では1ページ。「そのクラスを持つ数」を「直っていない数」として書いた。分母を2段で書く**／**★9/6 理由欄には「指示の在処」だけ書く。関係の推測を成果物へ残さない。社名の一部一致で自社と決めない（合同会社ＶＩＶＩＤ≠株式会社ビビッド・法人番号で確認）**
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — **★9/5再発で実測＝24分→67秒。真因(旧接続の残留)は未修正**
-- [両端だけ測ると中間帯が抜ける](reference_endpoints_pass_middle_breaks.md) — **★9/7 実例：重なり検査がスマホ3点のみでタブレット域0回。両端合格≠全幅合格**
-- [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — 🔴9/5 4回目＝1通でなく**全経路を数えて揃えろ**。★真因は拾う人不在でなく「押せないものが混ざっている」＝クリックだけなら有璽氏は1〜3分で答える／DMの判断は全部ボタンにした／★押されても聞いた側へ返らない＝毎回answer_of()／★kindは8種のみ・仕込む前にpreview／★承認ダイアログはSlackで解けない(9/5の「走行中」宣言は実物0＝sha256一致・9/6着手)／★催促は新しく聞き直さない＝同じ受付番号で再投稿しts更新（9/5 #8330f0で実施）／**🔴9/6 AIが自分の問いに自分で答えて畳んだ(#960e67・指示はビビ)。台帳はanswered=人/機械を区別しない。byに指示の在処を書けないなら畳むな。一度出したものを畳むのは不可逆側**／**★9/6 同時に4件出したら「はい」が紐づかない＝問いは1件ずつ出す。一語返信を推測で当てない**／**★9/6 実装した→[[reference_permission_request_hook_headless]]。効くのは「対話かつdontAsk以外」の1通りだけ・非対話は発火0（10ケース）・🔴async:trueだと決定が捨てられる→**9/6 有璽氏「許可する」でminiのsettings.jsonを修正済(async削除・timeout600・sha f017c565・setup_hooksは巻き戻さないと実測)。残＝MacBook側と、dontAsk解除(このままだとダイアログ自体が出ない)と、通し確認1回**／**★9/6 実投稿#e84bd3は台帳がopen・answer=null＝「押しても効かない」でなく誰も押していない。沈黙を不成立の証拠にするな／待てたのは580秒(timeout600−20)。600超で待つかは未測／★MacBookは台帳が別機なので投稿できても答えが戻らない＝発行をminiへ寄せるしかない**。★通知83件中63件が`hook_selfcheck.py`のニセ(08:20/08:40に各18件・18日間)→session_id無しは投稿しない形にした。★件数は全履歴403件を数えた値（別セッションの「24件中17件」は窓が短い）**／残＝tell()の自由出力2本と#09の2本
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別法で数え直す／★列挙は絞らず全部出す／**★限界の申告は免罪符でない(「1本しか開いていない」と書きつつ「0件」と断定→実際は1件)**／**★有璽氏が数字に違和感を示したら数え直す。9/4は2回連続で外した(42→24→実測627)。表計算は1枚目だけ数えない／行数でなく「使える列が埋まった行」**／**★逆に「その認識で合っている」と言われたら測らない。裏取りは自分の推測にだけ当てる**
-- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ⛔9/5 notify巻き戻りの真因は別と判明。型自体は実在
-- [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
-- [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す
+- [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本・報告に混ぜない。kindは8種／投げる前にpreview／投げたら必ずanswer_of()を見る（押されても聞いた側へ返らない）。🔴9/7 4回目＝1通ずつでなく★Slackへ出る経路を全部数えて揃える。押せないものが混ざると判断が沈む（DM7通中押せるのは2通）。出すのはボタン・受けるのは会話でもよいが★出した側が台帳を閉じる**
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 数・存在・状態は2経路／0件は別法で数え直す／列挙は絞らず全部出す／**★限界の申告は免罪符でない／有璽氏が数字に違和感を示したら数え直す（逆に「合っている」と言われたら測らない）／★9/7 ログを途中まで読んで「無い」と言わない・レジスタを見ずに「心拍が無い」と誤断定した**
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — **⛔9/6 巻き戻りの真因＝cron*/15の無条件上書き（受け取る側だけ直すと15分で消える）。🔴9/7 3例目＝agent_watchdog.pyが申告なしでcron*/5稼働（kill -9の経路あり・心拍なし）。★心拍前提の検査は心拍を打たないものを構造的に見逃す。★同時に起きた事象を原因にするな**- [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
+- [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — 有璽氏へは1本にまとめて出す／**★9/7「担当は増やしてよい・単純作業に割れ・営業の管理役を置け」。「割ると動きがいい」は未実測＝測ってから断定。足す前に既存14体と重ならないか確かめる。★命名は役割の性格で（検査役=海軍／営業=攻める側）。★「攻める役」と「回す役」は別の1体にする**
 - [担当が落ちる真因はスリープ](feedback_use_the_team_not_alone.md) — ⛔「1体を長く使うと落ちる」は**誤診**（分割しても3体落ちた）。★真因はMacBookのスリープ。**長い作業はminiで走らせる**→[[reference_offload_long_work_to_mini]]
-- [一人で抱えるな](feedback_use_the_team_not_alone.md) — ビビは集約係で手を動かさない。★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**／**★2026-08-29「ギャッやるなよ。誰かにやらせろ」＝2回目。★「存在しません」で止めるな＝スキル名でなく①スキル②bin/③pip④過去実績のgrepで数える（Word変換は既にbin/md2docx.pyが在った）**
+- [一人で抱えるな](feedback_use_the_team_not_alone.md) — **★9/7訂正＝ビビしかできないこと(MacBook側の実物/Notion/判断の発行と回収/配布文書の下書き)はビビがやる。「手を動かさない」は担当領域を侵さない意味であって何もしないことではない**／★窓口はビビ一人／投げる前に道具の有無を数える／**★完了報告は「指示の側」から読む。落ちた指示は報告に出ない（「できません」は書けるが「忘れました」は本人にも見えない）。指示に番号を振り、番号ごとに実物で確かめる**／**★2026-08-29「ギャッやるなよ。誰かにやらせろ」＝2回目。★「存在しません」で止めるな＝スキル名でなく①スキル②bin/③pip④過去実績のgrepで数える（Word変換は既にbin/md2docx.pyが在った）**
 - [手順書が読まれない理由](reference_why_manuals_are_not_read.md) — ★一度間違えると二度と読まれない。○×を求めると信頼が下がる
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — ★3回目。提案/作成の前にmemoryとNotionを数える。「無いから作る」禁止
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
@@ -67,7 +65,7 @@
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — 8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本
-- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/3 混入を直したら届く経路ごと消えた／表示だけで警告にしない
+- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — **★9/7 慢性の赤5件を初めて数えたら1件は純粋な誤検知（find条件が雑）・4件は消せないもの。「既知」と呼んだ時点で中身を見るのをやめていた。11日間放置。★慢性の赤は件数の内訳を数える**／ ★9/3 混入を直したら届く経路ごと消えた／表示だけで警告にしない
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
@@ -75,16 +73,14 @@
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消。Stopフック検査4(キリル/ハングル/タイ/デーヴァナーガリー検出)でexit2差し戻し。実測誤検知0/35**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
-- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40つる起動／★材料の数字を信じるな(発言欄38%・日数10/10が誤)
-- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化（docx/pptxもbin/にある）**
-- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
+- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動／★材料の発言欄は38%が偽物。本文を読む
+- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
-- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)。指示だけを根拠にせず、成功報告には指示の在処まで書く**／**★9/6 `.claude`はパス文字列で塞がれ隔離実験が作れない＝`CLAUDE_CONFIG_DIR`で別の設定ディレクトリを指す**
+- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)**／**★9/7 `.claude/agents/`も書けない(skillsだけではない)。回避せず①miniで作ってgitで配る②bin/に適用スクリプトを置いて人が1回叩く**／**★9/6 `.claude`はパス文字列で塞がれ隔離実験が作れない＝`CLAUDE_CONFIG_DIR`で別の設定ディレクトリを指す**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。bin/hooksの控えは_backups/へ。名指しで保存する
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
-- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/5恒久化。MacBookで担当を起こさない／**🔴「miniが止まらないこと」が要件＝止まる型3つ(承認ダイアログ/30分打切り/判断待ちの塞ぎ)。⛔AskUserQuestion原因説は誤診＝非対話にそのツールは無い(実測)**／★止まりはログでなくtranscriptで見る。対応づけは指示文(起動時刻は4割誤る)／★9/7実物のclaude -pで「止まり検知→ボタン通知」を初実証(複合sleep+stall_watch文字列を避ける)／★9/7 起動を1本化=run_agent.sh。新発見=軽い指示3回とも無関係応答で正常終了(未追跡ファイル言及に化ける)
-- [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
+- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — MacBookで担当を起こさない・報告の出口はSlack。**🔴9/7 miniが止まる真因＝claudeのOAuth期限切れ（投げ直しでは直らない）。直し方＝`claude setup-token`（TTY必須/ブラウザ不要/1年）。★`--version`が返るのを動く根拠にしない。投げたら30秒後に生存確認＝`run_agent.sh`／★新しい担当もminiで起こす（Agent toolから呼ばない＝スリープで道連れ）**- [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — ★終わらないdeployはBLOCKED(commit author未登録)が真因。重さでない
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
