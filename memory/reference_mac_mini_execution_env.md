@@ -22,6 +22,14 @@ MacBook は閉じている時間がある前提で設計する。規範の本文
   MacBook の鍵とは別物。mini からの `git` 操作はこの鍵で通る。
 - Google Drive は mini にもマウント済み（`~/Library/CloudStorage/GoogleDrive-y_tam@vivid-global.com`）。
   ただし **Downloads整理は MacBook に残す**。対象が MacBook の `~/Downloads` だから。
+- **`lsof` も同じ穴を持つ（2026-09-07 実測）。** 実体は `/usr/sbin/lsof`。
+  cron の最小PATH（`/usr/bin:/bin`）には `/usr/sbin` が入っておらず、`subprocess.run(['lsof',...])`
+  のように裸の名前で呼ぶと**手元では動くのにcronでだけ黙って失敗する**（`[Errno 2] No such
+  file or directory`）。実測：`env -i PATH=/usr/bin:/bin which lsof` は失敗・`which find` は
+  `/usr/bin/find` で成功（findは無事）。**`/usr/sbin/` 配下のコマンド（lsof・その他）を
+  cronから叩くスクリプトは、必ず絶対パスで呼ぶか、先に `which` で解決してから使う。**
+  実例：`~/.vivid-relay/stall_watch.py` がこれで9ヶ月間気づかれず、cronへ初めて
+  登録した日に5分おきのエラーログとして発覚した（`LSOF_BIN = _find_bin(...)` で対処）。
 
 **現在の cron（mini）**
 
