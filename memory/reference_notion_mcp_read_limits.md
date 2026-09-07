@@ -186,3 +186,24 @@ This tool requires a Business plan or higher.
 - **★1つずつなら通る。** 同じ日に単一DBのクエリは何度も成功している
 - **★突合したいときは、DBごとに引いてから手元で突き合わせる。**
   SQL の UNION ALL / JOIN で一度に数えようとしない
+
+## ★書くときの落とし穴 ── プロパティの値が Markdown として解釈される（2026-09-08 実測・つる）
+
+**`notion-update-page` / `notion-create-pages` に渡した文字列は、そのまま入らない。**
+⚙️自動処理レジスタへ1行足したところ、**実物が化けていた**（fetch で読み返して発覚）。
+
+```
+渡した値                     Notion に入った実物
+*/5 * * * *              →  */5 * * * \*        ← 末尾だけエスケープされ、原文でなくなる
+vivi_patrol.py           →  vivi_[patrol.py](http://patrol.py)   ← _ でイタリック＋自動リンク
+WORKING.md               →  *[*WORKING.md*](http://WORKING.md)*  ← 存在しないURLへのリンク
+~/.vivid-relay/          →  \~/.vivid-relay/
+```
+
+- **★cron 式とスクリプト名は、この経路で書くと必ず壊れる。**
+  `*`（強調）・`_`（イタリック）・`~`（打ち消し）・`名前.md/.py`（自動リンク）が全部当たる。
+- **★直し方は Notion REST API を直に叩く**（`rich_text` は素通し）。
+  `~/.vivid-relay/config.env` の `NOTION_TOKEN` で `PATCH /v1/pages/<id>`。実測で原文どおり入った。
+- **★SQLモードの読みでは化けが見えない**（`*` が消えて「crontab /10」と読める）。
+  **書いたあとの読み返しは `fetch`（faithful）で行う。** 型は [[reference_unicode_escape_kanji_swap]] と同じ
+  ── 機械が書いた文字が、人の目に入る前に別物へ変わる。

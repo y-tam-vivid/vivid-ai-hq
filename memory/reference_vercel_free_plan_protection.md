@@ -1,9 +1,52 @@
 ---
 name: reference_vercel_free_plan_protection
-description: Vercel無料プランでは固定URLを保護できない。塞ぐならMiddlewareのBasic認証（無料枠で動く）
+description: Vercel無料プランでは固定URLを保護できない。塞ぐならMiddlewareのBasic認証（無料枠で動く）。★Basic認証を通っても機械（curl/headless）はSecurity Checkpointで止まる
 metadata:
   type: reference
 ---
+
+## 🔴🔴 Basic認証を通っても、機械はその先の Vercel Security Checkpoint で止まる（2026-09-08 つる実測）
+
+**Basic認証（401→200）と、Vercelのボット対策は別レイヤー。前者が通っても後者に阻まれる。**
+
+```
+対象   https://lifestandup-preview.vercel.app/（lsu-staff / standup2026）
+試した経路（3つとも同じ結果）
+  ① curl -u lsu-staff:standup2026 …           → HTTP 200 だが中身は毎回同じ
+  ② headless Chrome（--headless=new で直接開く） → 同上
+  ③ CDP経由（navigator.webdriver隠蔽＋UA偽装済み）→ 同上
+中身   <title>Vercel Security Checkpoint</title>
+       「ブラウザの確認に失敗しました」「コード 11」（32,219〜32,225バイトで固定）
+       JS内にmousemove検出・Workerベースのfingerprintingが実装されている
+       （＝人間の実際の操作を要求する設計。UA偽装やwebdriverフラグ隠しでは通らない）
+```
+
+- **★これが最も危険な点**：`curl -o file.html && wc -c file.html` は**サイズが出る**。
+  `grep NGワード file.html` も**「0件（合格）」を返す**（NGワードはチェックポイント
+  ページに入っていないため）。★`check_live.sh`／`redeploy.sh` のような
+  「HTTP 200 かどうか」「特定の語がgrepに掛かるか」だけを見る検証は、
+  **実際のページ内容を1度も見ないまま「合格」と言い続ける穴がある。**
+- **★非headless（実ブラウザ表示）も試したが、この環境（Mac mini・リモートログイン）には
+  実画面が無く**（`screencapture` が `could not create image from display`）検証不能だった。
+  GUI環境がある機体なら通る可能性は残るが未確認。
+- **人間が実際にブラウザで開けば恐らく見える**（JSチャレンジを解く経路がある設計）。
+  問題は「AIが機械的に確認する」側だけが構造的に見えないこと。
+
+**How to apply（次にこのURLの中身を機械で確認したい人へ）**
+
+```
+✕ curl/headless/CDPで直接measurement・ダウンロード・スクリーンショットを取ろうとしない
+  （Security Checkpointページを本物だと誤認する）
+◎ 実装コードの検証は git 管理下のテーマ／ローカル検証用WordPress（_tools/wordpress）で行う
+  （本番コードと同一のはずだが、★Vercelへの反映そのものは別に確認する必要がある）
+◎ 「反映されたか」を言うときは、この制約を先に断る。
+  「機械では確認できていない。ローカルの実装コードでは◯◯だった」と分けて書く
+```
+
+**Why:** これまで（2026-09-07含む）「反映を確認済み」という申告が実物と食い違う事故が
+複数回起きている（[[reference_read_the_change_from_the_revision]]）。原因の一部は
+このSecurity Checkpointを「中身が見えている」と誤認したまま合格判定していたことかもしれない
+（未確認・推測）。★次に同じサイトを検査する人は、まずこの節を読んでから着手すること。
 
 **Vercel の無料プラン（Hobby）では、`<project>.vercel.app` の固定URLを塞げない。**
 2026-08-25 実測＋有璽氏の確認。
