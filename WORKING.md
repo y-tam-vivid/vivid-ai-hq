@@ -53,6 +53,31 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-07】承認ダイアログ MacBook対応（ssh mini 経由でask_hubへ委託）── ✅実装・実測完了。★MacBook側の通し確認は人の手待ち
+
+MacBookにはSLACK_APP_TOKENが無くask_hub.ask()が直接呼べない問題への対応。
+書いたのは `~/.vivid-relay/ask_hub.py`（--ask/--answer-of/--closeのCLIモード追加・
+563→689行）と `bin/hooks/hook_permission_slack.py`（remote()をssh委託対応・両機配布・
+sha256 `5ab4271f...`で一致）の2本だけ。台帳・Notion・kintoneへは1文字も書いていない。
+**Slackへ実投稿0件**（VIVID_NOTIFY_OFF=1・到達不能ダミーホストでのモックテストのみ）。
+
+```
+実測  既存関数（reg/can_ask/never_remote/where/brief/head/main等）はgit diffで0件の変更
+      _has_local_receiver()は★bin/hooks/から直接importするとModuleNotFoundError
+      （ask_hub.pyが同居しないため）でFalseになると判明。依頼の想定と違ったので
+      ~/.vivid-relay/へ配布し直してから再テスト→True（正しい）
+      _ssh_run/_ssh_ask/_ssh_answer_of/_ssh_closeは到達不能ダミーホストで
+      例外を投げず None/(None,False) を返すことを確認。ログにも記録
+```
+
+**★ssh分岐（MacBook→mini経路）はmini上からは実機テストできない**（`ssh mini`から
+mini自身へ叩くとループバックの危険）。詳細・未検証点は
+`~/.vivid-relay/approval_dialog_result.md` の「⑤ 2026-09-07 追記」に記載。
+**MacBook側からの実際の通し確認（`ssh mini`が届き承認ダイアログが解ける）は
+MacBook側のセッションでないとできない。**
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【ピタゴラス / mini 2026-09-07】見張りの統合（有璽氏「見張りについて統合して動くような状態に持っていって」）── ✅完了
 
 **書いたのは `~/.vivid-relay/stall_watch.py`（統合先・931→985行）・crontab・⚙️自動処理レジスタ
@@ -80,6 +105,32 @@ stall_watch由来の行なし）。
 結果全文 `~/.vivid-relay/watch_merge_result.md`。人の判断が要る点：
 ①agent_watchdog.py.disabledをいつ完全削除するか ②心拍間隔*/5(1日288回)の負荷は未計測
 ③sleepブロックの知見はドーベルマンの過去ログとの突合まではしていない（推測を含む1点あり）。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ドーベルマン / mini 2026-09-07】見張りの片付け（①ログ二重書き ②agent_watchdog本体 ③止まりの実測 ④層2登録の全文確認）── ✅完了
+
+**先に `watch_merge_result.md`・`watchdog_B_result.md` を読んでから着手。**
+台帳・Notion（レジスタ以外）・kintone・テレアポリストへは1文字も書いていない。
+`notify.py`／`ask_hub.py`／`hook_permission_slack.py`／`~/.claude/settings.json` は無傷。
+Slack実投稿0件（③はスタブで受けた）。
+
+```
+①ログ二重書き   ✅解消。crontabのstall_watch行を `> /dev/null 2>> stall_watch.err` へ。
+               log()自前書き＋cronリダイレクトの二重原因を特定。実測：3行増分が1回ずつに
+②agent_watchdog ✅本体削除（.disabledとsha256完全一致・diff0を確認してから）
+③止まりの実測   ★成功。本物のtranscript発見経路(PROJECTS偽装なし)＋本物のclaude -p
+               （複合sleep・stall_watchの文字列を避ける）で、実際に「止まっている」検知
+               →ask_hub.ask()呼び出しを実証。同時走行中の本物2セッションは誤検知0件
+④層2登録の全文  ★確認のみ・登録せず。§2-4の全文はいまも使える（setup_hooks.shのSPEC add-only
+               設計＝既存のhook_role_guard等ブロックは壊れない）。★新発見：role_guard/
+               output_guardはSPEC管理外（新マシンでは再現されない既存ギャップ）
+```
+
+結果全文 `~/.vivid-relay/watch_cleanup_result.md`。memoryへも追記済み
+（`reference_offload_long_work_to_mini.md`「✅2026-09-07 ドーベルマン」節）。
+人の判断が要る点：①agent_watchdog.py.disabledの完全削除時期 ②層2登録の可否
+③role_guard/output_guardをSPECへ載せるか ④承認ダイアログ待ち型は依然未実証。
 
 **★同じ対象に手をつけないでください**: なし（作業完了）
 
