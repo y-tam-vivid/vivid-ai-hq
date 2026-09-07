@@ -375,3 +375,29 @@ WORKING.md は終わったら消す器なので、消した瞬間に存在ごと
   空/古い」は検知しない。成果の数字は代表行に載らない → [[reference_heartbeat_proves_life_not_results]]。
   **変えるなら設計の分岐＝人の判断。** つるは変えない。
 - 同型 → [[feedback_dont_remake_what_was_approved]]／[[feedback_dont_call_it_a_typo]]
+
+## ★心拍を打たないスクリプトは「登録漏れ検知」の対象外になる（2026-09-07 ドーベルマン実測）
+
+`heartbeat_names_check.py`（毎朝09:10）は `~/.vivid-relay/*.py` の `PROC_NAME`／`beat(` 呼び出し
+を走査して登録漏れを検出する。**この設計は「beat()を1度も呼ばないスクリプト」を最初から
+走査対象にしない**（見つけるものが無いので当然だが、結果として「心拍を打たない自動処理」は
+この検査の死角に入る）。
+
+```
+実例   ~/.vivid-relay/agent_watchdog.py（2026-09-06新設・crontab */5で本番稼働・
+       notify.tell()のみで通知・heartbeat.pyをimportしていない）
+実測   heartbeat_names_check.py を実行 → ★0件（この処理に一切触れない）
+       automation_inventory_check.py（週次月曜09:20・crontabの実行行を直接見る）を実行
+       → ★「①実体にあるが台帳に無い（登録漏れ）」として正しく検出
+```
+
+- **★「登録漏れ検知」は1種類ではない。**心拍の有無で検出できる範囲が変わる。
+  `heartbeat_names_check`＝心拍を打つスクリプト同士の名前の整合。
+  `automation_inventory_check`＝crontab/daily_jobs.confの実行行そのものを見る＝
+  **心拍の有無に関係なく拾える、より広い網。** 週次だけなので発見までに最大6日かかりうる。
+- **★心拍を打たない自動処理を新設したら、次の月曜09:20まで誰にも気づかれない。**
+  新設と同時に⚙️レジスタへ行を作る（有効=Falseでもよい）習慣を優先するか、
+  `automation_inventory_check` の頻度を上げるかは今後の検討事項（未決）。
+- 詳細と発見の経緯 → `~/.vivid-relay/watchdog_B_result.md`（§0）。
+- 同型 → [[reference_a_warning_nobody_owns]]（正しく鳴っているのに誰も拾わない）の逆側＝
+  **鳴らす仕組み自体が最初から対象を見ていない**型。
