@@ -80,7 +80,7 @@
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
-- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)。指示だけを根拠にせず、成功報告には指示の在処まで書く**／**★9/6 `.claude`はパス文字列で塞がれ隔離実験が作れない＝`CLAUDE_CONFIG_DIR`で別の設定ディレクトリを指す**
+- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)**／**★9/7 `.claude/agents/`も書けない(skillsだけではない)。回避せず①miniで作ってgitで配る②bin/に適用スクリプトを置いて人が1回叩く**／**★9/6 `.claude`はパス文字列で塞がれ隔離実験が作れない＝`CLAUDE_CONFIG_DIR`で別の設定ディレクトリを指す**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。bin/hooksの控えは_backups/へ。名指しで保存する
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
