@@ -69,7 +69,7 @@
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
-- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/人の手を無くす。★返事は出した経路へ
+- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/人の手を無くす。★返事は出した経路へ／**★9/7「Macmini側に置いたら俺は取られへん」＝miniもMacBookのローカルもSendUserFileも届かない。渡すのはSlack添付かArtifact/Driveのリンクだけ**
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消。Stopフック検査4(キリル/ハングル/タイ/デーヴァナーガリー検出)でexit2差し戻し。実測誤検知0/35**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
