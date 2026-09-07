@@ -2110,3 +2110,35 @@ Instagramのリンク            ★front-page.php に3箇所ベタ書きで別�
 多いサイトほど、この型の誤検出が増える。**機械の検出件数をそのまま「直すべき数」として
 報告しない。代表例を目視で裏取りしてから件数を扱う。** → [[feedback_one_route_is_not_verification]]
 道具・生データ・スクリーンショット → `~/lifestandup-wp/review/kasanari/README.md`
+
+### ★2026-09-07 リリス追記 ── 「届いた」は body.lsu-XXX スコープの詳細度で覆る（22テンプレート中20本で発覚）
+
+有璽氏指摘④「見学・お問い合わせがページによって2行に折れる」の真因調査で判明。
+**9/5の「ヘッダーの縮小を全ページへ届けた」（style.cssの共通`@media(max-width:540px)`
+ブロック）は、実際には front-page とその後たまたま個別に同内容を足した
+stand-up-top.css・recruit-top.css の**3本にしか効いていなかった**。**残り20本
+（about-*・contact・guide-*・news・recruit-interview等）は、各ページ用CSSが
+`body.lsu-XXX .nav-cta{padding:12px 22px;font-size:14px}`という**無条件（非レスポンシブ）**の
+2クラス詳細度セレクタを持っており、これが共通ブロックの1クラスセレクタに常に勝つ。
+**`@media`で囲んでも詳細度は上がらない**──ここが見落とされ続けた核心。
+
+```
+検出できなかった理由   数値の重なり検査（lsu-overlap.html）は「2行に折れているか」を
+                      見ない。実機を390pxのiframeで開き、.nav-ctaのgetBoundingClientRect().
+                      heightを実測（41px=1行 / 63〜74px=2行）して初めて見つかった
+直し方                既存の `.nav-menu{display:flex !important}`（9/7ハンバーガー実装で
+                      同じ問題に既に対処済みだった）と同じ手法で、共通ブロック側に
+                      !important を足して詳細度の差を無効化。20ページ全てで実測0件化
+教訓                  ★「共通化した」「届けた」という申告は、対象ページを1つ実測するだけ
+                      では裏取りにならない。body-scopeを持つ全ページ（このテーマでは
+                      22テンプレート中20本）を横断してcomputed styleを見ないと、
+                      「効いているように見えた2〜3本」だけを見て安心してしまう
+```
+
+同じ調査で、②「ナビの閉じるボタンが無い」も詳細度でなく**z-index**が原因と判明：
+3本線→✕への変形アニメーションは実装済みだったが `.lsu-nav-burger` にz-indexが無く、
+開いたドロワー(z-index:60)の下に埋もれて見えなくなっていた。z-index:61を足すだけで
+「既存の変形を可視化する」形で解決（新しい閉じるボタンを追加せず、二重管理を避けた）。
+③「ヘッダーが右端固定でない」は `.nav-menu`がposition:fixedでflexフローから抜けるため
+`.nav-inner`にmargin-left:autoを持つ要素が実質消えていたのが原因（`.nav-cta`へ移設）。
+→ 詳細（実測値・スクリーンショット） `~/lifestandup-wp/review/header_nav/`
