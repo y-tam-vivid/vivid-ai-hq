@@ -2428,3 +2428,24 @@ Instagramのリンク            ★front-page.php に3箇所ベタ書きで別�
                      ★①と混ぜない
 ```
 ★実測（2026-09-07 16:50・仮公開URLを取得）：見出しは2つで正しい。**年度の表記は0件**＝未実装。
+
+## 🔴 2026-09-07 出し直しが効かない罠 ── `crawl_static.py` は既にあるファイルを飛ばす
+
+**README 683行に書いてある**（「② crawl_static.py は★既に在るファイルを飛ばす」）。
+それでも同じ日に2回踏んだ。**テンプレートを直して deploy.py まで通しても、
+静的側に古い index.html が残っていると書き出されず、仮公開サイトは変わらない。**
+
+```
+確実に出し直す手順（2026-09-07 実測・これで直った）
+  1  pkill -f "php -S 127.0.0.1:8750" して起動し直す
+     (cd _tools && nohup ./php -S 127.0.0.1:8750 -t wordpress &)
+  2  python3 deploy.py                      ← テーマをWordPressへ配置
+  3  ★rm -f static-preview/<直したページ>/index.html   ← ここが抜けると何も変わらない
+  4  python3 crawl_static.py && python3 patch_static_forms.py
+  5  npx --yes vercel deploy --prod --yes --archive=tgz --scope fuku-chi-vivid --project lifestandup-preview
+  6  ★npx --yes vercel alias set <出たURL> lifestandup-preview.vercel.app --scope fuku-chi-vivid
+  7  ★人に渡すURLを curl で取得して数える（合言葉なし401／あり200）
+  ★PATH: mini の npx は /usr/local/bin/npx。`npx` が見つからないときは PATH を通す
+```
+**★恒久対策はまだ入れていない。** `crawl_static.py` に `--force`（既存を上書き）を足すのが本筋。
+入れるまでは、出し直しのたびに手順3を必ず踏むこと。
