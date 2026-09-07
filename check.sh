@@ -99,7 +99,11 @@ say "── 7. バージョン違いの散乱"
 #   memory/reference_backups_in_volatile_places.md（控えの置き場を説明した記憶ファイル）を
 #   ★誤検知していた。「backups」という単語が名前に入っているだけで、版でも控えでもない。
 #   → 控えは「_backup_日付」「.bak」の形で作る運用なので、そこだけを見る。
-sprawl=$(find . "$HOME/bin" -maxdepth 3 \( -name "*_v[0-9]*" -o -name "*_backup_[0-9]*" -o -name "*.bak" -o -name "*.bak_*" -o -name "*_old*" -o -name "*コピー*" -o -name "*最新*" \) -not -path "./.git/*" -not -path "./_archive/*" 2>/dev/null)
+sprawl=$(find . "$HOME/bin" -maxdepth 3 \( -name "*_v[0-9]*" -o -name "*_backup_[0-9]*" -o -name "*.bak" -o -name "*.bak_*" -o -name "*_old*" -o -name "*コピー*" -o -name "*最新*" \) -not -path "./.git/*" -not -path "./_archive/*" -not -path "./scratchpad/*" 2>/dev/null)
+# ★2026-09-07 有璽氏の決定（Slack #b66529「外す（scratchpadは版が並ぶのが正常）」）で
+#   scratchpad を対象外にした。作業層は版が並ぶのが正常な場所で、そこを同じ物差しで
+#   測っていたために 2026-08-26 から11日間 赤のままだった。
+#   ★慢性化した赤はゲートにならない（本物のズレが埋もれる）。
 if [ -n "$sprawl" ]; then
   fail "版が並んでいるファイル（_archive/ へ集約すること）:"
   printf '      %s\n' $sprawl
