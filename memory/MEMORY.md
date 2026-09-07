@@ -61,7 +61,7 @@
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — ★3回目。提案/作成の前にmemoryとNotionを数える。「無いから作る」禁止
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★9/5 役割検問がmini担当セッションを誤検出(agent_id無=ビビと断定)
-- [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全。規範配下をread-onlyへ／**★9/5「対策は複数またがって用意して」＝層1検知・層2予防・層3解除を同時に。検知だけでは止まる回数は1回も減らない**
+- [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全。規範配下をread-onlyへ／**★9/5「対策は複数またがって用意して」＝層1検知・層2予防・層3解除を同時に。検知だけでは止まる回数は1回も減らない**／**★9/7「記録しました を何回も言って同じことを繰り返してる」＝記録は再発を止めない。サイトの出し直しは`~/lifestandup-wp/redeploy.sh`1本へ固め、`ng_words.txt`の語が残ればデプロイを止める。担当の完了は`~/.vivid-relay/after_agent.sh`が見張りSlackへ出す**
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — 8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本
