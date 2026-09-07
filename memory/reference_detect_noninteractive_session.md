@@ -132,3 +132,21 @@ if (ENTRYPOINT が既にある) {
 ／[[project_ask_hub_push_decisions]]（人に判断を返す正しい経路＝ボタン）
 ／[[reference_make_it_impossible_not_detectable]]（検出でなく不可能にする）
 ／[[reference_hooks_enforce_what_discipline_cannot]]（規律で守れないものは機械で止める）
+
+## ★対話セッションでも、そもそもツール一覧に無い場合がある（2026-09-07 実測・mini）
+
+有璽氏が対話セッションで直接「AskUserQuestion を使え」とテストした。**dontAsk拒否より手前で詰まった。**
+
+```
+実測  ToolSearch "select:AskUserQuestion"    → No matching deferred tools found
+      ToolSearch キーワード検索（複数回）      → 別ツール(Monitor等)5本のみ。AskUserQuestion 0件
+      トップレベルのツール一覧                → AskUserQuestion の記載自体が無い
+セッション種別  対話（有璽氏が直接会話・Fable Style適用中）。claude -p ではない
+```
+
+**★上の「実測1」（claude -pでツールが無かった）と同じ結果が、対話セッションでも出た。**
+「対話なら道具はあるが dontAsk で拒否される」（107行目）とは別の壁 ── **今回は拒否ですらなく、
+ツール自体がこのハーネス構成のツール一覧に載っていない。** ハーネス（Claude Agent SDK系の
+構成）によっては AskUserQuestion 自体が提供されないケースがある、という一段手前の事実。
+**判定不能なら通す・止まるかどうかを議論する前に、まず「そのセッションにこの道具が実在するか」を
+ToolSearchで1回確かめること。**
