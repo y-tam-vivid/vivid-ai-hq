@@ -184,6 +184,11 @@ probe() { curl -s -o /dev/null -w '%{http_code}' --max-time 25 "$URL" 2>/dev/nul
 mkdir -p "$SITE" || exit 1
 cp "$REPO/web/kadoban/vercel.json"   "$SITE/vercel.json"   2>/dev/null
 cp "$REPO/web/kadoban/middleware.js" "$SITE/middleware.js" 2>/dev/null
+# ★2026-09-08 追加（案B）: /api/data.json（Vercel Function・Blobから軽量値を返す）を運ぶ。
+#   ★このファイルが無くても本体（index.html）のデプロイ自体は壊れない
+#   （画面側のJSはfetch失敗を検知して古いまま表示を続けるだけ・rt-fresh参照）。
+mkdir -p "$SITE/api"
+cp "$REPO/web/kadoban/api/data.js" "$SITE/api/data.js" 2>/dev/null
 
 # ① 中身を用意する（この機械に無ければ mini から取りに行く）
 if [ ! -f "$SRC_LOCAL" ]; then

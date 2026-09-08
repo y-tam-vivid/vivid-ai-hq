@@ -53,6 +53,19 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-08】稼働盤を案Bへ（有璽氏「案Bはそのまま出す。Aで問題ない」）── 着手
+
+Vercel Blob（private store・新規作成 `fukuchi-kadoban-data`）へ軽量JSONをpushし、
+画面側が30秒おきにfetchする形にする。対象は `~/.vivid-relay/dashboard_realtime_push.py`（新規）・
+`web/kadoban/api/data.js`（新規）・`~/.vivid-relay/dashboard_build.py`（JS追記）・
+`bin/kadoban_deploy.sh`（api/のコピー追加）・crontab（既存10分おき行へ1コマンド追記）のみ。
+案A（10分おき）・アイコン運搬・詰まりの手当ては壊さない。`~/lifestandup-wp/`・`vivi_patrol.py`・
+`run_agent.sh`・`stall_watch.py` へは触らない。台帳・Notion・kintoneへは書かない。
+
+**★同じ対象に手をつけないでください**: 上記5点
+
+
+
 ### 【ピタゴラス / mini 2026-09-07 夜】稼働盤を10分おきへ（有璽氏「リアルタイムは無理なん？」・案A）── ✅完了
 
 有璽氏の決定「案A（今日中）＋案Bへの移行で良い」。**書いたのは
