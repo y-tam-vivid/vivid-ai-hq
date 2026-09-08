@@ -53,16 +53,34 @@
 
 ## Mac mini セッション
 
-### 【ピタゴラス / mini 2026-09-08】稼働盤を案Bへ（有璽氏「案Bはそのまま出す。Aで問題ない」）── 着手
+### 【ピタゴラス / mini 2026-09-08】稼働盤を案Bへ（有璽氏「案Bはそのまま出す。Aで問題ない」）── ✅実装完了。★本番の通し確認はデプロイ日次上限のため次回持ち越し
 
-Vercel Blob（private store・新規作成 `fukuchi-kadoban-data`）へ軽量JSONをpushし、
-画面側が30秒おきにfetchする形にする。対象は `~/.vivid-relay/dashboard_realtime_push.py`（新規）・
-`web/kadoban/api/data.js`（新規）・`~/.vivid-relay/dashboard_build.py`（JS追記）・
-`bin/kadoban_deploy.sh`（api/のコピー追加）・crontab（既存10分おき行へ1コマンド追記）のみ。
-案A（10分おき）・アイコン運搬・詰まりの手当ては壊さない。`~/lifestandup-wp/`・`vivi_patrol.py`・
-`run_agent.sh`・`stall_watch.py` へは触らない。台帳・Notion・kintoneへは書かない。
+**書いたのは`~/.vivid-relay/dashboard_realtime_push.py`（新規）・`web/kadoban/api/data.js`
+（新規）・`~/.vivid-relay/dashboard_build.py`（agent-chip/proj-rowへdata属性＋30秒ポーリングJS）・
+`bin/kadoban_deploy.sh`（api/の運搬1行）・crontab（既存10分おき行へ1コマンド追記）のみ。**
+案A・アイコン運搬・詰まりの手当ては無傷（diffで確認済み）。`~/lifestandup-wp/`・`vivi_patrol.py`・
+`run_agent.sh`・`stall_watch.py`は触っていない。台帳・Notion・kintoneへは1文字も書いていない。
 
-**★同じ対象に手をつけないでください**: 上記5点
+```
+置き場   Vercel Blob（private store・新規`fukuchi-kadoban-data`）。実測で選定：
+         Supabase(外部アカウント増を回避)・Edge Config(サイズ上限で除外)より優位。
+         ★private storeが作れることは実測するまで知らなかった(想定はpublicのみ)
+実測済み ①data.jsのhandler単体テスト：成功／トークン無し／不正トークンの3ケースとも
+           正しい応答（失敗時も画面のDOMは壊さない設計）
+         ②crontab最小PATH環境(env -i)でdashboard_realtime_push.py実行→成功
+         ③crontab diff：意図した1行の変更のみ・他は不変
+         ④旧デプロイでも合言葉なし401（/api/data.json含む。middlewareのmatcherが
+           /api/を除外しないことを実装前に確認済み）
+🔴発見   Vercel無料プランに1日あたりデプロイ回数上限(~100回)がある。本番・Preview
+         とも"api-deployments-free-per-day"で24時間拒否を実測。★10分おき案Aは
+         1日144回デプロイを試みる設計で、この上限の正当性そのものを裏付けた
+残      ★この上限のため「画面を開いたまま30秒おきに数字が実際に動く」の本番通し
+         確認が未実施。次に案Aのcronがデプロイに成功した回で1回目視すること
+```
+
+記録 → `memory/project_ops_dashboard.md`「2026-09-08 案Bを実装」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
 
 
 

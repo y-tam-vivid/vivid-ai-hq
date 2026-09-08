@@ -25,7 +25,7 @@
 - [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 常駐は一定間隔で心拍／心拍はmain()の外で包む。末尾は例外が素通り
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)／**★手順書に「まだ無い機能」を書いた。決着済みの設計を在るものとして扱った。人が読む文書の前に動線を1回自分で通す(2026-08-24)**
-- [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／**★9/7 crontab直接`*/10`で定期生成登録済み(daily_jobs.confから移行)。詰まり対策(タイムアウト+ロック)実測済み。案B(真のリアルタイム化)は設計のみ未実装**
+- [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／**★9/8 案B実装(Vercel Blob・30秒ポーリング)。★Vercel無料枠デプロイ日次上限(~100回)発覚・本番の通し確認は次回デプロイ成功時に要目視**
 - [自動処理レジスタ(心拍)](project_automation_register.md) — ★有効=Falseは故障でなく設計。備考を全文読む前に--beatを足すな(9/6)／心拍名は1文字違うと黙って失敗／★心拍を打たないスクリプトは登録漏れ検知の対象外(9/7・agent_watchdog.py未申告本番稼働の実例)
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
 - [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — 1つしか選べない置き場に判断を置かない。3割超の偏りは既定値と疑う

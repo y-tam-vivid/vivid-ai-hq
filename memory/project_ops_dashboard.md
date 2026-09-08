@@ -60,3 +60,54 @@ Slack通知は流れて消える／Notionレジスタは行が48ある。「い�
   実装していない。`~/.vivid-relay/kadoban_realtime_案B.md`（git管理外）。
   置き場（Supabase／Vercel Edge Config／Blob）と機微の線引き（案件名を出すか番号化するか）は
   有璽氏の判断待ち。
+
+## ★2026-09-08 案Bを実装（有璽氏「案Bはそのまま出す。Aで問題ない」＝③-A採用）
+
+**置き場は Vercel Blob（private store）に決めた。実測で選んだ理由：**
+
+```
+Supabase       見送り。新しい外部アカウント・認証を増やす（両機に同じ環境を、に逆行）
+Edge Config    見送り。CLIに専用サブコマンドが無くREST API実装が要る／1件あたりの
+               サイズ上限が小さく今回のデータ(約23KB)には合わない可能性が高い（未実測のまま除外）
+★Vercel Blob   採用。`vercel blob create-store <name> --access private` で private store が
+               作れることを実測（想定外＝publicしか無いと思っていた）。同一Vercelプロジェクトに
+               繋がる（外部サービスが増えない）。トークン無しの直接GETは403（実測・閉域が保てる）。
+               CLI経由のPUTは1回1.3〜1.5秒（実測3回平均）。cronの最小PATH環境でも動作確認済み
+```
+
+**構成**
+
+```
+mini: dashboard_data.py（既存・無改修）
+mini: dashboard_realtime_push.py（新規・git管理外）
+        dashboard_data.json から summary/agent_activity/projects_major だけ抜いて
+        （約23KB）Vercel Blob（pathname=kadoban/realtime.json）へ全置換pushする。
+        失敗しても案A本体を止めない設計で crontab へ `|| true` 付きで追記
+web/kadoban/api/data.js（新規・git管理下）
+        Vercel Serverless Function。BLOB_READ_WRITE_TOKEN でBlobから読んで返すだけ
+        （@vercel/blob SDK不使用・依存追加なし）。失敗時も必ずHTTP200＋{ok:false,stale:true}
+        を返す設計＝呼び出し元JSがエラー分岐しやすい。★のBasic認証(middleware.js)の
+        matcherは/api/を除外していないので、このFunctionにも閉域がそのまま掛かる（実測）
+mini: dashboard_build.py（改修）
+        agent-chip に data-agent-key、proj-row に data-proj-name を付与。
+        30秒おきに /api/data.json を fetch する rtPoll() を追加。取得失敗時は
+        直前の表示を壊さず、rt-fresh の文言と色だけを変える（DOM要素は残す）
+bin/kadoban_deploy.sh（改修・1点のみ）
+        $SITE/api/ へ web/kadoban/api/data.js を運ぶ処理を追加。無くても本体は壊れない
+```
+
+**🔴重要な発見：Vercel無料プランには1日あたりのデプロイ回数上限（約100回）がある。**
+実装当日に本番デプロイ・Preview デプロイとも `"code":"api-deployments-free-per-day"` で
+拒否された（`vercel deploy`・`vercel deploy --prod` の両方で再現・24時間はリトライ不可）。
+**10分おきの案Aは1日144回デプロイを試みる設計で、この上限に構造的に近い（または既に超えている）。**
+案Bへ移行する動機（「出し直しを無くす」）が、この実測によって裏付けられた形。
+**★この制限により、今回の実装は「本番での通し確認（画面を開いたまま数字が実際に切り替わる
+瞬間）」が未確認のまま。** 単体レベル（data.jsのhandlerを直接呼び出し・成功/トークン無し/
+不正トークンの3ケース）・crontabへの安全な追記（`|| true`で案A本体を止めない・cron最小
+PATH環境での動作確認済み）・Basic認証の閉域維持（旧デプロイでも `/api/data.json` が
+合言葉なしで401）は実測済み。**次に10分おきのcronがデプロイに成功した回（デプロイ上限が
+明けた後）で、実際に30秒ごとに画面の数字が動くことを1回目視確認すること。**
+
+- **★機微の線引きは有璽氏の決定で③-A（案件名・担当名をそのまま出す）に確定。** 番号化（③-B）は
+  不採用。稼働盤の中身が丸ごとBlobへ乗る点は本体（index.html）と変わらず、リスクの性質は
+  「保存場所が外部インフラへ増える」点のみ（Basic認証と同じ閉域の内側にとどめてある）。
