@@ -50,4 +50,4 @@
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
-- [Claude Designはローカル編集を映さない](reference_claude_design_local_edit_not_reflected.md) — ★9/9 .dc.htmlのsrcを直しても画面が変わらない。画像は.image-slots.state.jsonがdata URIで抱える。隠しファイルを開く／原因は「heroだけか全部か」の1問で決まる
+- [Claude Designはローカル編集を映さない](reference_claude_design_local_edit_not_reflected.md) — **⛔9/9確定：クラウドが正本・DLフォルダは一方向のコピー。★書いても戻らない(18枠やって全部無効)。読む用途だけに使う。画像は画面で入れるしかない**
