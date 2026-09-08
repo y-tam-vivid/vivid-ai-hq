@@ -53,15 +53,31 @@
 
 ## Mac mini セッション
 
-### 【ピタゴラス / mini 2026-09-08】notify.tell()を「親（◯時の通知です・要約）＋スレッド（詳細）」の形へ（有璽氏「要約させろよ。文章長いの見んのだるい」）── 着手
+### 【ピタゴラス / mini 2026-09-08】notify.tell()を「親（◯時の通知です・要約）＋スレッド（詳細）」の形へ（有璽氏「要約させろよ。文章長いの見んのだるい」）── ✅完了・実投稿1件で実測確認済み
 
-**触ってよいのは `bin/hooks/notify.py`（正本）と `~/.vivid-relay/ask_hub.py` だけ。**
-progress_report.py・stall_watch.py・run_agent.sh・crontab・daily_jobs.confへは触れない。
-台帳・テレアポリスト・Notion・kintoneへは1文字も書かない。Slackへの実投稿は通し確認の1通のみ。
-バックアップ済み：`~/.vivid-relay/_backups/{notify.py,ask_hub.py}.bak_pitagorasu_20260908-thread`
-（notify.pyは bin/hooks/ 側と ~/.vivid-relay/ 側の sha256 一致を確認してから着手）。
+**触ったのは `bin/hooks/notify.py`（正本）と `~/.vivid-relay/ask_hub.py` の2本だけ。**
+progress_report.py・stall_watch.py・run_agent.sh・crontab・daily_jobs.confへは触れていない。
+台帳・テレアポリスト・Notion・kintoneへは1文字も書いていない。
 
-**★同じ対象に手をつけないでください**: `bin/hooks/notify.py` ／ `~/.vivid-relay/{notify.py, ask_hub.py}`
+```
+tell(title, body, summary=None)  親＝「⏰HH:MMの報告です」＋タイトル＋要約（3〜4行/280字）
+                                  スレッド＝body の残り（無ければスレッド無し＝③）
+                                  ★要約はAIにやらせない。summary未指定なら機械的に先頭を切る
+                                  だけ（_split_for_parent）。呼び出し元12箇所は無改修で動く
+ask()                            親は不変（何を決めるか＋ボタン最優先）。detail>900字なら
+                                  全文をスレッドへ追加投稿。★ついでに実害バグ修正：
+                                  link無しで900字超だと「続きは下のリンク」と表示するのに
+                                  リンクが無く読めなかった旧実装を解消
+```
+
+実測：モック15ケース全合格（tell 11・ask 4）＋実投稿1件を2経路で確認
+（Slack API実物：親183文字4行・スレッド54文字3行・thread_ts一致／conversations.replies）。
+配布：`bin/hooks/notify.py`→`~/.vivid-relay/notify.py` sha256完全一致確認済み。
+ask_hub.pyはgit管理外・setup_hooks.shの同期対象外のため直接編集で問題ない。
+控え `~/.vivid-relay/_backups/{notify.py,ask_hub.py}.bak_pitagorasu_20260908-thread`。
+詳細 `~/.vivid-relay/notify_thread_result.md` ／ `memory/reference_slack_notification_rules.md`「②-c」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
 
 ### 【ドーベルマン / mini 2026-09-08】進捗報告を毎時へ（有璽氏「12時18時だけは薄い。頻度を高めろ」）── ✅完了
 
