@@ -19,6 +19,7 @@
 - [CLOセンゴク](project_legal_agent.md) — agents/legal.md。日本法ラッパー。法務ハブ構築済／プラグイン導入は未実行
 - [施設運営点検の委託契約v1.1](project_facility_inspection_contract.md) — 甲wakoku/乙ビビッド。★A案確定・レッドライン17本を反映中／追加費用4,000円・対象期間は指定申請日から約2年数ヶ月／士業法リスクは下書き非実施で低下
 - [CKOロビン](project_cko_agent.md) — agents/cko.md。会議準備を裏方で作る(毎朝7:40)。Phase B=議事録DB連携待ち
+- [福祉の困りごと→専門家チーム](project_fukushi_pain_list_team_design.md) — ★9/7 BPI研修の宿題。**リストでなくチーム編成の設計図が目的**＝困りごとごとに「解けるのは誰か」を資格名で書く。分類A/B/C/D(Dの種別固有を落とさない)・重要度3軸・自社の手札は①提供中/②できる/③構想を混ぜない。9/8 クローバー(社外)＋ロビン(社内)がminiで走行中
 - [開発ライン ステラ＋3体](project_dev_agents.md) — ステラ(統括)＋エジソン/ピタゴラス/リリス＋開発ハブ＋週次routine
 - [いろどり(美容診断)](project_irodori_app.md) — 端末内処理。プロトタイプ稼働中・次は精度向上(要 本番ホスティング)
 - [イベントAIアプリ ポータル](project_ai_event_portal.md) — ~/fukuchi-ai-event(MacBookのみ)をVercel公開予定
