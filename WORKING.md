@@ -2969,6 +2969,28 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
 
 ## MacBook セッション
 
+### 【ビビ / MacBook 2026-09-08】かわちばなし（地域イベントポータル）の画像18枠を作り直す ── 走行中
+
+有璽氏「素材写真の明るさとかが異なっているように思います」。実測で **明るさ10.9〜35.4・
+ひらき24.5**（参考サイトは64.5・サイト地色は95）と確認。**補正では直らない**ことを
+数値と目視の2経路で確かめ（数値5/5合格・目視4/5不合格）、OpenAI画像APIで作り直している。
+
+```
+書いている  ~/kb_images/（生成物・18枚）／`~/Downloads/地域イベントポータルサイト設計/
+            かわちばなし トップページ v4.dc.html`（★差し替えはこれから・控えを取る）
+新設        bin/{image_tone, gen_images_openai, swap_image_slots, contact_sheet}.py
+            scratchpad/kawachibanashi_prompts.json（共通指定1本＋枠ごとの差分18件）
+触っていない 台帳・Notion・kintone・Slack（1文字も書いていない）
+費用        鍵は ~/.vivid-relay/config.env の OPENAI_API_KEY（★mini へは未配布）
+            ここまで7回＋16枠ぶん。概算 $2〜5。★1経路でしか確かめていない概算
+```
+
+**★有璽氏には Claude Design を閉じてもらっている。** 開いたまま差し替えると書き戻されて消える。
+**★差し替え後に Claude Design が編集を読むかは未確認**（有璽氏が開いた瞬間にしか確かめられない）。
+
+**★同じ対象に手をつけないでください**: `~/Downloads/地域イベントポータルサイト設計/` ／
+`~/kb_images/` ／ `bin/{image_tone,gen_images_openai,swap_image_slots,contact_sheet}.py`
+
 > ここは MacBook 側が記入する欄。こちらからは書かない。
 > 2026-08-13 時点で mini から観測できたものだけ、事実として置いておく。
 

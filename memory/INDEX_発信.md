@@ -48,4 +48,4 @@
 - [LSU 法定開示に年度・更新頻度を明記](project_lifestandup_website_wordpress.md) — ★9/7 自己評価=毎年度／支援プログラム=改定時、と混ぜていた共通注記を分離。年度は`meta`1箇所・来年はそことPDF差替のみでよい。5帯とも横あふれ0
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
-- [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — 南河内4市・Claude Design制作中。★写真だけトーンが逆(ロゴ/CSS/参考サイトは明るい・写真は暗い)。実写はCommonsに在るが記録写真で使えない＝直すのは生成のトーン指定
+- [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — 南河内4市・Claude Design制作中。★写真だけトーンが逆で明るさがバラつく(ひらき24.5)。補正では直らず作り直し＝OpenAI画像APIで18枠を一括生成中。道具は bin/{image_tone,gen_images_openai,swap_image_slots,contact_sheet}.py
