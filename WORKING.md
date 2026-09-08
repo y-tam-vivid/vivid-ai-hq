@@ -53,6 +53,34 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-09】005 スマホからTOPのブログ画像が見れない ── ✅完了。出し直し済み
+
+**対象は `~/lifestandup-wp/` のみ。本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは
+1文字も書いていない。** commit `88a487e`・push済み。仮公開へ反映済み（実測でcurl 200を確認）。
+
+```
+真因   crawl_static.py が srcset= を1文字も収集していなかった（href=/src=のみ）。
+       活動ブログ3枚とも、srcsetの最後の候補（原寸・約1200w）だけが他ページの
+       src=として使われておらず static-preview/ に落ちていなかった＝本番URLも403。
+       sizes="(max-width:768px) 100vw, 768px" のためスマホ幅×高DPR端末で768pxを
+       超える大きい候補が選ばれやすく、そこが欠けていて画像が読み込めなかった。
+       PCは固定768px枠で既存候補が足りるため症状が出なかった
+修正   crawl_static.pyへsrcset収集を追加（既存ロジックは無改修）。再クロールで
+       以前403だった3枚とも200に。HTML本文はデプロイ前後・修正前後ともbyte単位で
+       完全一致（diff 0行）＝マークアップ・PC幅は1文字も変えていない
+実測   320/390/428pxで3枚とも rect>0・complete=true（local static-preview、本番と
+       index.html は diff 0）／本番URLで3枚とも403→200／check_css_braces.py 23本
+       全OK／検証サーバ停止を2経路で確認
+```
+
+**★踏んだ地雷**：README/redeploy.shが指定する「`cd static-preview`してから`vercel deploy`」を
+1回飛ばし、リポジトリ直下からデプロイして`/`がNOT_FOUND（本文が`/static-preview/`配下に
+ネストされる）事故を起こした。**vercel deploy直前に必ずpwdを確認すること。**
+redeploy.sh自体もリポジトリ直下から呼んでおりREADMEの記載と食い違う（未修正・要点検）。
+詳細 → `memory/project_lifestandup_website_wordpress.md`「2026-09-09 リリス」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【ナミ / mini 2026-09-08】勘定科目 正式名称の突合 ── ✅調査完了。Notion直接アクセス不可・改名案は判断待ち
 
 有璽氏の決定「接待交際費、会計ソフトの正式な呼び方で統一します」を受けた調査。
