@@ -1,4 +1,12 @@
 #!/bin/bash
+
+# ★2026-09-08 ビビ: 一時停止スイッチ（Vercelの1日100デプロイ枠をサイト側へ回すため）
+#   止める: touch ~/.vivid-relay/kadoban.pause   /   戻す: rm ~/.vivid-relay/kadoban.pause
+if [ -f "/Users/yuji_macmini/.vivid-relay/kadoban.pause" ]; then
+  echo "[$(date +%F\ %H:%M)] 一時停止中（kadoban.pause）。何もしない"
+  exit 0
+fi
+
 #
 # 稼働盤を Vercel へ出す（2026-08-25 有璽氏「①を実行して」）
 #
