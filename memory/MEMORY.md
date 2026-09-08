@@ -31,7 +31,7 @@
 - [特別な理由がなければ全ページ統一](feedback_uniform_unless_reason.md) — ★9/8で4回目。真因はページ別!important個別補正。1か所で決め個別上書きを消す
 - [作業前にcwdを読む](feedback_read_the_workspace_first.md) — START_HERE/AGENTS/README/.envを先に読む。読まずに「できない」と言わない
 - [道具ごとの鍵の在り処](reference_tool_access_map.md) — ★能力は書かない(腐る)。bin/capability_check.shで毎回取りに行く
-- [様子を見てから足す](feedback_let_it_settle_before_adding.md) — 入れた仕組みは使ってから次。器を同時に立てない
+- [様子を見てから足す](feedback_let_it_settle_before_adding.md) — 入れた仕組みは使ってから次。器を同時に立てない／**🔴9/8「今すぐ広めるという話をここではしていない。安心しろ」＝★次のフェーズのリスクをいまの議題に持ち込むな。事実でも出す順番がある。見分け方＝★有璽氏が使っていない動詞を自分が使い始めたらスコープの外**
 - [機微の二層管理](feedback_confidential_two_layer_rule.md) — 原則共有・機微だけ`_機微`で本人限定。sort_downloads.pyで自動隔離
 - [Artifactは積む](feedback_artifact_accumulate_dont_replace.md) — 作り替えず同じ1ページへ積む／★縮小版は「縮小版・原寸は◯◯」と必ず言う。画質が悪いと言われたらまず自分の圧縮を疑う
 - [図解ファースト](feedback_design_diagram_first_minimal_emoji.md) — 流れ・関係・階層は図で見せ言葉は補足。図を1行に潰すのは改悪。絵文字は最小限
@@ -43,11 +43,11 @@
 - [体制はビビ窓口＋ハブ参照](working-via-ai-agents-and-notion-hub.md) — 作業はビビ中央窓口経由＋AIナレッジハブ参照で進める
 - [AI資産カタログ](ai-asset-catalog.md) — Drive`AI資産_正本/`を正本と宣言済＝vivid-ai-hqの設計と要調整
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
-- [確認は溜めて1回](feedback_batch_the_checks.md) — 承認6項目だけ／両機に入れる／**★溜めるのは確認。報告は溜めず進んだ時点で出す／★9/7「随時共有して」＝毎回の応答の冒頭に走行中の状態を3行置く。聞かれてから出さない・生ログは貼らない**
-- [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。理由＋やりますかまで／★人へ渡す手順は「挿入位置」でなく置き換え後の全文で。実物が1行に収まっており「次の行に」が構文エラーを生んだ(2026-08-23)／**🔴9/7 素のターミナルへ渡すコマンドに`!`を付けない＝zshでは否定演算子。`! cd A && bash B`はBが実行されない。`!`はClaude Codeの入力欄だけ**／**★実測した「できない」も腐る。迂回路を作ったら再測の合図を同じ場所に書く（crontab不能は18日後に直っていた・誰も測り直していなかった）**
-- [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — **🔴9/7「中途半端に止まるのが良くない。動けるものから手を動かせ。全部解決してたら止まっていい」＝止まってよいのは残件0のときだけ。「どちらを先に？」「ついでに直しますか？」は禁止＝両方やる/聞かずに直す。担当が走る間も窓口は手を止めない**／★積むと停滞が人のせいに見える
+- [確認は溜めて報告は溜めない](feedback_batch_the_checks.md) — 承認6項目だけ／★溜めるのは確認・報告は進んだ時点で出す／9/7「随時共有」＝毎回の応答の冒頭に走行中の状態を3行。聞かれてから出さない・生ログは貼らない／**🔴9/8 窓口は「10分後に出す」を約束しない＝話しかけられるまで1行も実行しない。定期報告はminiのcronからSlackへ。★PIDは起動の証拠にならない＝ログか成果物の実在で判定／9/8「12時18時だけでは薄い」＝毎時へ。変化が無ければ送らないは維持**
+- [「できない」の前に試す](feedback_verify_before_declining.md) — 憶測で断らない。理由＋やりますかまで／★人へ渡す手順は「挿入位置」でなく置き換え後の全文で(2026-08-23)／**🔴9/7 素のターミナルへ渡すコマンドに`!`を付けない＝zshでは否定演算子。`!`はClaude Codeの入力欄だけ**／**★実測した「できない」も腐る。迂回路を作ったら再測の合図を同じ場所に書く（crontab不能は18日後に直っていた）**
+- [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — **🔴9/7「動けるものから手を動かせ。全部解決してたら止まっていい」＝止まってよいのは残件0のときだけ。「どちらを先に？」は禁止＝両方やる/聞かずに直す。担当が走る間も窓口は手を止めない**／**★「やるからやり方を渡して」＝押す場所・貼るもの・付随作業・戻し方の4点が揃っているか数える**／★積むと停滞が人のせいに見える
 - [読む人の言葉で書く](feedback_write_for_the_reader.md) — 配る文書に実装名を出さない／公開ページに人名も=権限構造が漏れる／判断を仰ぐ行も主語を道具の名にしない／**★「反映した」と書くな。原稿に書いただけを相手は「画面に出た」と読む。どこで見えるかを1行で言う(見えないなら見えないと)**
-- [通知は押せる形にする](feedback_write_for_the_reader.md) — ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
+- [通知は押せる形＋読める形に](feedback_write_for_the_reader.md) — **🔴9/8「長ったらしいのは見づらい」＝親は「◯時の通知です」＋要約だけ・★詳細はスレッドへ追記（chat.postMessageのtsをthread_tsに）。出す側の部品で揃える**／ ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
 - [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — **真因は速さのために確かさを落としていること(記憶から数字を埋める)**。数える/揃えるを部品に固め呼ぶだけにする／日付はnorm_date()を通した値だけ／件数は「443社(会社名がある行)」と数え方を添える／**★有璽氏の設計＝毎回数えず1か所(dashboard_data.json・読み口facts.py)へ集約し読むだけにする。別々に数えると人ごとに違う答えが出る**／★変種＝APIの`ok:false`を見ず空配列を「0件」と読み、権限があるのに「無い」と報告した(条件を欲張ると権限のある方まで落ちる)／**★部品を置いただけでは既存経路は変わらない。書き込む側から先に置換する（読む側だけ直すと揃って見えて汚れは増える）**／**★「解消11件」の申告を突合したら7件だった。過剰修正は本人には成功に見えるので申告に出ない＝別主体で読むしかない**／**★9/4「残り18ページ」が実物では1ページ。「そのクラスを持つ数」を「直っていない数」として書いた。分母を2段で書く**／**★9/6 理由欄には「指示の在処」だけ書く。関係の推測を成果物へ残さない。社名の一部一致で自社と決めない（合同会社ＶＩＶＩＤ≠株式会社ビビッド・法人番号で確認）**
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — **★9/5再発で実測＝24分→67秒。真因(旧接続の残留)は未修正**
@@ -61,7 +61,7 @@
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — ★3回目。提案/作成の前にmemoryとNotionを数える。「無いから作る」禁止
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★9/5 役割検問がmini担当セッションを誤検出(agent_id無=ビビと断定)
-- [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全。規範配下をread-onlyへ／**★9/5「対策は複数またがって用意して」＝層1検知・層2予防・層3解除を同時に。検知だけでは止まる回数は1回も減らない**
+- [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全。規範配下をread-onlyへ／**★9/5「対策は複数またがって用意して」＝層1検知・層2予防・層3解除を同時に。検知だけでは止まる回数は1回も減らない**／**★9/7「記録しました を何回も言って同じことを繰り返してる」＝記録は再発を止めない。サイトの出し直しは`~/lifestandup-wp/redeploy.sh`1本へ固め、`ng_words.txt`の語が残ればデプロイを止める。担当の完了は`~/.vivid-relay/after_agent.sh`が見張りSlackへ出す**
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — 8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/8 頻度も1日2回→毎時(07-22時)へ。crontab直書き・daily_jobs.conf側は無効化のみ**
@@ -69,12 +69,13 @@
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
-- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/人の手を無くす。★返事は出した経路へ
+- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — mini。渡し方はSlack/リンク/人の手を無くす。★返事は出した経路へ／**★9/7「Macmini側に置いたら俺は取られへん」＝miniもMacBookのローカルもSendUserFileも届かない。渡すのはSlack添付かArtifact/Driveのリンクだけ**
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消。Stopフック検査4(キリル/ハングル/タイ/デーヴァナーガリー検出)でexit2差し戻し。実測誤検知0/35**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動／★材料の発言欄は38%が偽物。本文を読む
-- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
+- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**／**🔴9/8「期日はいつ？めどを示して」＝復唱するのは形式/本数/出口＋★期日の4つ。「走行中」「終わり次第」は期日でない。外の予定(研修・会議)から逆算して日付で置く。めどを示すのは窓口の仕事**
+- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)**／**★9/7 `.claude/agents/`も書けない(skillsだけではない)。回避せず①miniで作ってgitで配る②bin/に適用スクリプトを置いて人が1回叩く**／**★9/6 `.claude`はパス文字列で塞がれ隔離実験が作れない＝`CLAUDE_CONFIG_DIR`で別の設定ディレクトリを指す**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。bin/hooksの控えは_backups/へ。名指しで保存する
