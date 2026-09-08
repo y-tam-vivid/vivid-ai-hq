@@ -410,3 +410,22 @@ Error: Resource is limited - try again in 24 hours
 ・★出し直しの回数を数える。1日100回は、10分おきの自動更新1本で超える
 ・上限に当たったら24時間待つしかない。★その間サイトの更新は一切できない
 ```
+
+## ★2026-09-08 Vercel の枠が尽きた ── 「見せるだけ」なら Vercel を使わない
+
+有璽氏「**バーシャル（Vercel）の枠は全部管理・使っちゃってるみたいなんで、Vercel以外の形で
+見れるようにしてほしい**」（かわちばなし・トップページの共有）。
+
+```
+Vercel を使う理由がある       独自ドメイン／Basic認証／API/middleware が要る／継続運用する
+                            例：稼働盤 fukuchi-kadoban ／ lifestandup-preview
+★Vercel を使う理由が無い      「いまの見た目を人に見せたいだけ」
+                            → Artifact に静的化して公開する。★プロジェクト枠を1つも使わない
+```
+
+- **★「人に見せる」＝Vercel、と反射で決めない。** 枠は有限で、いま埋まっている。
+  1回見せるだけのものに恒久の枠を割かない。
+- **Artifact は公開しただけでは非公開。** 他者へ渡すには**そのページの共有メニューから共有する**
+  （＝人の手が1回要る）。リンクを渡しただけでは相手は開けない。
+- 静的化の手順（Claude Design の .dc.html → 単一HTML）→ [[project_kawachibanashi_portal]]
+  ／ 画像の焼き込み → [[reference_artifact_embed_local_images]]
