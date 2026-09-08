@@ -31,7 +31,7 @@
 - [特別な理由がなければ全ページ統一](feedback_uniform_unless_reason.md) — ★9/8で4回目。真因はページ別!important個別補正。1か所で決め個別上書きを消す
 - [作業前にcwdを読む](feedback_read_the_workspace_first.md) — START_HERE/AGENTS/README/.envを先に読む。読まずに「できない」と言わない
 - [道具ごとの鍵の在り処](reference_tool_access_map.md) — ★能力は書かない(腐る)。bin/capability_check.shで毎回取りに行く
-- [様子を見てから足す](feedback_let_it_settle_before_adding.md) — 入れた仕組みは使ってから次。器を同時に立てない／**🔴9/8「今すぐ広めるという話をここではしていない。安心しろ」＝★次のフェーズのリスクをいまの議題に持ち込むな。事実でも出す順番がある。見分け方＝★有璽氏が使っていない動詞を自分が使い始めたらスコープの外**
+- [様子を見てから足す](feedback_let_it_settle_before_adding.md) — 入れた仕組みは使ってから次。器を同時に立てない／**🔴9/8「今すぐ広めるという話をここではしていない。安心しろ」＝★次のフェーズのリスクをいまの議題に持ち込むな。事実でも出す順番がある。見分け方＝★有璽氏が使っていない動詞を自分が使い始めたらスコープの外／**🔴9/8 同日2回目「金額を定めるフェーズではない。あくまで洗い出しが目的」＝★相場を知るのは洗い出しの一部・値段を決めるのは次のフェーズ。成果物末尾の「判断してほしいこと」は1件ずつ★いまのフェーズの判断か確かめる（119番だけは価格決定が要る）**
 - [機微の二層管理](feedback_confidential_two_layer_rule.md) — 原則共有・機微だけ`_機微`で本人限定。sort_downloads.pyで自動隔離
 - [Artifactは積む](feedback_artifact_accumulate_dont_replace.md) — 作り替えず同じ1ページへ積む／★縮小版は「縮小版・原寸は◯◯」と必ず言う。画質が悪いと言われたらまず自分の圧縮を疑う
 - [図解ファースト](feedback_design_diagram_first_minimal_emoji.md) — 流れ・関係・階層は図で見せ言葉は補足。図を1行に潰すのは改悪。絵文字は最小限
