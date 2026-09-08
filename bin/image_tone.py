@@ -32,10 +32,18 @@ from PIL import Image
 # ★元の訴えは「明るさが揃っていない」なので、主たる関門は SPREAD と DARK に置く。
 #   明るさ・彩度は「明らかにおかしい」を弾くだけの広い幅にする。
 #   ★2枚で作り込まない。18枚そろった時点で分布を見て決め直すこと。
-L_MIN, L_MAX = 65.0, 85.0
-S_MIN, S_MAX = 20.0, 48.0
+# ★2026-09-08 二度目の見直し。18枚を実際に生成して分かったこと：
+#   **平均輝度は「被写体の色」に強く引きずられる。** 緑や紫が多いだけで下がる。
+#   v4-sp1 は輝度58.1だが暗部7.1%＝実際は明るい写真。insta-1（ぶどう）も同じ。
+#   ★「明るい写真か」を代表する指標は 平均輝度ではなく **暗部の割合** だった。
+#      元の5枚 暗部47.2〜87.4% ／ 作り直した17枚 暗部0.0〜11.5%
+#   → 主たる関門を DARK_MAX に置き、輝度・彩度は「明らかにおかしい」を弾く幅にする。
+#   → ひらきも輝度ではなく **暗部の割合** で見る（SPREAD_ON）。
+L_MIN, L_MAX = 50.0, 88.0
+S_MIN, S_MAX = 18.0, 60.0
 DARK_MAX = 15.0
-SPREAD_MAX = 8.0
+SPREAD_ON = "dark_ratio"   # ★ひらきを見る指標。輝度だと色の違いを不揃いと誤判定する
+SPREAD_MAX = 15.0
 
 # 測るときの縮小サイズ。★これを変えると数字が変わる。比較するときは必ず揃えること
 SAMPLE = 260
@@ -93,8 +101,8 @@ def main():
         print("★測れた画像が0件。", file=sys.stderr)
         return 1
 
-    ls = [r["lightness"] for r in rows]
-    spread = round(max(ls) - min(ls), 1)
+    vs = [r[SPREAD_ON] for r in rows]
+    spread = round(max(vs) - min(vs), 1)
     result = {"images": rows, "spread": spread,
               "spread_ok": spread <= a.max_spread,
               "passed": sum(1 for r in rows if not r["ng"]), "total": len(rows)}
@@ -108,7 +116,7 @@ def main():
             print(f"{mark} {name:<34} 明るさ{r['lightness']:5.1f}  彩度{r['saturation']:5.1f}  "
                   f"暗部{r['dark_ratio']:5.1f}%" + ("   " + " / ".join(r["ng"]) if r["ng"] else ""))
         mark = "○" if result["spread_ok"] else "×"
-        print(f"\n{mark} 枚数間のひらき {spread}（上限 {a.max_spread}）"
+        print(f"\n{mark} 枚数間のひらき（{SPREAD_ON}） {spread}（上限 {a.max_spread}）"
               f"   合格 {result['passed']}/{result['total']}")
         print("★これは1経路目。数値が通っても、必ず実物を目で見てから採用すること。")
     return 0 if (result["passed"] == result["total"] and result["spread_ok"]) else 2
