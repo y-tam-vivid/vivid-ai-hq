@@ -3055,6 +3055,17 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
                  出口 ~/.vivid-relay/fukushi_cross_robin.md
   ビビ           束ねて第1版へ（★9/8 18:00）。Artifact＋PDF
   ```
+
+  **⛔2026-09-08 14時台 差し替え（有璽氏）**：「契約書より提案資料の方が解像度が高い。
+  そちらで」＋「補助金・助成金の領域も対象に」。**上のロビン2ブロック（契約書別紙1ベース）は
+  前提として古い。fukushi_cross_robin.md は消さず残す（比較用）。**
+  ```
+  走行中ロビン3  ★判定を提案資料ベースへ作り直し。正本 ~/.vivid-relay/f119_proposal_v23.txt
+                 （提案資料v2.3全32頁）。メニュー1〜6＋★7補助金・助成金（有璽氏の追加指示）
+                 出口 ~/.vivid-relay/fukushi_cross_v2.md
+  ```
+  **★同じ対象に手をつけないでください**: `~/.vivid-relay/fukushi_cross_v2.md` ／
+  `~/.vivid-relay/{fukushi_pains_clover.md, f119_proposal_v23.txt, fukushi_cross_robin.md}`（読むだけ）
   - **★119番の中身の正本＝契約書 別紙1**（`scratchpad/legal-wakoku-20260826/【甲提出用】…契約書.md:364-397`）。
     議事録の構想ではなく契約書の文言で判定させている
   - **★有璽氏「119番を今すぐ広める話はしていない」**＝営業・集客・法的リスクは今回の議題外
