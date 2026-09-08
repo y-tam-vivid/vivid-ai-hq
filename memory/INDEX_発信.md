@@ -22,7 +22,7 @@
 - [PR TIMESはNPO名義の契約](feedback_prtimes_npo_account_scope.md) — 主語は必ずNPO。営利法人は事実の範囲のみ／活動は世界観→活動→将来設計の順
 - [NPO名義リリース2本(2026-08)](project_npo_press_releases_202608.md) — 8/25午前=ウェビナー報告／8/26午前=イベント報告で配信予定。ドラフト済・未配信。残=7月の実績数・写真許諾
 - [Robloxイベントの表記規約](reference_roblox_event_naming_rules.md) — ★イベント名・見出しに「Roblox」を入れない／ロゴ不可／公開しない／無料が前提。告知物が最も事故る
-- [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — **assets機能は当環境で使えない・外部URLはCSPで不可**。sipsで縮小→base64で本文へ。tpl.htmlを直して焼き直す運用
+- [Artifactへ画像はdata URIで焼く](reference_artifact_embed_local_images.md) — **assets機能は当環境で使えない**／**★9/8 image-slotだけ処理して素の<img>のロゴ3箇所を壊した。`src="相対パス"`の残り0件を数えるまでが完了。透明ありはPNGのまま**
 - [PR TIMESエディタの地雷](reference_prtimes_editor_behaviors.md) — ★行頭「1.」で本文全体が番号リスト化し解除不能→STEP1/①②③で書く。保存=下書き
 - [PR TIMES本文の体裁](feedback_prtimes_style_conventions.md) — タイトルは内容が先・団体名は「／」で末尾／太字は■見出しだけ／番号は(1)(2)(3)
 - [tane.は法人ではない](reference_tane_brand.md) — ふくち。グループの子ども・親子向けイベント企画の総称。★リリースの主体に使ってよいかは未決・勝手に名義にしない
@@ -50,3 +50,6 @@
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
 - [LSU「対策済み」はメディアクエリの境界まで見る](project_lifestandup_website_wordpress.md) — ★9/8 en-bubble重なり4ページ再発。真因は9/7のtop調整がタブレット帯(541-980px)専用ブロックのみで540px以下に無かった漏れ。**コードがある≠その幅で効いている**。PHPコメント内に`/*``*/`という文字列を書くと構文エラーになる罠も踏んだ
 - [LSU 縦テープ⇄バッジ間隔 9/8夕修正](project_lifestandup_website_wordpress.md) — tape-verticalの画面端直値配置→コンテナ基準calc式へ（1440/1920で一致を実測）。bc-gap-badgeは17→32px（3回「揃える」対応のみで初めて広げた）
+- [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
+- [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
+- [揃うまで待たない](feedback_dont_wait_for_the_full_set.md) — ★9/8 有璽氏「スタッフの声、4人分そろうのは今日中は難しい」。複数件は1件ごとに独立差し替え可能な構造に。全部揃ってから一括反映にしない（★MEMORY.mdが上限のためここへ降ろした）

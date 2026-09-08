@@ -406,3 +406,53 @@ automation_inventory_check.py（週次月）  ★拾える。crontab の実行�
 **6時間止まってから初めて🔴にする設定**で見張っていたことになる（有璽氏の依頼は「リアルタイム」）。
 つるが 4 → 1 へ直した。**★頻度を変えたら、同じ手で期待間隔も変える。**
 → [[reference_heartbeat_proves_life_not_results]]
+
+## 🔴 5例目 ── 二重になったのは**記憶ファイルそのもの**だった（2026-09-08／発見 09-09 ロビン）
+
+これまでの4例はコード・見張り・受信経路だった。**今回は memory/ が二重化した。**
+同じ有璽氏の1つの発言から、2台がそれぞれ別のファイルを作っていた。
+
+```
+発言（1つ）  2026-09-08「一口にRPOと言っても何をやるのかわからない。…中身がなくない？」
+mini 側      memory/feedback_deliverable_granularity_must_be_actionable.md
+origin 側    memory/feedback_break_down_to_the_work_level.md
+実測         両ファイルとも同じ発言を引用している（本文を1行ずつ突合）
+             MEMORY.md の索引にも、両方の行が別々に足されていた
+             ＝ マージしたときに初めて衝突として現れた（それまで誰も気づけない）
+```
+
+### 真因は「枝分かれしていた19時間」── 遅れは受信だけでなく**送信も**止める
+
+```
+分岐点   54b9ad2  09-08 13:33   ここから両機が別々に進んだ
+mini     8de82fe  09-08 15:45   deliverable_granularity を自動確定でcommit（分岐の後）
+                                ＝ origin 側からは最後まで見えない
+発見時   behind 40 ／ ahead 17  ★19時間、こちらの記録は1件も相手へ出ていない
+```
+
+- **★`bin/vivid-sync.sh` は `BEHIND=0` のときしか push しない**（コード実測）。
+  つまり**遅れているマシンは、自分の記録を1つも他機へ出せない。**
+  「遅れ」は受信の問題に見えて、**同時に送信の停止でもある。**
+- **★自動マージは `DIRTY=0` のときしか走らない。`DIRTY` は `git status --porcelain` の行数＝
+  untracked も数える。** 今回止めていたのは `data/dashboard_history/2026-09-09.json.gz`
+  ＝ **自分たちの稼働盤 cron が毎日置いていく1ファイル。**
+  自分で置いたゴミ1個で、自分の同期が止まる形になっていた。
+- **★SYNC_STATUS.md の🔴は「未取込40件」としか言わない。**「あなたの記録17件が
+  相手へ届いていない」とは書いていない。読む側は受信だけの問題だと読む。
+
+### How to apply
+
+```
+◎ 記録する仕事（ロビンの毎朝の棚卸し・memoryへの追記）は、★先に取り込んでから始める
+  cd ~/vivid-ai-hq && git status && git add -A && git commit && git merge origin/main
+✕ 🔴が出たまま「昨日の学びを拾う」を始める ── 相手が既に書いたものを、もう1本書く
+◎ 衝突したら両方を残す（規範どおり）。★ただし MEMORY.md は上限があるので
+  両方の索引行は載らないことがある → 片方は分野索引へ降ろす
+  → [[feedback_memory_index_hygiene]]
+◎ 重複した2本は、その場で片方を消さない。★索引行に「重複・統合は人の判断」と書いて残す
+```
+
+**★いま残っている重複（未統合・人の判断待ち）**
+`feedback_deliverable_granularity_must_be_actionable.md` ⇔ `feedback_break_down_to_the_work_level.md`。
+前者の [[project_fukushi_needs_and_team_design]] は**存在しないファイルを指している**
+（実体は `project_fukushi_pain_list_team_design.md`）。統合するならここも直す。

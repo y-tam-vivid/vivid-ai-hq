@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+"""画像のトーン（明るさ・彩度・暗部）を測って合否を返す。★読むだけ。書き込まない。
+
+なぜ要るか ── 2026-09-08、地域ポータル「かわちばなし」で有璽氏の指摘
+「素材写真の明るさとかが異なっているように思います」を数字にしたのが発端。
+5枚の明るさが 10.9〜35.4（ひらき24.5・最明と最暗で3.2倍）でバラついていた。
+**「揃っているか」を目で決めると「まあ揃っている」で通る。** だから測る。
+
+★ただし数値の合格は目視の合格ではない。同日、補正版は数値5/5合格・目視4/5不合格だった。
+  判定は必ず 数値 → 目視 の2経路。このスクリプトは1経路目でしかない。
+  → memory/project_kawachibanashi_portal.md
+
+使い方
+    python3 bin/image_tone.py 画像1 画像2 ...          # 既定の合否線で測る
+    python3 bin/image_tone.py --json 画像...            # JSONで出す（他スクリプトから使う用）
+    python3 bin/image_tone.py --min-l 60 --max-l 70 ... # 合否線を変える
+
+合否線の既定（かわちばなしの値。案件が変われば引数で変える）
+    明るさ 60〜70 ／ 彩度 35〜45 ／ 暗部 15%未満 ／ 枚数間のひらき ±8以内
+"""
+import argparse
+import colorsys
+import json
+import sys
+
+from PIL import Image
+
+# 既定の合否線
+# ★2026-09-08 に一度ゆるめた。初版は 明るさ60〜70／彩度35〜45 で、参考サイトのスクショ
+#   1点（64.5/40.3）に合わせていた。実際に生成した2枚は L72〜82・S20〜34 で、
+#   ★数値は外したのに目視では合格だった（ぶどうの1枚）。
+# ★元の訴えは「明るさが揃っていない」なので、主たる関門は SPREAD と DARK に置く。
+#   明るさ・彩度は「明らかにおかしい」を弾くだけの広い幅にする。
+#   ★2枚で作り込まない。18枚そろった時点で分布を見て決め直すこと。
+# ★2026-09-08 二度目の見直し。18枚を実際に生成して分かったこと：
+#   **平均輝度は「被写体の色」に強く引きずられる。** 緑や紫が多いだけで下がる。
+#   v4-sp1 は輝度58.1だが暗部7.1%＝実際は明るい写真。insta-1（ぶどう）も同じ。
+#   ★「明るい写真か」を代表する指標は 平均輝度ではなく **暗部の割合** だった。
+#      元の5枚 暗部47.2〜87.4% ／ 作り直した17枚 暗部0.0〜11.5%
+#   → 主たる関門を DARK_MAX に置き、輝度・彩度は「明らかにおかしい」を弾く幅にする。
+#   → ひらきも輝度ではなく **暗部の割合** で見る（SPREAD_ON）。
+L_MIN, L_MAX = 50.0, 88.0
+S_MIN, S_MAX = 18.0, 60.0
+DARK_MAX = 15.0
+SPREAD_ON = "dark_ratio"   # ★ひらきを見る指標。輝度だと色の違いを不揃いと誤判定する
+SPREAD_MAX = 15.0
+
+# 測るときの縮小サイズ。★これを変えると数字が変わる。比較するときは必ず揃えること
+SAMPLE = 260
+
+
+def measure(path):
+    """1枚を測る。明るさ・彩度・暗部率（いずれも0-100）を返す。"""
+    im = Image.open(path).convert("RGB")
+    im.thumbnail((SAMPLE, SAMPLE))
+    px = list(im.getdata())
+    n = len(px)
+    lum = [(0.299 * r + 0.587 * g + 0.114 * b) / 255 * 100 for r, g, b in px]
+    lightness = sum(lum) / n
+    sat = sum(colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)[1] for r, g, b in px) / n * 100
+    dark = sum(1 for v in lum if v < 25) / n * 100
+    return {"path": str(path), "lightness": round(lightness, 1),
+            "saturation": round(sat, 1), "dark_ratio": round(dark, 1)}
+
+
+def judge(m, l_min=L_MIN, l_max=L_MAX, s_min=S_MIN, s_max=S_MAX, dark_max=DARK_MAX):
+    """1枚ぶんの不合格理由を並べる。空リスト＝合格。"""
+    ng = []
+    if not l_min <= m["lightness"] <= l_max:
+        ng.append(f"明るさ{m['lightness']}（{l_min}〜{l_max}の外）")
+    if not s_min <= m["saturation"] <= s_max:
+        ng.append(f"彩度{m['saturation']}（{s_min}〜{s_max}の外）")
+    if m["dark_ratio"] >= dark_max:
+        ng.append(f"暗部{m['dark_ratio']}%（{dark_max}%以上）")
+    return ng
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("paths", nargs="+")
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--min-l", type=float, default=L_MIN)
+    ap.add_argument("--max-l", type=float, default=L_MAX)
+    ap.add_argument("--min-s", type=float, default=S_MIN)
+    ap.add_argument("--max-s", type=float, default=S_MAX)
+    ap.add_argument("--max-dark", type=float, default=DARK_MAX)
+    ap.add_argument("--max-spread", type=float, default=SPREAD_MAX)
+    a = ap.parse_args()
+
+    rows = []
+    for p in a.paths:
+        try:
+            m = measure(p)
+        except Exception as e:              # 開けないものは飛ばす。黙って落とさない
+            print(f"★開けなかった: {p} ({e})", file=sys.stderr)
+            continue
+        m["ng"] = judge(m, a.min_l, a.max_l, a.min_s, a.max_s, a.max_dark)
+        rows.append(m)
+
+    if not rows:
+        print("★測れた画像が0件。", file=sys.stderr)
+        return 1
+
+    vs = [r[SPREAD_ON] for r in rows]
+    spread = round(max(vs) - min(vs), 1)
+    result = {"images": rows, "spread": spread,
+              "spread_ok": spread <= a.max_spread,
+              "passed": sum(1 for r in rows if not r["ng"]), "total": len(rows)}
+
+    if a.json:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        for r in rows:
+            mark = "○" if not r["ng"] else "×"
+            name = r["path"].split("/")[-1]
+            print(f"{mark} {name:<34} 明るさ{r['lightness']:5.1f}  彩度{r['saturation']:5.1f}  "
+                  f"暗部{r['dark_ratio']:5.1f}%" + ("   " + " / ".join(r["ng"]) if r["ng"] else ""))
+        mark = "○" if result["spread_ok"] else "×"
+        print(f"\n{mark} 枚数間のひらき（{SPREAD_ON}） {spread}（上限 {a.max_spread}）"
+              f"   合格 {result['passed']}/{result['total']}")
+        print("★これは1経路目。数値が通っても、必ず実物を目で見てから採用すること。")
+    return 0 if (result["passed"] == result["total"] and result["spread_ok"]) else 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())
