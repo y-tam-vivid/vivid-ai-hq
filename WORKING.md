@@ -3023,7 +3023,15 @@ notion_backfill.py  ★2026-08-20 本実行済み。28件を台帳(00_企業マ�
           価格帯下限/上限/課金の形/★価格の根拠/対応する困りごと#/難易度/頻度
   ★禁止  推測で価格を埋める（空欄＋「未確定」が正解）／「コンサル」等の曖昧語
   ```
-  - **★見張り仕掛け済み**（完了 or 両方10分無変化で通知）→ [[reference_offload_long_work_to_mini]]
+  - **✅第2版 完了（9/8 15時台）**
+    スプレッドシート https://docs.google.com/spreadsheets/d/1hmYsmwM3MhDaLLJmyG--Ihvqy1FnBXdMRc3r5JUsmxI/edit
+    Artifact（同URLへ積んだ）https://claude.ai/code/artifact/6f347967-ee9f-4d2b-b190-098920207cfe
+    ```
+    業務268（自社130＋外部138・★RPOは6→40業務）／専門家91／価格98（全件URL・福祉38/他業種60）
+    ★業務独占18件 ／ ★BPO月額の妥当な幅＝月2〜6万円（3か所空欄だった項目に根拠つきの幅）
+    実測  5タブとも読み返して行数一致。03更新時は snapshot を取り他3タブの不変を確認
+    ```
+  - **★見張りは4回とも機能**（完了/停滞/ssh不通の3終端）→ [[reference_offload_long_work_to_mini]]
   - **★2体とも読むだけ。**台帳・Notion・kintone・Slackへ書かせていない（指示文に明記）
   - **★同じ対象に手をつけないでください**: 上記の出口2ファイル ／ `~/.vivid-relay/{clover,robin}_task.txt`
 
