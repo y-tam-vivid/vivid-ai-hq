@@ -2778,3 +2778,25 @@ FAX          072-344-5321
 ★消すのではなく**コメントで残して非表示**（戻せる形）。
 ★8件を3種類に分けて有璽氏へ出したら「全て不要」で1回に決着した。
 　**残件を数えて種類ごとに並べると、判断が1往復で済む** → [[feedback_batch_the_checks]]
+
+## 🔴2026-09-08 夜「文字は新しいのに見た目が古い」──★CSSを消し忘れた
+
+有璽氏「反映されてないよ」。実測すると**HTMLは新しく、CSSだけ4本とも古い**状態だった。
+
+```
+about/company の文字   ★5項目とも公開URLに在る（072-344-5321 等）
+CSS                    static-preview 側が 26,949 / 手元 27,100 …★4本とも違う
+                       style.css は ★3,915バイト分の修正が抜けていた
+```
+★**真因は既知の罠**：`crawl_static.py` は「既存ファイルは飛ばす」。
+　出し直すとき `find static-preview -name index.html -delete` だけでは**CSS/JSが残る**。
+
+```
+★出し直す前に必ず消すもの（3種）
+  find static-preview -name index.html -delete
+  find static-preview -name "*.css" -delete
+  find static-preview -name "*.js" ! -name "middleware.js" -delete   ★middleware.jsは残す
+★消したあと、書き出し後に★手元とcmpで突合してから公開する
+```
+★**「文字が直っている」を見て「反映された」と言わない。**見た目の修正はCSSにある。
+　★HTMLとCSSの両方を突合して初めて「反映された」と言える。
