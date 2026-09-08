@@ -171,5 +171,42 @@ self_audit / watch_external。**intake_match を含め11本。**
   遅延と死亡が同じ色で出る間は、レジスタの色は原因を持っていない。
 - 修正はコード変更なので検査役（つる）では行わず、ピタゴラスへ回した。
 
+## ★2026-09-08 progress_report.py を修正・実測。残り10本は未着手
+
+有璽氏「その構造を直す直す言ってて全然直っとらん」を受け、11本のうち1本を実際に直した。
+`sys.exit(main())` の裸呼びを `try: main() / except: heartbeat.beat(失敗)` へ包む型
+（`corp_number_monthly_update.py` と同じ）。実測：`build_report()` へ
+`raise RuntimeError` を仕込み `--run --beat` で実行 → レジスタが🟢正常→🔴失敗→
+（正常系を再実行して）🟢正常、と2回とも正しく遷移することを確認。
+
+**★実測で踏んだ地雷（テスト方法そのものの罠）**：わざと失敗させるテストコピーを
+`/tmp/xxx.py` へ置くと、`HERE = os.path.dirname(os.path.abspath(__file__))` が
+`/tmp` になり `from heartbeat import beat` が `/tmp/heartbeat.py` を探して
+`ModuleNotFoundError`＋`except Exception: pass` で**心拍そのものが握りつぶされる**
+（レジスタが一切動かない＝テストが機能していないのに一見「何も起きない」だけに見える）。
+**`sys.path.insert(0, HERE)` できょうだいモジュールを読む型のスクリプトを検証するときは、
+テストコピーも同じディレクトリへ置くこと。** 別ディレクトリへ逃がすテストは、この型の
+スクリプトでは検証にならない。
+
+**残り9本（dashboard_build / gas_outside_watch / heartbeat_names_check /
+ledger_guard_extend / ledger_report / memory_sweep / notion_minutes_duplicate_report /
+self_audit / watch_external）と intake_match は依然未修正。** 依頼のスコープが
+progress_report.py 1本に限定されていたため、他は触っていない。
+
+## ★2026-09-08 頻度も直した（ドーベルマン）
+
+有璽氏「自動で届くのが12時、18時だけやったら、薄いわ、情報が。もっと頻度を高めろ。」を受け、
+1日2回（12:00/18:00・daily_jobs.conf）→**毎時（07:00-22:00・crontab直書き）**へ変更。
+実測（`ask_hub_queue.json` 過去5日31件の回答時刻）で有璽氏の活動時間帯が07時台〜21時台に
+分布すると確認し、依頼の「08:00-22:00」より1時間早い窓を採用した。★`daily_jobs.conf` は
+「1日1回・ジョブ名ごと」設計のため毎時には合わず、`stall_watch.py`と同じくcrontab直書きへ。
+`bin/daily_jobs.conf` の旧2行はコメントアウトで無効化（削除ではない）。
+
+**★「変化が無ければ送らない」仕様は無傷。** ただし本番実行では走行中の担当が
+1件以上いたため`force_send`が働き、その場では「変化なし→送らない」の経路を確認できなかった
+（正直な限界）。`VIVID_RUN_AGENT_LOG`を空の一時ファイルへ差し替えた隔離環境で走行中0件を
+再現し、2回目に正しく抑止されることを別途確認した。⚙️レジスタの期待間隔は
+22:00→翌07:00の空白9時間＋バッファで20→10時間へ変更。詳細 `~/.vivid-relay/progress_freq_result.md`。
+
 関連: [[reference_ran_is_not_succeeded]] [[reference_no_gate_on_asking_the_human]]
 [[reference_hooks_enforce_what_discipline_cannot]] [[feedback_find_holes_without_being_told]]

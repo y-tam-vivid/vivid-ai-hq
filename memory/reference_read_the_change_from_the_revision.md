@@ -1,3 +1,11 @@
+---
+name: reference_read_the_change_from_the_revision
+description: 申告が失われても変更内容はリビジョンから読み取れる。ただし保険であって申告を省く根拠ではない
+metadata:
+  node_type: memory
+  type: reference
+---
+
 # 申告が失われても、変更内容はリビジョンから読み取れる
 
 2026-09-05、ピタゴラスがテレアポリストの指摘①〜⑤を直したが、**作業は実際に行われたのに

@@ -11,19 +11,22 @@
 - [カレンダー テンプレ挿入](project_calendar_template_autofill.md) — GASで自動挿入。タイトル【種別】で振り分け＝命名ルールが前提
 - [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入する。触ったファイルを明示・commitは束ねる側が打つ
 - [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない／★枝分かれはff-onlyでは永久に解けない（自動merge＋衝突ならabort）／**🔴9/5 2回目＝機械は設計どおり止まったが誰も解かなかった。真因は🔴の説明文が「未コミット」決め打ちで、未コミット0だと打つ手が無いように読めること。🔴を見たらまず`git status --porcelain|wc -l`と rev-list を叩き、0件なら自分で`git merge origin/main`**
-- [対話か claude -p かの見分け方](reference_detect_noninteractive_session.md) — ★`CLAUDE_CODE_ENTRYPOINT` の1本だけ（cli=対話／sdk-cli=非対話）。agent_id・isatty・CHILD_SESSIONは全部使えないと実測。transcriptにも同じ欄があり誤検知率を事前に測れる
+- [対話か claude -p かの見分け方](reference_detect_noninteractive_session.md) — ★`CLAUDE_CODE_ENTRYPOINT` の1本だけ（cli=対話／sdk-cli=非対話）。agent_id・isatty・CHILD_SESSIONは全部使えないと実測。transcriptにも同じ欄があり誤検知率を事前に測れる／**★9/7 対話セッションでもAskUserQuestionがツール一覧に無い構成がある。拒否より手前でToolSearchが0件**
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★自動配布にした結果、逆に`~/.vivid-relay/`を直すと15分後に黙って巻き戻る。触る前に`bin/hooks/`に同名が無いか見る
 - [非対話ではPermissionRequestが鳴らない](reference_permission_request_hook_headless.md) — ★2026-09-06 実測10ケース＋実体の文字列。`claude -p`では承認フックが一度も発火せず、dontAskの自動拒否をallowで上書きもできない＝「Slackのボタンで端末の承認を代行」は非対話については成立しない。PreToolUseは非対話でも発火する（allow/deny/ask/deferを返せる）
-- [crontabは書けない](reference_cron_write_blocked_in_session.md) — ★日次ジョブの正本はbin/daily_jobs.conf。8/23も未解消／ssh越しなら書ける
+- [検問は1か所に置いて分岐から呼ぶ](reference_permission_request_hook_headless.md) — ★9/6 `mcp__`だけ早期returnで長さ判定を素通りし、外部へ書くMCPが中身0行＋許可ボタンで出ていた。分岐ごとに書くと後から増えた分岐だけ検問の外に出る
+- [取り込めない日はorigin/mainを直接読む](reference_silent_sync_failure.md) — ★9/7 miniはbehind34＋他セッションの書きかけ5本でmergeできず。`git show origin/main:<path>`と`git grep origin/main`で重複を回避。**手元に無い＝未記録の証拠にならない**
+- [crontabへの書き込み](reference_cron_write_blocked_in_session.md) — ⛔**9/7に直っていた／🔴9/8つるのセッションでは書けない（2経路ともoperation not permitted・被害0）＝機械でなくセッションの属性。触る前に1行試す**。★日次ジョブの正本はbin/daily_jobs.confのまま。crontab直接は10分おき等それに乗らないものだけ・移したら元を消す
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
 - [止めてあるものを混ぜない](reference_monitor_must_exclude_parked.md) — 警告≠異常。止めてある/保留/★直った は除く／**★検査役2体が違う数字を出したら分類の基準が違う。真因はレジスタの「有効」フラグが実態と合っていないこと(2026-08-23)**／**★心拍の宛先は行名の文字列一致。相乗り・beat無しで、動いているのに永久に🟡になる(8/27に2件)**／**★8/28 heartbeat_names_check の5件中4件が誤検知だった（PROC_NAME固定・行末コメント・自前beatラッパ）。修正済。同じ穴を4回踏んでいる＝次は正規表現を足さずastか自己申告へ**／**★「有効」フラグのズレは2回目。今回は常駐(Slack Socket Mode)で、人が手で起動した後もレジスタが2日間 有効=False＝永久に🔴が立たない状態だった。起動と登録は1セット**／**★9/1 毎朝の材料「ログの失敗N件」の中身を初実測＝10件中6件がSlackの正常なdisconnect。「異常でない」と別memoryで判定済みなのに self_audit.py がそれを読まないため12日間鳴り続けている。件数は tail -25 の窓で動くので増減も指標にならない。直すのはピタゴラス**／**★9/5 指摘(findings)側にも「保留」を持てるようにした。clear(直った)とpark(人がいまは対応しないと決めただけ)を分離＝park は台帳から消さず・連続日数も伸ばさず・毎朝の画面に⏸で理由/決めた人/戻し方まで出す。戻すのは `findings_tracker.py --unpark "<key>"` の1手。営業台帳の3件を実際に保留にした（findings_escalate の対象0件＝明朝のSlack督促は出ない）**
+- [ブロックの見出しから行の属性を借りない](reference_monitor_must_exclude_parked.md) — 🔴9/6 self_auditの「7日以上放置」10件が★全部偽陽性。日付をブロック先頭から取り、取り消し線・✅の決着印を読んでいない。**未修正・担当ピタゴラス**
 - [判断待ちは配布を止めない](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/1 intake_notifyが「人の目視を挟むか判断待ち」の最中にSlackへ本番投稿5件。文書の保留を機械は読まない／★レジスタの有効=Falseは実行を止めない(監視の対象外にするだけ)。止めるならdaily_jobs.confの行を止める
 - [無言の失敗](reference_silent_failure_kills_adoption.md) — 失敗時こそ返す＋逃げ道。★押下は受け側にログ無し(launchd未load)＝届いたか不明
 - [「動いた」と「成功した」は別](reference_ran_is_not_succeeded.md) — 常駐は一定間隔で心拍／心拍はmain()の外で包む。末尾は例外が素通り
 - [記録は出口を数える](reference_log_needs_an_exit.md) — 器を作ったら出口を書き出す／★入口を直す依頼が来たら先にその列の出口を数える。受付シート「連絡が取れる手段」は台帳へ移送されない孤立列だった(2026-08-24)／**★手順書に「まだ無い機能」を書いた。決着済みの設計を在るものとして扱った。人が読む文書の前に動線を1回自分で通す(2026-08-24)**
-- [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／定期生成は未登録
-- [自動処理レジスタ(心拍)](project_automation_register.md) — ★有効=Falseは故障でなく設計。備考を全文読む前に--beatを足すな(9/6)／心拍名は1文字違うと黙って失敗
+- [稼働ダッシュボード](project_ops_dashboard.md) — AI稼働を1枚に。★古さを頁が名乗る／**★9/8 案B実装(Vercel Blob・30秒ポーリング)。★Vercel無料枠デプロイ日次上限(~100回)発覚・本番の通し確認は次回デプロイ成功時に要目視**
+- [自動処理レジスタ(心拍)](project_automation_register.md) — ★有効=Falseは故障でなく設計。備考を全文読む前に--beatを足すな(9/6)／心拍名は1文字違うと黙って失敗／★心拍を打たないスクリプトは登録漏れ検知の対象外(9/7・agent_watchdog.py未申告本番稼働の実例)
 - [議事録→顧客relation付与](project_meeting_customer_relation_linker.md) — mini cron 07:35で稼働。自社5社は除外。残115件は多くが顧客でない
 - [フォルダ分類は誤答を強制する](reference_folder_classification_forces_wrong_answers.md) — 1つしか選べない置き場に判断を置かない。3割超の偏りは既定値と疑う
 - [入力と出力先を先に見る](reference_ai_output_blamed_before_inputs.md) — ★フォールバックは工程ごとに散る(議事録で7個)。1本直しても潰れない
@@ -41,6 +44,7 @@
 - [本数で切ると希少な版が消える](reference_retention_by_count_deletes_the_wrong_ones.md) — 残す単位は日ごと最新1本
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
+- [コマンド置換内のexitは効かない](reference_bash_subshell_exit_pitfall.md) — `OUT="$(func)"`内のexitはサブシェルだけ終わりrc=0で完走する。詰まり対策は戻り値+グローバル変数で。★隔離テストはPATH優先順位に注意(/usr/local/binが$HOME/.npm-global/binより先)
 - [Slack通知の作法](reference_slack_notification_rules.md) — 宛先/手段/条件/書式を1枚に集約(9/3新設・従来3箇所に散在)。**★経路は2つ＝報告tell()／判断ask()。ask()は1回1件・tell()は「返信不要」を自動付与**／DM`D0AT4NQ6X7D`固定・チャンネル禁止／**★9/4 ask()はask_hub委譲＝ボタンで出る（記述式は廃止）**／検査は`VIVID_NOTIFY_OFF=1`必須。**関数のモックで代用しない＝委譲で出口が2つになり9/4に本番へ2回飛んだ**(過去にも8件誤送信)／有璽氏はコピー不可なのでlink=で渡す／**🔴金額はSlackに書かずNotionリンクへ＝当方の導出で承認未取得。確認はビビが実施・結果待ち**／**🔴9/5実測 ssh越しに`VIVID_NOTIFY_OFF=1`は渡らない(手元exportは無効=ミュートしたつもりで本物のDMへ飛ぶ)。sshに渡すコマンド文字列の中に書く**
 - [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／**形式外value(UUID)は9日目・累計31回(8/25=1 8/26=13 8/27=3 8/28=7 8/29=0 8/30=0 8/31=1 9/1=6)。押した人にエラーが返り続けている＝別アプリのボタン。★0が2日続いたのは直ったからでなく誰も押さなかっただけ。★8/29に書いた「次に読んだ人がapi_app_idをログへ出す」は grep実測0件＝入っていない。担当を名指しした＝ピタゴラス／検査ステラ**／貼った鍵のlog平文は未revoke／**★scopeは「足してSave」では効かない。再インストールまでが1セット。実測は auth.test の x-oauth-scopes ヘッダ(本文には出ない)**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — ★2026-09-03 稼働・実地2件通過。`ask_hub.ask()`で有璽氏のDMへボタン投稿→slack_socket.pyのinteractiveで受ける／「その他」はSlackのモーダル（新スコープ・購読不要）／**★発行は必ずminiから＝台帳`ask_hub_queue.json`が受信側にしか無い。MacBookから投げると「受付番号が見つかりません」になる**／**★notify.pyのslack_pending.jsonとは別物。こちらは誰も止めない**／宛先は`ROUTES`1か所・営業以外はDM・チャンネル分割は基準未決で保留／cron未登録・ステラ検査未了

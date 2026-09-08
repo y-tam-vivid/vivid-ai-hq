@@ -55,6 +55,14 @@
   ・非対話（claude -p）では、そもそもこのフックが呼ばれない。効くのは対話セッションだけ
   ・時間切れで畳んだ問いは、ask_hub の台帳では open のまま残る
     （★AIが人の回答を騙って answered にしないため。ボタンは消すので押し損ねは起きない）
+
+★2026-09-07 追加 ── MacBook からの承認待ちも Slack で返せるようにした（ビビ依頼）
+  MacBook には SLACK_APP_TOKEN が無く、ask_hub.ask() を直接呼ぶと _require_receiver() で
+  RuntimeError になる（設計どおり・正しい防御）。MacBook → mini の ssh は通る
+  （逆は通らない・2026-09-07 ビビが実測）ので、この機に受信能力が無ければ
+  `ssh mini` 経由で ask_hub.py の CLI（--ask / --answer-of / --close）を叩き、
+  発行・照会・時間切れの畳みを mini へ委託する。台帳は常に mini の1か所に揃う。
+  ★ssh が届かない場合は notify_only へ落ちる（無言で失敗しない）。
 """
 
 import os
@@ -64,6 +72,7 @@ import time
 import socket
 import hashlib
 import re
+import subprocess
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -74,6 +83,12 @@ DM = 'D0AT4NQ6X7D'                                   # 有璽氏とのDM（ask_h
 LAST = os.path.join(HERE, '.hook_last_notify.json')
 LOG = os.path.join(HERE, 'hook_permission_slack.log')
 ME = os.path.basename(__file__)
+
+SSH_TARGET = 'mini'                              # ~/.ssh/config のエイリアス。MacBook→mini方向のみ通る
+SSH_ASK_HUB = '~/.vivid-relay/ask_hub.py'         # mini 側の実体パス（展開はssh先のシェルに任せる）
+SSH_ASK_TIMEOUT = 20                              # 秒。発行1回ぶん
+SSH_POLL_TIMEOUT = 10                             # 秒。answer_of の照会1回ぶん
+SSH_POLL_SEC = 5                                  # 秒。ssh越しのポーリング間隔（ローカルのPOLL_SECより長め。ssh起動コストを考慮）
 
 
 def settings_paths():
@@ -412,12 +427,86 @@ def answered(ask_id, a):
                                    'decision': {'behavior': 'deny', 'message': msg}}}
 
 
-def remote(w, tool, body, r):
-    """第2段 ： Slack のボタンで許可／拒否を受け取り、その決定を返す"""
+def _has_local_receiver():
+    """この機は Slack から答えを受け取れるか（＝SLACK_APP_TOKEN があるか＝mini か）
+
+    ★ask_hub._require_receiver() と同じ判定をここでも行う。あちらは「投げさせない
+    （例外を投げる）」役、こちらは「投げる前にどちらの経路を使うか決める」役。
+    """
     try:
         import ask_hub
+        ask_hub._tok('SLACK_APP_TOKEN')
+        return True
+    except Exception:
+        return False
+
+
+def _ssh_run(args_list, input_bytes, timeout):
+    """★共通のssh実行。到達できなければ None を返す（例外を外へ投げない）"""
+    try:
+        proc = subprocess.run(
+            ['ssh', SSH_TARGET] + args_list,
+            input=input_bytes, capture_output=True, timeout=timeout)
     except Exception as e:
-        return notify_only(w, tool, body, 'ask_hub を読み込めない（%s）' % e)
+        log('★ssh %s へ到達できない（%r）： %r' % (SSH_TARGET, args_list, e))
+        return None
+    out = (proc.stdout or b'').decode('utf-8', 'replace').strip()
+    if not out:
+        log('★ssh %s の応答が空（%r・rc=%s・stderr=%r）'
+            % (SSH_TARGET, args_list, proc.returncode, (proc.stderr or b'')[:300]))
+        return None
+    try:
+        return json.loads(out.splitlines()[-1])
+    except Exception as e:
+        log('★ssh %s の応答を読めない（%r・%s）： %r' % (SSH_TARGET, args_list, e, out[:300]))
+        return None
+
+
+def _ssh_ask(payload):
+    """★MacBook（SLACK_APP_TOKEN が無い機）から、mini へ発行を委託する
+    （2026-09-07・ビビの実測：MacBook→mini は通る／逆は通らない）。
+    戻り値 (ask_id, posted)。到達できなければ (None, False)。
+    """
+    r = _ssh_run(['/usr/bin/python3 %s --ask' % SSH_ASK_HUB],
+                 json.dumps(payload, ensure_ascii=False).encode('utf-8'), SSH_ASK_TIMEOUT)
+    if not r or r.get('error'):
+        if r and r.get('error'):
+            log('★mini 側で発行できなかった ： %s' % r['error'])
+        return None, False
+    return r.get('ask_id'), bool(r.get('posted'))
+
+
+def _ssh_answer_of(ask_id):
+    """★答えを mini へ問い合わせる。到達できなければ None（＝まだ、として扱う）"""
+    r = _ssh_run(['/usr/bin/python3 %s --answer-of %s' % (SSH_ASK_HUB, ask_id)],
+                 b'', SSH_POLL_TIMEOUT)
+    return (r or {}).get('answer')
+
+
+def _ssh_close(ask_id, headline):
+    """★時間切れのボタンをmini経由で畳む"""
+    r = _ssh_run(['/usr/bin/python3 %s --close %s' % (SSH_ASK_HUB, ask_id)],
+                 json.dumps({'headline': headline}, ensure_ascii=False).encode('utf-8'),
+                 SSH_ASK_TIMEOUT)
+    if not r or not r.get('closed'):
+        log('★ssh経由でボタンを畳めなかった #%s' % ask_id)
+
+
+def remote(w, tool, body, r):
+    """第2段 ： Slack のボタンで許可／拒否を受け取り、その決定を返す
+
+    ★この機が Slack から答えを受け取れなければ（SLACK_APP_TOKEN が無ければ）、
+      ssh mini 経由で発行・照会する（2026-09-07・MacBookの承認待ちを解くため）。
+      台帳は常に mini の1か所（受信側の常駐＝slack_socket.py がそこに居るため）。
+      ★ssh が届かないときは通知だけに落とす（無言で失敗しない）。
+    """
+    local = _has_local_receiver()
+    ask_hub = None
+    if local:
+        try:
+            import ask_hub
+        except Exception as e:
+            return notify_only(w, tool, body, 'ask_hub を読み込めない（%s）' % e)
 
     key = hashlib.md5(('%s|%s|%s' % (w['session'], tool, body)).encode()).hexdigest()
     st = load_last()
@@ -427,38 +516,52 @@ def remote(w, tool, body, r):
         ask_id = st['ask_id']          # ★同じ問いを新しく聞き直さない
         log('同じ内容なので #%s を見に行く' % ask_id)
     if not ask_id:
-        try:
-            res = ask_hub.ask(
-                subject='端末の承認（%s）' % tool,
-                question='この操作を許可しますか。★押さないと、この作業はここで止まります。',
-                options=[('許可する', 'primary'), ('拒否する', 'danger')],
-                detail='%s\n\n*%s*\n%s' % (head(w), tool, body),
-                asked_by='承認ゲート', kind='開発')
-        except Exception as e:
-            return notify_only(w, tool, body, 'ask_hub へ出せなかった（%s）' % e)
-        if not res.get('posted'):
-            return notify_only(w, tool, body, 'ask_hub が投稿しなかった')
-        ask_id = res['ask_id']
+        subject = '端末の承認（%s）' % tool
+        question = 'この操作を許可しますか。★押さないと、この作業はここで止まります。'
+        detail = '%s\n\n*%s*\n%s' % (head(w), tool, body)
+        if local:
+            try:
+                res = ask_hub.ask(subject=subject, question=question,
+                                  options=[('許可する', 'primary'), ('拒否する', 'danger')],
+                                  detail=detail, asked_by='承認ゲート', kind='開発')
+            except Exception as e:
+                return notify_only(w, tool, body, 'ask_hub へ出せなかった（%s）' % e)
+            if not res.get('posted'):
+                return notify_only(w, tool, body, 'ask_hub が投稿しなかった')
+            ask_id = res['ask_id']
+        else:
+            payload = {'subject': subject, 'question': question,
+                      'options': [['許可する', 'primary'], ['拒否する', 'danger']],
+                      'detail': detail, 'asked_by': '承認ゲート', 'kind': '開発'}
+            ask_id, posted = _ssh_ask(payload)
+            if not ask_id or not posted:
+                return notify_only(w, tool, body,
+                                   'mini へ発行できなかった（ssh %s へ届かないか、'
+                                   'mini 側の発行に失敗しました）' % SSH_TARGET)
         save_last({'key': key, 'at': time.time(), 'ask_id': ask_id})
-        log('ボタンで聞いた #%s ： %s' % (ask_id, tool))
+        log('ボタンで聞いた #%s ： %s（経路=%s）' % (ask_id, tool, 'local' if local else 'ssh %s' % SSH_TARGET))
 
     wait = min(MAX_WAIT, max(0, r['timeout'] - WAIT_MARGIN))
+    poll = POLL_SEC if local else SSH_POLL_SEC
     deadline = time.time() + wait
     while True:
         try:
-            a = ask_hub.answer_of(ask_id)
+            a = ask_hub.answer_of(ask_id) if local else _ssh_answer_of(ask_id)
         except Exception:
             a = None
         if a:
             return answered(ask_id, a)
         if time.time() >= deadline:
             break
-        time.sleep(POLL_SEC)
+        time.sleep(poll)
 
-    close_buttons(ask_hub, ask_id,
-                  '⌛ 時間切れ ── %d分待ちました。押しても解けません。もう一度やらせてください'
-                  % max(1, wait // 60))
-    log('時間切れ #%s（%d秒）' % (ask_id, wait))
+    headline = ('⌛ 時間切れ ── %d分待ちました。押しても解けません。もう一度やらせてください'
+                % max(1, wait // 60))
+    if local:
+        close_buttons(ask_hub, ask_id, headline)
+    else:
+        _ssh_close(ask_id, headline)
+    log('時間切れ #%s（%d秒・経路=%s）' % (ask_id, wait, 'local' if local else 'ssh %s' % SSH_TARGET))
     return {'suppressOutput': True,
             'systemMessage': ('★Slackへ承認を出しましたが %d 秒のあいだ回答がありません。'
                               '端末のダイアログで押してください。' % wait)}

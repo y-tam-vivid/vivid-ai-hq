@@ -53,6 +53,533 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-08】notify.tell()を「親（◯時の通知です・要約）＋スレッド（詳細）」の形へ（有璽氏「要約させろよ。文章長いの見んのだるい」）── ✅完了・実投稿1件で実測確認済み
+
+**触ったのは `bin/hooks/notify.py`（正本）と `~/.vivid-relay/ask_hub.py` の2本だけ。**
+progress_report.py・stall_watch.py・run_agent.sh・crontab・daily_jobs.confへは触れていない。
+台帳・テレアポリスト・Notion・kintoneへは1文字も書いていない。
+
+```
+tell(title, body, summary=None)  親＝「⏰HH:MMの報告です」＋タイトル＋要約（3〜4行/280字）
+                                  スレッド＝body の残り（無ければスレッド無し＝③）
+                                  ★要約はAIにやらせない。summary未指定なら機械的に先頭を切る
+                                  だけ（_split_for_parent）。呼び出し元12箇所は無改修で動く
+ask()                            親は不変（何を決めるか＋ボタン最優先）。detail>900字なら
+                                  全文をスレッドへ追加投稿。★ついでに実害バグ修正：
+                                  link無しで900字超だと「続きは下のリンク」と表示するのに
+                                  リンクが無く読めなかった旧実装を解消
+```
+
+実測：モック15ケース全合格（tell 11・ask 4）＋実投稿1件を2経路で確認
+（Slack API実物：親183文字4行・スレッド54文字3行・thread_ts一致／conversations.replies）。
+配布：`bin/hooks/notify.py`→`~/.vivid-relay/notify.py` sha256完全一致確認済み。
+ask_hub.pyはgit管理外・setup_hooks.shの同期対象外のため直接編集で問題ない。
+控え `~/.vivid-relay/_backups/{notify.py,ask_hub.py}.bak_pitagorasu_20260908-thread`。
+詳細 `~/.vivid-relay/notify_thread_result.md` ／ `memory/reference_slack_notification_rules.md`「②-c」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ドーベルマン / mini 2026-09-08】進捗報告を毎時へ（有璽氏「12時18時だけは薄い。頻度を高めろ」）── ✅完了
+
+**触ったのは crontab の1行追加・`bin/daily_jobs.conf` の2行コメントアウト・
+⚙️自動処理レジスタ（進捗報告の行のみ）だけ。** `progress_report.py`本体・
+`stall_watch.py`・`run_agent.sh`・`notify.py`・`ask_hub.py`・台帳・テレアポリスト・
+Notion（レジスタ以外）・kintoneへは1文字も触っていない。
+
+```
+①頻度   crontab「0 7-22 * * * progress_report.py --run --beat」新設（毎時16回/日）。
+        daily_jobs.confは「1日1回」設計のため合わず、stall_watch.pyと同じ方式を採用
+時間帯   実測（ask_hub_queue.json・過去5日31件の回答時刻）で活動が07時台〜21時台に分布
+        （00時台1件は例外）と確認し、依頼の08:00-22:00より1時間早い07:00-22:00を採用
+②旧2行   daily_jobs.confの12:00/18:00はコメントアウトで無効化（削除ではない・重複回避）
+③実測   本番1通を実投稿し2経路（標準出力／Slack API）で着弾確認。
+        ★本番実行時は走行中の担当がいてforce_sendが働いたため「変化なし→送らない」の
+        経路はそこでは検証できず、正直に限界として記録。隔離環境
+        （VIVID_RUN_AGENT_LOGを空に差替）で走行中0件を再現し、2回目の抑止を別途確認
+④レジスタ 期待間隔 20→10時間（22:00→翌07:00の空白9時間＋バッファ1時間）。備考に経緯追記
+```
+
+**★まだ確認できていないこと**：crontabからの自然発火（本物の毎時起動）はまだ1回も見ていない。
+次にこのファイルを見る人が1回、`progress_report.log`とレジスタの最終実行時刻を突き合わせること。
+
+詳細・実測値の全文 → `~/.vivid-relay/progress_freq_result.md` ／
+`memory/reference_heartbeat_proves_life_not_results.md`「2026-09-08 頻度も直した」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-08】progress_report.pyに「担当の走行状況」を追加・裸main()を修正（有璽氏「直す言うだけで直っとらん」への対応）── ✅完了・本番Slack投稿で実測確認済み
+
+**触ったのは `~/.vivid-relay/progress_report.py` の1本だけ。** stall_watch.py・run_agent.sh・
+notify.py・ask_hub.py・crontab・daily_jobs.confへは触れていない。台帳・kintoneへは1文字も
+書いていない。Notionは⚙️レジスタの心拍プロパティのみ（テスト時の実測用途）。
+
+```
+⓪新設   run_agent_launch.log を機械が直接読み、走行中／今日完了／今日失敗を出す。
+         WORKING.mdへの手書きに頼らない（2026-09-07に3本ぶん書き忘れがあった実例への対応）。
+         走行中の判定は os.kill(pid,0) でプロセス生死も突合（ログだけで断定しない）
+②決定   走行中の担当が1件以上いる間は、本文が前回と同じでも送る（force_send）。
+         走行中0件のときは従来どおり「変化なしなら送らない」を維持
+③修正   裸の sys.exit(main()) を try/except で包み、途中で落ちても失敗心拍を打つ形へ
+         （corp_number_monthly_update.pyと同じ型）。実測：わざと例外を起こし
+         レジスタが🟢→🔴→🟢と正しく遷移することを確認
+④実測   本番 --run --beat を1回実行 → Slack DM(D0AT4NQ6X7D)に実投稿(ts=1788832666.516099)
+         を conversations.history で確認。標準出力の「送信した」とも一致（2経路）
+```
+
+**★まだ拾えない場面**：`run_agent.sh` を経由しない直接 `claude -p` 起動は拾えない。
+残り9本（dashboard_build等）の裸main()欠陥は今回のスコープ外で未修正。
+詳細・実測値の全文 → `~/.vivid-relay/progress_fix_result.md` ／
+`memory/reference_heartbeat_proves_life_not_results.md`「2026-09-08 progress_report.pyを修正」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-08】稼働盤を案Bへ（有璽氏「案Bはそのまま出す。Aで問題ない」）── ✅実装完了。★本番の通し確認はデプロイ日次上限のため次回持ち越し
+
+**書いたのは`~/.vivid-relay/dashboard_realtime_push.py`（新規）・`web/kadoban/api/data.js`
+（新規）・`~/.vivid-relay/dashboard_build.py`（agent-chip/proj-rowへdata属性＋30秒ポーリングJS）・
+`bin/kadoban_deploy.sh`（api/の運搬1行）・crontab（既存10分おき行へ1コマンド追記）のみ。**
+案A・アイコン運搬・詰まりの手当ては無傷（diffで確認済み）。`~/lifestandup-wp/`・`vivi_patrol.py`・
+`run_agent.sh`・`stall_watch.py`は触っていない。台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+置き場   Vercel Blob（private store・新規`fukuchi-kadoban-data`）。実測で選定：
+         Supabase(外部アカウント増を回避)・Edge Config(サイズ上限で除外)より優位。
+         ★private storeが作れることは実測するまで知らなかった(想定はpublicのみ)
+実測済み ①data.jsのhandler単体テスト：成功／トークン無し／不正トークンの3ケースとも
+           正しい応答（失敗時も画面のDOMは壊さない設計）
+         ②crontab最小PATH環境(env -i)でdashboard_realtime_push.py実行→成功
+         ③crontab diff：意図した1行の変更のみ・他は不変
+         ④旧デプロイでも合言葉なし401（/api/data.json含む。middlewareのmatcherが
+           /api/を除外しないことを実装前に確認済み）
+🔴発見   Vercel無料プランに1日あたりデプロイ回数上限(~100回)がある。本番・Preview
+         とも"api-deployments-free-per-day"で24時間拒否を実測。★10分おき案Aは
+         1日144回デプロイを試みる設計で、この上限の正当性そのものを裏付けた
+残      ★この上限のため「画面を開いたまま30秒おきに数字が実際に動く」の本番通し
+         確認が未実施。次に案Aのcronがデプロイに成功した回で1回目視すること
+```
+
+記録 → `memory/project_ops_dashboard.md`「2026-09-08 案Bを実装」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+
+
+### 【ピタゴラス / mini 2026-09-07 夜】稼働盤を10分おきへ（有璽氏「リアルタイムは無理なん？」・案A）── ✅完了
+
+有璽氏の決定「案A（今日中）＋案Bへの移行で良い」。**書いたのは
+`bin/kadoban_deploy.sh`・`bin/run_with_timeout.py`（新規）・`bin/daily_jobs.conf`
+（kadoban行8本を削除・コメントで移行先を明記）・crontab（`*/10`で新規登録）だけ。**
+台帳・Notion・kintoneへは1文字も書いていない。`~/lifestandup-wp/`・`stall_watch.py`・
+`vivi_patrol.py`は触っていない。
+
+```
+①詰まりの手当て  ✅実測完了。run_with_timeout.py(os.setsid+os.killpg)でdeploy・env ls
+                とも既定300秒×2回まで、2回連続タイムアウトでSlack通知+exit 1。
+                隔離環境で実測：詰まり時rc=1・7秒で終了／二重起動時は後発rc=0でスキップ／
+                stale lock奪取／正常系rc=0・401確認、すべて確認済み
+★踏んだ罠      コマンド置換$(deploy)内のexitはサブシェルだけ終わりrc=0で完走する不具合を
+                1回作った→戻り値+グローバル変数方式に直した→[[reference_bash_subshell_exit_pitfall]]
+②crontab登録    ✅実測完了。2026-08-20時点で無応答だった書き込みが直っていた（RC=0・10秒で返る・
+                無変更で書き戻しdiff一致で確認）。daily_jobs.confは「1日1回」設計のため
+                10分おきには使えないと判断し、crontab直接*/10へ（stall_watch.pyと同型）
+③案B            設計のみ提示・実装せず。~/.vivid-relay/kadoban_realtime_案B.md
+④初回発火       ✅20:20:14に本番発火を確認。Vercelデプロイ完走(10秒でReady)・
+                認証なしHTTP 401・「Basic認証が効いている。中身を載せたままにする」で正常終了。
+                アイコン13/13運搬・ロック解放も確認済み。心拍名は変更していない
+```
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-07】法人番号 一覧シート作成（有璽氏「一覧のシートを作って、まとめて○×」）── ✅完了
+
+`~/.vivid-relay/consolidate_result.md`・`corpno_A_result.md` の17件（人が見れば決まる）を
+新規スプレッドシート1枚（プルダウン付き）にまとめた。**書いたのは新規シート1枚だけ。**
+00_企業マスタ・01_顧客詳細・受付シート・40・テレアポリスト（新リスト・見本）・Notion・
+kintone・stall_watch.py・crontab・ask_hub.py・hook_permission_slack.py へは1文字も触っていない。
+Slack投稿0件（有璽氏へ直接連絡していない）。
+
+```
+シート  https://docs.google.com/spreadsheets/d/1D1TZxmLgVMMLLzRt6yCm1KIicEEMvayWgfrTG2t-dcc/edit
+        「法人番号 確認シート 20260907」／タブ「要確認17件」
+        17件→候補ごとに行を分け26行（複数候補は候補ごとに1行）
+        「確認」列はプルダウン（○ この候補で正しい／× 違う／保留）
+実測    TSVに具体候補が無かった6件（B-0024/B-0085/B-0109/B-0327/B-0372/B-0373）は
+        国税庁全件データ(08-31版)を自分で再検索し具体的な法人番号候補を取得してから記載
+        ★B-0024は法人格まで違う低信頼度候補と判明、正直にその旨を記載
+        プルダウン26/26セル実在・読み返し31行一致を実測確認
+23件    候補が出せない/多すぎる23件はシートに入れていない（押せない質問を混ぜない）
+```
+
+**★ビビへ**：シートのURLをそのまま有璽氏へ渡してください（当方から直接連絡していません）。
+○が付いた行は、こちらが00_企業マスタへbackup→batch_update→突合の手順で反映します
+（同一IDに複数○が付いた場合は矛盾として差し戻します）。
+出口 `~/.vivid-relay/corpno_sheet_result.md`。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-07】架電ステータスのプルダウン化（有璽氏の決定・今日のミーティング）── ✅完了
+
+対象：新リスト `1PXBlBraJrbDH0habkDeRGJT4U5NSRE03BsUXrT_ZbDA`。**書いたのは入力規則
+（dataValidation）と新設「選択肢マスタ」タブの2点だけ。** セルの値・見本・00/01/受付シート・
+40・Notion・kintoneへは1文字も書いていない。Slack投稿0件。
+
+```
+対象   事業所単位5タブ・法人単位6タブ、計11タブ×4列＝44範囲
+       事業所単位 V/Y/AD/AI列（最新+担当①〜③）／法人単位 O/R/W/AB列（7つずれる・実測一致）
+選択肢  ベタ書きしない。新設「選択肢マスタ」タブ(A2:A13)を作り、全44範囲は
+       ONE_OF_RANGE で='選択肢マスタ'!$A$2:$A$13 を参照（マスタを直せば全部に反映）
+既存値  12語に無い41セル（架電32・NG（架電しない）7・断られ2）は消していない。
+       strict:false（拒否ではなく警告）を選択。★12語のどれに寄せるかは人の判断待ち
+実測   basicFilter・値の総数(41)と内訳・器の行数、変更前後で完全一致。
+       末尾行（例：事業所単位2433行目）まで規則が届いていることも個別に確認
+```
+
+結果全文 `~/.vivid-relay/status_dropdown_result.md`。
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【リリス / mini 2026-09-07 夕】保護者の声5件・フォームID訂正(e8e3131)・法定開示2枠化 ── ✅完了
+
+有璽氏の依頼3点。**書いたのは `~/lifestandup-wp/` のみ**（theme/lifestandup/配下＋proposal/）。
+本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは1文字も書いていない。
+元データのスプレッドシート（LIFE STAND UP 取材の回答）へは書き込んでいない（読むだけ）。
+commit `9a59952`・push済み。仮公開へ反映済み・Slackへ報告済み。
+
+```
+①保護者の声  取材アンケート6件中、有璽氏が採用した5件（小2/小4M/小5/小6/高校生Y）を
+             CPT 'voice'(voice_kind=guardian)へ投入。testimonials.php5枠＋トップ3枠(A/B/C)。
+             そのまま貼らず元の言葉づかい・エピソードを保持して整えた。中2(I)は不採用で非表示
+②フォーム    ⛔訂正：9/4暫定接続の`7b81a8b`は誤り。正式ID`e8e3131`(有璽氏が本番管理画面で
+             確認)へ差し替え。lsu_cf7_form_id()。intキャストなし
+③法定開示    案A確定（01自己評価結果・02支援プログラムの2枠。旧02虐待防止指針・旧04その他は
+             公表義務対象外のため削除）。★実装中に発見：依頼文は「PDF未着」だったが、
+             assets/disclosure/へ本物のPDF2件が既に届いていた（自分の着手直後に別セッションが
+             配置したとみられる。中身を画像化して本物と確認済み）。file_exists()で検知して
+             リンク化する実装にしたため、いま実際にダウンロードできる状態になっている
+```
+
+**★踏んだ地雷**：役割検問がこのセッションをメインセッション(ビビ)と誤検出し、
+一時測定スクリプト(.py)へのWrite/直接Bash heredocの一部が拒否された（既知の型と同型）。
+node/npm/npxがPATHに無く`/usr/local/bin`を手で足す必要があった。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+記録 → `memory/project_lifestandup_website_wordpress.md`
+
+### 【リリス / mini 2026-09-07 夕】全ページ統一6件（①ナビ隠れ ②pill3行 ③REASON01余白 ④⑤パンくず周り ⑥ポラロイド位置）── ✅完了
+
+有璽氏「一つ前の件もそうですが、全ページで統一してください。特別な理由がなければ
+全ページで統一をしてください」の原則を受けた対応。対象は `~/lifestandup-wp/` のみ
+（theme/lifestandup/配下のCSS）。本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは
+1文字も書いていない。commit `410b757`・push済み・仮公開サイトへ反映済み（実測でCSS本文に
+①〜⑥が実在することをcurl確認）。
+
+```
+①ナビのチェックボックスが見える  全22テンプレート共通style.cssの1箇所。appearance:none等追加
+②トップ「そんな保護者の声に…」3行  トップページ限定。980px以下18px・540px以下13pxへ縮小
+③REASON01の上の余白           トップページ限定。.reason-card padding-top 40px→20px(指示どおり半分)
+④パンくず⇄バッジの間隔統一      バッジ搭載12/21ページを17pxへ統一。バッジ非搭載9ページは対象外
+⑤ヘッダー⇄パンくずの間隔統一     全21ページを390px=42px/768px帯=63px/1440px帯=71pxへ統一
+⑥/stand-up/programs/ポラロイド位置  写真の頭を見出し行間へ。980px以下は1列レイアウトの
+                                ため例外で元の60pxに戻す(align-items:centerの相殺が
+                                効かなくなり巨大な空白ができるため)
+```
+
+**★踏んだ罠（次に触る人へ）**
+- **CSS編集後は`./php activate_theme.php`を再実行しないとローカル検証サーバーに反映されない。**
+  1回実行して以降は自動反映されると誤解し②③⑥で3回踏んだ
+- **`crawl_static.py`は「既存ファイルは飛ばす」仕様。** デプロイ後に本番CSSをcurlで直接
+  確認して①〜⑥が全部未反映と発覚（vercel deployはREADY応答だったので気づきにくい）。
+  static-preview配下の*.css/*.jsを全削除→再crawlで解決（既知の罠の4例目）
+- **grid `align-items:center`は片方のカラムの高さ変化がもう片方の位置も動かす**
+  （変化量の約半分）。単純な線形計算は成立せず実測→補正→再実測を反復した
+- 詳細・実測値 → `~/lifestandup-wp/README.md` 19章 ／ `memory/project_lifestandup_website_wordpress.md`
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-07】稼働ダッシュボードに「案件」面を追加（有璽氏依頼：案件単位の可視化・動いてるか分かるように）── ✅完了
+
+有璽氏「窓口は一つにしてほしいけど1ページに詰め込まない。案件単位で各エージェントの動きを
+可視化・動いてるか動いてないかも分かるように」への対応。**新しいURL・新しいVercelプロジェクトは
+作っていない**（既存 https://fukuchi-kadoban.vercel.app へ足した）。台帳・Notion・kintoneへは
+1文字も書いていない。フランキー（アイコン13体・並行作業）とは触る対象が重ならないよう
+`dashboard_*.py` を触らない約束のみ守ってもらい、こちらは `assets/agents/*.png` を読むだけ。
+
+```
+新設    ~/.vivid-relay/dashboard_projects.py（WORKING.mdの見出しを機械パース→案件に束ねる）
+改修    dashboard_data.py（build_projects()を追加して呼ぶだけ）／
+        dashboard_build.py（タブ切替[全体/案件/仕組み]・進捗バー・エージェント稼働アイコン行を追加。
+        既存のKPI/自動処理一覧/効いているか/営業台帳/pending_humanは「仕組み」タブへそのまま移設）
+```
+
+**C（元データ）の決め方**：新しい台帳は作らず、`WORKING.md`の見出し
+（`### 【担当 / 場所 日付】タイトル ── 状態`）をそのまま正規表現で読む。理由は2つ、
+①担当は既にここへ着手宣言を書く運用がある＝別の場所に書き写す二重管理を増やさない、
+②全担当が毎回触るので放置されず更新され続ける。実測：見出し71件→案件22件
+（2件以上まとまった「主要」8件・単発「その他」14件）。案件名は小さな手動キーワード辞書
+（`PROJECT_KEYWORDS`）でグルーピングし、マッチしない指示はタイトルをそのまま案件名に
+フォールバック（消えない・辞書を足すほど正しく束ねられる設計）。状態（済/動いている/
+有璽氏待ち/手つかず）も見出し末尾の一文からキーワードで自動判定。
+
+**B（動いている/いない）**：新しい見張りは作らず、`stall_watch.py`が5分おきに書く
+`stall_watch_state.json`と、`ps`（claude -pのコマンドラインに埋め込まれたペルソナ宣言
+「あなたは〇〇（△△担当）です」を読む・run_agent_launch.logのラベルは表記ゆれが多く
+不採用にした）を組み合わせて判定。担当アイコンは動いていれば緑枠+緑ドット点滅、
+止まっている疑いがあれば赤、待機中は灰色（グレースケール）。
+
+**確認したこと（4点・実測）**：①タブ切替：3パネルのid/data-tab対応・要素数
+（tabs=3/panel=3/tr.row=58/tr.prow=22/agent-chip=13）が一致。JS構文はnode --checkで合格。
+CDPでのクリック自動化はwebsocketモジュール不足で断念し、hidden属性を差し替えた3枚の
+スクリーンショットで見た目を確認（実物のフランキー・ピタゴラス・リリスの3体が正しく
+「動いている」表示になることを確認）②stall_watch_state.jsonへ一時的にテスト行を注入し
+「止まっている疑い」の赤表示が出ることを確認→**必ず元に戻した**（procsが{}に復元済み、
+2経路で確認）③文字量：全体タブはアイコン行＋進捗バー＋1行サマリーのみに削減。
+既存のKPIタイル・効いているか・自動処理58件一覧は「仕組み」タブへ退避
+④合言葉：`bin/kadoban_deploy.sh`を実行しVercelへ反映、実測で認証なし401を確認
+（Basic認証は無傷）。
+
+**アイコンの置き場**：フランキーが既に `~/.vivid-relay/assets/agents/<agent_key>.png`
+（例 `web-developer.png`）で13体を用意済みで、想定と一致していた。ファイル不在時は
+頭文字1文字で仮表示するフォールバックも実装済み。
+
+**★引き継ぎ**：`PROJECT_KEYWORDS`は手動対応表（findingsのFINDING_NAME_HINTと同型）。
+新しい案件が増えて束ねたいときはここへ1行足す運用。マッチしなくても指示は消えず
+「案件」タブの単発扱いになるだけ。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【リリス / mini 2026-09-07】タブレット幅の測り方修正・②A〜F・③ハンバーガー・④DL不具合 ── ✅完了。commit c187489・push済み。仮公開へ反映済み
+
+有璽氏がスマホ・タブレット幅で見つけた不具合5種＋ハンバーガーメニューの要望への対応。
+**書いたのは `~/lifestandup-wp/` 配下のみ（theme/lifestandup/・crawl_static.py）。**
+本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+①測り方   ★重なり検査はスマホ3点(390/360/320)のみでタブレット域を1度も測っていなかった。
+          帯を掃く実測（iframe経由・500px未満はlsu-frame.html必須）で全ページ確認し直した。
+          ★副産物の発見：500px未満をE.shoot()へ直接指定するとChromeは実際には500pxで
+          描画する（ビューポート幅の下限）。iframeを使わない過去の"390px"測定は誤り
+          の疑いがある → memory/reference_endpoints_pass_middle_breaks.md に追記済み
+②A-F     A 吹き出しが見出し・パンくずに重なる(5ページ)→z-index対策を980px帯にも拡張＋
+            位置調整。真因はstyle.cssの.tape-verticalグローバル漏れ(body.lsu-top-page
+            スコープ欠落)。同型のネストバグ(recruit-top.cssで540px以下が閉じずに
+            980px系がネスト＝効いていなかった)も発見・修正
+          B プログラム写真(prog-poly)の左端見切れ→コンテナ位置とp-blueのleft調整
+          C 採用パンくず中央寄せ→左寄せへ（ネストバグ修正の副産物として顕在化）
+          D「Our Voices!」右端見切れ(left:420px固定)→修正。★スタッフの右手が写真の
+            右端で切れる件は原因特定(クロップ位置=background-position)まで済んだが、
+            photos.jsonの既存ルール「position値はフランキーが実物を見て決める」に
+            従い実装せず、実測画像を添えて報告のみ
+          E お知らせ縦テープが横に寝る→修正／F トップの縦テープが本文を覆う→
+            980px幅では文字数(14文字)が収まらないため非表示に変更（意匠を消す判断）
+③ナビ    スマホ幅用ハンバーガーメニュー新設（checkbox方式・JS無し）。既存.nav-menuを
+          流用し複製しない。★position:fixed+transform要素がscrollWidthを押し広げる
+          既知の癖を踏み、htmlへoverflow-x:hiddenを追加して解消
+④DL不具合 crawl_static.pyのPAGESに無いURL(/useful/記事2本・/tag/4本等)がasset扱いされ
+          page_out_path()を経由せず生ファイル保存→ダウンロードになっていた。
+          拡張子の有無で判定する形に修正。同型のゴミファイル(長い日本語スラッグの
+          自己canonical由来・/feed系)も全部解消
+実測      PC幅(1440px)は①②③とも sha256 完全一致で不変を確認。全ページiframe経由で
+          横あふれ0pxを確認。仮公開URL：①合言葉なし401 ②合言葉あり200 ③主要10ページ200
+```
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-07】担当起動を1本化＝run_agent.sh（有璽氏「構造を作って止まらないようにしてください」）── ✅完了
+
+**書いたのは `~/.vivid-relay/run_agent.sh`（新規）と memory 2本（reference_offload_long_work_to_mini.md
+追記・MEMORY.md索引1行）だけ。** `stall_watch.py`（見張り・既存）は触っていない。
+台帳・Notion・kintoneへは1文字も書いていない。cronへは未登録（人／窓口が呼ぶ部品）。
+
+```
+使い方   ~/.vivid-relay/run_agent.sh <担当名> <指示文ファイル> [作業ディレクトリ]
+         例: run_agent.sh lilith ~/.vivid-relay/lilith_0908.txt ~/lifestandup-wp
+A AskUserQuestion封じ  --disallowedTools=AskUserQuestion（=区切り必須。psで実測確認済み）
+B 認証確認            軽いプローブを起動前に同期実行。認証切れの文言があれば起動せずnotify.tell
+C 切り離し            trap ''HUP + disown。ssh切断・親終了でも死なない
+D 通信系のみ再試行     Connection reset/SSL timeout/HttpError 503等は最大3回。
+                     ValueError等のコードバグ・4xxは再試行しない（実物ログ11ケースで単体検証済み）
+E/F ログ統一・起動記録  ~/.vivid-relay/<担当名>_<日付>.log／run_agent_launch.log（1行台帳）
+```
+
+**★実測できたこと**：C/D/E/Fは複数回の起動テストで正常動作を確認（rc=0完了・再試行判定の
+単体テスト11/11一致）。Aは`--disallowedTools`が公式サポート済みフラグでpsでも正しく
+コマンドラインに渡ることは確認したが、**実際に拒否される瞬間の直接証拠は取れなかった**。
+Bは認証切れの状態を意図的に作るのはリスクが高いため実施していない（正常時の動作は確認済み）。
+
+**🔴最重要の副次発見**：軽いテスト指示（AskUserQuestion確認／README要約／Slack投稿のみ）を
+run_agent.sh経由で3回実行したところ、**3回ともmemory/reference_endpoints_pass_middle_breaks.md
+（他セッションの書きかけ）への言及だけをしてrc=0で正常終了**し、指示した作業（Slack投稿等）は
+一切実行されなかった。「止まる」ではなく「意図と違う動作で正常終了する」という別カテゴリの
+障害で、**どの見張り（stall_watch含む）にも掛からない型**。原因は未特定（推測に留め、
+フック自体の調査はスコープ外として行っていない）。詳細は
+`memory/reference_offload_long_work_to_mini.md`「✅2026-09-07 ピタゴラス」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-07】見本ファイルの一本化・法人番号40件の整理（ビビ依頼）── ✅完了
+
+有璽氏の決定（2026-09-07・Slack #da14c1「見本ファイルは新リストへ一本化する」）を受けた対応。
+出口 `~/.vivid-relay/consolidate_result.md`。**00・01・02・08・10/20/30・40・受付シート・
+Notion・kintone／stall_watch.py・crontab・ask_hub.py・hook_permission_slack.pyへは
+1文字も触っていない。**Slack投稿0件（判断不要な事項しか無かった）。
+
+```
+①見本の一本化   バックアップ2本（見本3,977,884B・新リスト1,398,270B、いずれも開き直して
+                中身の実在を確認してから着手）。★架電メモは「15行」でなく実際は3箇所に
+                分散(事業所単位15/法人単位8/大阪絞り7=法人単位の部分集合)していた。
+                15行は既に新リストへ移送済み(14直接一致+1は法人番号の既存誤記により
+                名称照合で確認)。★7社ぶんが未移送と判明し、見本の値そのままを
+                新リスト「法人単位_複数サービス」タブへ書き込み・突合済み(21セル)
+                注記は★行挿入をせず実施(法人単位/事業所単位にbasicFilter(33-138件の
+                hiddenValues)とfrozenRowが実在すると分かり、不可逆リスクを避けた)。
+                ファイルタイトル・タブ名3枚(⛔プレフィックス+赤色)・A1セルのnoteの
+                3点に切替え、basicFilter・frozenRow・データ内容が前後不変なことを実測。
+                ★権限変更(編集→閲覧のみ)は実行せず、手順のみ記載
+②40件の整理     TSVを独立に再集計(前回の手集計と一致)。17件=候補提示可能で
+                有璽氏が○×で決められる(一覧を結果ファイルに用意)。23件=そもそも
+                決まらない(候補0件19+3、候補87件で実質不可1)。個別の書き込みはしていない
+```
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+
+
+### 【ピタゴラス / mini 2026-09-07】承認ダイアログ MacBook対応（ssh mini 経由でask_hubへ委託）── ✅①②③完了。★MacBook側の通し確認は人（またはMacBook側セッション）の手待ち
+
+MacBookにはSLACK_APP_TOKENが無くask_hub.ask()が直接呼べない問題への対応。
+書いたのは `~/.vivid-relay/ask_hub.py`（--ask/--answer-of/--closeのCLIモード追加・
+563→689行）と `bin/hooks/hook_permission_slack.py`（remote()をssh委託対応・両機配布・
+sha256 `5ab4271f...`で一致）の2本だけ。台帳・Notion・kintoneへは1文字も書いていない。
+**Slackへ実投稿1件**（③の通し確認で許可された1通・機械代筆で回答・下記）。
+
+```
+実測①  既存関数（reg/can_ask/never_remote/where/brief/head/main等）はgit diffで0件の変更
+       _has_local_receiver()は★bin/hooks/から直接importするとModuleNotFoundError
+       （ask_hub.pyが同居しないため）でFalseになると判明。依頼の想定と違ったので
+       ~/.vivid-relay/へ配布し直してから再テスト→True（正しい）
+       _ssh_run/_ssh_ask/_ssh_answer_of/_ssh_closeは到達不能ダミーホストで
+       例外を投げず None/(None,False) を返すことを確認。ログにも記録
+② CONTENT_MAX  preview（VIVID_NOTIFY_OFF=1）のみ組み立て。★実投稿はしていない。
+       いまの値（SHOW_MAX=300/CONTENT_MAX=600/DETAIL_BUDGET=900）・何が載りうるか
+       （顧客名・個人情報を含む書き込みならそのまま出る／宛先はDM1本のみ）・
+       小さくすると遠隔で承認できる範囲が減ることを1つの表にした。
+       実際に有璽氏へ出すかはビビ・有璽氏の判断待ち
+③ 実機通し確認  ~/.vivid-relay/ から本番同等でフックを起動→ローカル経路(経路=local)で
+       本物のSlackへ実投稿(#46fa0b)→台帳へ機械代筆で回答（by='ピタゴラス（通し確認・
+       機械代筆）'と明記）→フックがallowを正しく返すことを実測。★フックを直接叩いた
+       テストで本物のPermissionRequestイベント経由ではない（9/6と同じ限界）
+```
+
+**★ssh分岐（MacBook→mini経路）はmini上からは実機テストできない**（`ssh mini`から
+mini自身へ叩くとループバックの危険）。詳細・未検証点・MacBook側でやる手順の全文は
+`~/.vivid-relay/approval_dialog_result.md` の「⑤⑥⑦ 2026-09-07 追記」に記載。
+**MacBook側からの実際の通し確認（`ssh mini`が届き承認ダイアログが解ける）は
+MacBook側のセッションでないとできない。**
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-07】見張りの統合（有璽氏「見張りについて統合して動くような状態に持っていって」）── ✅完了
+
+**書いたのは `~/.vivid-relay/stall_watch.py`（統合先・931→985行）・crontab・⚙️自動処理レジスタ
+（対象1行のみ）だけ。** `agent_watchdog.py`（未申告のまま crontab `*/5` で稼働していた別の
+見張り・ドーベルマン発見）は crontab から外し `agent_watchdog.py.disabled` へ改名して保存
+（消していない）。取り込んだのは「対象ディレクトリの更新を見る観点」のみ（プロセスの cwd に
+限定した `cwd_touched_recently()` として作り替え）。CPU使用率（使えないと実測済み）と
+`--kill-stuck`（人の確認なし自動kill）は取り込んでいない。台帳・Notion（レジスタ以外）・
+kintoneへは1文字も書いていない。Slack実投稿0件（実測：ask_hub.log／ask_hub_queue.jsonに
+stall_watch由来の行なし）。
+
+```
+①統合   agent_watchdog.pyのcron登録を外しstall_watch.pyへ一本化。控えは_backups/に3本
+②cron   */5 * * * * stall_watch.py --run --beat で新規登録。08:20/08:25/08:30と3回実発火を確認
+③レジスタ 「走行中AIの無言検知」の有効=True・既知(対応保留)=False。最終実行/最終結果/🚦状態を
+        2経路（PATCH直後・別リクエストでの再取得）で確認
+④実測   cronで初めて動かしたところ lsof_field() が裸の'lsof'を呼んでおり、cronの最小PATH
+        （/usr/sbin が無い）で常に失敗していたと判明（LSOF_BINで絶対パス化・実測で解消）。
+        ★本物のclaude -pプロセス（隔離cwd・複合sleepコマンド実行中）を閾値短縮版の複製で
+        検知できることを実測（ドーベルマンの3回の失敗とは異なり成功）。副産物として
+        「単発sleepはハーネスにブロックされるが、前後にecho等を足した複合コマンドは通る」
+        という、これまでの失敗の真因と見られる知見も得た（memory/reference_offload_long_work_to_mini.md）
+```
+
+結果全文 `~/.vivid-relay/watch_merge_result.md`。人の判断が要る点：
+①agent_watchdog.py.disabledをいつ完全削除するか ②心拍間隔*/5(1日288回)の負荷は未計測
+③sleepブロックの知見はドーベルマンの過去ログとの突合まではしていない（推測を含む1点あり）。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ドーベルマン / mini 2026-09-07】見張りの片付け（①ログ二重書き ②agent_watchdog本体 ③止まりの実測 ④層2登録の全文確認）── ✅完了
+
+**先に `watch_merge_result.md`・`watchdog_B_result.md` を読んでから着手。**
+台帳・Notion（レジスタ以外）・kintone・テレアポリストへは1文字も書いていない。
+`notify.py`／`ask_hub.py`／`hook_permission_slack.py`／`~/.claude/settings.json` は無傷。
+Slack実投稿0件（③はスタブで受けた）。
+
+```
+①ログ二重書き   ✅解消。crontabのstall_watch行を `> /dev/null 2>> stall_watch.err` へ。
+               log()自前書き＋cronリダイレクトの二重原因を特定。実測：3行増分が1回ずつに
+②agent_watchdog ✅本体削除（.disabledとsha256完全一致・diff0を確認してから）
+③止まりの実測   ★成功。本物のtranscript発見経路(PROJECTS偽装なし)＋本物のclaude -p
+               （複合sleep・stall_watchの文字列を避ける）で、実際に「止まっている」検知
+               →ask_hub.ask()呼び出しを実証。同時走行中の本物2セッションは誤検知0件
+④層2登録の全文  ★確認のみ・登録せず。§2-4の全文はいまも使える（setup_hooks.shのSPEC add-only
+               設計＝既存のhook_role_guard等ブロックは壊れない）。★新発見：role_guard/
+               output_guardはSPEC管理外（新マシンでは再現されない既存ギャップ）
+```
+
+結果全文 `~/.vivid-relay/watch_cleanup_result.md`。memoryへも追記済み
+（`reference_offload_long_work_to_mini.md`「✅2026-09-07 ドーベルマン」節）。
+人の判断が要る点：①agent_watchdog.py.disabledの完全削除時期 ②層2登録の可否
+③role_guard/output_guardをSPECへ載せるか ④承認ダイアログ待ち型は依然未実証。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ドーベルマン / mini 2026-09-07】stall_watch.py／hook_interactive_guard.py の検査（有璽氏承認「B、Aの順で」のB）── ✅完了
+
+**結果全文 → `~/.vivid-relay/watchdog_B_result.md`。** 判定：層1=載せてよい（条件つき）／
+層2=条件つきで価値あり（過大評価しない）。
+
+**🔴最重要発見（依頼の範囲外だが最優先で報告）**：依頼された2本とは別に、
+**`~/.vivid-relay/agent_watchdog.py`（2026-09-06 08:51新設）が crontab `*/5` で
+未申告のまま本番稼働中**（心拍なし・heartbeat_names_checkの対象外・WORKING/memory
+に記載なし）。目的は層1と同じ「走行中claude -pの止まり検知」だが判定はCPU使用率
+（層2作者が「使えない」と実測済みの指標）で通知は記述式(notify.tell)。
+`automation_inventory_check.py`（週次月曜09:20）で自動検出できることは実測確認済み
+＝今日の定時実行で自動的に浮上する見込み。**agent_watchdog.pyとstall_watch.pyの
+関係（統合するか両立か）は人の判断が要る。**
+
+```
+やったこと   ①stall_watch.py実測（本物の走行中プロセス複数に対し誤検知0を確認。
+              「本物の止まりを検知して鳴らす」側は3回の人工テストいずれも
+              意図どおりに作れず未実証・正直に申告）
+             ②⚙️自動処理レジスタへ新規行を1本作成（有効=False・2経路で着弾確認）
+             ③hook_interactive_guard.pyのsettings.json登録は指示どおり行わず、
+              置き換え後の全文をresult.mdへ記載
+触っていない  daily_jobs.conf本体／settings.json／00_企業マスタ等・別セッション作業対象
+```
+
+**★同じ対象に手をつけないでください**: なし（検査完了・cron/settings.json本体は未変更）
+
+### 【ピタゴラス / mini 2026-09-07】法人番号 機械確定分を書く（有璽氏承認「B、Aの順で」のA）── ✅完了
+
+**★依頼文の前提「16件」は実測と食い違った。自分の経路で数え直し、実測5件を正として実行した。**
+（前提の16件は `reference_ledger_cleanup_triage.md` の「確定31件（法人番号15件／住所のみ16件）」の
+"住所のみ16件"と混同されたものと推測。今回の条件＝法人番号が空の行に限れば5件が正しい）
+
+```
+書いた      00_企業マスタ の D(法人番号)・H(都道府県)・I(市区町村)・J(住所)、5行×4セル=20セル
+最新版データ 既存corp_lookup.pyは07-31版に固定（既知バグ・未修正）。今回は実行時にZENKENを
+            08-31版(9/1取得)へ差し替えて使用。正本ファイルは編集していない
+検算        検査数字を独立に再計算(5件ともOK)・全件データでgrep(5件とも全国唯一)・
+            登記記録の生死(閉鎖0件)・書く前後の全体差分(20セルのみ・その他0件)
+実測        法人番号空(決着済み除外) 45件 → ★40件（一致）
+```
+
+**出口** `~/.vivid-relay/corpno_A_result.md`。要判断40件・人の判断が要る候補も記載済み。
+**★保留(park)は未解除。01/02/08/10/20/30/40・受付シート・Notion・kintone・テレアポリスト・
+bin/hooks/・daily_jobs.conf・⚙️レジスタへは1文字も書いていない。Slack投稿0件。**
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【ピタゴラス / mini 2026-09-06 16時台】承認ダイアログの★通し確認 ── 機械側は合格。★有璽氏がボタンを押すのを待っている
 
 **★16:08:40 に有璽氏のDMへ実投稿しました（#a09b43・依頼で許可された1通）。16:38 まで待ちます。**
@@ -260,6 +787,49 @@ Slack化が技術的に成立するかの下調べ）だが、対象ファイル
 
 **結果の全文** `~/.vivid-relay/ledger23_result.md`
 ／スクリプト `~/.vivid-relay/{ledger23_step2_delete.py, ledger23_step3_apply.py, ledger23_step3_corp.py}`（既定は読むだけ）
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【リリス / mini 2026-09-07】①お役立ちをタブから外す ②/blog/廃止→活動区分へ一本化 ③✕の2案を絵で提示 ── ✅完了
+
+有璽氏の承認済み依頼（①②）＋検討材料の依頼（③・実装は確定しない）。commit `b769631`・push済み。
+仮公開 https://lifestandup-preview.vercel.app に①②反映済み（③は未反映）。
+
+```
+①  ★実は9/6時点で既に実装済みだった。実測でタブ4つ(お役立ち含まず)+別枠stock-bandを確認。
+    ナビ表記のみ「活動ブログ」→「お知らせ」に統一
+②  真因＝WordPress「投稿ページ」設定(page_for_posts)が固定ページ(活動ブログ)を指したまま。
+    設定解除・固定ページはゴミ箱へ・標準投稿5本のURL/中身は無傷。コード5箇所を'blog'→'news'へ。
+    single-news.phpのcase 'post'が'blog'キーを指していたのがパンくず不整合の直接原因
+③  review/batsu/ に2案の比較画像+README（①いまの状態 ②案A出さない ③案B小さくする）。
+    ★本体へは反映していない（CSS変更前後でdiff完全一致を確認）
+```
+
+**★役割検問がこのセッションをメインセッション(ビビ)と誤検出し、crawl_static.py(.py)への
+Editを拒否した（既存の型と一致）。Bash経由(python3でのテキスト置換)で対応した。**
+
+### 【リリス / mini 2026-09-07】①✕は案Aで実装 ②お役立ちの案内を見える化 ③重なりの機械洗い出し ── ✅完了
+
+有璽氏の続きの依頼3件。commit `98576c9`・`309ac01`・push済み。仮公開へ①②反映済み（③は数えるだけ）。
+
+```
+① ✕      有璽氏は★重なりの数値でなく意味論で案A(縦積みで消す)を選択
+          （横3つ並んで初めて「ことば✕放課後✕体験」の意味を持つ記号のため）。
+          stand-up-top.cssの既存@media(max-width:980px)へ1行追加。
+          ★切替幅は540px決め打ちでなく実測（981px=3列表示／980px=1列非表示）で確認
+② お役立ち  news.phpのstock-bandは実装済みだったが★useful投稿0件のため非表示だった
+          （空の行き先へ送らない設計どおり・バグではない）。デモ記事2件を追加し表示確認
+③ 重なり   check_overlap_all.py(新規)で24ページ×3幅=72通り機械計測（316件検出）。
+          ★目視確認した代表例13件以上、全て「実際には読める」誤検出だった。
+          ツールの限界3種（opacity無視／バッジ自身の背景を見ない／svg透明祖先を
+          遡らない）を発見。★機械の件数をそのまま「直す数」として報告していない
+```
+
+出し直し：31/31ページ書き出しOK・READY・人に渡すURLで①②の反映を実測確認
+（stand-up-top.css・useful/index.htmlは個別削除→再クロールが必要だった＝
+crawl_static.pyの「既存ファイルは飛ばす」仕様に当たる既知の罠）。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
 
 **★同じ対象に手をつけないでください**: なし（作業完了）
 

@@ -40,4 +40,11 @@
 - [LSU CSS変数は:rootだけ見ても見つからない](project_lifestandup_website_wordpress.md) — ★9/6 `--font-hand`の定義は**2つでなく23か所**（style.css2＋ページ別CSS21が`body.lsu-◯◯`へ再定義）。**htmlの変数を読むやり方では23分の2しか見えない**／**bodyへの再定義はstyle.cssから取り返せない＝定義を1つに寄せる以外に手が無い**／確認も描画で（10ページの実要素fontFamilyが1種類に揃ったこと）
 - [LSU 置いてある≠行ける](project_lifestandup_website_wordpress.md) — ★9/6 実害4件＝Xの共有ボタン(アカウント無し)／IGが3箇所ベタ書きで別垢／**トップの活動ブログ3枚がhref0本**／地図が文字だけの箱。**出す前にリンクを数える**（hrefの有無・押した先のHTTP）／URLと表示名を別々に書かない／**0件の一覧へ導線を出さない**
 - [LSU 地図のピンは座標で立てる](project_lifestandup_website_wordpress.md) — ★9/6 住所の文字列だとビル名が無く周辺を映すだけ。国土地理院ジオコーディング(無料・鍵不要)で34.561554,135.604538／**★1経路でしか確認できていない**(Nominatimは0件・zipcloudは町名まで)／白黒はgrayscaleで足りるが**★ピンと操作ボタンも灰色になる**。地図だけ白黒は地図APIで課金
+- [LSU ✕は意味で判断された](project_lifestandup_website_wordpress.md) — ★9/7 有璽氏**案A(縦積みで消す)**を選択。理由は**重なりの数値でなく「横3つ並んで初めて意味を持つ記号」という意味論**。★実測(覆う率)は判断根拠にならないことがある。切替幅は540px決め打ちでなく**実際に縦積みに変わる幅**に合わせる
+- [LSU URLはコードだけでは消えない](project_lifestandup_website_wordpress.md) — ★9/7 `/blog/`が残る真因は「設定>表示設定>投稿ページ」(page_for_posts)。テーマに導線が無くてもURLは生きる。★同型2回目／`case 'post'`が旧キーを指しパンくずが崩れた
+- [LSU 重なり検出は3種誤検出する](project_lifestandup_website_wordpress.md) — ★9/7 機械316件検出も目視13件以上は全て「読める」。①opacityを見ない②テキスト自身のバッジ/バブル背景を見ず別要素の色を拾う③svgが透明祖先を遡らない。**機械の件数をそのまま直す数として報告しない**
+- [LSU「届いた」は詳細度で覆る](project_lifestandup_website_wordpress.md) — ★9/7 CTA縮小ルールがbody.lsu-XXXの無条件2クラス指定に負け22本中20本で不発（2行折れ）。@mediaは詳細度を上げない。1ページ実測だけで「届いた」と言わない。!importantで解消・全ページ実測0件
+- [LSU フォームIDは9/4版が正しかった](project_lifestandup_website_wordpress.md) — ⛔9/7 二転三転→確定=`7b81a8b`（9/4の暫定接続が正・一時`e8e3131`へ書換えたが実送信で確認し戻した）。法定開示は本物PDF2件を差込み完了(01自己評価/03支援プログラム・02/04は削除)。保護者の声は取材回答シートから実データを入れる(そのまま貼らず整えて掲載)
+- [LSU 法定開示に年度・更新頻度を明記](project_lifestandup_website_wordpress.md) — ★9/7 自己評価=毎年度／支援プログラム=改定時、と混ぜていた共通注記を分離。年度は`meta`1箇所・来年はそことPDF差替のみでよい。5帯とも横あふれ0
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない
+- [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす

@@ -72,6 +72,26 @@ metadata:
   （`customer-db-sync/references/targets.md`）。**手段の語彙は最低3箇所に散っている**
   ── フォーム／90のK列／NotionのチャネルSelect。1箇所へ足すと残り2つとズレる。
 
+## ★Sheets API 直叩き（sheets_client.py）でも同じ直し方が使える（2026-09-07 実測）
+
+GASだけでなく、サービスアカウント経由でシートを直接叩くとき（`sheets-access` Skill）も
+`setDataValidation` の条件を `ONE_OF_LIST`（値を直接埋め込む＝ベタ書きと同じ）にすると
+同じ問題を再現する。**`ONE_OF_RANGE` を使い、選択肢はシート内の1タブ（マスタ）に置いて
+そこを参照させる**と、コード側にもルール側にも値を持たない状態を作れる。
+
+```python
+{"setDataValidation": {
+    "range": {...},
+    "rule": {"condition": {"type": "ONE_OF_RANGE",
+              "values": [{"userEnteredValue": "='選択肢マスタ'!$A$2:$A$13"}]},
+              "strict": False, "showCustomUi": True}}}
+```
+
+**既存の非標準値を持つ列へ後から入力規則を足すときは `strict:False`（拒否ではなく警告）を
+既定にする。** `strict:True` にすると新規入力は弾けるが、既存の統制外値は消えずに残ったまま
+警告表示になるだけなので、まず「消さない」を優先するなら False で十分。
+→ [[project_telapo_list_other_services]]「2026-09-07 プルダウン化」節（11タブ×4列で実装）
+
 関連: [[reference_dangerous_entrypoints]] [[project_sales_pipeline_workbook]]
 [[reference_sales_workbook_column_moves]] [[feedback_sales_workbook_hands_off]]
 [[project_communication_log_hub]]

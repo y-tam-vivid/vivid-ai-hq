@@ -39,6 +39,21 @@ Slack通知の共通部品 ── 判断が要ることは必ずここを通し�
            出せなかったら False を返す。★記述式（番号を打たせる形）へは落とさない
            落とすと「選択式にしろ」という指示が静かに巻き戻るため
   tell() … 報告だけ。判断語が混ざっていたら stderr へ警告する（ブロックはしない）
+
+★親は短く・詳細はスレッドへ（2026-09-08 有璽氏）
+  「要約させろよ。文章長いの見んのだるいやろ。時間で何かやるときに、Slack上に
+    出すときに『何時の通知です』という表現にして、あとはスレッドに追記するような
+    形にして。長ったらしすぎんの見づらいね」
+
+  tell(title, body, summary=)
+    親    ── 「⏰ HH:MMの報告です」＋タイトル＋短い要約（3〜4行以内）
+    スレッド ── body の残り（あれば。無ければスレッドは作らない＝③）
+
+  ★要約は誰が作るか＝AIにはやらせない（呼び出し側 or 機械的な先頭切り出し）。
+    理由：AIに毎回要約させると「ぶれる・遅い・落ちる」──まさに有璽氏がこの発言で
+    懸念した3点そのもの。呼び出し側が構造を知っているなら summary= を渡す。
+    渡さなければ body の先頭数行・先頭数文字を機械的に切って親へ乗せるだけ
+    （_split_for_parent。要約ではなく単純な切り出し＝ぶれない）。
 """
 
 import os
@@ -115,29 +130,82 @@ def _tok():
     return _TOK
 
 
-def _post(text, unfurl=False):
-    """★報告（tell）専用の送信口。判断依頼はここを通さない（ボタンが付かないため）。"""
+# ── 親を短く保つための機械的な切り出し（要約ではない。2026-09-08） ──────
+# ★AIに要約させない。ぶれる・遅い・落ちる（有璽氏がこの回で懸念した3点）。
+#   先頭から SUMMARY_LINES 行・SUMMARY_CHARS 文字のどちらか早い方で機械的に切るだけ。
+SUMMARY_LINES = 4
+SUMMARY_CHARS = 280
+
+
+def _split_for_parent(body):
+    """body を「親に乗る分」と「スレッドへ回す分」に割る。要約はしない（単純な切り出し）。
+
+    body 全体が閾値以内に収まるなら rest='' を返す（＝tell() はスレッドを作らない＝③）。
+    """
+    if not body:
+        return '', ''
+    lines = body.split('\n')
+    head_lines = []
+    used = 0
+    for i, ln in enumerate(lines):
+        if i >= SUMMARY_LINES or used + len(ln) + 1 > SUMMARY_CHARS:
+            return '\n'.join(head_lines), '\n'.join(lines[i:])
+        head_lines.append(ln)
+        used += len(ln) + 1
+    return body, ''
+
+
+def _post_message(text, thread_ts=None, unfurl=False):
+    """chat.postMessage の生呼び出し。成功時はSlackの応答dict（ts含む）、失敗時はNone。
+
+    ★2026-09-08 新設。スレッド投稿（thread_ts）に対応するため、旧 _post() の
+      「bool だけ返す」形から「ts を取り出せる形」へ拡張した。
+    """
+    payload = {'channel': DM, 'text': text, 'unfurl_links': unfurl}
+    if thread_ts:
+        payload['thread_ts'] = thread_ts
     try:
         r = urllib.request.Request(
             'https://slack.com/api/chat.postMessage',
-            data=json.dumps({'channel': DM, 'text': text,
-                             'unfurl_links': unfurl}).encode(),
+            data=json.dumps(payload).encode(),
             headers={'Authorization': 'Bearer ' + _tok(),
                      'Content-Type': 'application/json; charset=utf-8'})
-        return json.load(urllib.request.urlopen(r)).get('ok', False)
+        d = json.load(urllib.request.urlopen(r))
+        if not d.get('ok'):
+            sys.stderr.write('[Slack] 送れず ： %s\n' % d.get('error'))
+            return None
+        return d
     except Exception as e:
         sys.stderr.write('[Slack] 送れず ： %s\n' % e)
-        return False
+        return None
 
 
-def tell(title, body='', link=''):
+def _post(text, unfurl=False):
+    """★後方互換のためだけに残す。戻り値は bool。新規コードは _post_message() を使う。"""
+    return bool(_post_message(text, unfurl=unfurl))
+
+
+def tell(title, body='', link='', summary=None):
     """報告するだけ。返事は要らない。
     ★冒頭に「返信不要」を必ず付ける。付けないと有璽氏が
       「これは答えないといけないのか」と迷う（2026-08-20 実地）
 
     ★判断語が混ざっていたら警告する（2026-09-04）。報告の中に判断を紛れ込ませるのが
       いちばん悪い形 ── 「返信は要りません」と書いた同じ文で判断を求めることになる。
-    """
+
+    ★2026-09-08 有璽氏「要約させろよ。長ったらしすぎんの見づらい」を受けた変更。
+      親（DMに直接見える1通目）は「⏰ HH:MMの報告です」＋タイトル＋短い要約だけにし、
+      詳細はスレッドへ回す。
+
+      summary= を渡すと、それが親に乗る要約になり body 全体がスレッドへ回る
+      （呼び出し側が構造を知っているとき用）。
+      渡さなければ body の先頭 %d行・%d文字を機械的に切って親へ乗せる
+      （_split_for_parent。要約ではなく単純な切り出し＝AIにぶれさせない）。
+      既存呼び出し元（tell(title) / tell(title, body) の11箇所）はこの経路に乗る
+      ── シグネチャは後方互換（summary は末尾の省略可能引数）。
+
+      body（切り出し後の残り）が空なら、スレッドは作らない（③・開く手間を増やさない）。
+    """ % (SUMMARY_LINES, SUMMARY_CHARS)
     hits = contains_judgment_words('%s\n%s' % (title, body))
     if hits:
         sys.stderr.write(
@@ -147,12 +215,34 @@ def tell(title, body='', link=''):
     if _muted():
         sys.stderr.write('[notify] ★検査中のため送らない\n')
         return False
-    t = '📋 *%s*  _（報告です。返信は要りません）_' % title
-    if body:
-        t += '\n' + body
-    if link:
-        t += '\n' + link
-    return _post(t, unfurl=bool(link))
+
+    now = datetime.datetime.now().strftime('%H:%M')
+    if summary is not None:
+        head, rest = summary, body
+    else:
+        head, rest = _split_for_parent(body)
+
+    parent = '📋 *%sの報告です*　*%s*  _（返信は要りません）_' % (now, title)
+    if head:
+        parent += '\n' + head
+    if link and not rest:
+        parent += '\n' + link
+
+    r = _post_message(parent, unfurl=bool(link and not rest))
+    if not r:
+        return False
+
+    if rest:
+        thread_text = rest
+        if link:
+            thread_text += ('\n' if thread_text else '') + link
+        ts = r.get('ts')
+        if ts:
+            if not _post_message(thread_text, thread_ts=ts):
+                sys.stderr.write('[notify] ★詳細のスレッド投稿に失敗しました（親は届いています）\n')
+        else:
+            sys.stderr.write('[notify] ★ts が取れずスレッドへ回せませんでした（親は届いています）\n')
+    return True
 
 
 def _as_option_list(options):
