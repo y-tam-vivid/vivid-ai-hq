@@ -46,12 +46,38 @@ CONFIG = pathlib.Path.home() / ".vivid-relay" / "config.env"
 COST_HINT = {("gpt-image-1.5", "high"): 0.133, ("gpt-image-1.5", "medium"): 0.05,
              ("gpt-image-1-mini", "medium"): 0.005, ("gpt-image-1-mini", "low"): 0.005}
 
-# 不合格のときに足す言葉。★プロンプトを書き換えるのではなく、末尾に足すだけにする
+# 不合格のときに足す言葉。★プロンプトを書き換えるのではなく、末尾に足すだけにする。
+# ★方向（高すぎ／低すぎ）で言葉を変える。2026-09-08、方向を見ずに「もっと明るく」を
+#   足して、明るすぎる画を さらに明るくして悪化させた（76.2→80.4→75.1）。
 RETRY_HINT = {
-    "明るさ": "もっと明るく。真昼の順光で、全体が白っぽく見えるくらい明るくする。",
-    "暗部": "黒く沈む部分をなくす。影を薄くし、暗い背景や物陰を画面に入れない。",
-    "彩度": "色を少し落ち着かせる。派手な原色にせず、自然な発色にする。",
+    ("明るさ", "high"): "全体をもう少し落ち着いた明るさにする。空の白飛びを避け、地面や被写体に色が乗るようにする。",
+    ("明るさ", "low"): "もっと明るく。真昼の順光で、影を薄くする。",
+    ("彩度", "high"): "色を少し落ち着かせる。派手な原色にせず、自然な発色にする。",
+    ("彩度", "low"): "色をもう少し濃く、はっきり出す。緑・黄・水色が鮮やかに見えるようにする。",
+    ("暗部", "high"): "黒く沈む部分をなくす。影を薄くし、暗い背景や物陰を画面に入れない。",
 }
+
+
+def score(m):
+    """合否線の中心からのズレ。★小さいほど良い。どの試行を残すかの判定に使う。"""
+    from image_tone import DARK_MAX, L_MAX, L_MIN, S_MAX, S_MIN
+    lc, sc = (L_MIN + L_MAX) / 2, (S_MIN + S_MAX) / 2
+    return (abs(m["lightness"] - lc) / 10 + abs(m["saturation"] - sc) / 10
+            + max(0, m["dark_ratio"] - DARK_MAX) / 10)
+
+
+def hints_for(ng, m):
+    """不合格理由から、方向つきの言い直しを組み立てる。"""
+    from image_tone import L_MAX, S_MAX
+    out = []
+    for reason in ng:
+        if reason.startswith("明るさ"):
+            out.append(RETRY_HINT[("明るさ", "high" if m["lightness"] > L_MAX else "low")])
+        elif reason.startswith("彩度"):
+            out.append(RETRY_HINT[("彩度", "high" if m["saturation"] > S_MAX else "low")])
+        elif reason.startswith("暗部"):
+            out.append(RETRY_HINT[("暗部", "high")])
+    return out
 
 
 def load_key():
@@ -130,7 +156,7 @@ def main():
     for s in slots:
         prompt = common + "\n\n" + s["prompt"]
         path = out / f"{s['id']}.png"
-        row = None
+        row, best = None, None      # best = (score, png, row)。★最後でなく一番良い試行を残す
         for attempt in range(a.max_retry + 1):
             try:
                 png = generate(key, a.model, prompt, s["size"], a.quality)
@@ -144,22 +170,31 @@ def main():
                 print(f"× {s['id']}  {type(e).__name__}: {e}")
                 row = {"id": s["id"], "error": f"{type(e).__name__}: {e}"}
                 break
-            path.write_bytes(png)
-            m = measure(path)
+            tmp = out / f".{s['id']}.try{attempt + 1}.png"
+            tmp.write_bytes(png)
+            m = measure(tmp)
             ng = judge(m)
             row = {"id": s["id"], "枠": s.get("枠", ""), "path": str(path),
                    "試行": attempt + 1, **{k: m[k] for k in
                    ("lightness", "saturation", "dark_ratio")}, "ng": ng}
+            sc = score(m)
+            if best is None or sc < best[0]:
+                best = (sc, png, row)
+            tmp.unlink(missing_ok=True)
             mark = "○" if not ng else "×"
             print(f"{mark} {s['id']:<16} 試行{attempt + 1}  明るさ{m['lightness']:5.1f} "
                   f"彩度{m['saturation']:5.1f} 暗部{m['dark_ratio']:5.1f}%"
                   + ("   " + " / ".join(ng) if ng else ""))
             if not ng:
                 break
-            if attempt < a.max_retry:      # 不合格の理由に応じた一言を足して作り直す
-                add = {RETRY_HINT[k] for k in RETRY_HINT if any(k in x for x in ng)}
-                prompt = common + "\n\n" + s["prompt"] + "\n\n" + " ".join(sorted(add))
+            if attempt < a.max_retry:      # ★方向つきの言い直しを足して作り直す
+                prompt = common + "\n\n" + s["prompt"] + "\n\n" + " ".join(hints_for(ng, m))
                 time.sleep(1)
+        if best:                            # ★最後の試行ではなく、一番良かった試行を残す
+            path.write_bytes(best[1])
+            row = best[2]
+            if row["試行"] != attempt + 1:
+                print(f"  ★残したのは試行{row['試行']}（最後の試行より良かったため）")
         results.append(row)
 
     ok = sum(1 for r in results if r and not r.get("ng") and not r.get("error"))
