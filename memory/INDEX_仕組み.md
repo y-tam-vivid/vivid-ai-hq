@@ -54,3 +54,4 @@
 - [日本語ファイル名はNFD](reference_japanese_filename_normalization.md) — macOSのファイル名はNFD。NFC文字列でgrep/in判定すると静かに0件になる。★担当の申告と検算が食い違ったら、まず検算側を疑う（両機のフォント在庫も実測記載）
 - [fresh eyes 2パス方式](reference_fresh_eyes_two_pass.md) — 検問インフラ限定。★8/29初実演＝A疑義10件→Bで消えたのは2件(実測で消した)・Bで新規1件。Aが0件でもBを省かない／依頼文で型を指定しないと使われない
 - [申告が無くても差分は読める](reference_read_the_change_from_the_revision.md) — 旧版はrevisionsのexportLinksで.xlsx化（get_mediaは404）／★保険であって申告を省く根拠でない=最後に必ず報告を書く
+- [文字混入は「これから出る字」しか止まらない](reference_unicode_escape_kanji_swap.md) — ★9/9 ⚙️レジスタ備考に簡体字「晓」（晒の誤り）が在庫として残っていた。Stopフック検査4はtranscriptだけを見る＝導入(9/5)以前にNotion/シートへ書かれた混入は素通り。DBを丸ごと引いて数え直すしかない
