@@ -162,7 +162,40 @@ notify.py・ask_hub.py・crontab・daily_jobs.confへは触れていない。台
 
 **★同じ対象に手をつけないでください**: なし（作業完了）
 
+### 【ピタゴラス / mini 2026-09-08】案Bが動いていなかった真因を特定・修正 ── ✅完了。デプロイ0回で反映
 
+**上のブロックの続き。有璽氏「案Bが動いていない」への対応。** 触ったのは
+`~/.vivid-relay/dashboard_build.py`（fetch先URLとコメント3行のみ）だけ。
+`middleware.js`・`api/data.js`・`vercel.json`・`kadoban_deploy.sh`は無傷（diff 0件）。
+台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+真因   dashboard_build.pyのrtPoll()がfetch('/api/data.json')を叩いていたが、
+       Vercelの実際のルートは/api/data（api/data.jsは拡張子なしでマッピング。
+       `vercel inspect`でλ api/dataと実測確認）。存在しないパスなので404が続き、
+       数字は1度も更新されていなかった
+副産物 「正しい合言葉でも401」はmiddleware.jsのバグではなかった。KADOBAN_USER/PASSは
+       Vercelの Secret タイプでCLIから値を読み出せない仕様（`vercel env pull
+       --environment=production`は「2 Secret values cannot be pulled」と明示）。
+       .env.localのtestuser/testpass123は本物の値ではなかった
+設計   認証はmatcher変更せず現状維持。ブラウザは同一originへのfetchに
+       Basic認証キャッシュを自動送信する（HTTP仕様）ため、稼働盤を開けば
+       ポーリングも自動で通る。有璽氏の許可は「案件名を外へ出してよい」の1点で
+       JSONの生データを無認証公開してよいとは言っていないため/api/は保護のまま
+実測   middleware.js単体4ケース／api/data.js単体3ケース／rtPoll()モック5ケース
+       （成功・404・通信エラー・JSON壊れ・ok:false）全て想定どおり。
+       Blobのpushed_atが12:40:11→13:03:06と20分おきに進むことを実測。
+       修正後は既存の20分おきcron(13:03発火)で自然に反映され、公開HTMLに
+       /api/data・rt-fresh・30000が実在。認証なしは引き続き401
+```
+
+**★使ったデプロイ回数＝0**（既存の自動デプロイの枠に乗っただけ）。
+記録 → `memory/project_ops_dashboard.md`「2026-09-08 案Bが動いていなかった真因を特定・修正」節。
+Slack報告済み（notify.tell）。
+
+**残**：実際にブラウザで有璽氏が開いて数字が動くのは未確認（本物の合言葉が無いため）。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
 
 ### 【ピタゴラス / mini 2026-09-07 夜】稼働盤を10分おきへ（有璽氏「リアルタイムは無理なん？」・案A）── ✅完了
 
