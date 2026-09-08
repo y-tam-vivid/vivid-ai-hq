@@ -248,3 +248,13 @@ bin/contact_sheet.py      画像を1枚に並べる。★揃いは並べたと�
 ```
 
 **公開先（積む・作り替えない）** → https://claude.ai/code/artifact/8423f99c-6ba2-4292-b6aa-6cfab19b2952
+
+### ⛔2026-09-08 Artifact のロゴが壊れた（Claude Design 側は無傷）
+
+`<image-slot>` だけを data URI 化し、**素の `<img src="uploads/…png">`（ロゴ3箇所）を
+処理し忘れた**。Artifact は相対パスを解決できないのでそこだけ出なかった。
+`render_dc.py` に「相対パスの src を全部埋める」処理を足し、**残り0件を実測してから再公開**。
+→ [[reference_artifact_embed_local_images]]
+
+**★有璽氏の評価（2026-09-08）：「写真が変わったので、テイストがすごく良くなったと思います」**
+＝ 明るさ・順光・主題ドアップ・顔なし の方向は**承認された**。次に写真を足すときもこの基準で。
