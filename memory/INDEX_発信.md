@@ -49,3 +49,4 @@
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
+- [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る

@@ -79,13 +79,12 @@
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)**／**★9/7 `.claude/agents/`も書けない(skillsだけではない)。回避せず①miniで作ってgitで配る②bin/に適用スクリプトを置いて人が1回叩く**／**★9/6 `.claude`はパス文字列で塞がれ隔離実験が作れない＝`CLAUDE_CONFIG_DIR`で別の設定ディレクトリを指す**
-- [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。**★9/8 4例目＝相手のツールの作業フォルダも不可(Claude Designが掃除して控えごと消えた)。控えは_backups/へ**
+- [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。**★9/8 4例目＝相手のツールの作業フォルダも不可。控えは_backups/へ**
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — MacBookで担当を起こさない・報告の出口はSlack。**🔴9/8「止まらないように確認をしてください。間違いなく」＝「走行中です」は確認でない。★3経路(親プロセス/claude本体/★成果物の更新)＋見張りをBash run_in_backgroundで仕掛けてから次へ。Monitorツールは拒否される。終端は完了・N分無変化・ssh不通の3つ全部を拾う**／**🔴9/7 miniが止まる真因＝claudeのOAuth期限切れ（投げ直しでは直らない）。直し方＝`claude setup-token`（TTY必須/ブラウザ不要/1年）。★`--version`が返るのを動く根拠にしない。投げたら30秒後に生存確認＝`run_agent.sh`／★新しい担当もminiで起こす（Agent toolから呼ばない＝スリープで道連れ）**
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
-- [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へはPNG/PDF+Driveか GitHub Pages
-- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — ★9/8枠が尽きた＝見せるだけはArtifactへ(共有メニューから共有)。deploy失敗は著者未登録
+- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — ★9/8枠が尽きた。**見せるだけならPNG+Drive公開へ。★Artifactは社外(Claude未使用者)に届かない**→[[reference_artifact_is_not_public]]
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
