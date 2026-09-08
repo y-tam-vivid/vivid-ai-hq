@@ -74,7 +74,8 @@
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消。Stopフック検査4(キリル/ハングル/タイ/デーヴァナーガリー検出)でexit2差し戻し。実測誤検知0/35**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動／★材料の発言欄は38%が偽物。本文を読む
-- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
+- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**／**🔴9/8「期日はいつ？めどを示して」＝復唱するのは形式/本数/出口＋★期日の4つ。「走行中」「終わり次第」は期日でない。外の予定(研修・会議)から逆算して日付で置く。めどを示すのは窓口の仕事**
+- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — ★件数が構造的に上限。棚卸しは`memory_audit.py --retire`で候補を出す（判断は人）。いま降ろすものは無い
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)**／**★9/7 `.claude/agents/`も書けない(skillsだけではない)。回避せず①miniで作ってgitで配る②bin/に適用スクリプトを置いて人が1回叩く**／**★9/6 `.claude`はパス文字列で塞がれ隔離実験が作れない＝`CLAUDE_CONFIG_DIR`で別の設定ディレクトリを指す**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。bin/hooksの控えは_backups/へ。名指しで保存する
