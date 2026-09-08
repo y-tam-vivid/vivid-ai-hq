@@ -64,7 +64,7 @@
 - [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全。規範配下をread-onlyへ／**★9/5「対策は複数またがって用意して」＝層1検知・層2予防・層3解除を同時に。検知だけでは止まる回数は1回も減らない**
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — 8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
-- [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本
+- [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/8 頻度も1日2回→毎時(07-22時)へ。crontab直書き・daily_jobs.conf側は無効化のみ**
 - [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — **★9/7 慢性の赤5件を初めて数えたら1件は純粋な誤検知（find条件が雑）・4件は消せないもの。「既知」と呼んだ時点で中身を見るのをやめていた。11日間放置。★慢性の赤は件数の内訳を数える**／ ★9/3 混入を直したら届く経路ごと消えた／表示だけで警告にしない
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ

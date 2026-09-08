@@ -53,6 +53,70 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-08】notify.tell()を「親（◯時の通知です・要約）＋スレッド（詳細）」の形へ（有璽氏「要約させろよ。文章長いの見んのだるい」）── 着手
+
+**触ってよいのは `bin/hooks/notify.py`（正本）と `~/.vivid-relay/ask_hub.py` だけ。**
+progress_report.py・stall_watch.py・run_agent.sh・crontab・daily_jobs.confへは触れない。
+台帳・テレアポリスト・Notion・kintoneへは1文字も書かない。Slackへの実投稿は通し確認の1通のみ。
+バックアップ済み：`~/.vivid-relay/_backups/{notify.py,ask_hub.py}.bak_pitagorasu_20260908-thread`
+（notify.pyは bin/hooks/ 側と ~/.vivid-relay/ 側の sha256 一致を確認してから着手）。
+
+**★同じ対象に手をつけないでください**: `bin/hooks/notify.py` ／ `~/.vivid-relay/{notify.py, ask_hub.py}`
+
+### 【ドーベルマン / mini 2026-09-08】進捗報告を毎時へ（有璽氏「12時18時だけは薄い。頻度を高めろ」）── ✅完了
+
+**触ったのは crontab の1行追加・`bin/daily_jobs.conf` の2行コメントアウト・
+⚙️自動処理レジスタ（進捗報告の行のみ）だけ。** `progress_report.py`本体・
+`stall_watch.py`・`run_agent.sh`・`notify.py`・`ask_hub.py`・台帳・テレアポリスト・
+Notion（レジスタ以外）・kintoneへは1文字も触っていない。
+
+```
+①頻度   crontab「0 7-22 * * * progress_report.py --run --beat」新設（毎時16回/日）。
+        daily_jobs.confは「1日1回」設計のため合わず、stall_watch.pyと同じ方式を採用
+時間帯   実測（ask_hub_queue.json・過去5日31件の回答時刻）で活動が07時台〜21時台に分布
+        （00時台1件は例外）と確認し、依頼の08:00-22:00より1時間早い07:00-22:00を採用
+②旧2行   daily_jobs.confの12:00/18:00はコメントアウトで無効化（削除ではない・重複回避）
+③実測   本番1通を実投稿し2経路（標準出力／Slack API）で着弾確認。
+        ★本番実行時は走行中の担当がいてforce_sendが働いたため「変化なし→送らない」の
+        経路はそこでは検証できず、正直に限界として記録。隔離環境
+        （VIVID_RUN_AGENT_LOGを空に差替）で走行中0件を再現し、2回目の抑止を別途確認
+④レジスタ 期待間隔 20→10時間（22:00→翌07:00の空白9時間＋バッファ1時間）。備考に経緯追記
+```
+
+**★まだ確認できていないこと**：crontabからの自然発火（本物の毎時起動）はまだ1回も見ていない。
+次にこのファイルを見る人が1回、`progress_report.log`とレジスタの最終実行時刻を突き合わせること。
+
+詳細・実測値の全文 → `~/.vivid-relay/progress_freq_result.md` ／
+`memory/reference_heartbeat_proves_life_not_results.md`「2026-09-08 頻度も直した」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ピタゴラス / mini 2026-09-08】progress_report.pyに「担当の走行状況」を追加・裸main()を修正（有璽氏「直す言うだけで直っとらん」への対応）── ✅完了・本番Slack投稿で実測確認済み
+
+**触ったのは `~/.vivid-relay/progress_report.py` の1本だけ。** stall_watch.py・run_agent.sh・
+notify.py・ask_hub.py・crontab・daily_jobs.confへは触れていない。台帳・kintoneへは1文字も
+書いていない。Notionは⚙️レジスタの心拍プロパティのみ（テスト時の実測用途）。
+
+```
+⓪新設   run_agent_launch.log を機械が直接読み、走行中／今日完了／今日失敗を出す。
+         WORKING.mdへの手書きに頼らない（2026-09-07に3本ぶん書き忘れがあった実例への対応）。
+         走行中の判定は os.kill(pid,0) でプロセス生死も突合（ログだけで断定しない）
+②決定   走行中の担当が1件以上いる間は、本文が前回と同じでも送る（force_send）。
+         走行中0件のときは従来どおり「変化なしなら送らない」を維持
+③修正   裸の sys.exit(main()) を try/except で包み、途中で落ちても失敗心拍を打つ形へ
+         （corp_number_monthly_update.pyと同じ型）。実測：わざと例外を起こし
+         レジスタが🟢→🔴→🟢と正しく遷移することを確認
+④実測   本番 --run --beat を1回実行 → Slack DM(D0AT4NQ6X7D)に実投稿(ts=1788832666.516099)
+         を conversations.history で確認。標準出力の「送信した」とも一致（2経路）
+```
+
+**★まだ拾えない場面**：`run_agent.sh` を経由しない直接 `claude -p` 起動は拾えない。
+残り9本（dashboard_build等）の裸main()欠陥は今回のスコープ外で未修正。
+詳細・実測値の全文 → `~/.vivid-relay/progress_fix_result.md` ／
+`memory/reference_heartbeat_proves_life_not_results.md`「2026-09-08 progress_report.pyを修正」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【ピタゴラス / mini 2026-09-08】稼働盤を案Bへ（有璽氏「案Bはそのまま出す。Aで問題ない」）── ✅実装完了。★本番の通し確認はデプロイ日次上限のため次回持ち越し
 
 **書いたのは`~/.vivid-relay/dashboard_realtime_push.py`（新規）・`web/kadoban/api/data.js`
