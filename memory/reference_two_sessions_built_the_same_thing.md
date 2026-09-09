@@ -456,3 +456,27 @@ mini     8de82fe  09-08 15:45   deliverable_granularity を自動確定でcommit
 `feedback_deliverable_granularity_must_be_actionable.md` ⇔ `feedback_break_down_to_the_work_level.md`。
 前者の [[project_fukushi_needs_and_team_design]] は**存在しないファイルを指している**
 （実体は `project_fukushi_pain_list_team_design.md`）。統合するならここも直す。
+
+### ★2026-09-09 mini・同一cwdを2体が同時編集（gitの分岐とは別の型）
+
+**これはマシン間の分岐ではない。同一マシン・同一 `~/lifestandup-wp/` の working tree を、
+2つの `claude -p` プロセスが同時に編集していた。**
+
+```
+pid 6491（自分）  12:44起動  マスキングテープの定位置＋恒久ルール③④（WORKING.mdに着手宣言あり）
+pid 6856（別）    12:45起動  9/9指摘15件の再修正（有璽氏差し戻し「赤枠=写真が動いていない」）
+                            ★WORKING.mdに着手宣言なし。ps auxのコマンドラインでのみ発見
+```
+
+- **★発見の経路＝git working treeの中身**。コミット前の差分に「2026-09-09 3周目」という
+  自分が書いていないコメントが複数CSSファイルに混入していた。これで気づいた。
+  `git status`だけでは分からない（両方とも同じファイルをmodifiedにするため）。
+- **★依頼の中身は競合していなかった**（写真の位置移動 vs テープの右端固定）が、
+  **同じCSSファイルの同じ要素（.tape-vertical等）の近くを触る**ため、Editのold_string
+  不一致という形で衝突が顕在化するリスクがあった。
+- **対処**: Writeは使わずEditのみに限定（old_string不一致が衝突検知として働く）。
+  相手の担当ページ・セレクタを先にps確認で洗い出し、被らない範囲から着手。
+  相手の完了（プロセス終了）を待ってから、被る可能性のあった範囲を再実測。
+- **★着手宣言の抜け漏れが再発している**。ビビ/有璽氏が新しいセッションを立てるとき、
+  WORKING.mdへの1行を先に書く運用が徹底されていない。`ps aux | grep "claude -p"`で
+  他プロセスの有無を確認するのは着手宣言が無い場合の最後の砦。
