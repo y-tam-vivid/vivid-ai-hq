@@ -2994,8 +2994,12 @@ Artifact側は相対パスのsrc 0件・埋め込み21件）。他社へ渡せ�
 v2/v3/無印の.dc.html・22MBの書き出し版・1751の控えが消失。当方は1つも消していない）。
 **控えは `~/.vivid-relay/_backups/かわちばなし_*` へ退避済み**（中身まで読み返して確認）。
 
-**★残**：①insta-2（いちじく断面）が生々しく差し替え候補・好みの判断待ち
-②Claude Design で開いたときの見え方は有璽氏の目視待ち
+**✅2026-09-09 Claude Design 側への反映まで完了**（有璽氏の目視で確認）。
+経路は★チャットに画像を添付＋「生成不要・配置だけ」の指示。
+ローカルの .dc.html を書き換える経路は**全部無効だった**
+→ [[reference_claude_design_local_edit_not_reflected]]
+
+**★残**：insta-2（いちじく断面）が生々しく差し替え候補・好みの判断待ちのみ
 
 **★同じ対象に手をつけないでください**: `~/Downloads/地域イベントポータルサイト設計/` ／
 `~/kb_images/` ／ `bin/{image_tone,gen_images_openai,swap_image_slots,contact_sheet}.py`

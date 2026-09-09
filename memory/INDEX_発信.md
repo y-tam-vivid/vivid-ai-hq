@@ -50,4 +50,4 @@
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
-- [Claude Designはローカル編集を映さない](reference_claude_design_local_edit_not_reflected.md) — **⛔9/9確定：クラウドが正本・DLフォルダは一方向コピー。画像は★チャットに添付して配置させる。依頼文は「どこまで出来ているか」から書く(書かず生成させ402で止めた)**
+- [Claude Designへの画像差し替え](reference_claude_design_local_edit_not_reflected.md) — **✅9/9解決＝★チャットに添付＋「生成不要・配置だけ」を1行目に。ファイル名は番号_スロットid_画面の言葉。DLフォルダの.dc.htmlを書いても無効(18枠やって全滅)**
