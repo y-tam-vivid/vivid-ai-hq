@@ -58,4 +58,6 @@
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
 - [LSU 装飾は右端=見学ボタン/上端=パンくずが恒久境界](project_lifestandup_website_wordpress.md) — ★9/9 全ページ・全幅の決まり。タブレット/スマホは3本線が右端の基準。マスキングテープは固定(動かさない)・直すのはポストカード/写真/吹き出し側
 - [揃うまで待たない](feedback_dont_wait_for_the_full_set.md) — ★9/8 有璽氏「スタッフの声、4人分そろうのは今日中は難しい」。複数件は1件ごとに独立差し替え可能な構造に。全部揃ってから一括反映にしない（★MEMORY.mdが上限のためここへ降ろした）
-- [LSU テープは右端が定位置・背景装飾は対象外](project_lifestandup_website_wordpress.md) — ★9/9 ③マスキングテープの基本位置=一番右端(他要素側を動かす・入りきらなければ非表示可)／④星・葉・丸イラスト等の背景装飾は①②③の対象外。個別の画像指定があればそちらが優先
+- [LSU テープは右端が定位置・背景装飾は対象外](project_lifestandup_website_wordpress.md) — ★9/9 ③マスキングテープの基本位置=一番右端(他要素側を動かす・入りきらなければ非表示可)／④星・葉・丸イラスト等の背景装飾は①②③の対象外。個別の画像指定があればそちらが優先／★9/9 2周目=全132通り①②③④違反0件達成(wt/tapeブランチ)。**right:max(A,calc(B))は非線形バグを踏む→calc(A+max(0,B))を使う**／nav-ctaの基準は.nav-inner{max-width:1200px}(var(--max)でも1440pxでもない)
+- [LSU WordPress移行(②)を実機で通した](project_lifestandup_website_wordpress.md) — ★9/9 ローカル検証WPでテーマ有効化+ブログ134本を実投入(129本新規+既存5本、過不足0)。**news.phpはpage_for_postsに依存しない=②投稿ページ設定は不要と判明**。既存blog_import.phpの画像ロジックを流用(車輪の再発明を避けた)。php -S単一ワーカーは重いリクエストで丸ごと落ちる→撮影前後にcurl生存確認必須
+- [LSU テープ×写真mergeを完了](project_lifestandup_website_wordpress.md) — ★9/9 CSS7本競合を1本ずつ統合(片側丸ごと採用せず)。132通り実測0件・写真移動/011は無傷。★非線形バグ症状はcalc(A+max(0,B))でも直らないことがある＝固定widthがコンテナ超過している可能性を先に切り分ける

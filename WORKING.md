@@ -53,6 +53,74 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-09 16時台】WordPress側を実機で通した（②移行・テーマ有効化+ブログ134本実投入）── ✅完了
+
+有璽氏「WordPress側で先に実際に動かせるものがあるんやったら動かしてください」への対応。
+**対象は `~/lifestandup-wp/_tools/wordpress/`（ローカル検証環境）と `migration/` 配下のみ。**
+`theme/lifestandup/` 配下のCSS・PHP（下の写真移動・マージ担当が触っている本体）は
+1文字も編集していない。本番サーバー・仮公開サイト・台帳・Notion・kintoneへも触れていない。
+
+```
+✅テーマ有効化   ローカル検証WPで「LIFE STAND UP」を有効化。ライブプレビュー機構
+                (customize.php)がHTTP200・0.3秒で動くことを実測
+✅134本投入     既存デモ5本+新規129本=134本、過不足0・重複0（独立検算）。
+                写真2,210枚取得（失敗2枚のみ・本番側の404）。Jetpackタイル・
+                標準ギャラリー・単独写真、いずれもスクショで目視確認・崩れ無し
+✅手順書更新     migration/本番への移し方.md の★未確定8件のうち4件を実測で解消
+                （★重要発見：news.phpはpage_for_postsに依存しない設計）
+```
+
+出口 `migration/wp_run_result.md`。記録 `memory/project_lifestandup_website_wordpress.md`
+「2026-09-09 16時台」節。検証サーバーは2経路（lsof・curl）で停止確認済み。
+
+**★同じ対象に手をつけないでください**: なし（作業完了・migration/配下は未コミットのまま
+theme/側のマージ完了を待つ）
+
+### 🔴【リリス / mini・wt/tapeワークツリー 2026-09-09】同じ恒久ルール③④の依頼が2セッションに入っていた ── ✅自分の分は完了・push済み。★統合は窓口の判断待ち
+
+**★2つのセッションが同じ依頼（恒久ルール③④）を並行して実装していた。**
+自分は `~/lsu-wt-tape`（worktree、`wt/tape`ブランチ）で作業する指示を受け、そのとおり
+`~/lsu-wt-tape/` 配下だけを触った（本体`~/lifestandup-wp/`・本番サーバー・WP管理画面・
+DNS／台帳・Notion・kintoneへは1文字も書いていない）。**指示は守れていたが、
+気づいたら下の「マスキングテープの定位置＋恒久ルール③④（2周目）」ブロック（本体側・
+`main`ブランチ）が★同じ問題を独立に解決し、既にcommit `e919146`以降で仮公開へ反映済みだった。**
+
+```
+自分の実装(wt/tapeブランチ・commit b7b34ee〜5754f77・全8本・push済み)
+  対象10ファイル：style.css／front-page.php／about-ilife.css／about-staff.css／
+  recruit-interview.css／recruit-top.css／recruit-values.css／stand-up-top.css／
+  testimonials.css／testimonials.php
+  実測：全132通り（22ページ×6幅）で①②違反・テープ重なりとも0件を確認
+  ★2つの技術的発見（mainブランチのコミットメッセージには同等の記述が見当たらない）：
+    真因1  right:max(Apx, calc(B)) という構造が、この検証環境で非線形の異常な
+           挙動を示す（定数Aを136px動かしたら結果は236px動いた・傾きが2箇所で
+           1.0と2.28に食い違う）。right:calc(Apx + max(0px, B)) の形に変えると
+           線形に戻ることを複数ページで再現・確認（孤立HTMLでは再現せず実ページ
+           内でのみ発生・原因のCSS内部機構は特定できていない）
+    真因2  nav-cta(見学ボタン)の基準コンテナは var(--max)=1120px でも 1440px でも
+           なく .nav-inner{max-width:1200px}。981-1439px帯で1120px/1440px基準の
+           calcを使うとgapが最大130pxまで開く。1200px基準に統一して解消
+  詳細 → memory/project_lifestandup_website_wordpress.md「★2026-09-09 恒久ルール③④を
+  実装・全ページ0件を達成」節
+main側の実装(commit e919146・a241b04まで・仮公開へ反映済み)
+  対象16ファイル（自分と6ファイル重複：about-ilife/about-staff/recruit-interview/
+  recruit-top/recruit-values/stand-up-top/testimonials/style.css。
+  自分が触っていない8ファイルも含む：guide-flow/guide-top/news/recruit-apply/
+  stand-up-daily-schedule/stand-up-programs/useful/recruit-interview.php）
+  ★詳細は上のブロックと、そこから連なる「9/9指摘15件・2度目の差し戻し」
+  「9/9差し戻し『写真が消えた』」「9/9差し戻し『赤枠(写真)がまだ動いていない』」
+  「011: スマホで文字が黒になる件」の各ブロックを参照
+```
+
+**★同じベースコミット(a74d2b8)から分岐し、ほぼ同じファイル群を独立に編集している
+（git merge-base + diff --statで確認）。マージすれば同じファイルで競合する。**
+**★どちらを正本として残すか、あるいは自分の2つの技術的発見（max(A,calc(B))の
+非線形バグ・nav-innerの1200px基準）をmain側へ移植するかは、実装内容を比較できる
+窓口の判断が要る。当方からはwt/tapeブランチをmainへマージする操作は行っていない。**
+
+**★同じ対象に手をつけないでください**: `~/lsu-wt-tape/`（`wt/tape`ブランチ・作業完了）／
+`~/lifestandup-wp/`（`main`ブランチ・下のブロックの担当が使用中の可能性）
+
 ### 【リリス / mini 2026-09-09】マスキングテープの定位置＋恒久ルール③④（2周目）── ✅完了・commit済み（★別セッションが引き継いでpush）
 
 **⛔2026-09-09 追記（別セッション・写真移動担当より）**：このブロックの担当プロセス（pid 6491）は
