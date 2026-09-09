@@ -48,7 +48,7 @@
 - [LSU 法定開示に年度・更新頻度を明記](project_lifestandup_website_wordpress.md) — ★9/7 自己評価=毎年度／支援プログラム=改定時、と混ぜていた共通注記を分離。年度は`meta`1箇所・来年はそことPDF差替のみでよい。5帯とも横あふれ0
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない／**★9/8 miniにmasked/が無くぼかしガードが機能しない。対象5番号を扱う前に必ずself_test()で確認**
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
-- [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — 南河内4市・Claude Design制作中。★トップ完成(写真18枠/ロゴ主役/スライド/ポップ1d)。いまイベント一覧を作成中＝下層1枚目。**★SPOT/SPECIALの一覧はまだ無い(トップ内アンカー)**
+- [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★**公開 https://kawachibanashi.vercel.app**／**★イベント情報の器（スプレッドシート23列）を新設＝AIが書ける正本**。詳細の見せ方3案は保留
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
 - [Claude Designへの渡し方](reference_claude_design_local_edit_not_reflected.md) — **✅画像はチャット添付＋「生成不要・配置だけ」を1行目に。★9/9 Driveリンクは開けない(本文で渡す)／ロゴPNGから絵の切出し不可／生成は向こうの財布(Gamma)＝絵はこちらで作る**
 - [OpenAI APIの費用とCodex](reference_openai_api_cost_and_codex.md) — ★APIは画像生成にだけ使用(会話は0件)。18枚 high=$2.39/mini=$0.09で27分の1。★Codexは画像生成できずPlusにAPIクレジットも付かない
@@ -61,3 +61,4 @@
 - [LSU テープは右端が定位置・背景装飾は対象外](project_lifestandup_website_wordpress.md) — ★9/9 ③マスキングテープの基本位置=一番右端(他要素側を動かす・入りきらなければ非表示可)／④星・葉・丸イラスト等の背景装飾は①②③の対象外。個別の画像指定があればそちらが優先／★9/9 2周目=全132通り①②③④違反0件達成(wt/tapeブランチ)。**right:max(A,calc(B))は非線形バグを踏む→calc(A+max(0,B))を使う**／nav-ctaの基準は.nav-inner{max-width:1200px}(var(--max)でも1440pxでもない)
 - [LSU WordPress移行(②)を実機で通した](project_lifestandup_website_wordpress.md) — ★9/9 ローカル検証WPでテーマ有効化+ブログ134本を実投入(129本新規+既存5本、過不足0)。**news.phpはpage_for_postsに依存しない=②投稿ページ設定は不要と判明**。既存blog_import.phpの画像ロジックを流用(車輪の再発明を避けた)。php -S単一ワーカーは重いリクエストで丸ごと落ちる→撮影前後にcurl生存確認必須
 - [LSU テープ×写真mergeを完了](project_lifestandup_website_wordpress.md) — ★9/9 CSS7本競合を1本ずつ統合(片側丸ごと採用せず)。132通り実測0件・写真移動/011は無傷。★非線形バグ症状はcalc(A+max(0,B))でも直らないことがある＝固定widthがコンテナ超過している可能性を先に切り分ける
+- [区分は必ず増える](feedback_categories_always_grow.md) — ★9/9に同じ指摘が2件（LSU「カテゴリは増える想定で」／かわちばなし「その他も」）。選択肢を決めたらその場で①その他②1か所にまとめる③その他の色 の3つを用意する

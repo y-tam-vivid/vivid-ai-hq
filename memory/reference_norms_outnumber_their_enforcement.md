@@ -134,3 +134,31 @@ WORKING.md 18ブロック中3件が逸脱。**うち1件（SalesBreaker申し送
 関連: [[reference_hooks_enforce_what_discipline_cannot]] [[reference_no_gate_on_asking_the_human]]
 [[reference_what_actually_reaches_the_next_turn]] [[feedback_use_the_team_not_alone]]
 [[reference_delivered_but_unread]]
+
+## 🔴2026-09-09 ★検問の穴を初めて名指しで数えた（Ｃ＝在るのに効いていない 3件）
+
+★外部調査の「最小の一手①」として、ドーベルマンが memory と検問を突き合わせた結果。
+
+```
+Ｃ-1 hook_interactive_guard.py（非対話のAskUserQuestionを止める）
+    ★9/5に実装・実測済み。両機に実在（sha一致・4日間更新なし）
+    ★settings.json へ ★一度も登録されていない（grep 0件）
+    ★さらに 毎朝08:20の生死点検（hook_selfcheck.py の CASES）にも★入っていない
+    ＝ ★「登録されていない」だけでなく「★登録漏れを点検が見つけられない」★二重の見えなさ
+    ★直し方＝settings.json へ1行 ＋ CASES へ1行。★登録は要承認
+
+Ｃ-2 hook_role_guard.py（メインセッションの実装コード書込をブロック）
+    ★登録済み・発火実績あり。だが判定根拠が★agent_id の有無という未文書化の内部実装
+    ★サブエージェントをメイン扱いする誤検知が★3件以上（リリス複数・本調査自身）
+    ★その場しのぎ（Bash経由で回避／委譲し直す）で乗り切っており★根本原因は未特定
+
+Ｃ-3 検査3（1経路断定の検出・ENABLE_CHECK3）
+    ★実装済み。だが★False のまま＝★観測だけでブロック効果はゼロ
+    ★誤検知28%を理由に有効化を見送った判断（＝意図的・上2件とは型が違う）
+```
+**★「検問がある」と「検問が効いている」は別。**
+★実装した本人は「作った」で終わり、★登録は人の手待ちで止まり、
+★点検の対象にも入らないので、**★誰も気づかないまま何日も過ぎる**（Ｃ-1は4日）。
+
+**★新しい検問を作ったら、同じターンで★点検の対象（CASES）にも足す。**
+★登録が人の手待ちなら、**★その1行を「人が押す場所」として窓口が持ち帰る。**
