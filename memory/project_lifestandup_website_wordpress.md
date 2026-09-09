@@ -3743,3 +3743,15 @@ commit `8c70bb7`（push済み）。**★本番・redeploy.sh・台帳へは触�
 
 ★**次の確認点**：トップ下部の Instagram 枠（★今日仕込んだ `[instagram-feed feed=1]`）が
 本番のプレビューで実際に出るか。★ここでしか確かめられない。
+
+## ★2026-09-09 22時台 有璽氏の判断2件
+
+```
+③「Updated weekly · 週次更新」（front-page.php:778）  ★様式として残す（有璽氏）
+   ＝ ★英日併記はこのサイトの様式。★今後「重複」として指摘しない・触らない
+④ 余計に入った4プラグインの停止                       ★実施する（有璽氏）
+   → migration/余計なプラグインの片付け.md を★PDF化して渡した
+     ~/Downloads/lsu_theme/余計なプラグインの片付け.pdf（9KB・92行）
+   ★止めるのは WPChat / WP同意(WPConsent) / YouTubeフィード の3つ
+   ★★「接触(Contact系)」は★Contact Form 7 と紛らわしい＝★止めない（フォームが死ぬ）
+```
