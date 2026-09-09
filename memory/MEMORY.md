@@ -80,7 +80,7 @@
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**／**🔴9/8「期日はいつ？めどを示して」＝復唱するのは形式/本数/出口＋★期日の4つ。「走行中」「終わり次第」は期日でない。外の予定(研修・会議)から逆算して日付で置く。めどを示すのは窓口の仕事**
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **⛔9/9真因＝本数でなく1本の長さ(180B超が40/78本)。★降ろさず「本文へ戻す」。消す前に本文に在るか数える。bin/check_index_line_length.py**
-- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — ★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)**／**★9/7 `.claude/agents/`も書けない(skillsだけではない)。回避せず①miniで作ってgitで配る②bin/に適用スクリプトを置いて人が1回叩く**／**★9/6 `.claude`はパス文字列で塞がれ隔離実験が作れない＝`CLAUDE_CONFIG_DIR`で別の設定ディレクトリを指す**
+- [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **★9/9 有璽氏が★本番WordPressの許可を出した（恒久制約の解除）。★採用は方式B＝インストールのみ・有効化しない（サイトは変わらず・ライブプレビューで自分にだけ見える）。★不可逆は「有効化」の1手だけ＝そこは人が押す。★順序（デモ完成→zip→本番）は許可が出ても崩さない**／★allowに*があってもaskが勝つ／★拒否は3層。operation not permittedはsettings.jsonで直らない／**★9/5 保護パスはAND(目的の承認＋手段が可逆)**／**★9/7 `.claude/agents/`も書けない(skillsだけではない)。回避せず①miniで作ってgitで配る②bin/に適用スクリプトを置いて人が1回叩く**／**★9/6 `.claude`はパス文字列で塞がれ隔離実験が作れない＝`CLAUDE_CONFIG_DIR`で別の設定ディレクトリを指す**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。**★9/8 4例目＝相手のツールの作業フォルダも不可。控えは_backups/へ**
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
