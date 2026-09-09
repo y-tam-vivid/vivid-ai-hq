@@ -71,6 +71,10 @@ SPEC = [
     ('UserPromptSubmit', 'hook_catch_correction.py',   None,                      10),
     ('PermissionRequest','hook_permission_slack.py',   None,                      10),
     ('Stop',             'hook_session_writeback.py',  None,                      15),
+    # ★2026-09-09 有璽氏の承認で追加（Ｃ-1）。9/5に実装・実測済みだったが settings.json へ
+    #   一度も登録されておらず、毎朝の生死点検の対象にも入っていなかった（★二重の見えなさ・4日間）。
+    #   非対話の担当が AskUserQuestion を呼ぶと、答える人がいないため無言で止まり続ける。それを止める。
+    ('PreToolUse',       'hook_interactive_guard.py',  'AskUserQuestion',         10),
 ]
 
 hooks = d.setdefault('hooks', {})

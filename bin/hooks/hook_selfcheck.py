@@ -13,6 +13,10 @@ CASES=[
  #   Bashのリダイレクト書込み疑いは exit0+JSON なのでCASES向き。
  ('hook_role_guard.py','{"tool_name":"Bash","tool_input":{"command":"cat > /tmp/selfcheck_probe.py <<EOF"},"session_id":"selfcheck"}','additionalContext'),
  ('hook_output_guard.py','{"tool_name":"Write","tool_input":{"file_path":"/tmp/selfcheck_probe.py","content":"for x in [1]:\\n    if x:\\n        print(\\\"OK\\\")\\nprint(\\\"すべて正常\\\")\\n"}}','additionalContext'),
+ # ★2026-09-09 追加（Ｃ-1・有璽氏の承認）。実装済みなのに settings.json 未登録で4日間動かず、
+ #   さらに★この点検の対象にも入っていなかった＝登録漏れを誰も見つけられない構造だった。
+ #   ★対話セッションからの呼び出しは「警告のみ」なので additionalContext が返る。
+ ('hook_interactive_guard.py','{"tool_name":"AskUserQuestion","tool_input":{"questions":[]},"session_id":"selfcheck"}','additionalContext'),
 ]
 
 # ★2026-08-30 つる依頼で修正（旧 PLAIN_CASES の穴C）。
