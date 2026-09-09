@@ -86,7 +86,7 @@
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — **🔴9/9 巡回役が生きている担当を「無言98分」と誤報。⛔「vetoが無い」は当方の誤り＝veto は在る。★真因は成果物を★ファイルmtimeでしか見ておらず★commitを見ないこと（commitは9分前に在った）**／MacBookで担当を起こさない・報告の出口はSlack。**🔴9/8「止まらないように確認をしてください。間違いなく」＝「走行中です」は確認でない。★3経路(親プロセス/claude本体/★成果物の更新)＋見張りをBash run_in_backgroundで仕掛けてから次へ。Monitorツールは拒否される。終端は完了・N分無変化・ssh不通の3つ全部を拾う**／**🔴9/7 miniが止まる真因＝claudeのOAuth期限切れ（投げ直しでは直らない）。直し方＝`claude setup-token`（TTY必須/ブラウザ不要/1年）。★`--version`が返るのを動く根拠にしない。投げたら30秒後に生存確認＝`run_agent.sh`／★新しい担当もminiで起こす（Agent toolから呼ばない＝スリープで道連れ）**
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
-- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 枠100/日。★403=DDoS防御(Mitigations)。解除は有璽氏が端末で1行(AI代行不可)
+- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — **✅9/9実測＝枠は空いていた(27/100)。★「今日は公開できない」を前日から持ち越したのは誤り＝日次リセットの制限は日が変わったら測り直す**／枠100/日。★403=DDoS防御(Mitigations)。解除は有璽氏が端末で1行(AI代行不可)
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
