@@ -50,5 +50,5 @@
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — 南河内4市・Claude Design制作中。★写真18枠は完了(暗部47-87%→0-11.5%)。**いまロゴを主役にする改修＝案D。★思いの3つは仮置きで確定でない**
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
-- [Claude Designへの画像差し替え](reference_claude_design_local_edit_not_reflected.md) — **✅9/9解決＝★チャットに添付＋「生成不要・配置だけ」を1行目に。ファイル名は番号_スロットid_画面の言葉。DLフォルダの.dc.htmlを書いても無効(18枠やって全滅)**
+- [Claude Designへの渡し方](reference_claude_design_local_edit_not_reflected.md) — **✅画像はチャット添付＋「生成不要・配置だけ」を1行目に。★9/9 Driveリンクは開けない(本文で渡す)／ロゴPNGから絵の切出し不可／生成は向こうの財布(Gamma)＝絵はこちらで作る**
 - [OpenAI APIの費用とCodex](reference_openai_api_cost_and_codex.md) — ★APIは画像生成にだけ使用(会話は0件)。18枚 high=$2.39/mini=$0.09で27分の1。★Codexは画像生成できずPlusにAPIクレジットも付かない
