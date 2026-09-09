@@ -696,3 +696,52 @@ SPECIAL  → かわちばなし トップページ v4.dc.html#journal  ★同じ
 **★ダミーデータの曜日を誰も検算していなかった。** 最初に作られた時点から誤っている。
 **★日付を仮で置くときは、曜日を実際に計算してから書く**（`datetime.date(y,m,d).weekday()`）。
 仮データでも、見た人は本物として読む。
+
+## 2026-09-09 デザイン3案は保留。Vercelが使えるようになった
+
+有璽氏「**3案とも起こしてもらったが、これを今すぐ決められない。私だけでなく他の人間にも見て
+決めるのがいい**」「**デザインは一旦保留で、それ以外を進めて**」
+「**バーシャル（Vercel）はもう今日は使えるようになっているので、Vercelで公開してくれてもいい**」。
+
+```
+詳細3案   ~/Downloads/地域イベントポータルサイト設計 5/詳細3{a,b,c}.dc.html
+          描画済み  案A 1440x2624 ／ 案B 1440x3333 ／ 案C 1440x2480
+★保留     決めない。★他の人が見られる形にするところまでがこちらの仕事
+Vercel    ★9/8「枠が尽きている」→ 9/9「使えるようになった」
+          → [[reference_vercel_free_plan_protection]] の「枠が尽きた」は★過去の状態
+```
+
+**★公開すれば「他の人に見てもらう」も同時に叶う。** 1回で両方。
+
+## ✅2026-09-09 Vercelで公開した（他の人が見られる形）
+
+**https://kawachibanashi.vercel.app**（実測：7ページとも HTTP 200）
+
+```
+/              トップ（2.97MB・data URI 25枚＝写真21＋ロゴ4）
+/compare.html  ★3案を見比べる入口。「どこを見るか」の目のつけどころ付き
+/events.html   イベント一覧（絞り込みが実際に動く）
+/event.html    イベント詳細（現行）
+/case-a.html   案A 情報を主役と脇役に分ける
+/case-b.html   案B 本文の途中にも写真
+/case-c.html   案C 情報の表を2列に
+```
+
+**★プロジェクト名 `kawachibanashi`（本番）。認証は mini にある**
+（`~/Library/Application Support/com.vercel.cli`）。
+**★vercel CLI は両機とも入っていない。`npx --yes vercel@latest` で毎回取る**
+（既存の `bin/kadoban_deploy.sh` と同じ形）。
+デプロイ元 `mini:~/kawachibanashi_site/`。
+
+### ★ここで踏んだ3つ（次に .dc.html を静的化する人へ）
+
+```
+① Claude Design は要素を作り直すと★スロットidが変わる
+   v2-hero → hero-s1〜s4（スライド化で1つが4つに）／ v2-j1 → v2-j1b
+   v2-ev-feature → v2-ev-feature-b ／ insta-1 → insta-1b
+   ★idを恒久のキーにしない。候補を複数作って当てる（末尾のbを外す等）
+② ★macOSのファイル名はNFD（濁点が分離）。Pythonの文字列はNFC
+   「スライド」が一致せず0件になった。★unicodedata.normalize("NFC") を通してから比較する
+③ MCPの deploy_to_vercel は★ファイルをインラインで渡す
+   2.8MBのHTMLはbase64で約100万トークン＝送れない。★CLI（npx）でファイルを直接送る
+```
