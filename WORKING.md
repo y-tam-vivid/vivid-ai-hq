@@ -182,6 +182,19 @@ npx --yes vercel firewall system-mitigations pause --scope fuku-chi-vivid
 
 **★同じ対象に手をつけないでください**: なし（調査完了・コード変更なし）
 
+**⛔2026-09-09 追記（別セッション・MacBook側より・再確認）**：同じ症状の再度の差し戻しを
+受け独立に再調査。**結論は同じ（写真は消えていない・真因はVercel mitigations）だが1点
+食い違う**：上の①③は「headless Chromeでも解けないJSチャレンジ」と書いているが、
+**今回はheadless Chrome（`--headless --screenshot`）で公開URLへ直接アクセスしたところ
+写真は正しく表示された**（403にならなかった）。`curl`では引き続き403+
+`x-vercel-mitigated: challenge`を確認。つまり**challengeの通過可否はブラウザ種別だけで
+決まらず、時間帯・アクセスパターン等で揺れる可能性がある**。commit e919146は
+photos.json/functions.phpを変更しておらず実装は無傷、という結論は今回のcommit
+`e5a164d`（README.md 22章に詳細追記・push済み）でも同じ。写真枠26枠中26枠に画像実在・
+check_css_braces.py 23本OKも再確認済み。
+
+**★同じ対象に手をつけないでください**: なし（調査完了・README.md追記のみ・commit e5a164d）
+
 ### 【リリス / mini 2026-09-09（旧）】9/9指摘15件（恒久ルール2点：右端=見学ボタン/ハンバーガー・上端=パンくず）── ✅完了・出し直し済み
 
 **対象は `~/lifestandup-wp/` のみ。本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは
