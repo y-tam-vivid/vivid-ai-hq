@@ -3451,3 +3451,29 @@ worktreeへ持ち込むときは、先に`curl -I http://127.0.0.1:<port>/`で30
 ```
 ★**②でも Facebookページが要るサービスが多い**可能性がある（多くはMeta APIを内部で使うため）。
 ★そこを確かめるのが今回の調査の要点。
+
+### ✅2026-09-09 17:37 IG調査の答え ── ★Facebookページは要らない
+
+```
+★最重要の答え   Meta が2026年に方式を変え、Creator/Businessアカウントは
+                ★Facebookページへ紐づけなくても API を使えるようになった
+
+サービス          FBページ   根拠
+Smash Balloon     ★不要     公式「You don't need a Facebook Page for this,
+（WordPress用）              and it's the most common path」
+Elfsight          ★不要     2026年のアップデートで対応（Instagram Login方式）
+SnapWidget        ★必要     古い方式のまま（ビジネスプロフィールにFBページが要る）
+```
+**★推奨＝Smash Balloon（Instagram Feed・WordPress無料プラグイン）**
+```
+理由 ①★FBページ不要を★公式が明言 ②★"100% free, forever" ③★WordPressプラグイン＝
+     いまのカスタムテーマへ直接組み込める（他2つは外部埋め込み＝見た目が揃いにくい）
+     ④★Elfsightの無料版は★月200ビュー制限＋自社ブランド表示＝施設サイトには不向き
+     ⑤★API連携の最大の弱点「気づかないまま止まる」に対し、★管理画面警告＋週次メールを明記
+       （★3社で具体的に確認できたのはこれだけ）
+★選択の落とし穴  接続方法で「Business Advanced」を選ぶと★FBページが要る。
+                ★必ず「Business Basic」を選ぶ
+```
+**★未確認（正直に）**：無料版の投稿数上限・キャッシュ更新頻度／
+「気づける仕組み」が無料版でも使えるか／Elfsightの200ビュー超過時の挙動／
+SnapWidgetの無料プランの実在。**★料金は変わりやすい＝導入直前に公式を再確認。**
