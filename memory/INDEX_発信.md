@@ -48,6 +48,10 @@
 - [LSU 法定開示に年度・更新頻度を明記](project_lifestandup_website_wordpress.md) — ★9/7 自己評価=毎年度／支援プログラム=改定時、と混ぜていた共通注記を分離。年度は`meta`1箇所・来年はそことPDF差替のみでよい。5帯とも横あふれ0
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない／**★9/8 miniにmasked/が無くぼかしガードが機能しない。対象5番号を扱う前に必ずself_test()で確認**
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
+- [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — 南河内4市・Claude Design制作中。★トップ完成(写真18枠/ロゴ主役/スライド/ポップ1d)。いまイベント一覧を作成中＝下層1枚目。**★SPOT/SPECIALの一覧はまだ無い(トップ内アンカー)**
+- [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
+- [Claude Designへの渡し方](reference_claude_design_local_edit_not_reflected.md) — **✅画像はチャット添付＋「生成不要・配置だけ」を1行目に。★9/9 Driveリンクは開けない(本文で渡す)／ロゴPNGから絵の切出し不可／生成は向こうの財布(Gamma)＝絵はこちらで作る**
+- [OpenAI APIの費用とCodex](reference_openai_api_cost_and_codex.md) — ★APIは画像生成にだけ使用(会話は0件)。18枚 high=$2.39/mini=$0.09で27分の1。★Codexは画像生成できずPlusにAPIクレジットも付かない
 - [LSU「対策済み」はメディアクエリの境界まで見る](project_lifestandup_website_wordpress.md) — ★9/8 en-bubble重なり4ページ再発。真因は9/7のtop調整がタブレット帯(541-980px)専用ブロックのみで540px以下に無かった漏れ。**コードがある≠その幅で効いている**。PHPコメント内に`/*``*/`という文字列を書くと構文エラーになる罠も踏んだ
 - [LSU 縦テープ⇄バッジ間隔 9/8夕修正](project_lifestandup_website_wordpress.md) — tape-verticalの画面端直値配置→コンテナ基準calc式へ（1440/1920で一致を実測）。bc-gap-badgeは17→32px（3回「揃える」対応のみで初めて広げた）
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
