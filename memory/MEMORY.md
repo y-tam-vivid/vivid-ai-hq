@@ -72,7 +72,7 @@
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
-- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — 渡すのはSlack添付かArtifact/Driveのリンク／**★9/8 4例目＝ローカルのファイルパスも届かない。実測値の羅列は成果物でない。見える形にして渡すまでが1セット**
+- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — **🔴9/9 5例目＝「着手完了」と報告したが実物は全部mini内で★有璽氏へ0件。★報告前に「本人はどこで見られるか」を自問し、見られないなら★まだ完了でなく中間物と言う**／渡すのはSlack添付かArtifact/Driveのリンク／**★9/8 4例目＝ローカルのファイルパスも届かない。実測値の羅列は成果物でない。見える形にして渡すまでが1セット**
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消(Stopフック検査4)。9/9本番3例目を機械が先に検出。★意味の同じ外国語に化けるので目視では素通り**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
