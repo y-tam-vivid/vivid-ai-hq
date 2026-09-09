@@ -91,7 +91,7 @@
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
-- [IGをサイトへ出す](project_lifestandup_website_wordpress.md) — **✅9/9フィード作成まで完了。残＝右上「埋め込み」でショートコード取得→サイトへ。★余計に入った4プラグインを停止。★同日4件が同じ根＝★実物を見ずに人の画面を指示した（名前で案内／出ない画面を予言／同時に入るものを数えず／★押す場所を書かず）**
+- [IGをサイトへ出す](project_lifestandup_website_wordpress.md) — **✅9/9 IG側は完了。★ショートコード=`[instagram-feed feed=1]`（保存済）。★動くのは本番WPだけ・デモは静的で展開されない。残＝テーマへdo_shortcode+フォールバックを仕込む／余計な4プラグイン停止。★同日4件が同じ根＝実物を見ずに人の画面を指示した**
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
 - [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — 文面と画像まで1セット／★施設IGに業界の話は不可
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — ★9/8有璽氏「お前だけで考えんな」。同じ型の失敗が繰り返されたら自前パッチの前にクローバーへ業界調査を投げる
