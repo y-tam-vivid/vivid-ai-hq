@@ -51,3 +51,4 @@
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
 - [Claude Designへの画像差し替え](reference_claude_design_local_edit_not_reflected.md) — **✅9/9解決＝★チャットに添付＋「生成不要・配置だけ」を1行目に。ファイル名は番号_スロットid_画面の言葉。DLフォルダの.dc.htmlを書いても無効(18枠やって全滅)**
+- [OpenAI APIの費用とCodex](reference_openai_api_cost_and_codex.md) — ★APIは画像生成にだけ使用(会話は0件)。18枚 high=$2.39/mini=$0.09で27分の1。★Codexは画像生成できずPlusにAPIクレジットも付かない
