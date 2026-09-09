@@ -53,6 +53,32 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-09 17時台】お役立ち情報を3分割（①ご利用案内・手続き・制度 ②療育のヒント ③よくある質問）── ✅完了・commit `b2076db`・push済み
+
+有璽氏の承認済み設計（15:3x「これで良い。カテゴリーは今後増えることも想定し、念頭に
+設計はしてください」）を実装。**対象は `theme/lifestandup/{functions.php,
+page-templates/useful.php, assets/css/useful.css}` と検証用 `check_overflow_useful.py`
+のみ。** 本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは1文字も書いていない。
+`redeploy.sh`は実行していない（公開は窓口）。`migration/`配下（別担当）は触っていない。
+
+```
+実装   既存の useful_topic taxonomy をそのまま流用（新設せず）。①②③を初期termとして
+       投入。★色・タブ・絞り込み・一覧・ページ番号はすべて term を回して自動生成
+       （コードにslugをハードコードしていない）。カードに日付・色ラベルを追加、1列化
+既存2件 旧term「手続き・制度」「ご利用案内」（別々に付いていた）を①へ統一。
+       空になった旧termは削除（記事の移行を確認してから）
+★受け入れ条件② 4つ目のtermをDB操作のみ（コード不変更）で追加→タブ・絞り込みに
+       自動反映を実測→削除して3カテゴリへ復元、を確認済み
+実測   check_overflow_useful.py：320/390/768/1024/1440×4パターン=20通り、横あふれ0/20。
+       check_css_braces.py 23本全OK。他ページ(/,/stand-up/,/recruit/,/news/)は
+       PC幅でgit stash前後sha256完全一致＝無傷
+```
+
+詳細 → `memory/project_lifestandup_website_wordpress.md`「✅2026-09-09 リリス／mini
+実装完了」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【ピタゴラス / mini 2026-09-09 16時台】WordPress側を実機で通した（②移行・テーマ有効化+ブログ134本実投入）── ✅完了
 
 有璽氏「WordPress側で先に実際に動かせるものがあるんやったら動かしてください」への対応。
