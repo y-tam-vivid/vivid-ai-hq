@@ -29,7 +29,14 @@ export default function middleware(request) {
   if (header.startsWith('Basic ')) {
     let decoded = '';
     try {
-      decoded = atob(header.slice(6));
+      // ★2026-09-09 修正: atob() は Base64→バイナリ文字列(1バイト=1文字)にしか戻さない。
+      //   合言葉に日本語等の非ASCII文字が入っていると、ブラウザはUTF-8バイト列を
+      //   Base64送信してくるのに(RFC 7617)、ここでlatin1のまま比較してしまい常に不一致
+      //   になる（実測で再現・単体テストで確認済み）。バイト列へ落としてからUTF-8として
+      //   再解釈する。ASCIIのみの合言葉なら挙動は変わらない（後方互換）。
+      const bin = atob(header.slice(6));
+      const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+      decoded = new TextDecoder('utf-8').decode(bytes);
     } catch (e) {
       decoded = '';
     }
