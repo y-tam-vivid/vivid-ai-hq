@@ -68,7 +68,7 @@
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — **★9/9 初めて穴を名指しで数えた＝Ｃ(在るのに効かない)3件。★C-1 hook_interactive_guardは★settings.json未登録＋★毎朝の点検CASESにも無い＝二重の見えなさ(4日)。★新しい検問は同じターンでCASESにも足す**／8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/8 頻度も1日2回→毎時(07-22時)へ。crontab直書き・daily_jobs.conf側は無効化のみ**
-- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — **★9/7 慢性の赤5件を初めて数えたら1件は純粋な誤検知（find条件が雑）・4件は消せないもの。「既知」と呼んだ時点で中身を見るのをやめていた。11日間放置。★慢性の赤は件数の内訳を数える**／ ★9/3 混入を直したら届く経路ごと消えた／表示だけで警告にしない
+- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/10で2回目。慢性の🟡は内訳を数える（2件中1件は誤検知）／実体欄に説明を書くと機械が誤読する
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
@@ -78,7 +78,7 @@
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動／★材料の発言欄は38%が偽物。本文を読む
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**／**🔴9/8「期日はいつ？めどを示して」＝復唱するのは形式/本数/出口＋★期日の4つ。「走行中」「終わり次第」は期日でない。外の予定(研修・会議)から逆算して日付で置く。めどを示すのは窓口の仕事**
-- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
+- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★担保2つとも効かず。自動確定の7割は生成物のみ／差し戻しは4回とも空振り
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **⛔9/9真因＝本数でなく1本の長さ(180B超が40/78本)。★降ろさず「本文へ戻す」。消す前に本文に在るか数える。bin/check_index_line_length.py**
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **★9/9 有璽氏が★本番WordPressの許可を出した（恒久制約の解除）。★採用は方式B＝インストールのみ・有効化しない（サイトは変わらず・ライブプレビューで自分にだけ見える）。★不可逆は「有効化」の1手だけ＝そこは人が押す。★順序（デモ完成→zip→本番）は許可が出ても崩さない**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。**★9/8 4例目＝相手のツールの作業フォルダも不可。控えは_backups/へ**
@@ -97,3 +97,4 @@
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — ★9/8有璽氏「お前だけで考えんな」。同じ型の失敗が繰り返されたら自前パッチの前にクローバーへ業界調査を投げる
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
+- [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
