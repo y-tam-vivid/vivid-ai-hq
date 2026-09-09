@@ -505,3 +505,49 @@ Vercel を使う理由がある       独自ドメイン／Basic認証／API/mid
 ★次に頻度を決めるときは **①そのプロジェクトの回数 ②同じアカウントの他プロジェクト
 ③日の合計が100を超えないか** を数字で出してから決める。
 ★恒久の値は有璽氏の判断（9/9朝に実測を添えて諮る）。
+
+## 🔴🔴 2026-09-09 Security Checkpointの正体を特定 ── Vercel Firewallの自動DDoS保護（Mitigations）。★解除はエージェント代行不可
+
+**9/8のつるの記録（8行目節）は「JSチャレンジが出る」現象までは掴んでいたが、原因（何がこれを
+出しているか）までは特定していなかった。今回コマンドで特定できた。**
+
+```
+症状       lifestandup-preview.vercel.app 全ページが403。中身は「Vercel セキュリティ
+           チェックポイント｜ブラウザを確認しています」（headless Chromeでも解けない）
+特定       npx vercel firewall status --scope <team>
+             Mitigations     Active   ← ★これが犯人
+             Attack Mode     Off      （全訪問者チャレンジ・手動オン/オフ機能とは別）
+             Bot Protection  Off
+解除コマンド  npx vercel firewall system-mitigations pause --scope <team>
+実行結果    ★Vercel自身が拒否する：
+             "reason": "dangerous_operation_requires_user"
+             "message": "...cannot be performed non-interactively.
+                          Agents must not make this change on behalf of a user.
+                          The user must run this command interactively in a terminal..."
+```
+
+- **★これは合言葉(Basic認証middleware)より手前の、Vercelプラットフォーム自体の自動防御。**
+  middleware.js・vercel.json・アプリ側のコードは無関係（触っても直らない）。
+- **★エージェントには解除できない。** `pause`はVercel CLI自身が対話端末での実行を要求する
+  設計（非対話フラグを付けても通らない・`--yes`等でも回避不可、と実測）。
+  **有璽氏本人がターミナルで `npx vercel firewall system-mitigations pause --scope <team>`
+  を対話的に叩く必要がある**（24時間有効・`resume`でいつでも戻せる＝可逆）。
+- **★引き金は推測だが、直近の頻繁なcurl/headless/deployの繰り返しアクセス**
+  （出し直しの検証・check_live.sh等）と符合する。事実として確定はできていない。
+- **★「写真が消えた」「中身が真っ白」という差し戻しが来たら、まずこれを疑う。**
+  ローカル（`_tools/php activate_theme.php`後の127.0.0.1:8750）とstatic-preview配下の
+  HTML/CSS/画像が正しければ、実装側は無傷。公開URLだけが403なら、このMitigationsを疑う。
+
+**How to apply**
+```
+1  症状を見たら         npx vercel firewall status --scope <team> で確認
+                        （リンクされていないディレクトリなら先に vercel link --yes
+                        --project <name> --scope <team>）
+2  Mitigations=Active   ★自分では直せない。有璽氏へ「ターミナルで1行叩いてほしい」と
+                        コマンドをそのまま渡して終える（推測で待たない・自動解除は未確認）
+3  実装の切り分けは     必ずローカル(_tools/php + activate_theme.php)と
+                        static-preview配下のファイルで先に済ませる。
+                        公開URLの403は実装の証拠にならない（正常でも異常でも403になりうる）
+```
+
+[[reference_offload_long_work_to_mini]]（有璽氏の手を要する操作の切り出し方）
