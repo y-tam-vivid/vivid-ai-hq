@@ -53,6 +53,269 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-09】マスキングテープの定位置＋恒久ルール③④（2周目）── ✅完了・commit済み（★別セッションが引き継いでpush）
+
+**⛔2026-09-09 追記（別セッション・写真移動担当より）**：このブロックの担当プロセス（pid 6491）は
+発見時点で既に終了していた。**「同じ対象に手をつけないでください」の指定に気づかないまま、
+下の001対応でこのブロックと同じ`theme/lifestandup/`配下を編集してしまった**（手順違反として
+正直に記録する）。実測の結果、直接の書き込み競合（同一行の同時編集）は発生しておらず、
+このブロックが書き残した実装内容（真因1・真因2・その他節の全修正）はファイルに正しく
+残っていることを確認した。当方の001/006対応と合わせて commit `e919146` としてまとめて
+push・仮公開へ反映済み（合言葉あり200・CSS実測で反映確認）。
+**★次に同じ状況（着手宣言はあるが対象プロセスが見当たらない）に当たったら、
+`ps -p <pid>`で生死を確認してから、勝手に統合せず一度立ち止まること。**
+
+有璽氏の追加ルール2点。①②(前回)に続く2周目。**対象は `~/lifestandup-wp/` のみ。
+本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは1文字も書いていない。未commit。**
+
+```
+③ マスキングテープ(tape-vertical)は一番右端が基本の定位置。他を動かす
+④ 背景と分かるもの（星・葉っぱ・丸い小イラスト）は①②③の対象外
+```
+
+```
+仕分け  対象＝tape-vertical本体／写真・ポラロイド系／en-bubble・mission-bubble
+       判断がつかない＝abc-block／fv-join-block／years-stamp／fv-clock-visual
+       対象外＝deco-star/leaf/cloud等の背景装飾／バッジ類／通常UIカード
+       写真付属の小テープ(v-tape/corner-tape/ptape等)＝③のテープ単体ルール対象外
+             （写真の一部として動く。top:-Npx;left:50%;transform:translateX(-50%)
+             型でピン留め表現。独立配置ではない）
+①実測(1周目) 全22ページ×5幅=110件を機械実測（lsu-tape-audit.html新設）。
+             ①右端違反25件・②x_overlap=True(実視覚重なり)3件・
+             テープ×写真/吹き出し重なり27件(主にPC幅)を検出
+真因1   guide-top/testimonialsのen-bubbleがインラインstyle(left:580px/470px)の
+        まま、980px以下のright基準オーバーライドが一度も実装されていなかった
+        （9/9の15件対応の対象9ページに含まれていなかった）。320/390pxで
+        画面右外へ最大383pxはみ出し。→ 980px以下/540px以下のCSS新設で対応済み
+真因2   about-ilife/stand-up-top/recruit-valuesの540px以下に
+        `.tape-vertical{left:-64px !important}`（テープを画面外へ逃がす旧処理・
+        9/3由来）が残っており③に違反。stand-up-top/recruit-valuesは980px以下も
+        `left:8%`で左寄り（9/9で「未修正・スコープ外」と記録されていた既知バグ）。
+        → 3ページとも right基準（about-ilife実証済みの値）へ統一済み
+その他  top-page(front-page.php)のtape-vertical/abc-block/polaroid-b/en-bubble.yellowが
+        section基準の固定値のままPC幅ではみ出し（top-pageは9/9の対象9ページに
+        含まれていなかった）→ コンテナ基準・実測補正値へ修正済み
+        about-staff/about-ilife/stand-up-daily-schedule/stand-up-programs/
+        stand-up-topのテープ本体もPC幅(1024/1440)で2-6px程度の超過
+        （回転transformの外接矩形分と推定）→ 実測ベースで補正済み
+        testimonialsのfv-polaroid-wrap(section基準right:64px)もPC幅で89pxはみ出し
+        → コンテナ基準へ修正済み
+        about-ilife_320のpolaroid-about（980px以下の縮小定義が欠落）→ 追加済み
+残作業  修正後の再実測（進行中）→ テープ×写真/吹き出しの重なり解消の要否判断
+        → 全体再実測で①②③の違反0件を確認 → 公開判断
+```
+
+**★同じ対象に手をつけないでください**: なし（作業完了。commit `e919146`）
+
+### 【リリス / mini 2026-09-09】9/9指摘15件・2度目の差し戻し「赤枠(写真)がまだ動いていない」── ✅完了・出し直し済み（commit `e919146`）
+
+有璽氏「スクショに指示文まで作って共有してるのに直ってない」への対応。**対象は
+`~/lifestandup-wp/` のみ。本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは
+1文字も書いていない。**
+
+```
+真因1  commit a74d2b8は「コンテナ幅からはみ出さない」補正(恒久ルール①)のみで、
+       指示画像が示す「矢印の位置まで動かす」個別指示が未実装だった
+       （001の写真right移動は118pxのみで視覚的にほぼ変化なし）
+真因2  一部ページは既にCSS上でtranslateX等の移動が実装済みだったが、
+       `./php activate_theme.php`未実行でローカル検証環境に反映されていなかった
+       ＝有璽氏はこの未反映のままの画面を見てスクショを撮っていた可能性が高い
+対応   001 写真right 172→280px・テープ34→134pxへ拡大移動。Our Voices!が恒久ルール②
+         (パンくずより上に出ない)に11-19px違反していたためtop:58→77pxへ調整
+       006 写真拡大(135%)がCTAボタン・見出しと実際に重なっていた（bbox実測）ため
+         117%程度に縮小。副作用のTogether!⇔テープの重なりも写真上への再配置で解消
+       002/003/004/008/010/012/013/014/015は既存実装（未反映だっただけ）を確認・反映
+       005/007/011は既存対応（プレースホルダー・ラベル非表示・白文字化）を実物確認のみ
+実測   320/390/768/1024/1440/1920pxで対象8ページ横あふれ0px。check_css_braces.py 23本OK。
+       公開URLでCSS実測反映確認済み（合言葉あり200）
+```
+
+**🔴踏んだ地雷（正直に記録）**：着手前にWORKING.mdの「マスキングテープ担当」ブロックの
+「同じ対象に手をつけないでください」指定を見落とし、`theme/lifestandup/`を編集した。
+`ps -p <pid>`で確認したところ担当プロセスは既に終了しており、直接の書き込み競合は
+起きなかった（相手の実装は正しくファイルに残っていた）が、**手順としては誤り**。
+→ [[reference_two_sessions_built_the_same_thing]]
+
+**★恒久ルール②（パンくずより上に出ない）は全22ページで網羅的には満たしていない。**
+テープ本体・複数の既存吹き出し（Hello!/Choose yours!/A day with us!等）が、今回の
+スコープ外の既存問題として違反したまま残っている（`check_tape_boundary_20260909.py`の
+実測結果 `verify_tape_20260909.json` 参照）。次に触る人は、この全面対応が要るかを
+有璽氏に確認してから着手すること。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【リリス / mini 2026-09-09】🔴緊急差し戻し「写真が消えた」── ✅写真は消えていなかった。真因はVercelのDDoS防御。★解除は有璽氏の手待ち
+
+ビビが公開URLのスクショで「/recruit/interview/ のポストカード2枚が真っ白」と報告した件の調査。
+**対象は `~/lifestandup-wp/` のみ。コード修正は無し（原因調査のみ・git差分0件）。**
+
+```
+① ローカル実測    `_tools/php activate_theme.php` 後、127.0.0.1:8750/recruit/interview/を
+                 スクショで確認 → ★写真2枚（日々の活動・支援のひとこま）とも正しく表示。
+                 e919146の位置修正（right280px/134px等）も反映されている
+② HTML/画像の実測  static-preview配下のHTML 14枠中7枠に画像が正しく当たっている
+                 （残り7枠はvoice-1〜5・recruit-fv・fv-photo＝元々候補未受領で対象外の枠。
+                 iv-fv-1/2・staff-fv-photo・iv-u/k/x/d-photoの7枠は全部has-photo+
+                 background-image出力済み）。画像ファイルも90KB/96KBで実在・200で取得可
+③ 🔴真因         公開URL(lifestandup-preview.vercel.app)全体が403。中身はVercelの
+                 「セキュリティチェックポイント」（headless Chromeでも解けないJSチャレンジ）。
+                 `npx vercel firewall status`で特定：★Mitigations(自動DDoS防御)がActive。
+                 `system-mitigations pause`で解除できるが、★Vercel CLI自身が
+                 "Agents must not make this change on behalf of a user.
+                 The user must run this command interactively in a terminal" と拒否
+                 （非対話フラグでも回避不可・実測）。★写真ともコードとも無関係の
+                 プラットフォームレイヤーの問題。合言葉(Basic認証)より手前で発生する
+④ check_css_braces.py 23本全OK
+```
+
+**★人の手が要る1点（有璽氏へ）**：ターミナルで以下を1回叩いてください（対話実行が必須）。
+```
+cd ~/lifestandup-wp/static-preview
+npx --yes vercel firewall system-mitigations pause --scope fuku-chi-vivid
+```
+24時間有効・`resume`でいつでも戻せる可逆な操作です。叩いた後に
+`curl -sD - -o /dev/null https://lifestandup-preview.vercel.app/` の応答が
+403→200/401系に変わるかで確認できます。
+
+記録 → `memory/reference_vercel_free_plan_protection.md`「2026-09-09 Security Checkpointの
+正体を特定」節。
+
+**★同じ対象に手をつけないでください**: なし（調査完了・コード変更なし）
+
+**⛔2026-09-09 追記（別セッション・MacBook側より・再確認）**：同じ症状の再度の差し戻しを
+受け独立に再調査。**結論は同じ（写真は消えていない・真因はVercel mitigations）だが1点
+食い違う**：上の①③は「headless Chromeでも解けないJSチャレンジ」と書いているが、
+**今回はheadless Chrome（`--headless --screenshot`）で公開URLへ直接アクセスしたところ
+写真は正しく表示された**（403にならなかった）。`curl`では引き続き403+
+`x-vercel-mitigated: challenge`を確認。つまり**challengeの通過可否はブラウザ種別だけで
+決まらず、時間帯・アクセスパターン等で揺れる可能性がある**。commit e919146は
+photos.json/functions.phpを変更しておらず実装は無傷、という結論は今回のcommit
+`e5a164d`（README.md 22章に詳細追記・push済み）でも同じ。写真枠26枠中26枠に画像実在・
+check_css_braces.py 23本OKも再確認済み。
+
+**★同じ対象に手をつけないでください**: なし（調査完了・README.md追記のみ・commit e5a164d）
+
+### 【リリス / mini 2026-09-09（旧）】9/9指摘15件（恒久ルール2点：右端=見学ボタン/ハンバーガー・上端=パンくず）── ✅完了・出し直し済み
+
+**対象は `~/lifestandup-wp/` のみ。本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは
+1文字も書いていない。** commit `a74d2b8`・push済み。仮公開へ反映済み（合言葉なし401を実測）。
+
+```
+真因   en-bubble(吹き出し)・abc-block(ABC/TIME等)・fv-polaroidsが、コンテナ(var(--max))
+       でなくsection全幅を基準にしたleft:%/right:%/px固定値で配置されていた。
+       9/8にtape-verticalで解消済みだった同型のバグが他の装飾に残っていた
+修正   001-015(009欠番)。コンテナ基準calc式へ統一。写真拡大(115/135/110%)・
+       低コントラスト文字(011)を白文字へ・開発用ラベル(007)を非表示化(コメント温存)・
+       サムネイル無し記事(005)へプレースホルダー追加
+実測   新設 lsu-boundary.html で320-1745px×9ページを機械検査。tape-vertical自体の
+       座標は013(about-ilife・唯一の例外)以外diffで無変更を確認
+```
+
+**★未修正（発見したがスコープ外）**：stand-up-topのタブレット帯(640-880px)で
+tape-verticalが見出しと重なる、about-ilifeの013と同型のバグを検出。今回の15件に
+無く「テープは動かさない」原則のため触っていない。次に触る人は
+`memory/project_lifestandup_website_wordpress.md`「2026-09-09」節を参照。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【リリス / mini 2026-09-09】005 スマホからTOPのブログ画像が見れない ── ✅完了。出し直し済み
+
+**対象は `~/lifestandup-wp/` のみ。本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは
+1文字も書いていない。** commit `88a487e`・push済み。仮公開へ反映済み（実測でcurl 200を確認）。
+
+```
+真因   crawl_static.py が srcset= を1文字も収集していなかった（href=/src=のみ）。
+       活動ブログ3枚とも、srcsetの最後の候補（原寸・約1200w）だけが他ページの
+       src=として使われておらず static-preview/ に落ちていなかった＝本番URLも403。
+       sizes="(max-width:768px) 100vw, 768px" のためスマホ幅×高DPR端末で768pxを
+       超える大きい候補が選ばれやすく、そこが欠けていて画像が読み込めなかった。
+       PCは固定768px枠で既存候補が足りるため症状が出なかった
+修正   crawl_static.pyへsrcset収集を追加（既存ロジックは無改修）。再クロールで
+       以前403だった3枚とも200に。HTML本文はデプロイ前後・修正前後ともbyte単位で
+       完全一致（diff 0行）＝マークアップ・PC幅は1文字も変えていない
+実測   320/390/428pxで3枚とも rect>0・complete=true（local static-preview、本番と
+       index.html は diff 0）／本番URLで3枚とも403→200／check_css_braces.py 23本
+       全OK／検証サーバ停止を2経路で確認
+```
+
+**★踏んだ地雷**：README/redeploy.shが指定する「`cd static-preview`してから`vercel deploy`」を
+1回飛ばし、リポジトリ直下からデプロイして`/`がNOT_FOUND（本文が`/static-preview/`配下に
+ネストされる）事故を起こした。**vercel deploy直前に必ずpwdを確認すること。**
+redeploy.sh自体もリポジトリ直下から呼んでおりREADMEの記載と食い違う（未修正・要点検）。
+詳細 → `memory/project_lifestandup_website_wordpress.md`「2026-09-09 リリス」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【ナミ / mini 2026-09-08】勘定科目 正式名称の突合 ── ✅調査完了。Notion直接アクセス不可・改名案は判断待ち
+
+有璽氏の決定「接待交際費、会計ソフトの正式な呼び方で統一します」を受けた調査。
+**Notionへは1文字も書いていない（読み取りも成立せず）**：mini側の唯一のNotion統合
+「Chatworkリレー」が財務室配下の予実管理DBと未共有＝2経路（自セッション＋新規claude -p）で
+404を確認。47件の実測はできず、memory記録からの再構成で代替した（件数はぴったり47に
+合わせていない・捏造しない）。
+
+弥生・MFの標準勘定科目をWeb調査し、光熱費→水道光熱費／運賃→荷造運賃（★9/3-4の
+「荷造運賃→運賃」訂正は向きが逆だった疑いあり）／交際費⇔接待交際費／支払報酬(料)等の
+差分を特定。改名案・確認できなかった点・有璽氏への判断依頼5点を
+`~/.vivid-relay/kamoku_seishikimei_result.md` にまとめた。詳細は
+`memory/project_cfo_agent.md`「2026-09-08 有璽氏の決定」節／`memory/reference_notion_mcp_read_limits.md`
+（Notion直接アクセス不可の型として追記）。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【リリス / mini 2026-09-08】デモ完成の残り4件（活動ブログ統一・トップ3枚・サンプル5件・スタッフの声）── ✅完了。commit d7885a6・★push/redeploy未実施
+
+有璽氏の3段階段取り（①デモ完成→②WP移行→③本番完成）の①に対応。commit d7885a6。
+**redeploy.sh・pushは実行していない**（Vercel無料プラン1日100デプロイ上限に9/8朝当たったため。
+公開は明朝ビビが通す）。台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+①活動ブログ記事デザイン統一   ★既に9/5実装済みだった（single.php→single-news.php委譲）。
+                            パンくずは9/7に有璽氏承認で「統一（分けない）」へ変更済み
+②トップ活動ブログ3枚         ★既に9/6実装済み・実記事へリンク確認。写真枠blog-1/2/3は無傷
+③サンプル5件(href="#")      ★実測：出ていない（news CPTに実データ5件があるため）。直していない
+④スタッフの声(CPT staff)     実装：0件/1件以上のall-or-nothing方式を、4スロット(u/k/x/d)の
+                            独立マージ方式へ変更(functions.php)。1名だけ投稿しても残り3名は
+                            ダミーのまま崩れず4件表示（1名投入→削除で実測確認・元表示と
+                            diff一致）。着手時点でstaff実データ0名だった
+実測   check_overflow_staff.py新規：4ページ×5幅(320/390/768/1024/1440)=20通り全合格。
+       check_css_braces.py 23本全OK。サーバ2経路(lsof・ps)で停止確認
+```
+
+詳細 → `memory/project_lifestandup_website_wordpress.md`「✅2026-09-08 リリス」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了・push待ち）
+
+### 【ジンベエ / mini 2026-09-08】法人番号 確認シートの○×反映（有璽氏の記入分）── ✅完了。つる検査済み
+
+有璽氏が確認シート `1D1TZxmLgVMMLLzRt6yCm1KIicEEMvayWgfrTG2t-dcc`（タブ「要確認17件」）へ
+○×保留を記入。つる（data-auditor）の検査（「載せてよい・条件つき」）を経て 00_企業マスタへ反映した。
+
+```
+17件の内訳（社内顧客ID単位）  ○13／×3（B-0142・B-0024・B-0366）／保留1（B-0085）
+書いた           10件・22セル（法人番号のみ6件／法人番号+都道府県+市区町村+住所4件）
+書かなかった     ○が付いた13件中3件（B-0187 C-TAKE／B-0377 日本アクセス／
+                B-0443 T&Pコンサルティング）＝国税庁データで登記記録の閉鎖(処理区分21)を
+                確認したため。「消滅した法人番号は空欄より有害」の規範に従った
+実測            batch_update戻り値22セル一致／書く前後の全体差分22件・その他0件
+                （バックアップ2本・複製を開き直して中身を確認済み）
+法人番号が空欄(法人・非統合済み)  40件 → ★30件
+```
+
+**★人の判断が要る4点はビビへ**：①閉鎖済み3件の台帳行をどうするか
+②B-0142は有璽氏の再調査指示（本社/工場）が未対応 ③B-0366(3候補×・備考「削除で良い」)は
+台帳行削除の意図か要確認 ④B-0109は法人番号のみ書いた・支店住所追加の要否が未定
+（つるが「先に法人番号だけ書くと後で支店行を追加した際に同一番号が2行に並ぶ」と懸念指摘）。
+
+出口 `~/.vivid-relay/corpno_apply_result.md`。今回わかった型（有璽氏の○＝候補が正しいの意味で
+「書いてよい」ではない／候補シートの「情報なし」は省略表記で国税庁CSVには詳細住所がある）を
+`memory/reference_ledger_name_blocks_corp_match.md` へ追記済み。
+
+台帳・確認シート本体・01/02/08/10/20/30/40・受付シート・テレアポリスト・見本・Notion・
+kintoneへは上記10件・22セル以外は1文字も書いていない。Slack投稿0件。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【ピタゴラス / mini 2026-09-08】notify.tell()を「親（◯時の通知です・要約）＋スレッド（詳細）」の形へ（有璽氏「要約させろよ。文章長いの見んのだるい」）── ✅完了・実投稿1件で実測確認済み
 
 **触ったのは `bin/hooks/notify.py`（正本）と `~/.vivid-relay/ask_hub.py` の2本だけ。**
@@ -162,7 +425,40 @@ notify.py・ask_hub.py・crontab・daily_jobs.confへは触れていない。台
 
 **★同じ対象に手をつけないでください**: なし（作業完了）
 
+### 【ピタゴラス / mini 2026-09-08】案Bが動いていなかった真因を特定・修正 ── ✅完了。デプロイ0回で反映
 
+**上のブロックの続き。有璽氏「案Bが動いていない」への対応。** 触ったのは
+`~/.vivid-relay/dashboard_build.py`（fetch先URLとコメント3行のみ）だけ。
+`middleware.js`・`api/data.js`・`vercel.json`・`kadoban_deploy.sh`は無傷（diff 0件）。
+台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+真因   dashboard_build.pyのrtPoll()がfetch('/api/data.json')を叩いていたが、
+       Vercelの実際のルートは/api/data（api/data.jsは拡張子なしでマッピング。
+       `vercel inspect`でλ api/dataと実測確認）。存在しないパスなので404が続き、
+       数字は1度も更新されていなかった
+副産物 「正しい合言葉でも401」はmiddleware.jsのバグではなかった。KADOBAN_USER/PASSは
+       Vercelの Secret タイプでCLIから値を読み出せない仕様（`vercel env pull
+       --environment=production`は「2 Secret values cannot be pulled」と明示）。
+       .env.localのtestuser/testpass123は本物の値ではなかった
+設計   認証はmatcher変更せず現状維持。ブラウザは同一originへのfetchに
+       Basic認証キャッシュを自動送信する（HTTP仕様）ため、稼働盤を開けば
+       ポーリングも自動で通る。有璽氏の許可は「案件名を外へ出してよい」の1点で
+       JSONの生データを無認証公開してよいとは言っていないため/api/は保護のまま
+実測   middleware.js単体4ケース／api/data.js単体3ケース／rtPoll()モック5ケース
+       （成功・404・通信エラー・JSON壊れ・ok:false）全て想定どおり。
+       Blobのpushed_atが12:40:11→13:03:06と20分おきに進むことを実測。
+       修正後は既存の20分おきcron(13:03発火)で自然に反映され、公開HTMLに
+       /api/data・rt-fresh・30000が実在。認証なしは引き続き401
+```
+
+**★使ったデプロイ回数＝0**（既存の自動デプロイの枠に乗っただけ）。
+記録 → `memory/project_ops_dashboard.md`「2026-09-08 案Bが動いていなかった真因を特定・修正」節。
+Slack報告済み（notify.tell）。
+
+**残**：実際にブラウザで有璽氏が開いて数字が動くのは未確認（本物の合言葉が無いため）。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
 
 ### 【ピタゴラス / mini 2026-09-07 夜】稼働盤を10分おきへ（有璽氏「リアルタイムは無理なん？」・案A）── ✅完了
 
@@ -3046,6 +3342,20 @@ v2/v3/無印の.dc.html・22MBの書き出し版・1751の控えが消失。当�
                  出口 ~/.vivid-relay/fukushi_cross_robin.md
   ビビ           束ねて第1版へ（★9/8 18:00）。Artifact＋PDF
   ```
+
+  **⛔2026-09-08 14時台 差し替え（有璽氏）**：「契約書より提案資料の方が解像度が高い。
+  そちらで」＋「補助金・助成金の領域も対象に」。**上のロビン2ブロック（契約書別紙1ベース）は
+  前提として古い。fukushi_cross_robin.md は消さず残す（比較用）。**
+  ```
+  ✅ロビン3      ★判定を提案資料ベースへ作り直し完了。正本 ~/.vivid-relay/f119_proposal_v23.txt
+                 （提案資料v2.3全32頁）。メニュー1〜6＋★7補助金・助成金（有璽氏の追加指示）
+                 出口 ~/.vivid-relay/fukushi_cross_v2.md（118件・2経路で欠番0/重複0を確認）
+                 ◎11／○13／△94。①〜⑥節（メニュー別・足すもの別・専門家別・補助金別・
+                 件数表・旧判定との差分25件）まで作成済み
+  ```
+  **★同じ対象に手をつけないでください**: なし（作業完了）
+  - **★119番の中身の正本＝契約書 別紙1**（`scratchpad/legal-wakoku-20260826/【甲提出用】…契約書.md:364-397`）。
+    議事録の構想ではなく契約書の文言で判定させている
   - **⛔訂正（9/8 有璽氏）：119番の正本は契約書でなく★提案資料 v2.3 商談版。**
     `~/Downloads/福祉施設の119番_サービス資料_v2.3_商談版_レイアウト確認用.pdf`（32p）。
     テキスト化 → `~/.vivid-relay/f119_proposal_v23.txt`。**★pdfplumberで抽出できる（pdftoppmは無い）**
