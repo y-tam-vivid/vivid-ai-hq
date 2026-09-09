@@ -27,6 +27,7 @@
 - [思考OS Skill](project_thinking_os_skill.md) — 10レンズ＋6要素骨格をローカルSkill化。/thinking-osで全モデル共通
 - [「誤記」と決めつけない](feedback_dont_call_it_a_typo.md) — 実測データは過去の写し。並べて聞く／**★既存の器を「足りない」と決めつけない。列名が同じでも意味は同じでない(会場=エリアだった)。対処は変えるでなく足す**
 - [区分は必ず増える](project_lifestandup_website_wordpress.md) — **★9/9 有璽氏「カテゴリーは今後増えることも想定し設計して」＝005は3分割で確定。★3つを固定値で書かずtaxonomyで持ち、タブ/絞り込み/一覧はtermを回して自動生成。1件足す＝管理画面で1語**
+- [ルールを足す前に既存と突合](project_lifestandup_website_wordpress.md) — **★9/10 恒久ルール追加3条を突合＝重複2・★変更1・拡大1。★「追加」と言われても実質★前の決定の上書きのことがある。★数値(px/%)が出たら過去の値を必ず引く**
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — ★「揃えろ/合わせて」は作り直しの許可になる(2回目)。触らない対象を列挙
 - [特別な理由がなければ全ページ統一](feedback_uniform_unless_reason.md) — ★9/8で5回目。揃った値自体が指摘を満たすか別途確認／★素材にも。「暗い」でなく「異なる」＝基準値1つで揃える
