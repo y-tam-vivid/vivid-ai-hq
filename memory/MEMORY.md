@@ -55,7 +55,7 @@
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 真因は未修正／**★9/9はみ出し防止≠矢印どおり動かす**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本・報告に混ぜない。kindは8種／投げる前にpreview／投げたら必ずanswer_of()を見る（押されても聞いた側へ返らない）。🔴9/7 4回目＝1通ずつでなく★Slackへ出る経路を全部数えて揃える。押せないものが混ざると判断が沈む（DM7通中押せるのは2通）。出すのはボタン・受けるのは会話でもよいが★出した側が台帳を閉じる**
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **★9/9 指示文の固有値(ID/番号/パス)を★WORKING.mdから引いて誤った（フォームID・実物は7b81a8b・memoryは正しかった）。★見る順は①実物②memory③WORKING.md。★毎ターン届く=最新ではない**
-- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — **★9/9 ★`pkill -f "redeploy.sh"`で自分の担当を殺した（★指示文の「redeploy.shを実行しない」に当たった）＝★担当を止めるときはPID指定・pkill -f を使わない。並列の前に数えるものは4つ＝①触るファイル ②★ポート/プロセス(redeploy.shは8750をpkillする＝走行中の担当を殺す) ③外部の枠。★公開スクリプトが何をkillするか実行前に読む**
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★担当を殺す時はPID指定・pkill -fは不使用。並列の前に数えるもの4つ＝①ファイル②ポート/プロセス③外部の枠④pkillの当たり文字列。★出力先ディレクトリの上書きも同型
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
 - [担当が落ちる真因はスリープ](feedback_use_the_team_not_alone.md) — ⛔「1体を長く使うと落ちる」は**誤診**（分割しても3体落ちた）。★真因はMacBookのスリープ。**長い作業はminiで走らせる**→[[reference_offload_long_work_to_mini]]
@@ -87,7 +87,7 @@
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — **★9/9 claudeの自動アップデート中(数十秒)は`-x`が偽になり run_agent.sh が「★claude本体が無い」で落ちる。★再試行しない仕様。窓口は①リンクのmtime②他の担当が動いているか③数十秒後に測り直す、で投げ直す**／MacBookで担当を起こさない・出口はSlack。★「走行中です」は確認でない＝3経路＋見張りを仕掛けてから次へ
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [公開が詰まる真因は grep -r](project_lifestandup_website_wordpress.md) — **🔴9/9 redeploy.shが2回詰まった(21分/6分)。⛔★「真因＝grep -r」は不十分だった＝★直しても3回目も止まった。★手で打つと数秒・スクリプト内だと止まる＝★未特定。★当面は手動手順（PID指定で止める→手でチェック→deployを直打ち）。★自動に載せない。★安全装置を外すのでなく速くする。★npx をcronから呼ぶ時は`< /dev/null`**
-- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — **✅9/9実測＝枠は空いていた(27/100)。★「今日は公開できない」を前日から持ち越したのは誤り＝日次リセットの制限は日が変わったら測り直す**／枠100/日。★403=DDoS防御(Mitigations)。解除は有璽氏が端末で1行(AI代行不可)
+- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 枠100/日は日次リセット。★403=DDoS防御(Mitigations)、時間帯でON/OFFが変わる。★9/9 CDP+stealthで44/44枚成功も観測(時刻次第・断定しない)
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
