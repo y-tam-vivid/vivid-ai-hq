@@ -16,7 +16,10 @@ CASES=[
  # ★2026-09-09 追加（Ｃ-1・有璽氏の承認）。実装済みなのに settings.json 未登録で4日間動かず、
  #   さらに★この点検の対象にも入っていなかった＝登録漏れを誰も見つけられない構造だった。
  #   ★対話セッションからの呼び出しは「警告のみ」なので additionalContext が返る。
- ('hook_interactive_guard.py','{"tool_name":"AskUserQuestion","tool_input":{"questions":[]},"session_id":"selfcheck"}','additionalContext'),
+ # ★2026-09-09 実測で判明：このフックは CLAUDE_CODE_ENTRYPOINT で対話/非対話を判定し、
+ #   ★判定できないときは通す（fail-open）。cron や ssh 経由では環境変数が無く {} が返り、
+ #   ★「反応しない」と誤検知する（★mini で実際に出た）。★そこで env を明示して叩く。
+ ('hook_interactive_guard.py','{"tool_name":"AskUserQuestion","tool_input":{"questions":[]},"session_id":"selfcheck"}','additionalContext',{'CLAUDE_CODE_ENTRYPOINT':'cli'}),
 ]
 
 # ★2026-08-30 つる依頼で修正（旧 PLAIN_CASES の穴C）。
@@ -99,10 +102,15 @@ def _check_hook_session_writeback():
 PLAIN_CHECKS = [_check_hook_session_writeback]
 
 ng=[]
-for f,inp,expect in CASES:
+for case in CASES:
+    # ★4要素目（env の上書き）は任意。既存の3要素はそのまま動く（後方互換）
+    f,inp,expect = case[0],case[1],case[2]
+    envx = dict(os.environ)
+    if len(case) >= 4 and case[3]:
+        envx.update(case[3])
     try:
         r=subprocess.run(['/usr/bin/python3',os.path.join(HERE,f)],input=inp,
-                         capture_output=True,text=True,timeout=20)
+                         capture_output=True,text=True,timeout=20,env=envx)
         d=json.loads(r.stdout or '{}')
         ok = expect in json.dumps(d) or expect in json.dumps(d.get('hookSpecificOutput',{}))
         if not ok: ng.append('%s ： 反応しない' % f)
