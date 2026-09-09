@@ -53,6 +53,52 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-09】マスキングテープの定位置＋恒久ルール③④（2周目）── 実装中（実測待ち）
+
+有璽氏の追加ルール2点。①②(前回)に続く2周目。**対象は `~/lifestandup-wp/` のみ。
+本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは1文字も書いていない。未commit。**
+
+```
+③ マスキングテープ(tape-vertical)は一番右端が基本の定位置。他を動かす
+④ 背景と分かるもの（星・葉っぱ・丸い小イラスト）は①②③の対象外
+```
+
+```
+仕分け  対象＝tape-vertical本体／写真・ポラロイド系／en-bubble・mission-bubble
+       判断がつかない＝abc-block／fv-join-block／years-stamp／fv-clock-visual
+       対象外＝deco-star/leaf/cloud等の背景装飾／バッジ類／通常UIカード
+       写真付属の小テープ(v-tape/corner-tape/ptape等)＝③のテープ単体ルール対象外
+             （写真の一部として動く。top:-Npx;left:50%;transform:translateX(-50%)
+             型でピン留め表現。独立配置ではない）
+①実測(1周目) 全22ページ×5幅=110件を機械実測（lsu-tape-audit.html新設）。
+             ①右端違反25件・②x_overlap=True(実視覚重なり)3件・
+             テープ×写真/吹き出し重なり27件(主にPC幅)を検出
+真因1   guide-top/testimonialsのen-bubbleがインラインstyle(left:580px/470px)の
+        まま、980px以下のright基準オーバーライドが一度も実装されていなかった
+        （9/9の15件対応の対象9ページに含まれていなかった）。320/390pxで
+        画面右外へ最大383pxはみ出し。→ 980px以下/540px以下のCSS新設で対応済み
+真因2   about-ilife/stand-up-top/recruit-valuesの540px以下に
+        `.tape-vertical{left:-64px !important}`（テープを画面外へ逃がす旧処理・
+        9/3由来）が残っており③に違反。stand-up-top/recruit-valuesは980px以下も
+        `left:8%`で左寄り（9/9で「未修正・スコープ外」と記録されていた既知バグ）。
+        → 3ページとも right基準（about-ilife実証済みの値）へ統一済み
+その他  top-page(front-page.php)のtape-vertical/abc-block/polaroid-b/en-bubble.yellowが
+        section基準の固定値のままPC幅ではみ出し（top-pageは9/9の対象9ページに
+        含まれていなかった）→ コンテナ基準・実測補正値へ修正済み
+        about-staff/about-ilife/stand-up-daily-schedule/stand-up-programs/
+        stand-up-topのテープ本体もPC幅(1024/1440)で2-6px程度の超過
+        （回転transformの外接矩形分と推定）→ 実測ベースで補正済み
+        testimonialsのfv-polaroid-wrap(section基準right:64px)もPC幅で89pxはみ出し
+        → コンテナ基準へ修正済み
+        about-ilife_320のpolaroid-about（980px以下の縮小定義が欠落）→ 追加済み
+残作業  修正後の再実測（進行中）→ テープ×写真/吹き出しの重なり解消の要否判断
+        → 全体再実測で①②③の違反0件を確認 → 公開判断
+```
+
+**★同じ対象に手をつけないでください**: `~/lifestandup-wp/theme/lifestandup/` ／
+`~/lifestandup-wp/check_tape_boundary_20260909.py` ／
+`~/lifestandup-wp/_tools/wordpress/wp-content/lsu-tape-audit.html`
+
 ### 【リリス / mini 2026-09-09】9/9指摘15件（恒久ルール2点：右端=見学ボタン/ハンバーガー・上端=パンくず）── ✅完了・出し直し済み
 
 **対象は `~/lifestandup-wp/` のみ。本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは
