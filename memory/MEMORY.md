@@ -39,7 +39,7 @@
 - [図解ファースト](feedback_design_diagram_first_minimal_emoji.md) — 流れ・関係・階層は図で見せ言葉は補足。図を1行に潰すのは改悪。絵文字は最小限
 - [生成物はNotionへ添付](feedback_generated_files_attach_notion.md) — 該当ページへ実ファイル添付(DL可)。一時領域に放置しない
 - [読むもの一覧は地図でない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る
-- [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — **🔴9/10で2回連続。★こちらの制約が成果物の上限を決めた。「◯◯は不要」は「使うな」と読まれる＝やってほしい方を書く**
+- [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — **🔴9/10で★3回連続。★こちらが代償を計算して機能を落とす（写真の添付を外した）。★機能は載せ代償は1行で言う＝決めるのは有璽氏**
 - [業務の単位まで割る](feedback_break_down_to_the_work_level.md) — 🔴9/8「中身がなくない？」＝集計で止めるな。1行＝1業務で誰が/いくら/自社可否＋価格(福祉の同業→他業種・下限/平均/上限・出典つき)／★同じ発言から2台が別々に記憶を作った＝[[feedback_deliverable_granularity_must_be_actionable]]と重複
 - [実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(隣列を見る)／★渡すのは行でなくセル／**★有璽氏が言うのは症状。原因は別(「左に余白」の真因は番号バッジが画面外へ飛んでいた)。直す前に実物で1回見る**／**★9/6 DB名を事業名と読み違え別アカウントの器へ5本書いた。列が一致=同じ器ではない。書く前に既存2〜3件を読む**
 - [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測で1回確かめる／★止めたあとにドライランを通すと実害の中身が分かる(54v3は既存21件を二重に書くところだった)／**日付・IDの突合は正規化してから数える。同じ列で書式が混在し偽陰性が出る**
@@ -51,7 +51,7 @@
 - [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — **★9/9「動かせるものがあるなら動かしてくれていい」＝★作った/調べた/実装したは完了でない。★動いている状態が完了。可逆(ローカル検証)は聞かずに動かす・不可逆(本番WP)は順序を1行で言ってから可逆な範囲だけ**
 - [読む人の言葉で書く](feedback_write_for_the_reader.md) — 配る文書に実装名を出さない／公開ページに人名も=権限構造が漏れる／判断を仰ぐ行も主語を道具の名にしない／**★「反映した」と書くな。原稿に書いただけを相手は「画面に出た」と読む。どこで見えるかを1行で言う(見えないなら見えないと)**
 - [通知は押せる形＋読める形に](feedback_write_for_the_reader.md) — **🔴9/8「長ったらしいのは見づらい」＝親は「◯時の通知です」＋要約だけ・★詳細はスレッドへ追記（chat.postMessageのtsをthread_tsに）。出す側の部品で揃える**／ ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
-- [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
+- [土台にも日付がある](reference_stale_premise_daily.md) — **★9/10 器は9/9・成果物は9/10で★1日で前提が変わっていた。★「既存の器があった」で止めない。★土台の日付以降に決めたことを数え差分だけ確かめる。表示側のキーをgrepすれば器と突合できる**
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★真因は速さのために確かさを落とすこと。数える部品を1か所へ集約し読むだけにする。件数は数え方を添える
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 真因は未修正／**★9/9はみ出し防止≠矢印どおり動かす**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本・報告に混ぜない。kindは8種／投げる前にpreview／投げたら必ずanswer_of()を見る（押されても聞いた側へ返らない）。🔴9/7 4回目＝1通ずつでなく★Slackへ出る経路を全部数えて揃える。押せないものが混ざると判断が沈む（DM7通中押せるのは2通）。出すのはボタン・受けるのは会話でもよいが★出した側が台帳を閉じる**
@@ -100,6 +100,6 @@
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — ★9/8有璽氏「お前だけで考えんな」。同じ型の失敗が繰り返されたら自前パッチの前にクローバーへ業界調査を投げる
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
-- [Web制作ルールを資産に](project_web_build_rules_asset.md) — ★9/10「別途議論する」＝いまは立てない。①〜⑥の来歴と★適用範囲を溜めておく
+- [Web制作ルールを資産に](project_web_build_rules_asset.md) — ★9/12(土)13時に議論。✅Slack予約済Q0C0N20TRD1。★CronCreateはセッション限定で保険にならない
 - [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — **🔴9/10 ★静的化は誤り。.dc.htmlをそのまま置きReactをsupport.jsの前へ。判定は#dc-rootの中身**
