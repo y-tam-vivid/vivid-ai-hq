@@ -100,21 +100,41 @@ def column_of(choices, name):
     return [row[i] for row in choices[1:] if len(row) > i and row[i]]
 
 
-def main():
+PROC_NAME = "かわちばなし 器と表示側のズレ検査"
+
+
+def _relay():
+    sys.path.insert(0, str(pathlib.Path.home() / ".vivid-relay"))
+
+
+def send(title, body):
+    """★食い違いが出たときだけ呼ぶ。0件のときは黙る（慢性の通知を作らない）。"""
+    _relay()
+    import notify
+    return notify.tell(title, body)
+
+
+def beat(result, message):
+    _relay()
+    import heartbeat
+    heartbeat.beat(PROC_NAME, result, message)
+
+
+def run():
     d = None
     if "--dir" in sys.argv:
         d = pathlib.Path(sys.argv[sys.argv.index("--dir") + 1])
     d = d or latest_dir()
     if not d or not d.is_dir():
-        print("★設計フォルダが見つからない：%s" % BASE)
-        return 1
+        print("★設計フォルダが見つからない：%s" % (d or BASE))
+        return -1   # ★食い違い1件（=1）と区別するため負の値を返す
 
     detail = d / "イベント詳細.dc.html"
     tax = d / "kawachi-taxonomy.js"
     for p in (detail, tax):
         if not p.exists():
             print("★%s が無い（%s）" % (p.name, d.name))
-            return 1
+            return -1
 
     print("★見ているもの")
     print("  表示側 ： %s" % d.name)
@@ -182,12 +202,40 @@ def main():
         print("★名前で見つかる食い違いは 0 件。")
         print("  ただし★これは「ズレが無い」ではない。")
         print("  ★同じ名前のまま意味が変わった変更（写真1枚→1枚目 など）は出ない。")
+    return ng
+
+
+def main():
+    """★画面へは必ず全部出す。Slackへは食い違いがあるときだけ出す。"""
+    import contextlib
+    import io
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            ng = run()
+    except Exception as e:
+        print(buf.getvalue(), end="")
+        msg = "★検査そのものが落ちた：%s: %s" % (type(e).__name__, e)
+        print(msg)
+        if "--beat" in sys.argv:
+            beat("失敗", msg[:200])
+        return 1
+
+    text = buf.getvalue()
+    print(text, end="")
+
+    if ng is None or ng < 0:          # 設計フォルダが無い等（run が 1 を返した場合を含む）
+        if "--beat" in sys.argv:
+            beat("警告", "見に行く先が見つからなかった")
+        return 1
+
+    if "--notify" in sys.argv and ng:
+        # ★本文はそのまま送る。人が読んで判断する材料だけを渡し、直し方は書かない
+        send("かわちばなし ── 器と表示側のズレ %d件" % ng, text.strip())
+    if "--beat" in sys.argv:
+        beat("成功", "食い違い %d件" % ng)
     return 0
 
 
 if __name__ == "__main__":
-    try:
-        sys.exit(main())
-    except Exception as e:
-        print("★検査そのものが落ちた：%s: %s" % (type(e).__name__, e))
-        sys.exit(1)
+    sys.exit(main())
