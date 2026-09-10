@@ -79,7 +79,7 @@
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消(Stopフック検査4)。★9/9に本番3例目「этот」・4例目「진」(進)を機械が先に検出＝★同日2回働いた。★意味の同じ外国語に化けるので目視では素通り**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
-- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動／★材料の発言欄は38%が偽物。本文を読む
+- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — ★9/11 報告8回中3回がStopフックですり替わり未達・🟢のまま
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★担保2つとも効かず。自動確定の7割は生成物のみ／差し戻しは4回とも空振り／★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **⛔9/9真因＝本数でなく1本の長さ(180B超が40/78本)。★降ろさず「本文へ戻す」。消す前に本文に在るか数える。bin/check_index_line_length.py**
