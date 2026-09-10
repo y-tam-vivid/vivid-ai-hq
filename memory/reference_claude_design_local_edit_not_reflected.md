@@ -269,3 +269,38 @@ support.js・kawachi-taxonomy.js・image-slot.js は★元から入っている�
 ④Chrome連続起動でDOMが取れず「リンク0件」。
 **★0を見たら、まず「その0は測れているか」を疑う。** 特に**0を成功の根拠にするとき**は、
 **わざと壊した版で同じ検査が「不合格」を出すことを1回確かめる**（正常しか出せない検査にしない）。
+
+---
+
+## ★2026-09-10 ── ★C（編集ツール）との連携の可否を調べた
+
+**★結論：★Claude Design → C は「★半自動」。★C → Claude Design は★ほぼ不可。**
+
+```
+Claude Design → C   △ ★起点（有璽氏が画面でボタンを押す）は★人にしかできない
+                       その後の変換は自動化できる
+C → Claude Design   ✕ ★書き戻す公式の口が、個別サイトのデザインには無い
+```
+
+**🔴★最重要の発見 ── ★「Claude Designの書き出し」は★1つの形式ではない。★実績で3種類あった。**
+
+```
+a) bundler形式        <script type="__bundler/manifest"> ＋ template(JSONエスケープされたHTML)
+   （福地サイト等）     ★フォントがbase64で十数MB。★JSで展開しないと中身が読めない
+b) ★生HTML+CSS        ★そのままブラウザで描画できる
+   （LIFE STAND UP）   実測：20本すべて `__bundler` が0件・ブラウザで完全描画を確認
+c) .dc.html+support.js ★独自タグ(x-dc/sc-for/sc-if)＋Reactランタイム込みの「アプリ」
+   （かわちばなし）     ★絞り込み・もっと見る等★動的な機能を持つページはこれ
+                      ★静的化（値を焼き込む）すると★動的機能が壊れる（実績あり）
+```
+
+**★だから「Claude Designから受け取る」処理は、★まず形式を判別する工程が要る。**
+★同じ「書き出し」でも中身が違う。★1つの変換だけ書くと、別案件で必ず壊れる。
+
+**★あわせて分かったこと**
+```
+★公式のエクスポート  ZIP / PDF / PPTX / スタンドアロンHTML
+★Claude Codeへの受け渡し  「Send to Claude Code Web」「Send to local coding agent」
+★`claude-design` という★公式MCPサーバーが存在する（claude mcp add で接続できる）
+★★このハーネス自体に `DesignSync` ツールが標準搭載されている（★未使用・要検証）
+```
