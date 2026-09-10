@@ -4151,3 +4151,51 @@ check_overlap_all.py（装飾×文字のコントラスト軸）で★664件
 「文字と写真が重なって読めるか」は見ていなかった。可視化ツール（重なり色分け・
 座標の出どころ表示）を先に作り、型として数えてから構造修正に着手する方針を採用。
 → 2026-09-10セッション成果は `~/.vivid-relay/layout_A_result.md` `layout_B_result.md`
+
+## ★C(ブラウザ編集ツール) をVercel経由でクラウド公開 ── 2026-09-10 着手
+
+★Cツール(lsu-editor.html等)自体は同日完成済み（詳細 `~/.vivid-relay/editor_C_result.md`）だが
+127.0.0.1(mini内)専用で有璽氏のブラウザからは開けなかった。
+
+**有璽氏の決定（2026-09-10）**：「A ★Vercel + 保存はBlob経由 ── 推奨通りで進めましょう」。
+設計＝有璽氏がVercel上のURLを開く→ドラッグで動かす(静的)→「反映する」→Vercel Function経由で
+Blobへ変更を書く→miniが定期的にBlobを見て正本CSSへ適用（バックアップ付き）→出し直し。
+
+★技術的制約（着手前に確定）：
+- 同一オリジンでないとiframe内をJSから操作できない＝lifestandup-preview プロジェクト内に置く必須
+- Vercelは静的ホスティング＝PHP(lsu-save.php)は動かない。Vercel Function(Node)へ置き換える
+- 既存の稼働盤(fukuchi-kadoban)が同じ形（ブラウザ→Blob→mini定期取得）で動いている実例
+  （`~/.vivid-relay/dashboard_realtime_push.py`／`web/kadoban/api/data.js`）＝流用する
+- crawl_static.pyの出し直しでエディタ一式が消えないよう除外リストへ足す（middleware.jsと同じ扱い）
+- Vercelの合言葉(Basic認証)の内側に置く。Function側でも別途トークン確認を行う
+- Vercel無料枠は1日100デプロイ。変更が無ければデプロイしない設計にする
+
+進捗・実測結果は `~/.vivid-relay/editor_vercel_result.md` へ。
+
+### ✅2026-09-10 完了。有璽氏が開くURL: https://lifestandup-preview.vercel.app/lsu-editor/
+（合言葉 lsu-staff/standup2026）
+
+```
+実装   static-preview/api/editor-save.js（Vercel Function・@vercel/blob使用）／
+       static-preview/lsu-editor/{index.html,lsu-editor-rules.js,lsu-editor.config.json}／
+       static-preview/package.json（依存追加）
+       ★git管理外なので ~/lifestandup-wp/vercel-editor/ へ複製・commit 2bd0839
+       ~/.vivid-relay/editor_apply.py（新規524行・mini側の適用本体）
+Blob   store「lifestandup-editor-data」(private)を新設・lifestandup-previewへ接続。
+       PythonからはSDK不使用で直接HTTP PUT/GETできることを実測（x-vercel-blob-access等の
+       非公開ヘッダー名をNode.js SDKソースから読み取って再現・公式ドキュメントには無い）
+実測   8項目すべて合格（通しテスト3回・詳細はresult.md）。所要時間は約43秒（適用〜出し直し）、
+       cron間隔*/5分と合わせ体感1〜6分で反映
+```
+
+**★実装中に事故を1回起こし、その場で発見・修正した（正直に記録）**：
+①GNU findの`-delete`は暗黙に`-depth`を有効化し`-prune`を無効化する（findのman仕様）。
+`find static-preview -path 'lsu-editor' -prune -o -name index.html -delete`という
+一見正しい書き方で実際に`lsu-editor/index.html`を巻き込んで消した（バックアップ無しで
+消えたため作り直した）。`-print0 | xargs -0 rm -f`へ変更して解消
+②crawl_static.pyの「既存ファイルは飛ばす」仕様（何度も既出の罠）にCSSも該当し、
+出し直してもstatic-preview側のCSSが更新されない実害を発見。対象CSSを先に削除する
+処理を追加して解消。→ どちらもeditor_apply.py内にコメントで経緯を残した
+
+**運用**：crontab `*/5 * * * * editor_apply.py --run --beat` 登録済み。⚙️自動処理レジスタへ
+新規行作成（有効=False・手動beatで疎通確認済み。次回自然発火を見てからTrueへ）。

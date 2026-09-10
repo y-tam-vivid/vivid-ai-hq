@@ -96,6 +96,41 @@ Slackへnotify.tell()で報告済み。
 
 **★同じ対象に手をつけないでください**: なし（作業完了）
 
+### 【リリス / mini 2026-09-10】★C(ブラウザ編集ツール)をVercel経由でクラウド公開 ── ✅完了。commit `2bd0839`
+
+有璽氏の承認「A ★Vercel + 保存はBlob経由 ── 推奨通りで進めましょう」への対応。
+上の★Cブロック（127.0.0.1専用）を、有璽氏のブラウザから直接開ける形にした。
+
+**★有璽氏が開くURL**: https://lifestandup-preview.vercel.app/lsu-editor/
+（合言葉 lsu-staff / standup2026）。使い方3行・実測8項目・限界は
+`~/.vivid-relay/editor_vercel_result.md` に記載。
+
+```
+実装   static-preview/api/editor-save.js（Vercel Function・@vercel/blob使用）／
+       static-preview/lsu-editor/{index.html,lsu-editor-rules.js,lsu-editor.config.json}／
+       static-preview/package.json ／ ★git管理外なので vercel-editor/ へ複製・commit済み
+       ~/.vivid-relay/editor_apply.py（新規524行・mini側のBlob→CSS適用→出し直し本体）
+Blob   store「lifestandup-editor-data」(private)を新設・lifestandup-previewへ接続。
+       PythonからはSDK不使用で直接HTTP PUT/GETできることを実測
+実測   8項目すべて合格（通しテスト3回）。適用〜出し直し約43秒・cron*/5分と合わせ
+       体感1〜6分で反映。テスト痕跡は全て復元しクリーンな状態で最終デプロイ済み
+運用   crontab `*/5 * * * * editor_apply.py --run --beat` 登録。⚙️自動処理レジスタへ
+       新規行作成（有効=False・手動beatで疎通確認済み。次回自然発火を見てからTrueへ）
+```
+
+**★実装中に事故を1回起こし、その場で発見・修正した（正直に記録）**：
+①GNU findの`-delete`は暗黙に`-depth`を有効化し`-prune`を無効化する（findのman仕様）。
+一見正しい書き方で実際に`lsu-editor/index.html`を巻き込んで消した（バックアップ無しで
+消えたため作り直した）。`-print0 | xargs -0 rm -f`へ変更して解消。
+②crawl_static.pyの「既存ファイルは飛ばす」仕様（何度も既出の罠）はCSSにも該当し、
+出し直してもCSSが更新されない実害を発見・対象CSSを先に削除する処理を追加して解消。
+
+**本番サーバー・本番WP管理画面・DNSへは1文字も触っていない。台帳・Notion・kintoneへは
+⚙️自動処理レジスタの新規行1本のみ。他セッションの積み残し(.gitignore/README.md/
+redeploy.sh/migration/・shoot_final*.py)には触っていない。**
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【リリス / mini 2026-09-10】タブレット崩れの型を数えて構造修正＋恒久ルール⑥誤読の訂正 ── ✅完了。commit `7d6e19e`(このセッションで確定・push済み)
 
 有璽氏「タブレット版が同じルールで崩れてる」への対応。対象は `~/lifestandup-wp/theme/lifestandup/`
