@@ -6,7 +6,7 @@
 > **上限は無い。** 毎ターン届く `MEMORY.md` と違い、必要なときだけ読まれる。
 > 呼び出しの対応は [[INDEX_担当別]] にある。
 
-- [Fable Style改善ループ](project_fable_style_improvement_loop.md) — 週次で自己改善／★種の入口が汚い＝corrections.logに有璽氏の発言でない行が混じる（累計38%＝起動プロンプト＋自己点検のテスト文字列）。**8/30は12件中7件が探針由来で悪化**／★8/30に hook_selfcheck.py を直す機会があったのに隣の汚染を塞がず。直し方はHOME差し替えの写し・2行（ステラ/ピタゴラス領域・依頼未提出）
+- [Fable Style改善ループ](project_fable_style_improvement_loop.md) — 週次で自己改善／★種の入口が汚い＝corrections.logに有璽氏の発言でない行が混じる（累計38%＝起動プロンプト＋自己点検のテスト文字列）。**8/30は12件中7件が探針由来で悪化**／★8/30に hook_selfcheck.py を直す機会があったのに隣の汚染を塞がず。直し方はHOME差し替えの写し・2行（ステラ/ピタゴラス領域・依頼未提出）／**★9/10も未修正＝11日継続。08:20:00と08:40:00ちょうどの31件は全部探針。毎朝の棚卸しは秒までゼロの行を先に落としてから数える**
 - [AI活用→発信ネタ化](project_ai_usage_to_content_pipeline.md) — 区切りごとに⑥へ自動記録(=発信の種)。正本は発信ネタDB1つ／⑥は📅セッション単位で拾う／迷ったら拾う
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
 - [Manus AIへの外注](project_manus_outsourcing.md) — ★8/27 API連携をやめ有璽氏が仲介。こちらは指示文を書く役／401の真因はプラン無料化＝再発行では直らない

@@ -53,6 +53,24 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-10】9/10修正依頼10件＋恒久ルール⑤(ヘッダー⇄パンくず40px比例)＋恒久ルール④確定(判断がつかない分類の廃止) ── 着手
+
+有璽氏の画像10枚指示（`~/lifestandup-wp/review/fix_20260910/`）への対応。対象は
+`~/lifestandup-wp/theme/lifestandup/` のみ。本番サーバー・WP管理画面・DNS／台帳・
+Notion・kintoneへは1文字も書いていない。redeploy.shは実行しない（公開は窓口判断）。
+
+```
+対応表  001=about-ilife(10YEARSバッジ) 002=about-staff(写真50px右90%)
+       003=recruit-top(丸写真90%・Join us!35px左) 004=stand-up-top(丸写真35px下)
+       005=stand-up-programs(ポストカード220px上90px左・Choose yours!85%)
+       006=stand-up-daily-schedule(時計90%55px左・A day with us!85%)
+       007=guide-top 008=news 009=useful 010=news(恒久ルールのみ、008/010は同ページ)
+現状   001-005は着手時点で既に未コミットで実装済み(前段のセッションか窓口が先行実装)。
+       006は今回実装。⑤(40px比例=mobile24px/tablet35px)も今回実装
+```
+
+**★同じ対象に手をつけないでください**: `~/lifestandup-wp/theme/lifestandup/`
+
 ### 【リリス / mini 2026-09-09 19時台】デモサイト全ページ撮影(やり直し・static-previewをローカル配信) ── 着手
 
 前回「人に渡すURL(Vercel)で撮る」指示はMitigationsに阻まれ0枚だった（誤指示）。
