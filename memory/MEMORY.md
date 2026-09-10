@@ -56,7 +56,7 @@
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 真因は未修正／**★9/9はみ出し防止≠矢印どおり動かす**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本・報告に混ぜない。kindは8種／投げる前にpreview／投げたら必ずanswer_of()を見る（押されても聞いた側へ返らない）。🔴9/7 4回目＝1通ずつでなく★Slackへ出る経路を全部数えて揃える。押せないものが混ざると判断が沈む（DM7通中押せるのは2通）。出すのはボタン・受けるのは会話でもよいが★出した側が台帳を閉じる**
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **★9/9 指示文の固有値(ID/番号/パス)を★WORKING.mdから引いて誤った（フォームID・実物は7b81a8b・memoryは正しかった）。★見る順は①実物②memory③WORKING.md。★毎ターン届く=最新ではない**
-- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — **★9/9 ★`pkill -f "redeploy.sh"`で自分の担当を殺した（★指示文の「redeploy.shを実行しない」に当たった）＝★担当を止めるときはPID指定・pkill -f を使わない。並列の前に数えるものは4つ＝①触るファイル ②★ポート/プロセス(redeploy.shは8750をpkillする＝走行中の担当を殺す) ③外部の枠。★公開スクリプトが何をkillするか実行前に読む**
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★担当を殺す時はPID指定・pkill -fは不使用。並列の前に数えるもの4つ＝①ファイル②ポート/プロセス③外部の枠④pkillの当たり文字列。★出力先ディレクトリの上書きも同型
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
 - [担当が落ちる真因はスリープ](feedback_use_the_team_not_alone.md) — ⛔「1体を長く使うと落ちる」は**誤診**（分割しても3体落ちた）。★真因はMacBookのスリープ。**長い作業はminiで走らせる**→[[reference_offload_long_work_to_mini]]
@@ -69,7 +69,7 @@
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — **★9/9 初めて穴を名指しで数えた＝Ｃ(在るのに効かない)3件。★C-1 hook_interactive_guardは★settings.json未登録＋★毎朝の点検CASESにも無い＝二重の見えなさ(4日)。★新しい検問は同じターンでCASESにも足す。✅C-1は有璽氏の承認で修正済(両機7本とも正常)。★足した瞬間に環境依存の誤検知が出た＝★環境変数に依存するフックは点検も同じenvで叩く**／8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/8 頻度も1日2回→毎時(07-22時)へ。crontab直書き・daily_jobs.conf側は無効化のみ**
-- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — **★9/7 慢性の赤5件を初めて数えたら1件は純粋な誤検知（find条件が雑）・4件は消せないもの。「既知」と呼んだ時点で中身を見るのをやめていた。11日間放置。★慢性の赤は件数の内訳を数える**／ ★9/3 混入を直したら届く経路ごと消えた／表示だけで警告にしない
+- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/10で2回目。慢性の🟡は内訳を数える（2件中1件は誤検知）／実体欄に説明を書くと機械が誤読する
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
@@ -79,8 +79,8 @@
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消(Stopフック検査4)。★9/9に本番3例目「этот」・4例目「진」(進)を機械が先に検出＝★同日2回働いた。★意味の同じ外国語に化けるので目視では素通り**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動／★材料の発言欄は38%が偽物。本文を読む
-- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**
-- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
+- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**／**🔴9/8「期日はいつ？めどを示して」＝復唱するのは形式/本数/出口＋★期日の4つ。「走行中」「終わり次第」は期日でない。外の予定(研修・会議)から逆算して日付で置く。めどを示すのは窓口の仕事**
+- [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★担保2つとも効かず。自動確定の7割は生成物のみ／差し戻しは4回とも空振り／★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **⛔9/9真因＝本数でなく1本の長さ(180B超が40/78本)。★降ろさず「本文へ戻す」。消す前に本文に在るか数える。bin/check_index_line_length.py**
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **★9/9 有璽氏が★本番WordPressの許可を出した（恒久制約の解除）。✅9/9 21:40 ★本番で新テーマが動いた（方式B・インストール済み／★有効化していない＝サイトは不変）。★不可逆は「有効化」の1手だけ＝そこは人が押す。★順序（デモ完成→zip→本番）は許可が出ても崩さない**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。**★9/8 4例目＝相手のツールの作業フォルダも不可。控えは_backups/へ**
@@ -89,7 +89,7 @@
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — **★9/9 claudeの自動アップデート中(数十秒)は`-x`が偽になり run_agent.sh が「★claude本体が無い」で落ちる。★再試行しない仕様。窓口は①リンクのmtime②他の担当が動いているか③数十秒後に測り直す、で投げ直す**／MacBookで担当を起こさない・出口はSlack。★「走行中です」は確認でない＝3経路＋見張りを仕掛けてから次へ
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [公開が詰まる真因は grep -r](project_lifestandup_website_wordpress.md) — **🔴9/9 redeploy.shが2回詰まった(21分/6分)。⛔★「真因＝grep -r」は不十分だった＝★直しても3回目も止まった。★手で打つと数秒・スクリプト内だと止まる＝★未特定。★当面は手動手順（PID指定で止める→手でチェック→deployを直打ち）。★自動に載せない。★安全装置を外すのでなく速くする。★npx をcronから呼ぶ時は`< /dev/null`**
-- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — **★9/9「人に渡すURLで撮れ」は★誤指示＝Mitigationsで0/23枚。★HTTPコード/固有語はcurlで公開URL・★スクショは★static-preview(アップした実体)をローカル配信して撮る。★_tools のWPを撮るのとは別**／**✅9/9実測＝枠は空いていた(27/100)。★「今日は公開できない」を前日から持ち越したのは誤り＝日次リセットの制限は日が変わったら測り直す**／枠100/日。★403=DDoS防御(Mitigations)。解除は有璽氏が端末で1行(AI代行不可)
+- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — **★9/9「人に渡すURLで撮れ」は★誤指示＝Mitigationsで0/23枚。★HTTPコード/固有語はcurlで公開URL・★スクショは★static-preview(アップした実体)をローカル配信して撮る。★_tools のWPを撮るのとは別**／**✅9/9実測＝枠は空いていた(27/100)。★「今日は公開できない」を前日から持ち越したのは誤り＝日次リセットの制限は日が変わったら測り直す**／枠100/日。★403=DDoS防御(Mitigations)。解除は有璽氏が端末で1行(AI代行不可)／9/9公開URLからCDP+stealthで44枚成功
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
@@ -100,3 +100,4 @@
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — ★9/8有璽氏「お前だけで考えんな」。同じ型の失敗が繰り返されたら自前パッチの前にクローバーへ業界調査を投げる
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
+- [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止

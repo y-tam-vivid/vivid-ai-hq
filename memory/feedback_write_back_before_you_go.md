@@ -66,5 +66,32 @@ MDに書き戻されていない事実は**存在しなかったことになる*
   未コミットが残ったまま応答を終えようとしたら**1回だけ差し戻す**。
   2回目は通す（`stop_hook_active` を見る＝無限ループにしない）。
 
+## ★機械側の担保は2つとも「出ているのに効いていない」（2026-09-10 ロビン実測）
+
+**入れた仕組みは動いている。だが、どちらも「鳴った」を根拠にできない状態になっている。**
+
+```
+① 自動確定（autocommit_stale）── ★出た件数の約7割は生成物だけ
+   8/25〜9/10 の自動確定 commit  ★137本
+     うち data/dashboard_history/YYYY-MM-DD.json.gz だけ   ★101本 / 99本（約7割）
+     それ以外（memory・WORKING.md・bin 等）を含む            ★36本 / 38本
+   ★2経路で数えた（git show --stat ／ git log --name-only）。合計137は一致・内訳は2本ずれる。
+     都合のいい方を採らず両方を書く
+
+② Stopフックの差し戻し ── ★同じ2件を21分で4回、いずれも空振り
+   9/9 16:03 / 16:09 / 16:14 / 16:24  ★差し戻した 2件（INDEX_発信.md・project_lifestandup…md）
+   4回とも直後に「通した 2度目（stop_hook_active）」
+   実際に commit されたのは ★17:46（1時間22分後・別の作業のついで）
+```
+
+- **★「自動確定が出た＝AIが書き戻しを忘れた」と読まないこと。** 7割は稼働盤の履歴ファイル
+  （`bin/dashboard_history.py` が毎日1本作る。**git 配下に置くのは意図した設計**
+  → [[reference_overwriting_containers_have_no_past]]。だから `.gitignore` で消してよい話ではない）。
+  **書き忘れを数えたいなら、生成物のパスを除いてから数える。**
+  慢性のノイズが本物を埋める同じ型 → [[reference_a_warning_nobody_owns]]
+- **★Stopフックの差し戻しは commit を強制しない。** 設計どおり「1回だけ差し戻し、2度目は通す」ので、
+  そのターンで書かなければ**次のターンも同じ差し戻しが出るだけ**。4回出ても0回書かれた。
+  **差し戻された側は、その場で commit まで終わらせること。**「次のターンで」は次のターンにも起きる。
+
 関連: [[feedback_memory_index_hygiene]] [[project_memory_layer_design]]
 [[reference_git_add_all_swallows_others]] [[reference_silent_sync_failure]]
