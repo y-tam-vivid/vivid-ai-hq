@@ -53,11 +53,11 @@
 
 ## Mac mini セッション
 
-### 【リリス / mini 2026-09-10】9/10修正依頼10件＋恒久ルール⑤(ヘッダー⇄パンくず40px比例)＋恒久ルール④確定(判断がつかない分類の廃止) ── 着手
+### 【リリス / mini 2026-09-10】9/10修正依頼10件＋恒久ルール⑤(ヘッダー⇄パンくず40px比例)＋恒久ルール④確定(判断がつかない分類の廃止) ── ✅完了。commit `184b317`・push済み
 
 有璽氏の画像10枚指示（`~/lifestandup-wp/review/fix_20260910/`）への対応。対象は
 `~/lifestandup-wp/theme/lifestandup/` のみ。本番サーバー・WP管理画面・DNS／台帳・
-Notion・kintoneへは1文字も書いていない。redeploy.shは実行しない（公開は窓口判断）。
+Notion・kintoneへは1文字も書いていない。redeploy.shは実行していない（公開は窓口判断）。
 
 ```
 対応表  001=about-ilife(10YEARSバッジ) 002=about-staff(写真50px右90%)
@@ -65,11 +65,20 @@ Notion・kintoneへは1文字も書いていない。redeploy.shは実行しな�
        005=stand-up-programs(ポストカード220px上90px左・Choose yours!85%)
        006=stand-up-daily-schedule(時計90%55px左・A day with us!85%)
        007=guide-top 008=news 009=useful 010=news(恒久ルールのみ、008/010は同ページ)
-現状   001-005は着手時点で既に未コミットで実装済み(前段のセッションか窓口が先行実装)。
-       006は今回実装。⑤(40px比例=mobile24px/tablet35px)も今回実装
+実装   001-005は着手時点で既に未コミットで実装済み(前段のセッションか窓口が先行実装)。
+       006は今回実装。⑤(40px比例=mobile24px/tablet35px/desktop40px)も今回実装
+実測   ★9/9出発点64件(②パンくず違反) → ★0件。①右端違反0件・テープ重なり0件
+       真因は2点：①全22ページ中14ページに共通style.cssと重複するtape-vertical
+       top定義があり変数変更が未反映だった(各+12pxで解消) ②desktop幅で複数
+       ページのen-bubble/years-stamp/写真がパンくずより上に出ていた(④確定で
+       新たに判定対象化・各要素のtop値を実測over+マージンで調整)
+残     ③テープ右端でない疑い3件(testimonials 1440px・recruit-interview
+       1024/1440px)は有璽氏が過去の差し戻しで確定させた意図的配置のため未修正。
+       直すべきかは有璽氏の判断待ち
 ```
+詳細・実測値の全文 → `~/.vivid-relay/fix_0910_result.md`
 
-**★同じ対象に手をつけないでください**: `~/lifestandup-wp/theme/lifestandup/`
+**★同じ対象に手をつけないでください**: なし（作業完了）
 
 ### 【リリス / mini 2026-09-09 19時台】デモサイト全ページ撮影(やり直し・static-previewをローカル配信) ── 着手
 

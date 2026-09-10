@@ -3535,3 +3535,48 @@ SnapWidget        ★必要     古い方式のまま（ビジネスプロフィ
 **★未確認（正直に）**：無料版の投稿数上限・キャッシュ更新頻度／
 「気づける仕組み」が無料版でも使えるか／Elfsightの200ビュー超過時の挙動／
 SnapWidgetの無料プランの実在。**★料金は変わりやすい＝導入直前に公式を再確認。**
+
+## ★2026-09-10 恒久ルール改訂 ── ⑤ヘッダー⇄パンくず「WEB40px基準」へ全帯比例化／④「判断がつかない」分類を廃止
+
+有璽氏が画像10枚（`review/fix_20260910/`）で個別修正10件＋恒久ルール追加2点を指示。
+**既存の恒久ルール①②③④(9/9確定)に上書きでなく追加・明確化する形。**
+
+```
+⑤新規   ヘッダー⇄パンくずのマージンはWEBサイズ(981px+)で40pxに固定。
+        ★有璽氏の追加指示「Webが40で基準。スマホ・タブレットもその比率で再計算」
+        ＝旧値(mobile42/tablet63/desktop71px)に対し40/71比率(0.56338)を全帯へ適用
+        → mobile 42→24px／tablet 63→35px／desktop 71→40px（四捨五入・整数px）
+        ★実装は style.css の --bc-gap-mobile/--bc-gap-tablet/--bc-gap-desktop の
+        3変数のみ変更。各ページのbreadcrumb margin-topはcalc(var(--bc-gap-*) - N px)
+        の形で既に共通変数を参照する設計済みのため、全ページ自動反映される
+        （ページごとの個別書き換え不要）
+④確定   「判断がつかない」という分類自体をもう作らない。以前「背景として処理して
+        ください」と伝えたもの（星・葉・雲・丸い小イラスト等）以外は①②③の対象。
+        ★実装上は既にlsu-tape-audit.htmlのUNSURE_SEL(.abc-block/.fv-join-block/
+        .years-stamp/.fv-clock-visual)が①②の判定filter(checkList)から除外されて
+        いなかった＝9/9時点の64件は既にこれらを含んだ数値だった。今回の④確定は
+        「ラベルの整理」であって判定ロジックの変更ではない
+（C）追加 「A B C」「JOIN」「TIME」等のボックスも①②の対象と明記（実質④と同じ内容。
+        UNSURE_SELが既にこれらを含んでいたため計測上の影響はない）
+```
+
+**★実測で確認**：⑤の変更でmargin-topがマイナスになるページ（about-staff/
+recruit-top/recruit-interview/testimonials等でtablet 35-60=-25px）があるが、
+実際にスクリーンショットで確認した結果、既存のpadding等で吸収されており視覚的な
+崩れ・②違反は発生しない（この計算式のNpxは「そのページの自然なgap」を表す設計
+で、旧値でも一部のページは既にマイナスだった）。
+
+**個別修正10件の対応表**（画像ファイル名→ページ→内容）：
+```
+001 about-ilife.php       10YEARSバッジをポストカード左上へ・写真80%
+002 about-staff.php       写真(ポストカード)50px右・90%
+003 recruit-top.php       丸写真90%・Join us!35px左
+004 stand-up-top.php      丸写真(Native/Eiken/JAPEC含)35px下
+005 stand-up-programs.php ポストカード3枚220px上90px左・Choose yours!85%
+006 stand-up-daily-schedule.php 時計イラスト(周辺含)90%・55px左・A day with us!85%
+007 guide-top.php         恒久ルールのみ
+008/010 news.php          恒久ルールのみ（008に赤線=①②違反例示、010は同ページ別確認用）
+009 useful.php            恒久ルールのみ
+```
+001-005は着手時点で既に未コミットで実装済みだった（先行セッションまたは窓口作業）。
+006・⑤は2026-09-10リリスが実装。詳細・実測結果は `~/.vivid-relay/fix_0910_result.md`。
