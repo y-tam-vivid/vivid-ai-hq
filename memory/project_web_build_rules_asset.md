@@ -357,3 +357,25 @@ _tools/wordpress/wp-content/lsu-inspect.html
 ★HTML直書きの剥がしは★検出のみ（自動で消すのは未実装）
 ★CSS詳細度の厳密計算はしていない（!important・擬似クラスは未検証）
 ```
+
+## ✅2026-09-10 19:10 有璽氏の決定 ── ★A（Vercel + Blob経由）で進める
+
+```
+① 有璽氏が ★公開URL（合言葉つき）で C を開く
+② 見る・ドラッグで動かす（★静的で動く）
+③ 「反映する」→ ★Vercel Function が受けて ★Vercel Blob へ書く
+④ ★mini が5分おきに Blob を見に行く → ★CSSへ適用（★バックアップ＋括弧検査＋恒久ルール検査）
+⑤ ★そのまま出し直す → 有璽氏が結果を見る
+★遅延    数分（★即時ではない）
+```
+
+**★技術的な制約（★指示文へ明記した）**
+```
+★A Vercelは静的＝PHPが動かない → lsu-save.php を ★Function + mini側スクリプトへ分ける
+★B ★同じプロジェクト(lifestandup-preview)へ置く
+   ★別オリジンだと iframe の中身をJSから触れない＝ドラッグも計測もできない
+   ★★crawl_static.py に消されないよう除外する（middleware.js と同じ扱い）
+★C 合言葉の内側に置く（★CSSを外から書き換えられる経路になるため）
+★D ★稼働盤(fukuchi-kadoban)が既に Vercel Blob を使っている → ★同じ作法で書く（1から作らない）
+★E ★Vercelの枠は1日100回。★変更が無いときは出さない
+```
