@@ -100,4 +100,4 @@
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — ★9/8有璽氏「お前だけで考えんな」。同じ型の失敗が繰り返されたら自前パッチの前にクローバーへ業界調査を投げる
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
-- [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
+- [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
