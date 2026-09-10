@@ -100,6 +100,6 @@
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — ★9/8有璽氏「お前だけで考えんな」。同じ型の失敗が繰り返されたら自前パッチの前にクローバーへ業界調査を投げる
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
-- [Web制作ルールを資産に](project_web_build_rules_asset.md) — 🔴9/10有璽氏「★オートレイアウトの設計不足で崩れる」＝真因の指摘。★sp/tabletは今も崩れ・FV最優先・★可視化の要望。9/12議論
+- [Web制作ルールを資産に](project_web_build_rules_asset.md) — 🔴9/10「★同じルールで崩れてる。先に整えてから実装」＝順序の決定。座標がHTML直書き88箇所・absolute402
 - [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — **🔴9/10 ★静的化は誤り。.dc.htmlをそのまま置きReactをsupport.jsの前へ。判定は#dc-rootの中身**
