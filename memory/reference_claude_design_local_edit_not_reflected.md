@@ -1,6 +1,6 @@
 ---
 name: reference_claude_design_local_edit_not_reflected
-description: Claude Design の .dc.html をローカルで書き換えても画面に反映されるとは限らない。image-slot は別ファイル(.image-slots.state.json)に画像を持つ
+description: Claude Design の .dc.html をローカルで書き換えても画面に反映されるとは限らない。image-slot は別ファイル(.image-slots.state.json)に画像を持つ。書き出し形式は3パターンあり、DesignSyncツールはdesign-system専用
 metadata:
   type: reference
 ---
@@ -269,3 +269,43 @@ support.js・kawachi-taxonomy.js・image-slot.js は★元から入っている�
 ④Chrome連続起動でDOMが取れず「リンク0件」。
 **★0を見たら、まず「その0は測れているか」を疑う。** 特に**0を成功の根拠にするとき**は、
 **わざと壊した版で同じ検査が「不合格」を出すことを1回確かめる**（正常しか出せない検査にしない）。
+
+## 2026-09-10 ★書き出し形式は3パターンある。1つに決め打ちしない
+
+有璽氏「クロードデザインとの自動連携も可能なの？」を受けた調査（実装はしていない）。
+
+```
+a) bundler形式      <script type="__bundler/manifest">(フォントbase64)＋
+   （福地サイト等）   __bundler/template(JSONエスケープHTML)。JS展開しないと読めない
+                     → [[project_html_to_figma_pipeline]] に変換手順あり
+b) 生HTML+CSS形式   そのままブラウザで描画できる。LIFE STAND UP v2.1(20本)はこれ
+   （LIFE STAND UP） （grep -c '__bundler' が20本すべて0で確認済み）→ この節と同じ話
+c) .dc.html+support.js形式  独自タグ(x-dc/sc-for/sc-if)＋Reactランタイム込み「アプリ」。
+   （かわちばなし）   動的機能(絞り込み等)を持つページはこれ。静的化すると壊れる（この節の本文）
+```
+
+**★どの条件でどの形式になるかは未特定。** 案件の複雑さか、書き出しボタンの種類か、
+時期による仕様変更かは分からない。**次に着手する人は、まず `grep -c '__bundler'` と
+`grep -c 'support.js'` の2つを数えて、どの形式か判定してから動くこと。**
+
+## ★DesignSyncツール（公式）の存在とdesign-system限定という制約
+
+このハーネスに `DesignSync` という専用ツール（list_projects/get_file/write_files等）が
+標準搭載されている。**ただし2点の制約**：
+
+```
+① 認証   /design-login が対話セッション必須。非対話(claude -p)・サブエージェントでは
+         認証できない（実測：list_projects() → 「headless/SDKでは事前に対話セッションで
+         1回ログインしておけば以降は再利用できる」とエラーメッセージに明記）
+② 対象   "design-system"タイプのプロジェクトのみ。get_projectの説明に
+         「通常プロジェクトへpushしてもdesign systemには変わらない（作成時に型が固定）」
+         と明記。★LIFE STAND UP/かわちばなしのような「1サイトぶんのデザイン」は
+         通常プロジェクトに当たると見られ、対象外の可能性が高い（★未確認・推測）
+```
+
+**＝Cで直した内容をClaude Designへ自動で書き戻す経路は、いまのところ無いと見てよい。**
+渡すのは今までどおり人がチャットへ貼る（かわちばなし案件で実際に通った経路・上の節参照）。
+
+**★次に有璽氏が対話セッションで `/design-login` を一度実行すれば**、list_projects/get_file
+で実際のプロジェクト種別・構造を読み取り、この推測（design-system限定）を検証できる。
+詳細 → `~/.vivid-relay/claude_design_link_result.md`
