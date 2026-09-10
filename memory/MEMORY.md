@@ -86,7 +86,7 @@
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。**★9/8 4例目＝相手のツールの作業フォルダも不可。控えは_backups/へ**
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
-- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — **★9/9 claudeの自動アップデート中(数十秒)は`-x`が偽になり run_agent.sh が「★claude本体が無い」で落ちる。★再試行しない仕様。窓口は①リンクのmtime②他の担当が動いているか③数十秒後に測り直す、で投げ直す**／MacBookで担当を起こさない・出口はSlack。★「走行中です」は確認でない＝3経路＋見張りを仕掛けてから次へ
+- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/10 担当は指示にないことをやらない(commit未実行)。★出口の定型6項目＝控え/名指しadd/★commit/push可否/出口/Slack
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [公開が詰まる真因は grep -r](project_lifestandup_website_wordpress.md) — **🔴9/9 redeploy.shが2回詰まった(21分/6分)。⛔★「真因＝grep -r」は不十分だった＝★直しても3回目も止まった。★手で打つと数秒・スクリプト内だと止まる＝★未特定。✅9/10 ★手動6手順が3回目も成功(13分)。★指示文へ毎回6手順を書くのが速い。★redeploy.shは直さない。★安全装置を外すのでなく速くする。★npx をcronから呼ぶ時は`< /dev/null`**
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — **★9/9「人に渡すURLで撮れ」は★誤指示＝Mitigationsで0/23枚。★HTTPコード/固有語はcurlで公開URL・★スクショは★static-preview(アップした実体)をローカル配信して撮る。★_tools のWPを撮るのとは別**／**✅9/9実測＝枠は空いていた(27/100)。★「今日は公開できない」を前日から持ち越したのは誤り＝日次リセットの制限は日が変わったら測り直す**／枠100/日。★403=DDoS防御(Mitigations)。解除は有璽氏が端末で1行(AI代行不可)／9/9公開URLからCDP+stealthで44枚成功
