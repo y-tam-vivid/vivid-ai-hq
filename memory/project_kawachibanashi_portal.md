@@ -1152,3 +1152,40 @@ A案の良さは一覧性。B案の作法をそのまま持ち込むと、選ば
 → [[feedback_dont_remake_what_was_approved]]
 
 指示文 https://drive.google.com/file/d/15wjDzz1dkeg9V46WvVFrPXOxyIfbHAYP/view
+
+
+## ✅2026-09-10 特集まわりの仕上げ 合格 ＋ Vercelへ公開（7ページ）
+
+**★変わったのは指示した2本だけ**（特集一覧・特集記事A）。イベント一覧／イベント詳細／
+スポット一覧／kawachi-taxonomy.js は sha256 で不変。
+
+```
+【1】特集一覧  ①説明文が全7件に戻った ②1本目＝★川の道を（h1の絵）
+               ③古市古墳群の写真が古墳の丘へ ④写真なしの記事も崩れない枠に
+               ⑤★「まだ記事がありません」が消えた（＝こちらの sc-if 実装の効果）
+【2】A案      ★表紙に h1・年表5行に h2〜h6 が1対1・★小さく添える形で一覧性を維持
+               fullImg を使っていない＝「全幅にしないで」が効いた
+```
+
+**★公開（2026-09-10 12:26）** https://kawachibanashi.vercel.app
+```
+/  index      3.0MB   /events  /event  /spots  /specials  /special-a  /special-b
+実測 7ページとも 200 ／ special-b の埋め込み画像11枚 ／ specials の1本目＝「川の道を」
+```
+
+**★手順を作り直した** `~/.vivid-relay/kb_rebuild2.sh`（mini・旧 kb_rebuild.sh の後継）
+```
+ページ  6枚 → ★7枚（詳細3案 case-a/b/c を外し、spots/specials/special-a/special-b を追加）
+素材    ★設計フォルダを丸ごと rsync（197MB・assets 55・uploads 41）
+        ＝9/9に assets を送り忘れて画像0枚になった型の再発防止
+検査    ★相対パス／.dc.htmlリンク／壊れ（[object Object]・undefined・{{）／
+        幽霊（まだ記事がありません）の4系統。★不合格が1枚でもあればデプロイしない
+```
+
+**★検問が実際に止めた。** 1回目は specials/spots に `特集詳細.dc.html`
+`スポット詳細.dc.html` が残り不合格2枚 → **デプロイせずに終了**。
+詳細ページは未実装（指示文で「リンク先は仮でよい」と伝えた分）なので、
+**★1本目だけ special-b.html へ繋ぎ、残りは押せなくした**（404を出さない）。
+
+**★残っている実装**：特集詳細／スポット詳細のページ本体。一覧のカードは
+いま押せない状態なので、次に作るならここ。
