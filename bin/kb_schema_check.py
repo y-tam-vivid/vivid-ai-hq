@@ -46,15 +46,26 @@ DISPLAY_ONLY = {
 
 
 def latest_dir():
-    """設計フォルダのうち番号がいちばん大きいものを選ぶ。"""
+    """設計フォルダのうち番号がいちばん大きいものを選ぶ。
+
+    ★番号がいちばん大きいものと、更新がいちばん新しいものを両方見る。
+      食い違ったらそれ自体を知らせる ── フォルダ名の付け方が変わったとき、
+      番号だけを見ていると★新しい版を見落としたまま「0件」を出してしまうため。
+    """
     if not BASE.is_dir():
-        return None
+        return None, None
     cands = []
     for p in BASE.iterdir():
         m = re.search(r"設計\s*(\d+)\s*$", p.name)
         if p.is_dir() and m:
             cands.append((int(m.group(1)), p))
-    return max(cands)[1] if cands else None
+    if not cands:
+        return None, None
+    by_num = max(cands)[1]
+    # ★番号の付いていないフォルダも含めて、更新のいちばん新しいものを見る
+    alls = [p for p in BASE.iterdir() if p.is_dir()]
+    by_time = max(alls, key=lambda p: p.stat().st_mtime) if alls else by_num
+    return by_num, (None if by_time == by_num else by_time)
 
 
 def keys_in(path):
@@ -102,6 +113,77 @@ def column_of(choices, name):
 
 PROC_NAME = "かわちばなし 器と表示側のズレ検査"
 
+# ★前回の「形」を置く場所。名前が変わらない変更を出すために要る。
+STATE = pathlib.Path.home() / ".vivid-relay" / "kb_schema_state.json"
+
+
+def shapes(path):
+    """★キーの名前だけでなく「値の形」を覚える。
+
+    なぜ要るか ── 2026-09-10、本文が「テキスト」から「段落と写真の配列」へ変わったのに、
+    ★キー名（body）が同じだったので名前の突合では出なかった。
+    **意味の変化の多くは、構造の変化として現れる。**
+    """
+    s = path.read_text(encoding="utf-8", errors="replace")
+    i = s.find("get samples()")
+    if i < 0:
+        return {}
+    body = s[i:]
+    seen = {}
+    for m in re.finditer(r"[\s{,]([a-zA-Z_][a-zA-Z0-9_]*):\s*(.)", body):
+        key, first = m.group(1), m.group(2)
+        kind = {"'": "文字列", '"': "文字列", "[": "配列", "{": "かたまり"}.get(first)
+        kind = kind or ("数値" if first.isdigit() else "その他")
+        # ★同じキーは複数のサンプルに出る。出てきた形を「全部」持つ。
+        #   いちばん重い形だけを採ると、★一部のサンプルだけ変わったときに出ない
+        #   （2026-09-10 実測で見つけた欠陥。body が1件だけ文字列へ戻っても出なかった）
+        seen.setdefault(key, set()).add(kind)
+    out = {k: "／".join(sorted(v)) for k, v in seen.items()}
+
+    # ★配列の中身まで見る。長さと、要素の種類が変わったら出す
+    lens = [len(re.findall(r"['\"]", m.group(1))) // 2
+            for m in re.finditer(r"photos:\s*\[([^\]]*)\]", body)]
+    if lens:
+        out["_写真の最大枚数"] = str(max(lens))
+    tags = sorted({m.group(1) for m in re.finditer(r"\[\s*'([a-z]+)'\s*,", body)})
+    if tags:
+        out["_本文に出てくる種類"] = "／".join(tags)
+    return out
+
+
+def compare_shapes(now, prev):
+    """前回と今回の形を比べる。★初回は基準を作るだけで、食い違いには数えない。"""
+    if prev is None:
+        return ["   ・前回の記録が無いので、いまの形を基準として保存した"], 0
+    lines, ng = [], 0
+    for k in sorted(set(now) | set(prev)):
+        a, b = prev.get(k), now.get(k)
+        if a == b:
+            continue
+        ng += 1
+        if a is None:
+            lines.append("   ★%s が新しく出てきた（%s）" % (k, b))
+        elif b is None:
+            lines.append("   ★%s が消えた（前回は %s）" % (k, a))
+        else:
+            lines.append("   ★%s の形が変わった ： %s → %s" % (k, a, b))
+    return (lines or ["   ✓ 前回と同じ形"]), ng
+
+
+def load_state():
+    try:
+        return json.loads(STATE.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def save_state(d):
+    try:
+        STATE.parent.mkdir(parents=True, exist_ok=True)
+        STATE.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+    except Exception as e:
+        print("   ★形を保存できなかった：%s" % e)
+
 
 def _relay():
     sys.path.insert(0, str(pathlib.Path.home() / ".vivid-relay"))
@@ -121,10 +203,11 @@ def beat(result, message):
 
 
 def run():
-    d = None
+    d, newer = None, None
     if "--dir" in sys.argv:
         d = pathlib.Path(sys.argv[sys.argv.index("--dir") + 1])
-    d = d or latest_dir()
+    else:
+        d, newer = latest_dir()
     if not d or not d.is_dir():
         print("★設計フォルダが見つからない：%s" % (d or BASE))
         return -1   # ★食い違い1件（=1）と区別するため負の値を返す
@@ -194,6 +277,36 @@ def run():
         if terms.get(block):
             print("   ★%s の区分が %d件あるが、器（スプレッドシート）はまだ無い"
                   % (label, len(terms[block])))
+
+    # ④ ★前回からの「形」の変化 ── 名前が変わらない変更はここで出る
+    print("")
+    print("④ 前回からの形の変化（★名前が同じままの変更をここで出す）")
+    now = shapes(detail)
+    st = load_state() or {}
+    lines, dng = compare_shapes(now, st.get("イベント詳細"))
+    ng += dng
+    for L in lines:
+        print(L)
+
+    # ★鳴った日を残す。「鳴ったのに直さないまま忘れた」を後から追えるようにする
+    hist = st.get("履歴", [])
+    if dng:
+        import datetime
+        hist.append({"日": datetime.date.today().isoformat(),
+                     "見たフォルダ": d.name, "変化": [x.strip() for x in lines]})
+    save_state({"イベント詳細": now, "最後に見たフォルダ": d.name, "履歴": hist[-20:]})
+    if hist and dng == 0:
+        print("   （前に形が変わった日 ： %s。直したかどうかは人が見ること）"
+              % "／".join(h["日"] for h in hist[-3:]))
+
+    # ⑤ ★見ているフォルダが本当に最新か（番号だけを信じない）
+    if newer is not None:
+        ng += 1
+        print("")
+        print("⑤ ★見ているフォルダより新しいものがある")
+        print("   見た     ： %s" % d.name)
+        print("   ★新しい ： %s" % newer.name)
+        print("   ★フォルダ名の付け方が変わった可能性。どちらが正か人が確かめること")
 
     print("")
     if ng:
