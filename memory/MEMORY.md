@@ -39,7 +39,7 @@
 - [図解ファースト](feedback_design_diagram_first_minimal_emoji.md) — 流れ・関係・階層は図で見せ言葉は補足。図を1行に潰すのは改悪。絵文字は最小限
 - [生成物はNotionへ添付](feedback_generated_files_attach_notion.md) — 該当ページへ実ファイル添付(DL可)。一時領域に放置しない
 - [読むもの一覧は地図でない](feedback_reading_list_is_not_a_map.md) — 自分で列挙した一覧は読書履歴。起点1枚＋索引で辿る
-- [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — **🔴9/10で2回連続。★こちらの制約が成果物の上限を決めた。「◯◯は不要」は「使うな」と読まれる＝やってほしい方を書く**
+- [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — **🔴9/10で★3回連続。★こちらが代償を計算して機能を落とす（写真の添付を外した）。★機能は載せ代償は1行で言う＝決めるのは有璽氏**
 - [業務の単位まで割る](feedback_break_down_to_the_work_level.md) — 🔴9/8「中身がなくない？」＝集計で止めるな。1行＝1業務で誰が/いくら/自社可否＋価格(福祉の同業→他業種・下限/平均/上限・出典つき)／★同じ発言から2台が別々に記憶を作った＝[[feedback_deliverable_granularity_must_be_actionable]]と重複
 - [実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(隣列を見る)／★渡すのは行でなくセル／**★有璽氏が言うのは症状。原因は別(「左に余白」の真因は番号バッジが画面外へ飛んでいた)。直す前に実物で1回見る**／**★9/6 DB名を事業名と読み違え別アカウントの器へ5本書いた。列が一致=同じ器ではない。書く前に既存2〜3件を読む**
 - [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測で1回確かめる／★止めたあとにドライランを通すと実害の中身が分かる(54v3は既存21件を二重に書くところだった)／**日付・IDの突合は正規化してから数える。同じ列で書式が混在し偽陰性が出る**
@@ -47,16 +47,16 @@
 - [AI資産カタログ](ai-asset-catalog.md) — Drive`AI資産_正本/`を正本と宣言済＝vivid-ai-hqの設計と要調整
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
 - [確認は溜めて報告は溜めない](feedback_batch_the_checks.md) — **🔴9/9「途中経過も共有ください」＝2回目。★「変化なし」は機械の状態が同じという意味で、★共有することが無いではない。★終わった担当の出口ファイルはその回のうちに読んで要点を出す**
-- [「できない」の前に試す](feedback_verify_before_declining.md) — **★9/9 プラグインを★名前で案内したら同名の別物が入った（Smash Balloon→QuadLayers製が入った）。★同名が多い領域(WPプラグイン/拡張/アプリ)は★一意なURLかIDで渡す＋★入れた後に左メニューへ出る名前まで書く**
+- [「できない」の前に試す](feedback_verify_before_declining.md) — **🔴9/10 ★5日前の自分の記録を数えず「作れません」と手作業29問を渡した（GASのFormAppで25問作れる）。★人に手を動かしてもらう前に1手で終わる形にできないか1回考える**／9/9 プラグインは★一意なURLで渡す
 - [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — **★9/9「動かせるものがあるなら動かしてくれていい」＝★作った/調べた/実装したは完了でない。★動いている状態が完了。可逆(ローカル検証)は聞かずに動かす・不可逆(本番WP)は順序を1行で言ってから可逆な範囲だけ**
-- [読む人の言葉で書く](feedback_write_for_the_reader.md) — 配る文書に実装名を出さない／公開ページに人名も=権限構造が漏れる／判断を仰ぐ行も主語を道具の名にしない／**★「反映した」と書くな。原稿に書いただけを相手は「画面に出た」と読む。どこで見えるかを1行で言う(見えないなら見えないと)**
+- [読む人の言葉で書く](feedback_write_for_the_reader.md) — 🔴9/10★可視化は「問題だけが目に入る」形に。全部に枠を描くと埋もれる／★渡すとき見方を3行添える／実装名でなく日本語／「反映した」と書くな
 - [通知は押せる形＋読める形に](feedback_write_for_the_reader.md) — **🔴9/8「長ったらしいのは見づらい」＝親は「◯時の通知です」＋要約だけ・★詳細はスレッドへ追記（chat.postMessageのtsをthread_tsに）。出す側の部品で揃える**／ ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
-- [毎朝の出力が古い前提を配る](reference_stale_premise_daily.md) — 判断を覆したらレポート文のベタ書きをgrep。3日間流通した
+- [土台にも日付がある](reference_stale_premise_daily.md) — **★9/10 器は9/9・成果物は9/10で★1日で前提が変わっていた。★都度の指摘に頼らず機械で数える＝bin/kb_schema_check.py（表示側のキー⇄器の列⇄taxonomy）。★名前で見つかるズレだけ。意味の変化は人が見る**
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★真因は速さのために確かさを落とすこと。数える部品を1か所へ集約し読むだけにする。件数は数え方を添える
-- [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 真因は未修正／**★9/9はみ出し防止≠矢印どおり動かす**
+- [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 🔴9/10「★60px左手に配置」を「60px以上内側ならOK」と読み替え7/6箇所を無変更。★位置か下限かは動詞で決まる／件数0を合格にしない
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本・報告に混ぜない。kindは8種／投げる前にpreview／投げたら必ずanswer_of()を見る（押されても聞いた側へ返らない）。🔴9/7 4回目＝1通ずつでなく★Slackへ出る経路を全部数えて揃える。押せないものが混ざると判断が沈む（DM7通中押せるのは2通）。出すのはボタン・受けるのは会話でもよいが★出した側が台帳を閉じる**
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — **★9/9 指示文の固有値(ID/番号/パス)を★WORKING.mdから引いて誤った（フォームID・実物は7b81a8b・memoryは正しかった）。★見る順は①実物②memory③WORKING.md。★毎ターン届く=最新ではない**
-- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★担当を殺す時はPID指定・pkill -fは不使用。並列の前に数えるもの4つ＝①ファイル②ポート/プロセス③外部の枠④pkillの当たり文字列。★出力先ディレクトリの上書きも同型
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/10「限りなく漏れない形にして」＝★限界の申告で止めるな。できないと書いた瞬間が★塞ぐ工夫を出す場所（名前で出ないなら★前回の構造と比べる）／見る順は①実物②memory③WORKING.md**
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★数えるもの5つ目＝★未コミットの積み残し。担当が終わった瞬間にgit statusを数える／PID指定・pkill -f不可
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
 - [担当が落ちる真因はスリープ](feedback_use_the_team_not_alone.md) — ⛔「1体を長く使うと落ちる」は**誤診**（分割しても3体落ちた）。★真因はMacBookのスリープ。**長い作業はminiで走らせる**→[[reference_offload_long_work_to_mini]]
@@ -79,7 +79,7 @@
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消(Stopフック検査4)。★9/9に本番3例目「этот」・4例目「진」(進)を機械が先に検出＝★同日2回働いた。★意味の同じ外国語に化けるので目視では素通り**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動／★材料の発言欄は38%が偽物。本文を読む
-- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**／**★9/6 依頼の名詞と自分が数え始めた名詞が違ったら止まる(「未投稿の素材」を「アーカイブの穴」に読み替え697件を集計)**／**★9/6 セッションの中身は⑥ディスカッションログDB(記録層・鮮度ヘッダー無)へ。出先で読む前提＝図解ファースト＋押せるリンク＋Slack受付番号**／**🔴9/8「期日はいつ？めどを示して」＝復唱するのは形式/本数/出口＋★期日の4つ。「走行中」「終わり次第」は期日でない。外の予定(研修・会議)から逆算して日付で置く。めどを示すのは窓口の仕事**
+- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★担保2つとも効かず。自動確定の7割は生成物のみ／差し戻しは4回とも空振り／★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **⛔9/9真因＝本数でなく1本の長さ(180B超が40/78本)。★降ろさず「本文へ戻す」。消す前に本文に在るか数える。bin/check_index_line_length.py**
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **★9/9 有璽氏が★本番WordPressの許可を出した（恒久制約の解除）。✅9/9 21:40 ★本番で新テーマが動いた（方式B・インストール済み／★有効化していない＝サイトは不変）。★不可逆は「有効化」の1手だけ＝そこは人が押す。★順序（デモ完成→zip→本番）は許可が出ても崩さない**
@@ -88,7 +88,7 @@
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — **★9/9 claudeの自動アップデート中(数十秒)は`-x`が偽になり run_agent.sh が「★claude本体が無い」で落ちる。★再試行しない仕様。窓口は①リンクのmtime②他の担当が動いているか③数十秒後に測り直す、で投げ直す**／MacBookで担当を起こさない・出口はSlack。★「走行中です」は確認でない＝3経路＋見張りを仕掛けてから次へ
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
-- [公開が詰まる真因は grep -r](project_lifestandup_website_wordpress.md) — **🔴9/9 redeploy.shが2回詰まった(21分/6分)。⛔★「真因＝grep -r」は不十分だった＝★直しても3回目も止まった。★手で打つと数秒・スクリプト内だと止まる＝★未特定。★当面は手動手順（PID指定で止める→手でチェック→deployを直打ち）。★自動に載せない。★安全装置を外すのでなく速くする。★npx をcronから呼ぶ時は`< /dev/null`**
+- [公開が詰まる真因は grep -r](project_lifestandup_website_wordpress.md) — **🔴9/9 redeploy.shが2回詰まった(21分/6分)。⛔★「真因＝grep -r」は不十分だった＝★直しても3回目も止まった。★手で打つと数秒・スクリプト内だと止まる＝★未特定。✅9/10 ★手動6手順が3回目も成功(13分)。★指示文へ毎回6手順を書くのが速い。★redeploy.shは直さない。★安全装置を外すのでなく速くする。★npx をcronから呼ぶ時は`< /dev/null`**
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — **★9/9「人に渡すURLで撮れ」は★誤指示＝Mitigationsで0/23枚。★HTTPコード/固有語はcurlで公開URL・★スクショは★static-preview(アップした実体)をローカル配信して撮る。★_tools のWPを撮るのとは別**／**✅9/9実測＝枠は空いていた(27/100)。★「今日は公開できない」を前日から持ち越したのは誤り＝日次リセットの制限は日が変わったら測り直す**／枠100/日。★403=DDoS防御(Mitigations)。解除は有璽氏が端末で1行(AI代行不可)／9/9公開URLからCDP+stealthで44枚成功
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
@@ -101,3 +101,6 @@
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
 - [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
+- [Web制作ルールを資産に](project_web_build_rules_asset.md) — 🔴9/10★制作の順序が決定＝ClaudeDesign→★C(編集ツール)→WordPress。★Cは案件非依存で作る。設定1本で別サイトへ
+- [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
+- [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — **🔴9/10 ★静的化は誤り。.dc.htmlをそのまま置きReactをsupport.jsの前へ。判定は#dc-rootの中身**
