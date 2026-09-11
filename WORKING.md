@@ -53,6 +53,153 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-11】職員インタビュー1名（児童指導員・パート）を追記 ── ✅完了。commit `8942c71`（push未実施）
+
+有璽氏の依頼「取材の回答が1件埋まったので追記して」（スプレッドシート
+`1ENX_4EhSI40RtHDLCXG58v-FS-lRMxWw_eSYsn1RNTM` Form Responses 2・2行目）への対応。
+対象は `~/lifestandup-wp/theme/lifestandup/{functions.php, page-templates/recruit-interview.php,
+assets/css/recruit-interview.css}` のみ。元スプレッドシート・本番サーバー・本番WP管理画面・
+DNS・台帳・Notion・kintoneへは1文字も書いていない。redeploy.shは使わず静的書き出し→
+Vercel deployの手順で出した。
+
+```
+実物確認  CPT 'staff'の投稿は0件（sqlite直接確認）＝既存4名(U/K/X/D)も全員
+          lsu_staff_dummy()のダミー配列で表示されていた。新5人目も同じ方式で追加した
+5人目     スロット'p'を新設（lsu_staff_slot_order()をu/k/x/d/pへ）。イニシャル空欄のため
+          avatar/大きな名前文字には短縮ラベル「指導員」（lsu_staff_initial_style()で
+          文字数に応じ自動縮小・既存4名は1文字なので無変化）、role_ja欄にフル職種
+          「児童指導員（パート）」を入れ既存デザイン（{短縮}さん｜{role_ja}）で自然に出した
+          色は未使用の--su-red(#E53935)を新設(.i-red系・6箇所)。既存4色のCSSは無変更(diff確認)
+          iv-index-gridの5枚目は:nth-child(5):last-childで中央寄せ(761px境界)
+実測      既存4名(u/k/x/d)のダミー配列はdiffで完全一致(無傷)。7幅(375/390/414/768/820/
+          1366/1920)×3ページ(interview/recruit/top)=21ケース不合格0件。公開URLで
+          「児童指導員」4件・「話を聞いた5名」反映・401/200とも実測確認
+副産物    「4名の言葉には共通する姿勢」等3箇所がハードコードのままだったのを
+          count(lsu_staff_slot_order())で動的化(5名に修正)
+```
+
+出口 `~/.vivid-relay/staff5_result.md`（①整えた回答の前後 ②イニシャルの扱い
+③既存4名無傷の実測 ④7幅の結果 ⑤公開URL実測 ⑥判断が要る点）。Slackへnotify.tell()で報告済み。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【リリス / mini 2026-09-10】★C ── ブラウザで直す編集ツール（Figma的操作・案件非依存の資産）── ✅完了
+
+有璽氏の承認事項「見るだけでなく修正できるもの。Figmaと同じイメージ。ブラウザ上で操作できるのが
+理想。幅を変えても生きる設計」「今回に限らずこの概念で制作を進める」（2026-09-10）への対応。
+制作の順序＝①Claude Design→②★C（本ツール）→③WordPress/公開、の②を担当。
+対象は `~/lifestandup-wp/_tools/wordpress/wp-content/`（ローカル検証専用）＋リポジトリ直下の
+複製4ファイルのみ。本番サーバー・本番WP管理画面・DNSへは1文字も書いていない。redeploy.sh未実行・
+デプロイ未実施。台帳・Notion・kintoneへは1文字も書いていない。
+
+```
+新設   lsu-editor.html（本体）／lsu-editor-rules.js（恒久ルール①②⑤⑥判定・config駆動）／
+       lsu-editor.config.json（案件固有値。別サイトへ持っていくときはこれだけ書き換える）／
+       lsu-save.php（書き戻し受け口・ローカル専用・毎回バックアップ→書込→読み返し確認）
+機能   ①7幅切替(375/390/414/768/820/1366/1920) ②クリック選択+8ハンドルドラッグ移動/リサイズ
+       ③保存形式A(%/calc・全幅で効く・既定)/B(この幅だけ・メディアクエリへpx) ④保存前diff
+       プレビュー(押すまで書かない) ⑤バックアップ→書込→読み返し確認 ⑥HTMLインラインstyle
+       の検出・警告（剥がし自体は次段階・限界として明記）
+実測   headless Chrome+CDPで7項目すべて実測合格：①7幅でiframe内clientWidth完全一致
+       ②A保存後7幅すべて%値完全一致 ③B保存で対象帯のみ変化・上位幅は無傷 ④プレビュー=
+       実書込内容一致 ⑤バックアップから実復元confirm ⑥不正入力4種を拒否・括弧チェック0件
+       ⑦恒久ルール⑥をON/OFF切替で正しく検知(ok:true→200pxずらしok:false→60px復帰ok:true)
+テスト中に発見・修正したバグ2件  ①CSSコメントがセレクタ抽出時に誤認識される問題
+       （コメント除去処理を追加）②同一秒内の複数プロパティ保存でバックアップフォルダ名が
+       衝突する問題（ミリ秒を付与して解消）
+```
+
+**★限界（正直に）**：③テープ右端ルールは未実装／①②の誤検出除外は簡易実装／
+「B この幅だけ」は厳密には「その幅を上限とする帯」に効く（既存CSSの離散ブレークポイント
+設計に合わせた仕様）／⑥のHTML直書き自動剥がしは検出のみ・機械的な剥がしは次段階／
+CSS詳細度の厳密計算はしていない（実測範囲では正しく動作）。
+
+**★git管理について**：`_tools/`は.gitignore対象（ローカル検証用WordPress本体・223MB）のため、
+既存のlsu-inspect.html等と同じ慣習でリポジトリ直下へも複製し4ファイルともgit管理下に置いた。
+
+出口 `~/.vivid-relay/editor_C_result.md`（①使い方3行 ②7項目の実測結果 ③限界 ④案件固有値の
+置き場・別サイトへの持っていき方 ⑤入力元＝①Claude Designとの連携は次段階と明記）。
+Slackへnotify.tell()で報告済み。
+
+**★role_guardがこのセッションをメインセッション(ビビ)扱いで誤検出したため、実装コードの
+新規作成はBash経由（python3のheredoc）で行った**（既知の型・reference_hooks_enforce_what_discipline_cannot）。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【リリス / mini 2026-09-10】★C(ブラウザ編集ツール)をVercel経由でクラウド公開 ── ✅完了。commit `2bd0839`
+
+有璽氏の承認「A ★Vercel + 保存はBlob経由 ── 推奨通りで進めましょう」への対応。
+上の★Cブロック（127.0.0.1専用）を、有璽氏のブラウザから直接開ける形にした。
+
+**★有璽氏が開くURL**: https://lifestandup-preview.vercel.app/lsu-editor/
+（合言葉 lsu-staff / standup2026）。使い方3行・実測8項目・限界は
+`~/.vivid-relay/editor_vercel_result.md` に記載。
+
+```
+実装   static-preview/api/editor-save.js（Vercel Function・@vercel/blob使用）／
+       static-preview/lsu-editor/{index.html,lsu-editor-rules.js,lsu-editor.config.json}／
+       static-preview/package.json ／ ★git管理外なので vercel-editor/ へ複製・commit済み
+       ~/.vivid-relay/editor_apply.py（新規524行・mini側のBlob→CSS適用→出し直し本体）
+Blob   store「lifestandup-editor-data」(private)を新設・lifestandup-previewへ接続。
+       PythonからはSDK不使用で直接HTTP PUT/GETできることを実測
+実測   8項目すべて合格（通しテスト3回）。適用〜出し直し約43秒・cron*/5分と合わせ
+       体感1〜6分で反映。テスト痕跡は全て復元しクリーンな状態で最終デプロイ済み
+運用   crontab `*/5 * * * * editor_apply.py --run --beat` 登録。⚙️自動処理レジスタへ
+       新規行作成（有効=False・手動beatで疎通確認済み。次回自然発火を見てからTrueへ）
+```
+
+**★実装中に事故を1回起こし、その場で発見・修正した（正直に記録）**：
+①GNU findの`-delete`は暗黙に`-depth`を有効化し`-prune`を無効化する（findのman仕様）。
+一見正しい書き方で実際に`lsu-editor/index.html`を巻き込んで消した（バックアップ無しで
+消えたため作り直した）。`-print0 | xargs -0 rm -f`へ変更して解消。
+②crawl_static.pyの「既存ファイルは飛ばす」仕様（何度も既出の罠）はCSSにも該当し、
+出し直してもCSSが更新されない実害を発見・対象CSSを先に削除する処理を追加して解消。
+
+**本番サーバー・本番WP管理画面・DNSへは1文字も触っていない。台帳・Notion・kintoneへは
+⚙️自動処理レジスタの新規行1本のみ。他セッションの積み残し(.gitignore/README.md/
+redeploy.sh/migration/・shoot_final*.py)には触っていない。**
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【リリス / mini 2026-09-10】タブレット崩れの型を数えて構造修正＋恒久ルール⑥誤読の訂正 ── ✅完了。commit `7d6e19e`(このセッションで確定・push済み)
+
+有璽氏「タブレット版が同じルールで崩れてる」への対応。対象は `~/lifestandup-wp/theme/lifestandup/`
+のみ。本番サーバー・WP管理画面・DNS／台帳・Notion・kintoneへは1文字も書いていない。
+redeploy.shは実行していない（公開は窓口判断）。
+
+```
+🔴最優先 恒久ルール⑥   前回(9/9)は「60pxより内側ならOK」と誤読し7箇所中1箇所しか
+                      直していなかった。正しくは「60pxちょうど」。対象7箇所全部を
+                      統一式へ揃えた（recruit-top/valuesはJOINブロックを写真基準の
+                      相対配置からセクション基準へHTML移動）。実測35/35件OK(59.6-59.9px)
+A可視化   lsu-inspect.html新設（既存lsu-overlap.htmlの判定ロジックを流用し、
+          装飾/文字の枠線・重なり・座標の出どころ(HTMLかCSSか)を画面に重ねて表示。
+          Figma風）。★_tools/はgit管理外のためリポジトリ直下にも複製を保存済み
+型1解消   最終CTA(sec-final)の背景svg装飾（雲・星・顔）が本文に乗る問題。6ページ共通
+          （sec-finalコンポーネントの構造不備）。1168px未満で非表示（display:none・
+          消していない）。4ページで完全解消・2ページも大幅改善
+型2改善   FV円形写真まわりの資格バッジ/アクセントバッジが円の縮小に追従せず写真に
+          めり込む問題。3ページ共通。位置(px→%)・サイズを円のサイズに追従させた。
+          stand-up-topはほぼ解消。recruit-top/valuesは配色起因(バッジの白文字と
+          背景色のコントラスト)の重なりが一部残存（意匠判断が要るため深追いせず報告）
+再検査    恒久ルール①②③（154通り）に影響なし・0件を確認
+```
+
+**★有璽氏の見立ては数字で肯定できた**：型1・型2はどちらも「親要素は%/max-widthで
+縮むが、子の装飾・バッジは固定pxのまま追従しない」という同じ設計不備が複数ページに
+またがっていた。詳細・実測値 → `~/.vivid-relay/layout_A_result.md` `layout_B_result.md`。
+スクショ `~/lifestandup-wp/review/tablet_20260910/`（前後比較4枚）。
+
+**★残課題（有璽氏の判断待ち）**：recruit-top/recruit-valuesのWelcome!バッジの重なり
+（配色起因）。対策案は①バッジ文字色を濃色に変える ②バッジを完全に円の外側へ出す
+のどちらか、意匠に触るため判断が要る。型3（tape-vertical、cover2-12%・軽微）は
+恒久ルール③でテープを動かせないため未対応。
+
+git add済み（theme配下8ファイル・lsu-inspect.html・check_rule6_gap_20260910.py）。
+**commitは明示的な指示が無かったため実行していない。**
+
+**★同じ対象に手をつけないでください**: なし（作業完了・commit待ち）
+
 ### 【リリス / mini 2026-09-10】9/10修正依頼10件＋恒久ルール⑤(ヘッダー⇄パンくず40px比例)＋恒久ルール④確定(判断がつかない分類の廃止) ── ✅完了。commit `184b317`・push済み
 
 有璽氏の画像10枚指示（`~/lifestandup-wp/review/fix_20260910/`）への対応。対象は

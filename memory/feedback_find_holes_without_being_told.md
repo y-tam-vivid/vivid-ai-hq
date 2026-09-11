@@ -59,6 +59,31 @@ metadata:
 **How to apply:** 材料の数字を指摘へ写す前に、**その1件だけ実物で日付を読む。**
 1件でも合わなければ、その欄は全部使わない。
 
+## ★自己監査の報告が「書き戻しの言い訳」にすり替わって届いていた（2026-09-11 実測）
+
+**8回中3回（9/5・9/7・9/10）、つるの報告本文が有璽氏へ1文字も届いていない。**
+
+```
+流れ   つるが報告を書き終える（9/10 08:50:16）
+       → Stopフック hook_session_writeback が「未コミットあり」で差し戻す（08:50:17）
+         ★対象は他セッションの書きかけ。つるは触っていない
+       → つるの2通目「他セッションの書きかけなので置く」が claude -p の最終出力になる
+       → self_audit.py はその2通目だけを受け取る
+結果   '人が要る' を含まない → need_human=False → Slackへ出ない → 心拍「成功」🟢
+実測   ①self_audit.log の該当日は 648/777/1285B（通常日は2.5〜3.4KB）で本文が無い
+       ②hook_writeback.log 09-10 08:50:17 ★差し戻した ＝ transcript の報告時刻の1秒後
+       ★9/10の報告は transcript にだけ残っていた（人が要る3件＝Downloads停止・vivi_patrol・同期）
+```
+
+**★監視が壊れて緑を出す型（④完走するのに静かに違う）。** 報告が消えた日ほど🟢になる。
+memory_sweep（ロビン）など他の `claude -p` 定期実行も同じ構造（8/28に1例）。
+
+**How to apply（今日の回避）:** フックに差し戻されたら、**2通目に報告全文を書き直す**。
+「置きます」の1行で終えない。**恒久の直し（コード＝ピタゴラス）は人が要るへ出した**：
+①非対話セッションでは自分が触っていないファイルで差し戻さない
+②self_audit.py は出力に「■ 直した」が無ければ「失敗」で心拍を打つ。
+
 関連 [[reference_hooks_enforce_what_discipline_cannot]]
 [[reference_monitor_must_exclude_parked]] [[project_automation_register]]
-[[feedback_use_the_team_not_alone]]
+[[feedback_use_the_team_not_alone]] [[feedback_write_back_before_you_go]]
+[[reference_dangerous_entrypoints]]

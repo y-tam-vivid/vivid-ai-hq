@@ -4106,3 +4106,96 @@ check_overlap_all.py（装飾×文字のコントラスト軸）で★664件
 → ★display:none ＋ CSSに戻し方のコメント。★HTMLから要素を消さない
 ★★「本当に消す」が正しければ★窓口へ差し戻すよう指示文に明記した（★勝手に消さない）
 ```
+
+## 🔴2026-09-10 恒久ルール⑥「60px内側ならOK」は誤読だった。有璽氏が差し戻し
+
+**有璽氏の原文**：「[見学・問い合わせ]★一番右端から、★60px左手に配置する。
+スマホ・タブレット版は上記の限りではないが、★他とかぶらないように調整をすること。」
+
+```
+🔴前回(50d156f)の読み替え   「60pxより内側ならOK」という★下限条件として実装
+                          対象7箇所中★1箇所(front-page ABC)だけ動かし、
+                          残り6箇所は「内側に収まっている」として無変更のまま
+                          「⑥違反 0/16」と報告した
+★正しい解釈               ⑥は下限でなく★位置の指定。★見学ボタン右端から★60pxちょうど
+                          対象7箇所全部を60pxへ揃える必要がある
+```
+
+**★型 ── 数値ルールで「〜px以上/以内」と「〜pxに配置」を取り違えると、
+検査は0件のまま通り、実物は直っていない。** 判定基準が「◯◯以内」なのか
+「◯◯ちょうど」なのかは、有璽氏の原文を毎回読み直して確認すること。
+「条件を満たしている」で済ませず、実測値と指示値の差分そのものを見る。
+→ [[feedback_never_write_an_unmeasured_number]]（実測値の丸め・解釈で同型の事故）
+
+## 🔴2026-09-10 有璽氏「タブレット版が同じルールで崩れている」── 個別px修正から構造修正への転換
+
+**有璽氏の指摘**：「タブレット版がすごい同じような形で文字と写真とかが重なってしまっている
+状態です。どのページも同じような形なので、おそらく同じルールで崩れてる。
+だからそれを先に整えた上で実装していく方が絶対いい。特にトップのファーストビューの
+箱がむちゃくちゃ崩れてる。なんかそれがFigmaのように可視化してわかるとよりいいな。」
+
+```
+★診断           有璽氏自身が「オートレイアウト設計不足」と原因を特定
+★指示の転換     個別pxを1件ずつ直す運用 → ★共通の崩れの型を先に1つ潰す運用へ
+★根拠となる実測  HTMLインラインstyleでの座標指定 88箇所（front-page.phpだけで22）
+                position:absolute 402箇所（style.css＋assets/css/*.css）
+                ★インラインstyleはCSSから上書きできない（!important以外）
+                ★幅ごとの個別CSS上書きは、検査幅が増えるたびに作業量が増える構造
+★恒久ルール①②⑥は検査0件のまま  ★それでも有璽氏はタブレットで重なりを見ている
+                ＝ 既存の検査項目（右端／パンくず／60px）は「重なり」を検出できていない。
+                件数0を「崩れていない」の根拠にしない
+```
+
+**★型 ── 「検査項目が0件」と「有璽氏の目に重なりが見えている」が同時に起きるのは、
+検査の観点が違う証拠。** 恒久ルール①〜⑥は「はみ出し」「順序」を見ているだけで、
+「文字と写真が重なって読めるか」は見ていなかった。可視化ツール（重なり色分け・
+座標の出どころ表示）を先に作り、型として数えてから構造修正に着手する方針を採用。
+→ 2026-09-10セッション成果は `~/.vivid-relay/layout_A_result.md` `layout_B_result.md`
+
+## ★C(ブラウザ編集ツール) をVercel経由でクラウド公開 ── 2026-09-10 着手
+
+★Cツール(lsu-editor.html等)自体は同日完成済み（詳細 `~/.vivid-relay/editor_C_result.md`）だが
+127.0.0.1(mini内)専用で有璽氏のブラウザからは開けなかった。
+
+**有璽氏の決定（2026-09-10）**：「A ★Vercel + 保存はBlob経由 ── 推奨通りで進めましょう」。
+設計＝有璽氏がVercel上のURLを開く→ドラッグで動かす(静的)→「反映する」→Vercel Function経由で
+Blobへ変更を書く→miniが定期的にBlobを見て正本CSSへ適用（バックアップ付き）→出し直し。
+
+★技術的制約（着手前に確定）：
+- 同一オリジンでないとiframe内をJSから操作できない＝lifestandup-preview プロジェクト内に置く必須
+- Vercelは静的ホスティング＝PHP(lsu-save.php)は動かない。Vercel Function(Node)へ置き換える
+- 既存の稼働盤(fukuchi-kadoban)が同じ形（ブラウザ→Blob→mini定期取得）で動いている実例
+  （`~/.vivid-relay/dashboard_realtime_push.py`／`web/kadoban/api/data.js`）＝流用する
+- crawl_static.pyの出し直しでエディタ一式が消えないよう除外リストへ足す（middleware.jsと同じ扱い）
+- Vercelの合言葉(Basic認証)の内側に置く。Function側でも別途トークン確認を行う
+- Vercel無料枠は1日100デプロイ。変更が無ければデプロイしない設計にする
+
+進捗・実測結果は `~/.vivid-relay/editor_vercel_result.md` へ。
+
+### ✅2026-09-10 完了。有璽氏が開くURL: https://lifestandup-preview.vercel.app/lsu-editor/
+（合言葉 lsu-staff/standup2026）
+
+```
+実装   static-preview/api/editor-save.js（Vercel Function・@vercel/blob使用）／
+       static-preview/lsu-editor/{index.html,lsu-editor-rules.js,lsu-editor.config.json}／
+       static-preview/package.json（依存追加）
+       ★git管理外なので ~/lifestandup-wp/vercel-editor/ へ複製・commit 2bd0839
+       ~/.vivid-relay/editor_apply.py（新規524行・mini側の適用本体）
+Blob   store「lifestandup-editor-data」(private)を新設・lifestandup-previewへ接続。
+       PythonからはSDK不使用で直接HTTP PUT/GETできることを実測（x-vercel-blob-access等の
+       非公開ヘッダー名をNode.js SDKソースから読み取って再現・公式ドキュメントには無い）
+実測   8項目すべて合格（通しテスト3回・詳細はresult.md）。所要時間は約43秒（適用〜出し直し）、
+       cron間隔*/5分と合わせ体感1〜6分で反映
+```
+
+**★実装中に事故を1回起こし、その場で発見・修正した（正直に記録）**：
+①GNU findの`-delete`は暗黙に`-depth`を有効化し`-prune`を無効化する（findのman仕様）。
+`find static-preview -path 'lsu-editor' -prune -o -name index.html -delete`という
+一見正しい書き方で実際に`lsu-editor/index.html`を巻き込んで消した（バックアップ無しで
+消えたため作り直した）。`-print0 | xargs -0 rm -f`へ変更して解消
+②crawl_static.pyの「既存ファイルは飛ばす」仕様（何度も既出の罠）にCSSも該当し、
+出し直してもstatic-preview側のCSSが更新されない実害を発見。対象CSSを先に削除する
+処理を追加して解消。→ どちらもeditor_apply.py内にコメントで経緯を残した
+
+**運用**：crontab `*/5 * * * * editor_apply.py --run --beat` 登録済み。⚙️自動処理レジスタへ
+新規行作成（有効=False・手動beatで疎通確認済み。次回自然発火を見てからTrueへ）。

@@ -42,14 +42,15 @@
 - [骨組みを先に見せる](feedback_show_the_skeleton_first.md) — **🔴9/10で★3回連続。★こちらが代償を計算して機能を落とす（写真の添付を外した）。★機能は載せ代償は1行で言う＝決めるのは有璽氏**
 - [業務の単位まで割る](feedback_break_down_to_the_work_level.md) — 🔴9/8「中身がなくない？」＝集計で止めるな。1行＝1業務で誰が/いくら/自社可否＋価格(福祉の同業→他業種・下限/平均/上限・出典つき)／★同じ発言から2台が別々に記憶を作った＝[[feedback_deliverable_granularity_must_be_actionable]]と重複
 - [実物を読む](feedback_read_the_artifact_not_the_copy.md) — ★欄名が無いは入口(隣列を見る)／★渡すのは行でなくセル／**★有璽氏が言うのは症状。原因は別(「左に余白」の真因は番号バッジが画面外へ飛んでいた)。直す前に実物で1回見る**／**★9/6 DB名を事業名と読み違え別アカウントの器へ5本書いた。列が一致=同じ器ではない。書く前に既存2〜3件を読む**
-- [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測で1回確かめる／★止めたあとにドライランを通すと実害の中身が分かる(54v3は既存21件を二重に書くところだった)／**日付・IDの突合は正規化してから数える。同じ列で書式が混在し偽陰性が出る**
+- [入口は名前で判断しない](reference_dangerous_entrypoints.md) — 載せる前に「書く/書かない/壊す」を実測／**★9/10 findの-deleteは-pruneを黙って無効化＝除外が効かない。消す前に-printで数える**
 - [体制はビビ窓口＋ハブ参照](working-via-ai-agents-and-notion-hub.md) — 作業はビビ中央窓口経由＋AIナレッジハブ参照で進める
 - [AI資産カタログ](ai-asset-catalog.md) — Drive`AI資産_正本/`を正本と宣言済＝vivid-ai-hqの設計と要調整
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
 - [確認は溜めて報告は溜めない](feedback_batch_the_checks.md) — **🔴9/9「途中経過も共有ください」＝2回目。★「変化なし」は機械の状態が同じという意味で、★共有することが無いではない。★終わった担当の出口ファイルはその回のうちに読んで要点を出す**
-- [「できない」の前に試す](feedback_verify_before_declining.md) — **🔴9/10 ★5日前の自分の記録を数えず「作れません」と手作業29問を渡した（GASのFormAppで25問作れる）。★人に手を動かしてもらう前に1手で終わる形にできないか1回考える**／9/9 プラグインは★一意なURLで渡す
-- [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — 🔴9/10 commitして「完了」と報告し★出していなかった(公開URLは0件)。★報告文に「どこで見えるか」を必ず1行
+- [「できない」の前に試す](feedback_verify_before_declining.md) — **🔴9/10 ★5日前の自分の記録を数えず手作業29問を渡した(GASのFormAppで25問作れる)／★自分の言語にSDKが無い＝できないではない(Node SDKのソースを読みPythonの素のHTTPで再現)。★人に手を動かしてもらう前に1手で終わる形を1回考える**
+- [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — **🔴9/10 commitして「完了」と報告し★出していなかった(公開URLは0件)。★報告文に「どこで見えるか」を必ず1行。★作った/実装したは完了でない＝動いている状態が完了**
 - [読む人の言葉で書く](feedback_write_for_the_reader.md) — 🔴9/10★可視化は「問題だけが目に入る」形に。全部に枠を描くと埋もれる／★渡すとき見方を3行添える／実装名でなく日本語／「反映した」と書くな
+- [触る画面は説明でなく画面自体を直す](feedback_ui_must_be_self_explanatory.md) — **🔴9/10同日2回目「使い方がよくわからん」＝説明を足しても直らない。ウィザード型(1度に1指示)へ**
 - [通知は押せる形＋読める形に](feedback_write_for_the_reader.md) — **🔴9/8「長ったらしいのは見づらい」＝親は「◯時の通知です」＋要約だけ・★詳細はスレッドへ追記（chat.postMessageのtsをthread_tsに）。出す側の部品で揃える**／ ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
 - [土台にも日付がある](reference_stale_premise_daily.md) — **★9/10 器は9/9・成果物は9/10で★1日で前提が変わっていた。★都度の指摘に頼らず機械で数える＝bin/kb_schema_check.py（表示側のキー⇄器の列⇄taxonomy）。★名前で見つかるズレだけ。意味の変化は人が見る**
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★真因は速さのために確かさを落とすこと。数える部品を1か所へ集約し読むだけにする。件数は数え方を添える
@@ -79,7 +80,7 @@
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消(Stopフック検査4)。★9/9に本番3例目「этот」・4例目「진」(進)を機械が先に検出＝★同日2回働いた。★意味の同じ外国語に化けるので目視では素通り**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
-- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — 毎朝08:40 self_audit.pyがつるを起動／★材料の発言欄は38%が偽物。本文を読む
+- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — ★9/11 報告8回中3回がStopフックですり替わり未達・🟢のまま
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★担保2つとも効かず。自動確定の7割は生成物のみ／差し戻しは4回とも空振り／★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **⛔9/9真因＝本数でなく1本の長さ(180B超が40/78本)。★降ろさず「本文へ戻す」。消す前に本文に在るか数える。bin/check_index_line_length.py**
@@ -101,6 +102,7 @@
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — ★9/8有璽氏「お前だけで考えんな」。同じ型の失敗が繰り返されたら自前パッチの前にクローバーへ業界調査を投げる
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
-- [Web制作ルールを資産に](project_web_build_rules_asset.md) — ✅9/10 ★Cがブラウザで使える(lsu-editor/・合言葉つき・遅延1〜6分)。★find -deleteは-pruneを無効化し巻き込む
+- [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
+- [Web制作ルールを資産に](project_web_build_rules_asset.md) — ✅9/10 ★Cがブラウザで使える(lsu-editor/・合言葉つき・遅延1〜6分)。config1本で別サイトへ。★find -deleteは-pruneを無効化し巻き込む
 - [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
