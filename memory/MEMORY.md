@@ -72,6 +72,7 @@
 - [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/10で2回目。慢性の🟡は内訳を数える（2件中1件は誤検知）／実体欄に説明を書くと機械が誤読する
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
+- [sheets_clientはクラス](reference_sheets_no_credentials_on_mini.md) — ★9/11 sc.Sheets()を作る。meta()の戻りは name/rows(titleでない)。★道具は要約でなく実物のソースを見る
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
 - [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — **🔴9/9 5例目＝「着手完了」と報告したが実物は全部mini内で★有璽氏へ0件。★報告前に「本人はどこで見られるか」を自問し、見られないなら★まだ完了でなく中間物と言う**／渡すのはSlack添付/Driveのリンク。★その場で使うファイルは`open`でFinderを開く(6例目・zipはminiに在り触れなかった)／**★9/8 4例目＝ローカルのファイルパスも届かない。実測値の羅列は成果物でない。見える形にして渡すまでが1セット**
 - [渡す物は受け取り手の要件で数える](project_lifestandup_website_wordpress.md) — **★9/9 テーマzipが本番でインストール失敗（階層が1つ深い）。★「ファイルが在る」と「相手が使える形か」は別。zipは`unzip -l`の先頭3行を見る**

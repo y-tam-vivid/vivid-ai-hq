@@ -75,3 +75,37 @@ mini の実測結果
 → [[reference_permissions_are_part_of_the_environment]]
 
 関連 [[reference_mac_mini_execution_env]] [[project_automation_register]] [[project_sales_workbook_read_first]] [[feedback_read_the_artifact_not_the_copy]]
+
+---
+
+## ★2026-09-11 ── ★sheets_client は★クラス。★モジュール関数ではない（★3回外した）
+
+```
+★誤り          sc.meta(SID) / sc.read(SID, a1)
+★正しい        S = sc.Sheets() ; S.meta(SID) ; S.read(SID, a1)
+★メソッド一覧   meta / read / read_formulas / update / batch_update / append /
+               add_rows / snapshot / backup / _require_restore_point
+```
+
+**★meta() の戻り値も想定と違った。**
+
+```
+★誤り（Google APIの生の形を想定した）
+   m["sheets"][0]["properties"]["sheetId"] / ["title"] / ["gridProperties"]["rowCount"]
+★正しい（★このクライアントが整形して返す）
+   m["title"]                       ファイル名
+   m["sheets"][0]["sheetId"]        gid
+   m["sheets"][0]["name"]           タブ名（★"title" ではない）
+   m["sheets"][0]["rows"] / ["cols"] / ["hidden"] / ["index"]
+```
+
+**🔴★WORKING.md の記述が誤解を生んだ。**
+「`sheets_client.py` 共通クライアント。**meta/read/update/batch_update/backup**」と
+書いてあり、★モジュール関数のように読めた。**★実物はクラスのメソッド。**
+
+**★型：★道具の使い方は★memoryやWORKING.mdの要約でなく★実物のソースを見る。**
+```
+★やること  `grep -nE "^def |^class |^    def " <ファイル>` を先に1回叩く
+★★戻り値の形も★推測しない。★1回 print(type()) と keys() を出してから本処理を書く
+★今回のコスト  ★3回の往復（meta無し → properties無し → title無し）
+```
