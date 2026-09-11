@@ -53,6 +53,36 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-11】職員インタビュー1名（児童指導員・パート）を追記 ── ✅完了。commit `8942c71`（push未実施）
+
+有璽氏の依頼「取材の回答が1件埋まったので追記して」（スプレッドシート
+`1ENX_4EhSI40RtHDLCXG58v-FS-lRMxWw_eSYsn1RNTM` Form Responses 2・2行目）への対応。
+対象は `~/lifestandup-wp/theme/lifestandup/{functions.php, page-templates/recruit-interview.php,
+assets/css/recruit-interview.css}` のみ。元スプレッドシート・本番サーバー・本番WP管理画面・
+DNS・台帳・Notion・kintoneへは1文字も書いていない。redeploy.shは使わず静的書き出し→
+Vercel deployの手順で出した。
+
+```
+実物確認  CPT 'staff'の投稿は0件（sqlite直接確認）＝既存4名(U/K/X/D)も全員
+          lsu_staff_dummy()のダミー配列で表示されていた。新5人目も同じ方式で追加した
+5人目     スロット'p'を新設（lsu_staff_slot_order()をu/k/x/d/pへ）。イニシャル空欄のため
+          avatar/大きな名前文字には短縮ラベル「指導員」（lsu_staff_initial_style()で
+          文字数に応じ自動縮小・既存4名は1文字なので無変化）、role_ja欄にフル職種
+          「児童指導員（パート）」を入れ既存デザイン（{短縮}さん｜{role_ja}）で自然に出した
+          色は未使用の--su-red(#E53935)を新設(.i-red系・6箇所)。既存4色のCSSは無変更(diff確認)
+          iv-index-gridの5枚目は:nth-child(5):last-childで中央寄せ(761px境界)
+実測      既存4名(u/k/x/d)のダミー配列はdiffで完全一致(無傷)。7幅(375/390/414/768/820/
+          1366/1920)×3ページ(interview/recruit/top)=21ケース不合格0件。公開URLで
+          「児童指導員」4件・「話を聞いた5名」反映・401/200とも実測確認
+副産物    「4名の言葉には共通する姿勢」等3箇所がハードコードのままだったのを
+          count(lsu_staff_slot_order())で動的化(5名に修正)
+```
+
+出口 `~/.vivid-relay/staff5_result.md`（①整えた回答の前後 ②イニシャルの扱い
+③既存4名無傷の実測 ④7幅の結果 ⑤公開URL実測 ⑥判断が要る点）。Slackへnotify.tell()で報告済み。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【リリス / mini 2026-09-10】★C ── ブラウザで直す編集ツール（Figma的操作・案件非依存の資産）── ✅完了
 
 有璽氏の承認事項「見るだけでなく修正できるもの。Figmaと同じイメージ。ブラウザ上で操作できるのが
