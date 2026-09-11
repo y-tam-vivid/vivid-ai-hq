@@ -17,6 +17,7 @@
 - [検問は1か所に置いて分岐から呼ぶ](reference_permission_request_hook_headless.md) — ★9/6 `mcp__`だけ早期returnで長さ判定を素通りし、外部へ書くMCPが中身0行＋許可ボタンで出ていた。分岐ごとに書くと後から増えた分岐だけ検問の外に出る
 - [取り込めない日はorigin/mainを直接読む](reference_silent_sync_failure.md) — ★9/7 miniはbehind34＋他セッションの書きかけ5本でmergeできず。`git show origin/main:<path>`と`git grep origin/main`で重複を回避。**手元に無い＝未記録の証拠にならない**
 - [巡回はSYNC_STATUSの色も数える](reference_silent_sync_failure.md) — **🔴9/11 13分おきの巡回を10回まわし、走行中0件だけ見て🔴(未取込12件)を素通り。★走行中0件＝異常なしではない。★クリーンなのに取り込めない＝汚れでなく枝分かれ(ahead10/behind12)＝mergeが要る**
+- [🔴には2種類ある](reference_silent_sync_failure.md) — **★9/11「未取込N件」＝自分でmergeして解く／「リモートに繋がっていない」＝通信断で打つ手なし。★後者は`git ls-remote origin HEAD`が返れば一過性。色は入口であって結論ではない**
 - [crontabへの書き込み](reference_cron_write_blocked_in_session.md) — ⛔**9/7に直っていた／🔴9/8つるのセッションでは書けない（2経路ともoperation not permitted・被害0）＝機械でなくセッションの属性。触る前に1行試す**。★日次ジョブの正本はbin/daily_jobs.confのまま。crontab直接は10分おき等それに乗らないものだけ・移したら元を消す
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
