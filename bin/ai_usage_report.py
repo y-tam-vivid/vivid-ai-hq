@@ -235,8 +235,11 @@ def main():
         try:
             sys.path.insert(0, str(HOME / ".vivid-relay"))
             import heartbeat  # noqa
-            heartbeat.beat("AI使用量の集計（ai_usage_report）",
-                           ok=True, message=f"{len(recs)}行 / transcript {files}本")
+            # ★2026-09-13 つる：ok=True は beat() に無い引数で、初回(9/12)から心拍が1回も届いていなかった。
+            #   両機で動く仕事なので名前も機械ごとに分ける（同名だと片方の生存がもう片方の停止を隠す）。
+            machine = "Mac mini" if "mini" in HOST.lower() else "MacBook"
+            heartbeat.beat(f"AI使用量の集計（ai_usage_report・{machine}）",
+                           "成功", f"{len(recs)}行 / transcript {files}本")
         except Exception as e:
             print(f"（心拍を打てなかった: {e}）")
     return 0
