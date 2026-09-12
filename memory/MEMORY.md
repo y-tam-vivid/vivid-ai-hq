@@ -30,7 +30,7 @@
 - [ルールを足す前に既存と突合](project_lifestandup_website_wordpress.md) — **★9/10 恒久ルール追加3条を突合＝重複2・★変更1・拡大1。★「追加」と言われても実質★前の決定の上書きのことがある。★数値(px/%)が出たら過去の値を必ず引く**
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — ★「揃えろ/合わせて」は作り直しの許可になる(2回目)。触らない対象を列挙
-- [特別な理由がなければ全ページ統一](feedback_uniform_unless_reason.md) — ★9/8で5回目。揃った値自体が指摘を満たすか別途確認／★素材にも。「暗い」でなく「異なる」＝基準値1つで揃える
+- [特別な理由がなければ全ページ統一](feedback_uniform_unless_reason.md) — **★9/12 同じ文字列でなく同じ対象を揃える**／9/8で5回目
 - [作業前にcwdを読む](feedback_read_the_workspace_first.md) — START_HERE/AGENTS/README/.envを先に読む。読まずに「できない」と言わない
 - [道具ごとの鍵の在り処](reference_tool_access_map.md) — ★能力は書かない(腐る)。bin/capability_check.shで毎回取りに行く
 - [様子を見てから足す](feedback_let_it_settle_before_adding.md) — 入れた仕組みは使ってから次。器を同時に立てない
@@ -81,7 +81,7 @@
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消(Stopフック検査4)。★9/9に本番3例目「этот」・4例目「진」(進)を機械が先に検出＝★同日2回働いた。★意味の同じ外国語に化けるので目視では素通り**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — ★9/12 同じ誤診3回目。レジスタは既知→備考→有効の順で読む
-- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**
+- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — **★9/12 文面は書く前に①誰に②相手の既知③何をしてほしいか**／.mdで渡さずPDF化
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★担保2つとも効かず。自動確定の7割は生成物のみ／差し戻しは4回とも空振り／★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **⛔9/9真因＝本数でなく1本の長さ(180B超が40/78本)。★降ろさず「本文へ戻す」。消す前に本文に在るか数える。bin/check_index_line_length.py**
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **★9/9 有璽氏が★本番WordPressの許可を出した（恒久制約の解除）。✅9/9 21:40 ★本番で新テーマが動いた（方式B・インストール済み／★有効化していない＝サイトは不変）。★不可逆は「有効化」の1手だけ＝そこは人が押す。★順序（デモ完成→zip→本番）は許可が出ても崩さない**
