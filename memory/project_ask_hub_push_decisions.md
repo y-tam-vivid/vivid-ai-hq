@@ -750,3 +750,27 @@ PermissionRequest allow ignored: a confined session takes grants only from its c
 - ★実害は軽微（DM1通・意味不明な短文が1件増えただけ）だが、
   [[feedback_stop_asking_just_do_it]] や [[feedback_write_for_the_reader]] が言う
   「届く形」を軽んじると同じ経路で通知の信頼が削れる。テスト目的の実投稿は0件に保つ。
+
+## 🔴2026-09-12 `close_without_answer()` は台帳を閉じない（実測・未修正）
+
+有璽氏がボタンを押さず**会話で回答**したため、依頼元（ビビ）が `close_without_answer("a9a97b", …)`
+で閉じた。**戻り値は `True`。Slackの見た目も「解決しました」に差し替わった。
+★だが台帳の実物は `status="open"` / `closed_at=None` のままだった。**
+
+```
+実測  ボタンを押された3件      status = answered
+      close_without_answer した1件  status = ★open のまま・closed_at=None
+```
+
+**★実害** ── 閉じたつもりのものが「判断待ち」として残り続ける。
+稼働盤・進捗報告・`findings_escalate` はこの件数を見るので、**架空の判断待ちが後続を塞ぐ**
+（[[reference_pending_decision_does_not_pause_the_pipeline]] と同じ型）。
+
+**★当方では直していない**（ask_hub は全担当が使う基盤＝影響範囲が広い）。直すなら
+`close_without_answer()` に `status="closed"` と `closed_at` の書き込みを足す。
+★直す前に、`open` を数えている側（稼働盤・progress_report・findings_escalate）が
+`closed` を正しく除外するかを先に確かめること。
+
+**★当面の回避** ── 会話で答えが出たら、**次に ask_hub を触る担当が手で `answered` を入れる**か、
+有璽氏にボタンを押してもらう。「閉じた」と報告する前に `answer_of()` で**必ず読み返す**
+（今回はそれで気づいた）。
