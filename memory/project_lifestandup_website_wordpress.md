@@ -4199,3 +4199,33 @@ Blob   store「lifestandup-editor-data」(private)を新設・lifestandup-previe
 
 **運用**：crontab `*/5 * * * * editor_apply.py --run --beat` 登録済み。⚙️自動処理レジスタへ
 新規行作成（有効=False・手動beatで疎通確認済み。次回自然発火を見てからTrueへ）。
+
+## ✅2026-09-11 職員インタビュー5人目（児童指導員・パート）を追記 ── リリス／mini
+
+有璽氏「取材の回答が1件埋まったので追記して」。対象は `theme/lifestandup/{functions.php,
+page-templates/recruit-interview.php, assets/css/recruit-interview.css}` のみ。
+commit `8942c71`・**★push未実施**。出口 `~/.vivid-relay/staff5_result.md`。
+
+```
+実物確認  ★CPT 'staff' の投稿は0件（sqlite直読）＝既存4名(U/K/X/D)も全員 lsu_staff_dummy()
+          のダミー配列で出ていた。5人目も同じ方式＝特別扱いをしていない
+スロット  lsu_staff_slot_order() を u/k/x/d/p へ。色は未使用の --su-red(#E53935) を新設
+          （既存4色のCSSはdiffで無変更）。一覧5枚目は :nth-child(5):last-child で中央寄せ
+実測      既存4名のダミー配列はdiffで完全一致／7幅(375/390/414/768/820/1366/1920)×3ページ
+          =21ケース 不合格0件／公開URLで「児童指導員」4件・401/200とも確認
+```
+
+**★「イニシャルのご希望なし」＝空欄は、器が1文字前提だと入らない。**
+avatar(72px丸)と大きな名前文字(34px)は英字1文字を前提にした意匠で、「児童指導員（パート）」を
+そのまま入れると必ずはみ出す。対応は3点セット ──
+①`initial` に短縮ラベル「指導員」 ②文字数で font-size を自動縮小する `lsu_staff_initial_style()`
+を新設（既存4名は1文字なので何も起きない＝見た目不変） ③フル職種は `role_ja` へ持たせ
+既存の「{短縮}さん｜{role_ja}」の型で自然に出す。**変えたいときは2値の書き換えだけで済む**
+（テンプレート・CSSに触らせない形にした）。
+
+- **★空欄は「無い」ではなく「こちらが決める」。** 過去も同じ（保護者の声でイニシャル希望なし
+  3名をこちらで割り当てた）。**空欄が来る前提で、入れ物の側に逃げ道を用意しておく。**
+- **★1名足すと本文の日本語が古くなる**（「4名の言葉には」等3箇所がベタ書き）。
+  `count( lsu_staff_slot_order() )` で動的化した → [[feedback_categories_always_grow]]
+- ★Q4の回答をQAの最後と結びのメッセージに二重で使っている（アンケートに材料がこれ1文しか
+  無く、創作を避けた）。**次に取材票を作るときは「メッセージ欄」を1問足す。**
