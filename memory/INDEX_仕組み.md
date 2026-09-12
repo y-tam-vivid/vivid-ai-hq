@@ -19,6 +19,7 @@
 - [巡回はSYNC_STATUSの色も数える](reference_silent_sync_failure.md) — **🔴9/11 13分おきの巡回を10回まわし、走行中0件だけ見て🔴(未取込12件)を素通り。★走行中0件＝異常なしではない。★クリーンなのに取り込めない＝汚れでなく枝分かれ(ahead10/behind12)＝mergeが要る**
 - [🔴には2種類ある](reference_silent_sync_failure.md) — **★9/11「未取込N件」＝自分でmergeして解く／「リモートに繋がっていない」＝通信断で打つ手なし。★後者は`git ls-remote origin HEAD`が返れば一過性。色は入口であって結論ではない**
 - [色より先にmtimeを見る](reference_silent_sync_failure.md) — **🔴9/11 一過性と判定したが★SYNC_STATUSが67分止まっていた(cron 4回未発火)。真因はMacBookのスリープ(pmset実測16:09-16:36)。★30分以上古い🔴は状態でなく機械停止の証拠。手当ては`bash bin/vivid-sync.sh`1手**
+- [mtimeが新しくても中身は古い](reference_silent_sync_failure.md) — **🔴9/12 ★バックグラウンドへ投げたsyncが3時間19分ハングし、★11:30の判定で14:45の🟢を上書きした。★mtimeは6分前＝30分ルールをすり抜ける。★中身の「◯◯時点」も読む／★巡回のsyncは前面で走らせる**
 - [crontabへの書き込み](reference_cron_write_blocked_in_session.md) — ⛔**9/7に直っていた／🔴9/8つるのセッションでは書けない（2経路ともoperation not permitted・被害0）＝機械でなくセッションの属性。触る前に1行試す**。★日次ジョブの正本はbin/daily_jobs.confのまま。crontab直接は10分おき等それに乗らないものだけ・移したら元を消す
 - [launchdでファイル権限が消える](reference_launchd_loses_file_access.md) — TCCは起動元で判定。移す前にlaunchd経由でdry-runを1回
 - [ブラウザ衛生の週次チェック](project_browser_hygiene_check.md) — 拡張は型で見る。毎週月曜09:30(MacBook)。慢性的な黄色を出さない
