@@ -200,6 +200,9 @@ cp "$REPO/web/kadoban/api/data.js" "$SITE/api/data.js" 2>/dev/null
 # ★2026-09-13 追加（会議室のVercel化）: office.js（Blobから会議室データを返す）を運ぶ。
 #   ★このファイルが無くても本体（index.html）のデプロイ自体は壊れない。
 cp "$REPO/web/kadoban/api/office.js" "$SITE/api/office.js" 2>/dev/null
+# ★2026-09-13 追加（③）: office-answer.js（会議室で押した回答をBlobへ受ける口）を運ぶ。
+#   ★これが無いと、ボタンは押せるのに /api/office-answer が404＝何も起きない。
+cp "$REPO/web/kadoban/api/office-answer.js" "$SITE/api/office-answer.js" 2>/dev/null
 
 # ① 中身を用意する（この機械に無ければ mini から取りに行く）
 if [ ! -f "$SRC_LOCAL" ]; then
