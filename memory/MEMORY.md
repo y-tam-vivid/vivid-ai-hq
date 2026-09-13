@@ -106,7 +106,7 @@
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
 - [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
-- [Web制作ルールを資産に](project_web_build_rules_asset.md) — ★9/13 作る側へ先にルールを渡す＝上流で防ぐ。★Cの保存は反映されるが適用の台帳が無い
+- [Web制作ルールを資産に](project_web_build_rules_asset.md) — ★9/13 レスポンシブ専任チョッパー新設(14体目)。★Cの台帳はprintを捨てているだけ
 - [オートレイアウトが要る](project_web_build_rules_asset.md) — ★9/13 手順は3手(受取/機械が掃く/★Cで直す)。★1回4時間半＝失格。Chrome1回起動へ直す
 - [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
