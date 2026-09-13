@@ -59,7 +59,7 @@
 - [かわちばなし・何でも載せない](project_kawachibanashi_portal.md) — ★9/13 6区分に合うものだけ。行政は面白くない・★民間の取り組みも
 - [かわちばなし・スポットは器が無い](project_kawachibanashi_portal.md) — ★9/13 公開版はサンプルのまま。★お店は掲載許可の重みがイベントと違う
 - [かわちばなし・新着だけ取る](project_kawachibanashi_portal.md) — ★9/13 毎回全件を開かない。RSS/新着/lastmodで差分。★集めると選ぶを分ける
-- [競合は規模まで測って出す](project_kawachibanashi_portal.md) — ★9/13 みなかわとりっぷ発見。★「いる」だけでは材料にならない。記事数/運営主体/SNSまで測る
+- [競合は検索で出るかで測る](project_kawachibanashi_portal.md) — ⛔9/13訂正 記事数でなく★狙う検索語で上位に出るか。大手が本命の可能性
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
 - [LSU 装飾は右端=見学ボタン/上端=パンくずが恒久境界](project_lifestandup_website_wordpress.md) — ★9/9 全ページ・全幅の決まり。タブレット/スマホは3本線が右端の基準。マスキングテープは固定(動かさない)・直すのはポストカード/写真/吹き出し側
