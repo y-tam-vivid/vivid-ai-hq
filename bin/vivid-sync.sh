@@ -103,6 +103,9 @@ if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -gt 0 ] && [ "$DIRTY" -eq 0 ]; then
       AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
     else
       git merge --abort >/dev/null 2>&1 || true
+      # ★2026-09-14 追加：abort したことがどこにも残らず、68件まで積み上がった。
+      #   毎ターン届く SYNC_STATUS.md へ理由を出す（ログは見に行かないと分からない）。
+      MERGE_CONFLICT="yes"
     fi
   fi
 fi
@@ -129,9 +132,20 @@ $FETCH_ERR
 \`\`\`"
 elif [ "$BEHIND" -gt 0 ]; then
   RESULT="警告"
+  CONFLICT_LINE=""
+  if [ "${MERGE_CONFLICT:-no}" = "yes" ]; then
+    CONFLICT_LINE="**🔴 自動マージが★衝突して中止された。このままでは永久に取り込めない。**
+**人が両方を残して解くまで、この機は古いままです。**（下の手順②）
+
+"
+  fi
   HEAD_LINE="🔴 いま読んでいる WORKING.md / MEMORY.md は古い（$NOW 時点・未取込 ${BEHIND}件）"
   DETAIL="**この機は他機の変更を取り込めていない。過去の状態を最新だと思って答えないこと。**
-原因はほぼ常に「ローカルに未コミットの変更があり、ff-only マージができない」。
+${CONFLICT_LINE}原因は2つある。**どちらかを実測で確かめてから手を打つこと（推測で決めない）。**
+  ① ローカルに未コミットの変更があり ff-only マージができない → \`git status\` で数える
+  ② ★枝分かれ（behind>0 かつ ahead>0）で、自動マージが★衝突して中止された
+     → \`git rev-list --count origin/main..HEAD\` が 0 でなければこちら。
+       ★2026-09-14、これで68件・丸1日以上 取り残された（未コミットは1件だけだった）
 
 未取込の内容:
 
@@ -142,9 +156,12 @@ $(git log --oneline HEAD..origin/main --pretty='%h %ad %s' --date=short 2>/dev/n
 取り込み方（作業中の変更を捨てずに）:
 
 \`\`\`
-cd ~/vivid-ai-hq && git status        # 何を書きかけているか見る
-git add -A && git commit              # 自分の変更を確定させる
-git merge origin/main                 # 両方のブロックを残してマージ
+cd ~/vivid-ai-hq && git status            # 何を書きかけているか見る
+git add -- <直したファイルを名指し>       # ★git add -A は使わない（恒久ルール）
+git commit                                # 自分の変更を確定させる
+git merge origin/main                     # ★衝突したら両方を残して解く（相手の行を消さない）
+                                          #   解いたら MEMORY.md の行数とバイト数を数える
+                                          #   （両方残すと索引が膨らむ。上限 200行 / 25KB）
 \`\`\`
 
 $(dirty_block)"
