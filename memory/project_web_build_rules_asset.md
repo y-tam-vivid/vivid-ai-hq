@@ -800,3 +800,34 @@ C 1日1回まとめて    夜に回す。朝には結果が揃っている
 sweep の現在地                3ページ目 recruit-top（3時間13分経過）＝1ページ約60分
                              残り2ページ＝★2時間前後
 ```
+
+### ✅2026-09-13 有璽氏の指定 ── ★最初に直すのはメインビジュアル（FV）
+
+**有璽氏**（lsu-inspect で /stand-up/ を開いた画面を共有）：
+「具体的には、主にこのトップの**メインビジュアルにあたる部分を修正したい、今日**。
+理由は、**ここが崩れがち、他の部分以上にそこが崩れがち**なためです。」
+
+**★有璽氏の見立ては数字で裏付けられた。**
+```
+stand-up-top.css の position:absolute  ★51箇所
+うちFVの部品                          en-bubble 8 ／ fv-about-headline 6 ／ tape-vertical 4
+                                     fv-headline 3 ／ deco-cloud 3 ／ years-stamp 2
+                                     fv-photo-standup 2 ／ deco-star 2 ／ deco-leaf 2
+                                     fv-visual・fv-photo-ring・fv-photo-inner 各1
+★FVは絶対配置の塊                    ＝★オートレイアウトの効果が最も大きく出る場所
+有璽氏の画面に出ていた警告            ★恒久ルール①違反4件
+                                     svg right 1892 / 1920 / 1766 / 1805 ＞ ctaRight 1536
+sweepの実測とも一致                  stand-up-top は 741〜793px で重なり4件が連続
+```
+**★だから「崩れがち」は感覚ではなく構造。**吹き出し・バッジ・テープ・星が全部 absolute で
+置かれており、幅が変わると**親が縮んでも子が取り残される**。
+
+**★手順（次に着手する順）**
+```
+1  ★C に「親を選ぶ＋Gap」が入る（走行中・PID 87012）
+2  ★まずFVで試す ── en-bubble / cert-badge / tape-vertical を親の規則へ寄せられるか
+3  効いたら他ページへ／効かなければ Padding・Fill/Hug を先に足す
+```
+★FVは「1つ直せば全ページに効く」場所ではない（ページごとに部品が違う）。
+**★ただし型は共通** ── 円形写真の周りにバッジが absolute で貼り付いている構造は
+stand-up-top / recruit-top / recruit-values の3ページで同じ（9/10の実測）。
