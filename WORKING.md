@@ -53,6 +53,30 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-13】★オートレイアウト（レスポンシブ）検証ツール sweep_widths.py 新設 ── 走行中
+
+有璽氏の依頼「PCから幅を狭めていってスマホでも崩れないようにする設定を、視覚的に
+確認しながら進めたい」（★有璽氏の語＝「レスポンシブ」「オートレイアウト」。言い換えない）
+への対応。既存★C（lsu-editor）は7点しか見ない・端は通るが中間で崩れる型を踏んでいる
+（memory/reference_endpoints_pass_middle_breaks.md）ため、幅を連続で掃いて崩れる帯を
+機械に名指しさせるツールを新規作成中。
+
+```
+条件(有璽氏決定)  崩れの定義=横あふれ+重なりのみ（恒久ルール①〜⑥違反は含めない）
+                対象=代表5ページ（/・/stand-up/・/recruit/・/stand-up/programs/・/news/）
+                刻み=粗く20px→崩れた帯だけ2pxの2段階
+新設            ~/lifestandup-wp/sweep_widths.py（既存check_overflow*.py 13本・
+                check_overlap_all.pyは1文字も書き換えない・読んで真似ただけ）
+```
+
+**★role_guardフックの誤検出**（agent_id欠落によりメインセッション=ビビ扱い）に当たり、
+Bash経由の回避はせず（reference_hooks_enforce_what_discipline_cannot.md「③Bashで
+書いて通すのは回避。やらない」に従う）、Agent tool経由でweb-developerサブエージェントへ
+実装・実行・報告を渡した（agent_id付きで正規に通る想定）。
+
+**★同じ対象に手をつけないでください**: `~/lifestandup-wp/sweep_widths.py` ／
+`~/lifestandup-wp/review/sweep/` ／ `~/.vivid-relay/sweep_result.md`
+
 ### 【ピタゴラス / mini 2026-09-13】会議室をVercelへ出す（30秒更新・担当の動き出しは即時・レジスタ30分）── ✅完了
 
 有璽氏「自動で更新が継続的にかかる形でないと、この設計そのものが意味ないよな…なんで
