@@ -53,6 +53,43 @@
 
 ## Mac mini セッション
 
+### 【チョッパー / mini 2026-09-13】★C（lsu-editor）の適用ログ0件・未commit問題を修正 ── ✅完了
+
+有璽氏の指摘「保存したものは反映されるんだっけ？ログとしては残らないみたいなこと
+言ってなかった？」への対応。実測どおり穴が2つあった。**対象は crontab の1行と
+`~/.vivid-relay/editor_apply.py` の1本だけ**。台帳・Notion・kintone・Slack、本番サーバー・
+WP管理画面・DNSへは触っていない。redeploy.sh は実行していない。
+
+```
+① crontab   editor_apply行の `> /dev/null` を `>> $HOME/.vivid-relay/editor_apply.log` へ。
+            printは元から正しかった＝出力先を捨てていただけ。全体diff1行のみ確認済み
+② commit    editor_apply.pyに git_commit_applied() を新設。適用したCSSファイルだけを
+            名指しでadd（git add -A不使用）・0件時は空コミットを作らない・pushはしない
+            （既存のvivid-sync.shへ任せる）。commitメッセージに「ページ/セレクタ/
+            プロパティ/前の値→後の値」を残す。set_prop/css_upsertはold_valueを
+            返すよう拡張（適用ロジック自体は無変更）
+```
+
+**★role_guardフックがこのセッションをメインセッション扱いにして .py への直接Editを
+拒否したため（agent_id欠落による既知の誤検出）、②の実装はピタゴラス（system-developer）へ
+正規に委譲した（Bash経由の回避はしていない）。** 実装は隔離git repo（本物の
+`~/lifestandup-wp` には一切触れていない）でテストし、①適用+commit ②空振りでcommitしない
+の両方をPASSで確認。本物のリポジトリの `git status`（他セッションの未コミット4件＋
+migration/等）はテスト前後で完全一致・新しい変更0件を確認済み。
+
+出口 `~/.vivid-relay/chopper_ledger_result.md`（実測ログ・次に触る人が踏みそうな罠4点）。
+記録 → `memory/reference_output_captured_but_unrecorded.md`（新規）。
+
+**🔴正直な限界**：本番のBlob経路を通した実地テストはしていない（隔離テストのみ）。
+次回cron（最短5分以内）が実際にBlobから未適用項目を拾った回で、`editor_apply.log`に
+出力が残るか・`~/lifestandup-wp`にcommitが増えるかは、まだ誰も目視していない。
+また、editor_apply.pyが触るCSSファイルに★他セッションが同時に未コミットで編集中だと、
+`git add <path>`はそのファイルの現在の全内容をステージする（部分addはできない）ため、
+他セッションの書きかけが★Cのコミットへ混入するリスクが構造的に残る（今回は発生していない
+ことを確認済み・今後の課題として明記）。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【ビビ / mini 2026-09-13】会議室と羅針盤を同じ1本へ＋判断待ち＋押せるボタン（①〜⑤）── ✅完了。★残る人の手は1回
 
 有璽氏の指示「もうこちらの指示なくていいから、1から順にやっていって、5番まで」への対応。
@@ -126,6 +163,42 @@ Bash経由の回避はせず（reference_hooks_enforce_what_discipline_cannot.md
 
 **★同じ対象に手をつけないでください**: `~/lifestandup-wp/sweep_widths.py` ／
 `~/lifestandup-wp/review/sweep/` ／ `~/.vivid-relay/sweep_result.md`
+
+### 【チョッパー / mini 2026-09-13】★C(lsu-editor)へオートレイアウト対応（親を選ぶ＋Gap編集）── ✅完了
+
+有璽氏の判断「オートレイアウトが使える状態になってからじゃないと使うのは危ない。今だと
+前のままで意味がない」を受けた対応。★今回入れたのは①親を選ぶ②Gap編集の2つだけ
+（Padding・Fixed/Hug/Fill・Wrapは次回・スコープを広げていない）。対象は
+`lsu-editor.html`（ローカル版）と`vercel-editor/lsu-editor/index.html`（Vercel版）の2本。
+lsu-editor-rules.js／lsu-save.php／editor_apply.py／editor-save.jsは無改修（property名の
+検証が元々`^[a-zA-Z-]+$`の汎用正規表現でgapも最初から許可されていたため許可リスト追加は
+不要だった）。**★デプロイしていない**（実装・単体実測のみ）。本番サーバー・本番WP管理画面・
+DNS／台帳・Notion・kintone・Slackへは1文字も書いていない。redeploy.sh未実行。
+sweep_widths.py（PID 80324・ポート8750）とは完全に隔離した検証環境（/tmp・別ポート8799）
+で実測し、theme/lifestandup/は`git status --porcelain`で無変更を確認済み。
+
+```
+実装   resolveExistingSelector(el, propTest) を第2引数化（既定=元の位置系のまま・既存
+       呼び出し元は無改修）。「↑ 親を選ぶ」→親がflex/gridのときだけGap欄を出す。
+       保存は既存pending配列・A/B保存形式をそのまま流用（新しい保存経路は作っていない）
+実測   隔離環境でheadless Chrome+CDPにより実機検証：①既存gap値の更新(10px→32px)が実際に
+       ディスクへ反映・他プロパティ無傷 ②新規gap追加(grid親)③block親ではGap欄が出ない
+       ④既存の位置ドラッグ編集が無傷、を4件とも確認
+```
+
+**🔴発見（今回のバグではないが記録）**：`set_prop()`（新規プロパティを既存ブロックへ
+追記する処理）は、ブロック内の最後の宣言に末尾セミコロンが無いと壊れたCSSを生成する
+既存の欠陥（9/10の★C新設時から）。gap固有ではなくposition系でも同確率で起きる。
+次にPadding等を実装するときは`set_prop()`側の対処を検討する価値がある。
+詳細・実測全文 → `~/.vivid-relay/chopper_autolayout_result.md` ／
+`memory/project_lifestandup_website_wordpress.md`「✅2026-09-13」節。Slackへnotify.tell()で報告済み。
+
+**★role_guardフックの誤検出**（agent_id欠落によりメインセッション=ビビ扱い）に当たり、
+テスト用.pyスクリプトの新規作成はサブエージェント（ピタゴラス）へ委譲した（Bash経由の
+回避はしていない）。実装コード本体（.html 2本）はこの検問の対象拡張子外だったため
+直接編集した。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
 
 ### 【ピタゴラス / mini 2026-09-13】会議室をVercelへ出す（30秒更新・担当の動き出しは即時・レジスタ30分）── ✅完了
 
