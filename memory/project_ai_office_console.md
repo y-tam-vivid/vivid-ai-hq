@@ -387,3 +387,45 @@ PC / タブレット   会議室ビュー（机を並べる・立ち絵・実況
 
 [[project_ops_dashboard]] 稼働盤の本体 ／ [[project_web_build_rules_asset]] lsu-editor の Blob 経路 ／
 [[project_ask_hub_push_decisions]] 判断はボタンで返す ／ [[reference_offload_long_work_to_mini]] 長い処理は mini へ
+
+
+## ✅2026-09-13 ①〜⑤を通した（有璽氏「1から順に5番まで」）
+
+**有璽氏の2つの苦情には、別々の真因があった。**
+
+```
+「押しても更新するたび毎回戻る」
+   answer() が claude.use("db") 前提。★Vercelでは DB=null なので、押した結果は
+   ページ内の `answers = {}` にしか残らない＝★どこにも届いていなかった
+   → 画面 → /api/office-answer → Vercel Blob → office_answer_apply.py(cron */5)
+     → ask_hub_queue.json。★Slackと同じ1本の台帳が閉じる（Slack側のボタンも消える）
+
+「リリスが動いているのに0人と出る」
+   `ps -eo pid,etimes` は macOS に etimes が無い。★警告を出して rc=0 で返る。
+   列が減った出力を読むと全行が黙って捨てられる。★同じ穴が3本にあった
+   （office_data / vivi_patrol は今回修正。stall_watch は9/5に修正済みだった
+     ＝★記録は在ったのに、後から書いた2本が同じ穴に落ちた）
+```
+
+**★正本を1本にした（②）** `~/.vivid-relay/agent_running.py`。
+会議室（office_data）も羅針盤（dashboard_projects）もこれを読む。
+それまでは★3通りが別々に計算していた（ps／psのペルソナ宣言の正規表現／静的な名簿）。
+実測：プローブ走行中に 会議室 count=1 と 羅針盤 web-developer が同じ瞬間に一致。
+
+**★判断待ちは「承認」より広い（③）**
+```
+ask_hub の台帳（押せる）      open ★0件   ← 承認だけ並べても1件も出ない
+WORKING.md の判断待ちの記述   ★50件       ← 実体はこっち。誰にも届いていなかった
+```
+`pending_decisions.py` が拾う。★これは「候補」で、件数は正確でないと画面にも書く
+（言い回しで拾い落とす。機械の件数をそのまま「決めるべき数」として出さない）。
+
+**★成功率の出し方（④）** 直近7日 起動89・終わった83・rc=0が83。
+★rc=0は「最後まで走った」であって「意図どおりできた」ではない（2026-09-07 の実例）。
+画面にもそう書いた。★起動と終了の差（6件）も出す＝率だけ見せない。
+
+**★⑤は既に動いていた。**`running_pinged_at` が実測で更新されている。
+前に「未検証」と書いたのは★CDN経由の古い版を読んでいたため。
+
+**🔴 Blobは push 直後に古い版を返す。**private ホストへ Authorization 付きで直接読んでも
+数十秒は前の中身が返る（x-vercel-cache: HIT）。★1回読んで「入っていない」と断定しない。
