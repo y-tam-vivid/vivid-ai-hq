@@ -59,6 +59,7 @@
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/12★2回。足りない→待つで止めるな。器を縮める／依頼文を作る**
 - [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★数えるもの5つ目＝★未コミットの積み残し。担当が終わった瞬間にgit statusを数える／PID指定・pkill -f不可
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
+- [担当が増えたら3か所](reference_new_agent_needs_three_places.md) — ★9/13 チョッパー追加で席が出なかった。名鑑を正本へ寄せた
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
 - [担当が落ちる真因はスリープ](feedback_use_the_team_not_alone.md) — ⛔「1体を長く使うと落ちる」は**誤診**（分割しても3体落ちた）。★真因はMacBookのスリープ。**長い作業はminiで走らせる**→[[reference_offload_long_work_to_mini]]
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — **🔴9/9 承認をもらった005を★1時間半投げていなかった（★記録はした＝記録は着手ではない）。★承認をもらったら記録と同じターンで投げる。投げられないなら★時刻で言う。★毎回の報告に「承認済みで未着手」の行を置く**
