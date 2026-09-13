@@ -114,3 +114,44 @@ https://platform.claude.com/docs/en/about-claude/pricing
 
 [[project_ai_office_console]] 会議室（ここへ使用量のタブを足す先）／
 [[feedback_never_write_an_unmeasured_number]]／[[reference_overwriting_containers_have_no_past]]
+
+## 🔴2026-09-13 初回発火で止まった。原因は2つとも「止まる仕組みを選んでいた」
+
+有璽氏「**自動で更新が継続的にかかる形でないと、この設計そのものが意味ない。
+なんで止まってんのって話やし、止まらんように設計して**」
+
+```
+① MacBook の22:30が飛んだ
+   真因 ★cron はスリープ中の回を捨てる。MacBookは持ち運ぶので夜は必ず閉じている
+        実測：CSVが 9/12 17:29 のまま＝22:30の回が存在しない
+   直し ★launchd へ移した（StartCalendarInterval は寝ていた回を復帰後に実行する）
+        bin/launchd/com.vivid.ai-usage-report.plist ＋ bin/install_launchd.sh（★冪等・既定はドライラン）
+        crontab の重複行は外した（MacBook 16→15 ／ mini 51→50。★他の行は diff で無傷）
+   ★答えは既に「ブラウザ衛生」の備考に書いてあった
+     ── 「cronではなくlaunchdで動かす（cronはスリープ中の回を捨てるため）」
+     Downloads整理が7回中2回（29%）飛んでいた実測つき。★読んでから作らなかった。
+
+② 心拍が2回続けて着弾しなかった。★原因は毎回違う
+   1回目  ok=True で呼んで TypeError（正しくは result=）
+          → ★道具は要約でなく実物のシグネチャを見る（inspect.signature）
+   2回目  機械名なしの名前で打っていたが、レジスタの行は機械名つきだった
+          （2026-09-13 につるが「両機で動く」ことに気づいて2行へ分けてくれていた）
+          → heartbeat.beat は title の★完全一致で探す。1文字違えば黙って届かない
+   直し ★PROC_NAME を HOST から機械名つきで組む。
+        ★heartbeat.beat の戻り値も画面へ出す（「打てた」と「着いた」は別）
+```
+
+- **★「心拍: 成功」と画面に出ても、着いたかは別。**必ずレジスタ側で読み返してから
+  `有効=True` にする。今回は 2026-09-13 00:30/00:31 UTC の着弾を実測してから有効化した。
+- **★scp と git で二重に配らない。**`ai_usage_report.py` を scp で配ってから git でも配り、
+  両機に別々の版ができて衝突した → [[reference_fix_where_git_reaches]]
+- **★`git pull --ff-only` を手で打たない。**両機が同時に動くので枝分かれは日常的に起きる。
+  `git merge --no-edit origin/main` を使う（vivid-sync.sh が cron でやっているのと同じこと）。
+
+### ★止まる仕組みの見分け方（この件で確定した3つ）
+
+```
+1  人の会話からしか起動できない        Artifact・チャット・手元のコマンド
+2  閉じる機械に置いた cron             MacBookは夜必ず飛ぶ。★launchd を使う
+3  心拍の行が無い／名前が1文字違う      止まっても🔴が立たない＝止まったことすら分からない
+```
