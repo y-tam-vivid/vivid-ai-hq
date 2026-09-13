@@ -69,6 +69,17 @@ FETCH_RC=$?
 BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
 AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
 DIRTY=$(git status --porcelain | wc -l | tr -d " ")
+# ★DIRTY は人へ見せる数（未追跡も含む）。取り込むかどうかの判定には使わない。
+#   判定に使うのは★追跡済みファイルの書きかけだけ（下の DIRTY_TRACKED）。
+#
+#   2026-09-14 の実害：mini は2時間おきに data/dashboard_history/<日付>.json.gz を
+#   ★上書きする。上書きのたび mtime が新しくなるので autocommit_stale.py の60分ルールに
+#   永久に掛からず（実測「対象 0 / 書きかけ(新しい) 1」）、その日の分が在る間ずっと
+#   DIRTY=1 のまま＝★取り込みが毎日ほぼ24時間 止まっていた。
+#
+#   `git merge --ff-only` は追跡済みファイルしか動かさない。未追跡ファイルには触らない。
+#   （origin に同名の新規ファイルが来た場合も git がエラーを返して何もしない＝安全側）
+DIRTY_TRACKED=$(git status --porcelain --untracked-files=no | wc -l | tr -d " ")
 
 # ①' 放置された未コミットを自動で確定させる（2026-08-25 有璽氏の指示）
 #     「離席したら／指示が1時間ない時は、自動で最新をMDへ共有してほしい」
@@ -81,12 +92,13 @@ if [ "${VIVID_AUTOCOMMIT:-1}" = "1" ] && [ "$DIRTY" -gt 0 ]; then
     AUTOCOMMIT="yes"
     AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
     DIRTY=$(git status --porcelain | wc -l | tr -d " ")
+    DIRTY_TRACKED=$(git status --porcelain --untracked-files=no | wc -l | tr -d " ")
   fi
 fi
 
 # ② 取り込めるときだけ取り込む（汚れていたら触らない）
 MERGED="no"
-if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -gt 0 ] && [ "$DIRTY" -eq 0 ]; then
+if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -gt 0 ] && [ "$DIRTY_TRACKED" -eq 0 ]; then
   if git merge --ff-only origin/main >/dev/null 2>&1; then
     MERGED="yes"
     BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
