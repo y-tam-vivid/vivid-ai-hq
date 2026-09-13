@@ -751,7 +751,92 @@ PermissionRequest allow ignored: a confined session takes grants only from its c
   [[feedback_stop_asking_just_do_it]] や [[feedback_write_for_the_reader]] が言う
   「届く形」を軽んじると同じ経路で通知の信頼が削れる。テスト目的の実投稿は0件に保つ。
 
-## 🔴2026-09-12 `close_without_answer()` は台帳を閉じない（実測・未修正）
+## 🔴2026-09-13 「押しても毎回戻る」── 会議室のボタンは★絵だった
+
+> 「あと、**この承認の2つがずーっと出っ放し**なんですよ。で、昨日もなんか多分押したけど、
+>  押してなくなっているはずやのに、なんか**更新するたびに毎回毎回戻ってんの**。なんなんこれ。
+>  ようわからん。**ちゃんとこれ反応できてんの？**謎。」
+
+**★押しても効いていない。会議室（Vercel版）のボタンは絵。**
+
+```
+実測
+  会議室のコード   answer() は残っている（office_build.py:209）
+  書き込む先       ★無い。api/ には data.js と office.js の★読み取り2本だけ
+  Artifact版では   claude.use("db") で db へ書いていた＝押した記録が残った
+  ★Vercel版では   claude.use が存在しない＝★何も起きずに画面だけ戻る
+台帳（ask_hub_queue.json・37件）
+  answered 35件   ★9/3〜9/10 に有璽氏が実際に押したものは全部正しく閉じている
+  open 2件        #e84bd3（2026-09-06 09:40から★7日）／#a9a97b
+```
+
+- **★「Artifact で動いたもの」を Vercel へ移すと黙って死ぬ。**
+  `claude.use("db")` は claude.ai の中でしか動かない。**移植時に必ず別の受け口が要る。**
+  ★テンプレートを使い回すときは「この機能はどこで動いていたか」を1つずつ確かめる。
+- **★絵のボタンを置いた時点で規範違反**（[[feedback_read_the_artifact_not_the_copy]]
+  「絵を本物のように見せない」）。Artifact版では「押すと記録が残る」と画面に書いていたが、
+  **Vercel版でもその文言のまま運んだ**＝嘘が公開された。
+- **★押しても消えないのは、台帳側が閉じていないから。**
+  `#a9a97b` は `close_without_answer()` を呼んで `True` が返ったのに `status=open` のまま
+  （下の節に既出）。**画面は台帳を映しているだけなので、台帳が閉じるまで何度でも戻る。**
+- **★「毎回戻る」は「保存されていない」の最も分かりやすい形。**
+  画面上で消えたように見せて実は書けていない設計は、**押した人に嘘をつく。**
+  書けないなら**ボタンを出さない**か、**押せないと画面に書く**。
+
+## ⛔2026-09-13 訂正 ── 「close_without_answer はバグ」は誤りだった
+
+**★status を書き換えないのは意図した設計。**実物のコメントにこうある：
+
+> 「★時間切れなどでボタンだけ消す。**台帳の status は書き換えない**
+>  （**AIが人の回答を騙って answered にしない** ── 2026-09-06 #960e67 の反省と同じ配慮）。」
+
+**★本当の問題は「`closed` という状態が無い」こと。**`answered` か `open` の2択しかないので、
+**AIが閉じたものを置く場所がなく、`open` のまま残る**。画面は `open` を出すので何度でも戻る。
+
+```
+★正しい直し方   status に「closed」を足す（消さずに状態で表す・fukuchi-core）
+                 ★answered を騙らない設計は維持する。混ぜない
+                 画面は open だけ出す。closed は「AIが閉じた」として別に見せる
+```
+
+**★「バグだ」と書く前に、実物のコメントを読む。**今回は設計意図がコードに書いてあった。
+→ [[feedback_read_the_artifact_not_the_copy]]
+
+## ✅2026-09-13 直した ── `closed` を足して2件とも閉じた。画面のボタンは★まだ絵
+
+```
+①台帳に closed を新設   ask_hub.py close_without_answer()
+                        chat.update が ok のときだけ status='closed' を立てる
+                        closed_at / closed_by / closed_reason も残す
+                        ★answered は立てない（人の回答を騙らない設計は維持）
+②open_items() から除外  status not in ('answered','closed')
+                        ★ここを直さないと画面が出し続ける＝症状そのもの
+③2件とも閉じた          #a9a97b「会話で決着（9/12 有璽氏が要件を確定）」
+                        #e84bd3「時間切れ。待っていた処理は既に終了」
+                        ★9/6起動のプロセスは0件＝押しても動く先が無いことを実測してから閉じた
+実測                    answered 35 / closed 2 / ★open 0
+                        office_data.py は status=="open" だけを拾う＝画面からも消えた
+控え                    _backups/ask_hub.py.bak_20260913-104606_closed
+```
+
+**🔴「毎回戻る」の真因は、Vercel版では別だった（実測で確定）。**
+`office_build.py` の承認は **`let answers = {}` ── ただのJSの変数**。
+localStorage でも db でもないので、**再読み込みでも30秒ポーリングの再描画でも必ず消える。**
+「押した → 消えた → 戻った」は、この1行で全部説明がつく。
+
+```
+★直す順序   1) 台帳が閉じる（← ここまで完了）
+            2) 画面から押せるようにする（← 未着手）
+                この画面 → Vercel Function(api/approve) → Blob → mini が台帳へ反映
+                ★lsu-editor で実証済みの経路と同型（2026-09-10・実測8項目）
+```
+
+**★できるまでは、できるように見せない。**画面の注記を
+「🔴このボタンはまだどこにも送っていません。判断を返せるのは Slack のボタンだけです」
+へ差し替えた（`office_template.html`・控え `_backups/office_template.html.bak_20260913-105126_wording`）。
+→ [[reference_make_it_impossible_not_detectable]]
+
+## 🔴2026-09-12（旧記述・↑で訂正済み）`close_without_answer()` は台帳を閉じない
 
 有璽氏がボタンを押さず**会話で回答**したため、依頼元（ビビ）が `close_without_answer("a9a97b", …)`
 で閉じた。**戻り値は `True`。Slackの見た目も「解決しました」に差し替わった。
