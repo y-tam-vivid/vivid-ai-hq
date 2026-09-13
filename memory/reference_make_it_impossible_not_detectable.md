@@ -206,3 +206,30 @@ alert fatigue の根本原因（実務解説）  ①重要度が階層化され�
   記録は必要条件であって十分条件ではない。**書いたら、次は機械へ移す。**
 - ★ただし機械にできない領域は残る（[[reference_norms_outnumber_their_enforcement]]）。
   **できない部分は「できない」と書いて型で守る。**混ぜない。
+
+### ✅2026-09-13 「3日間 緑の枠線」を検問で塞いだ（★検問は在ったのに素通りしていた）
+
+```
+実害   outline:3px solid lime が★3日間 公開面に出ていた（9/10 19:45の残骸）
+       9/10の記録には「テスト痕跡は全て復元しクリーンな状態で最終デプロイ済み」とあった
+★検問は在った  ng_words.txt ＋ editor_apply.py の⑤ng_words検査（残存語があればデプロイを止める）
+★なぜ素通りしたか  ①語にデバッグ色が入っていなかった（3語とも文言だけ）
+                   ②検査対象が★HTMLだけ。limeは style.css に在ったので当たらない
+```
+
+**直した（両方）**
+```
+足した語   solid lime ／ solid magenta ／ solid fuchsia
+          ★色を名指ししたものだけにする。`outline:3px` は入れない ──
+          `.blog-link:focus-visible{outline:3px solid var(--ilife-green)}` が
+          ★キーボード操作の枠線として正当に使っている（実測で判明・誤検知の元）
+検査対象   find static-preview -name '*.html' → \( -name '*.html' -o -name '*.css' \)
+★壊して確かめた  公開面のCSSへ .dummy-debug{outline:3px solid lime} を入れて実行
+                 → 「solid lime 1件」で鳴った → 元に戻した（残0件）
+控え      ng_words.txt.bak_20260913 ／ _backups/editor_apply.py.bak_20260913-ngcss
+commit    a1b5c06（lifestandup-wp）
+```
+
+**★検問が「在る」ことと「効く」ことは別。** 今回は器も語も実装済みだったのに、
+**見る場所（HTMLだけ）と語の中身（文言だけ）が実害に届いていなかった。**
+★検問を作ったら「★実害の現物を入れて鳴るか」を1回試す。試さない限り、在るだけで効かない。
