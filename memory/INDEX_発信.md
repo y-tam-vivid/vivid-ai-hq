@@ -63,7 +63,7 @@
 - [同領域は協力者候補でもある](project_kawachibanashi_portal.md) — ★9/13 競合として避けない。情報・取材・告知の経路になる。2列で材料を出す
 - [かわちばなし・差別化と認知](project_kawachibanashi_portal.md) — ★9/13 宿題＝①認知②地元民への目線③独自性。★他県の事例を先に見てから提案する
 - [さかにゅーが本命の参考事例](project_kawachibanashi_portal.md) — ★9/13 記事16,061本・毎月110-175本・★ぱどのFC運営・紙も出す・市民ライター・PR記事で収益
-- [独自性の核＝歴史のストーリー](project_kawachibanashi_portal.md) — ★9/13 有璽氏「古墳を古墳でなく背景・埋葬者・時代・神社まで。それぞれにストーリーがある」
+- [🔴読者は子育て世代・お母さん方](project_kawachibanashi_portal.md) — ★9/13 初期構想からぶらさない。★歴史は目的でなく地域に親しみを持つ手段。1〜2文で添える
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
 - [LSU 装飾は右端=見学ボタン/上端=パンくずが恒久境界](project_lifestandup_website_wordpress.md) — ★9/9 全ページ・全幅の決まり。タブレット/スマホは3本線が右端の基準。マスキングテープは固定(動かさない)・直すのはポストカード/写真/吹き出し側
