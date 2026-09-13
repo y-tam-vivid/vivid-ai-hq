@@ -53,7 +53,36 @@
 
 ## Mac mini セッション
 
-### 【チョッパー / mini 2026-09-14 07:48】★Cへの指摘6件（有璽氏が実機で確認）── 走行中 PID 4060
+### 【チョッパー / mini 2026-09-14】★Cへの指摘6件（有璽氏が実機で確認）── ✅①〜⑤完了・★⑥は構造的に未解決
+
+**commit `2a24164`・★Vercelへデプロイ済み（08:41 Ready・有璽氏の「いま出して」で実行）。**
+https://lifestandup-preview.vercel.app/lsu-editor/ （lsu-staff / standup2026）
+
+```
+✅③ためた変更  1回のドラッグで left/right/width/top が★4件積まれていた（真因）
+               upsertPending() で「ファイル+セレクタ+保存形式」を上書きへ・表示も1行に束ねた
+               ★実測：5回ドラッグしても件数は常に1
+✅①②隠す      「この幅から下では隠す」パネルを新設。★消さず display:none（戻せる）
+✅⑤枠のずれ    ★真因＝.tape-vertical 等の transform:rotate(3deg)。枠にも同じ回転をかけて一致
+✅④サイズ変更  ★機能は元から在った（handle8個・resize実装済み・width:10.41%が実際に積まれていた）
+               ＝★機能の不足でなく画面の不足。カーソルと案内で「画面が伝える」形へ
+🔴⑥C⇄実機     ★未解決。★Cは 375/390/414/768/820/1366/1920 の★7点しか見られない。
+               実機は連続リサイズ＝★点と点の間（例 820〜1366）で崩れても★Cに出ない
+               ⛔スクロールバー15px仮説（ビビの見立て）は★実測で否定（差0px）
+               → ★次の一手＝sweep_widths.py（幅を連続で掃く）と★Cを繋ぐ
+```
+
+**★副産物**：ローカル検証サーバー(8750)は `_tools/wordpress/wp-content/lsu-editor.html` という
+★別の複製を配信しており、正本を直しても自動同期されない（今回分は手で同期済み）。
+→ [[reference_fix_where_git_reaches]] の4例目。
+
+**★有璽氏に見ていただく4点**（合言葉ありの表示はAIからは測れない＝既知の制約）：
+③テープを何回動かしても1行か ／⑤枠が本体に重なるか ／④角をつまんで大きさが変わるか ／
+①②「この幅から下では隠す」が選べるか。
+
+出口 `~/.vivid-relay/chopper_editor_fix_result.md`（12,141バイト）。
+
+<details><summary>▸ 着手時の指示内容（経緯として残す）</summary>
 
 有璽氏が★Cを実機で触って出した6点。**①②③④を直す／⑤⑥は実測で真因を特定する。**
 
@@ -73,12 +102,10 @@
                        → ★同じ幅で「Cの値」と「実機相当の値」を並べ、差の出どころを名指し
 ```
 
-**★デプロイさせていない**（有璽氏が触っている最中。出すタイミングは窓口が決める）。
-指示文 `~/.vivid-relay/chopper_editor_fix.txt` ／ ログ `chopper_20260914.log` ／
-出口 `~/.vivid-relay/chopper_editor_fix_result.md`。
+指示文 `~/.vivid-relay/chopper_editor_fix.txt` ／ ログ `chopper_20260914.log`。
+</details>
 
-**★同じ対象に手をつけないでください**: `~/lifestandup-wp/lsu-editor.html` ／
-`vercel-editor/lsu-editor/index.html` ／ `static-preview/lsu-editor/index.html`
+**★同じ対象に手をつけないでください**: なし（作業完了・デプロイ済み）
 
 ### 【チョッパー / mini 2026-09-13】★C(lsu-editor)へ内側の余白(Padding)を追加 ── ✅完了
 
