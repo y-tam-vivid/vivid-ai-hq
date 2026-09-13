@@ -55,6 +55,7 @@
 - [LSU「対策済み」はメディアクエリの境界まで見る](project_lifestandup_website_wordpress.md) — ★9/8 en-bubble重なり4ページ再発。真因は9/7のtop調整がタブレット帯(541-980px)専用ブロックのみで540px以下に無かった漏れ。**コードがある≠その幅で効いている**。PHPコメント内に`/*``*/`という文字列を書くと構文エラーになる罠も踏んだ
 - [LSU 縦テープ⇄バッジ間隔 9/8夕修正](project_lifestandup_website_wordpress.md) — tape-verticalの画面端直値配置→コンテナ基準calc式へ（1440/1920で一致を実測）。bc-gap-badgeは17→32px（3回「揃える」対応のみで初めて広げた）
 - [かわちばなし・写真](project_kawachibanashi_portal.md) — ★9/13 出典写真は載せず★見て近い絵を1件ずつ作る。汎用画像は受け皿
+- [かわちばなし・受け皿は固めない](project_kawachibanashi_portal.md) — ★9/13 1区分1枚にしない。南河内の祭り＝だんじり・夜もある。素材を増やす
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
 - [LSU 装飾は右端=見学ボタン/上端=パンくずが恒久境界](project_lifestandup_website_wordpress.md) — ★9/9 全ページ・全幅の決まり。タブレット/スマホは3本線が右端の基準。マスキングテープは固定(動かさない)・直すのはポストカード/写真/吹き出し側
