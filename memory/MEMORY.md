@@ -107,6 +107,6 @@
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
 - [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
 - [Web制作ルールを資産に](project_web_build_rules_asset.md) — ✅9/10 ★Cがブラウザで使える(lsu-editor/・合言葉つき・遅延1〜6分)。config1本で別サイトへ。★find -deleteは-pruneを無効化し巻き込む
-- [オートレイアウトが要る](project_web_build_rules_asset.md) — ★9/13 幅を狭めても崩れない設定。部品は在る(検査27本+7幅)が繋がっていない
+- [オートレイアウトが要る](project_web_build_rules_asset.md) — ★9/13 手順は3手(受取/機械が掃く/★Cで直す)。★1回4時間半＝失格。Chrome1回起動へ直す
 - [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
