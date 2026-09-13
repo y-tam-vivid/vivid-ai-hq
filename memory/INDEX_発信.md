@@ -55,6 +55,16 @@
 - [OpenAI APIの費用とCodex](reference_openai_api_cost_and_codex.md) — ★APIは画像生成にだけ使用(会話は0件)。18枚 high=$2.39/mini=$0.09で27分の1。★Codexは画像生成できずPlusにAPIクレジットも付かない
 - [LSU「対策済み」はメディアクエリの境界まで見る](project_lifestandup_website_wordpress.md) — ★9/8 en-bubble重なり4ページ再発。真因は9/7のtop調整がタブレット帯(541-980px)専用ブロックのみで540px以下に無かった漏れ。**コードがある≠その幅で効いている**。PHPコメント内に`/*``*/`という文字列を書くと構文エラーになる罠も踏んだ
 - [LSU 縦テープ⇄バッジ間隔 9/8夕修正](project_lifestandup_website_wordpress.md) — tape-verticalの画面端直値配置→コンテナ基準calc式へ（1440/1920で一致を実測）。bc-gap-badgeは17→32px（3回「揃える」対応のみで初めて広げた）
+- [かわちばなし・写真](project_kawachibanashi_portal.md) — ★9/13 出典写真は載せず★見て近い絵を1件ずつ作る。汎用画像は受け皿
+- [かわちばなし・絵は都度作る](project_kawachibanashi_portal.md) — ★9/13訂正 先回りで揃えない。実イベントを埋める過程で1枚ずつ作る
+- [かわちばなし・何でも載せない](project_kawachibanashi_portal.md) — ★9/13 6区分に合うものだけ。行政は面白くない・★民間の取り組みも
+- [かわちばなし・スポットは器が無い](project_kawachibanashi_portal.md) — ★9/13 公開版はサンプルのまま。★お店は掲載許可の重みがイベントと違う
+- [かわちばなし・新着だけ取る](project_kawachibanashi_portal.md) — ★9/13 毎回全件を開かない。RSS/新着/lastmodで差分。★集めると選ぶを分ける
+- [競合は検索で出るかで測る](project_kawachibanashi_portal.md) — ⛔9/13訂正 記事数でなく★狙う検索語で上位に出るか。大手が本命の可能性
+- [同領域は協力者候補でもある](project_kawachibanashi_portal.md) — ★9/13 競合として避けない。情報・取材・告知の経路になる。2列で材料を出す
+- [かわちばなし・差別化と認知](project_kawachibanashi_portal.md) — ★9/13 宿題＝①認知②地元民への目線③独自性。★他県の事例を先に見てから提案する
+- [さかにゅーが本命の参考事例](project_kawachibanashi_portal.md) — ★9/13 記事16,061本・毎月110-175本・★ぱどのFC運営・紙も出す・市民ライター・PR記事で収益
+- [🔴読者は子育て世代・お母さん方](project_kawachibanashi_portal.md) — ★9/13 初期構想からぶらさない。★歴史は目的でなく地域に親しみを持つ手段。1〜2文で添える
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
 - [LSU 装飾は右端=見学ボタン/上端=パンくずが恒久境界](project_lifestandup_website_wordpress.md) — ★9/9 全ページ・全幅の決まり。タブレット/スマホは3本線が右端の基準。マスキングテープは固定(動かさない)・直すのはポストカード/写真/吹き出し側

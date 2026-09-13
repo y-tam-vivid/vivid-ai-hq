@@ -46,13 +46,16 @@
 - [体制はビビ窓口＋ハブ参照](working-via-ai-agents-and-notion-hub.md) — 作業はビビ中央窓口経由＋AIナレッジハブ参照で進める
 - [AI資産カタログ](ai-asset-catalog.md) — Drive`AI資産_正本/`を正本と宣言済＝vivid-ai-hqの設計と要調整
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
-- [確認は溜めて報告は溜めない](feedback_batch_the_checks.md) — **🔴9/9「途中経過も共有ください」＝2回目。★「変化なし」は機械の状態が同じという意味で、★共有することが無いではない。★終わった担当の出口ファイルはその回のうちに読んで要点を出す**
+- [確認は溜めて報告は溜めない](feedback_batch_the_checks.md) — **🔴9/13★3回目。有璽氏から「随時共有して」。★出す単位は作業1つ終わるたび。待ち時間こそ黙らない**
 - [「できない」の前に試す](feedback_verify_before_declining.md) — **🔴9/12 ★画面の手順を記憶で書いて外した（Googleフォームは「送信」→★「公開」へ変わっていた）＝★先に画面を1枚もらう・文言でなく★アイコンの位置で言う**／9/10 5日前の記録を数えず手作業29問を渡した／自分の言語にSDKが無い＝できないではない
 - [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — ★9/13 押せる中身0件のまま「押して」と案内した。先に1件出してから渡す
 - [読む人の言葉で書く](feedback_write_for_the_reader.md) — 🔴9/10★可視化は「問題だけが目に入る」形に。全部に枠を描くと埋もれる／★渡すとき見方を3行添える／実装名でなく日本語／「反映した」と書くな
+- [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — **🔴9/10 commitして「完了」と報告し★出していなかった(公開URLは0件)。★報告文に「どこで見えるか」を必ず1行。★作った/実装したは完了でない＝動いている状態が完了**
+- [読む人の言葉で書く](feedback_write_for_the_reader.md) — ★9/13 選択肢は★人の1日がどう変わるかで並べ短所も書く／可視化は問題だけが目に入る形に
 - [触る画面は説明でなく画面自体を直す](feedback_ui_must_be_self_explanatory.md) — **🔴9/10同日2回目「使い方がよくわからん」＝説明を足しても直らない。ウィザード型(1度に1指示)へ**
 - [通知は押せる形＋読める形に](feedback_write_for_the_reader.md) — **🔴9/8「長ったらしいのは見づらい」＝親は「◯時の通知です」＋要約だけ・★詳細はスレッドへ追記（chat.postMessageのtsをthread_tsに）。出す側の部品で揃える**／ ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
 - [土台にも日付がある](reference_stale_premise_daily.md) — **★9/10 器は9/9・成果物は9/10で★1日で前提が変わっていた。★都度の指摘に頼らず機械で数える＝bin/kb_schema_check.py（表示側のキー⇄器の列⇄taxonomy）。★名前で見つかるズレだけ。意味の変化は人が見る**
+- [見本の値が実データの顔で残る](reference_mockup_values_survive_as_real.md) — ★9/13 消したら今度は空に。毎日数える検問(office_fake_check)
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★真因は速さのために確かさを落とすこと。数える部品を1か所へ集約し読むだけにする。件数は数え方を添える
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 🔴9/10「★60px左手に配置」を「60px以上内側ならOK」と読み替え7/6箇所を無変更。★位置か下限かは動詞で決まる／件数0を合格にしない
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本・報告に混ぜない。kindは8種／投げる前にpreview／投げたら必ずanswer_of()を見る（押されても聞いた側へ返らない）。🔴9/7 4回目＝1通ずつでなく★Slackへ出る経路を全部数えて揃える。押せないものが混ざると判断が沈む（DM7通中押せるのは2通）。出すのはボタン・受けるのは会話でもよいが★出した側が台帳を閉じる**
@@ -61,8 +64,8 @@
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
 - [担当が増えたら3か所](reference_new_agent_needs_three_places.md) — ★9/13 チョッパー追加で席が出なかった。名鑑を正本へ寄せた
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
-- [担当が落ちる真因はスリープ](feedback_use_the_team_not_alone.md) — ⛔「1体を長く使うと落ちる」は**誤診**（分割しても3体落ちた）。★真因はMacBookのスリープ。**長い作業はminiで走らせる**→[[reference_offload_long_work_to_mini]]
-- [一人で抱えるな](feedback_use_the_team_not_alone.md) — **🔴9/9 承認をもらった005を★1時間半投げていなかった（★記録はした＝記録は着手ではない）。★承認をもらったら記録と同じターンで投げる。投げられないなら★時刻で言う。★毎回の報告に「承認済みで未着手」の行を置く**
+- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/13 run_agent.sh経由だと起動直後に落ちた(台帳に完了なし･成果物0)。直接叩くと走る＝差はこの1点。原因未特定･bash -xで追う／ssh断はPIDで生死を見る
+- [一人で抱えるな](feedback_use_the_team_not_alone.md) — ★承認は記録と同じターンで投げる。★報告に未着手と「人の手は要るか」の2行
 - [手順書が読まれない理由](reference_why_manuals_are_not_read.md) — ★一度間違えると二度と読まれない。○×を求めると信頼が下がる
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — **★9/9外部調査＝この分野に★定説は無い（複数の情報源が「初期段階」と明言）。★15体規模の公開事例は0件。★一致は3つだけ＝①独立したcontext ②★作成者と検証者の分離(cross-checkと一致) ③★ハーネス側で強制。★輸入では解けない＝自前で決めて実測で直す**／★3回目。提案/作成の前にmemoryとNotionを数える。「無いから作る」禁止
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
@@ -71,7 +74,7 @@
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — **★9/9 初めて穴を名指しで数えた＝Ｃ(在るのに効かない)3件。★C-1 hook_interactive_guardは★settings.json未登録＋★毎朝の点検CASESにも無い＝二重の見えなさ(4日)。★新しい検問は同じターンでCASESにも足す。✅C-1は有璽氏の承認で修正済(両機7本とも正常)。★足した瞬間に環境依存の誤検知が出た＝★環境変数に依存するフックは点検も同じenvで叩く**／8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/8 頻度も1日2回→毎時(07-22時)へ。crontab直書き・daily_jobs.conf側は無効化のみ**
-- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/10で2回目。慢性の🟡は内訳を数える（2件中1件は誤検知）／実体欄に説明を書くと機械が誤読する
+- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/13 ログは常に無言に見える(まとめ書き)。成果物の範囲を広げた
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [sheets_clientはクラス](reference_sheets_no_credentials_on_mini.md) — ★9/11 sc.Sheets()を作る。meta()の戻りは name/rows(titleでない)。★道具は要約でなく実物のソースを見る
@@ -81,10 +84,8 @@
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消(Stopフック検査4)。★9/9に本番3例目「этот」・4例目「진」(進)を機械が先に検出＝★同日2回働いた。★意味の同じ外国語に化けるので目視では素通り**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
-- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — ★9/13 心拍の行はあるが未着弾2本。レジスタは既知→備考→有効
-- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/4 有璽氏へ渡す文書は.mdで渡さない。bin/md2pdf.pyでPDF化**
-- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — ★9/12 同じ誤診3回目。レジスタは既知→備考→有効の順で読む
-- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — **★9/12 文面は書く前に①誰に②相手の既知③何をしてほしいか**／.mdで渡さずPDF化
+- [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — ★9/13 心拍の行はあるが未着弾2本／9/12 同じ誤診3回目。レジスタは既知→備考→有効の順で読む
+- [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/12 文面は書く前に①誰に②相手の既知③何をしてほしいか**／★.mdでなくbin/md2pdf.pyでPDF化
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★担保2つとも効かず。自動確定の7割は生成物のみ／差し戻しは4回とも空振り／★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **⛔9/9真因＝本数でなく1本の長さ(180B超が40/78本)。★降ろさず「本文へ戻す」。消す前に本文に在るか数える。bin/check_index_line_length.py**
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **★9/9 有璽氏が★本番WordPressの許可を出した（恒久制約の解除）。✅9/9 21:40 ★本番で新テーマが動いた（方式B・インストール済み／★有効化していない＝サイトは不変）。★不可逆は「有効化」の1手だけ＝そこは人が押す。★順序（デモ完成→zip→本番）は許可が出ても崩さない**
@@ -92,23 +93,26 @@
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/11 sshが断続的にタイムアウト(3回)。★1回で落ちたと判定しない＝再試行3回＋別経路。★担当はPIDで生死を見る
+- [rc=0でも依頼は未達](reference_offload_long_work_to_mini.md) — ★9/13 Stop hookの差し戻しに答えて終了。★出口ファイルをlsするまで完了と言わない
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [公開が詰まる真因は grep -r](project_lifestandup_website_wordpress.md) — **🔴9/9 redeploy.shが2回詰まった(21分/6分)。⛔★「真因＝grep -r」は不十分だった＝★直しても3回目も止まった。★手で打つと数秒・スクリプト内だと止まる＝★未特定。✅9/10 ★手動6手順が3回目も成功(13分)。★指示文へ毎回6手順を書くのが速い。★redeploy.shは直さない。★安全装置を外すのでなく速くする。★npx をcronから呼ぶ時は`< /dev/null`**
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — ★403=Mitigations(DDoS防御)・時間帯で振れる。★1回0枚で断定せず再試行／スクショはstatic-previewを配信して撮る／枠100本･日次リセット。数字と解除手順は本文へ戻した(9/12)
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [AIの使用量を数える](project_ai_usage_tracking.md) — ★9/12 毎日22:30両機でCSVへ。★cache読取が額の7割($301/407)。★プランの残%とChatGPT Plusは取れない
 - [AI社員オフィス＝会議室](project_ai_office_console.md) — ★9/13 会議室と羅針盤は agent_running.py の1本を読む／ボタンは本物。残＝1回押す
+- [AI社員オフィス＝会議室](project_ai_office_console.md) — **🔴9/13 走行中が★常に0件だった(ps -eo etimesはmacOSに無くrc=0で壊れる)。★羅針盤と二重管理・★即時pushは未実装**／Slackは埋もれる＝判断待ちタブが要る
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [本番WPは読むだけで測れる](project_lifestandup_website_wordpress.md) — **★9/9 公開APIとHTMLのcurlだけで移行の未確定8→4件。★top(14)/blog(16)確定・/trial・★Emanon BusinessはProの子テーマ（Proも要る）。★人へ聞く前に公開URLから数える**
 - [IGをサイトへ出す](project_lifestandup_website_wordpress.md) — **✅9/9 IG側は完了。★ショートコード=`[instagram-feed feed=1]`（保存済）。★動くのは本番WPだけ・デモは静的で展開されない。残＝テーマへdo_shortcode+フォールバックを仕込む／余計な4プラグイン停止。★同日4件が同じ根＝実物を見ずに人の画面を指示した**
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
 - [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — 文面と画像まで1セット／★施設IGに業界の話は不可
-- [外の知を先に見る](feedback_look_outside_before_reinventing.md) — ★9/8有璽氏「お前だけで考えんな」。同じ型の失敗が繰り返されたら自前パッチの前にクローバーへ業界調査を投げる
+- [外の知を先に見る](feedback_look_outside_before_reinventing.md) — **🔴9/13★2回目。★調査は「症状」でなく「そもそもどう構築するか」から投げる。★自分の設計を疑う問いを依頼文に1つ必ず入れる**／自前パッチの前にクローバーへ
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
 - [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
-- [Web制作ルールを資産に](project_web_build_rules_asset.md) — ✅9/10 ★Cがブラウザで使える(lsu-editor/・合言葉つき・遅延1〜6分)。config1本で別サイトへ。★find -deleteは-pruneを無効化し巻き込む
+- [Web制作ルールを資産に](project_web_build_rules_asset.md) — ★9/13 レスポンシブ専任チョッパー新設(14体目)。★Cの台帳はprintを捨てているだけ
+- [オートレイアウトが要る](project_web_build_rules_asset.md) — ★9/13 ★marginの94.7%がPC値のままスマホへ。直すのは値でなく幅ごとの比率(⑤に前例)
 - [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
 - [セクション間マージンをPC比率で縮小](project_lifestandup_website_wordpress.md) — ★9/13 --sp-scale-tablet/mobile+floor32pxで20ファイル一括縮小。★続けて★Cへ内側の余白(Padding)を追加。対象は②親(gapEl)・--sp-t/--sp-bと同時更新で比率温存。footerは経路無く未到達
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
