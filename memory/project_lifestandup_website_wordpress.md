@@ -4293,3 +4293,40 @@ body直下の`.sec-*`セクションのpadding-top/bottomがPC用の1値のみ�
 固定は検証サーバのポート選択における既知の制約として今後も踏む可能性がある）
 
 出口 `~/.vivid-relay/chopper_margin_result.md`。未コミットのまま（redeploy.sh未実行）。
+
+## ✅2026-09-13 ★C(lsu-editor)へ内側の余白(Padding)を追加 ── チョッパー／mini
+
+有璽氏に渡した取説の「まだできないこと」①への対応。対象は `lsu-editor.html`（正本）／
+`vercel-editor/lsu-editor/index.html`／`static-preview/lsu-editor/index.html` の3ファイルのみ
+（同期・diff一致確認済み）。theme/lifestandup/配下（★同日先に入れたセクション間マージン
+比率化・上のブロック参照）は1文字も触っていない（git diff 0件で確認済み）。
+
+```
+①最重要   マージン比率化(--sp-t/--sp-b)との衝突回避が最優先。そのセレクタのCSS本文に
+          --sp-t/--sp-bがあれば警告を出し、案A(PC基準値の--sp-t/--sp-bとpadding-top/
+          bottomを同時更新・比率と床はそのまま効かせ続ける)を採用。モードB(この幅だけ)
+          は比率計算式(max(var(--sp-floor),calc(...)))をpx固定値で壊す実害があるため
+          alertで保存拒否
+②設計変更  当初は①(クリックした要素自身)を対象にしたが、①のクリック候補(scan())は
+          position:absolute/fixedの装飾限定で、--sp-t/--sp-bを持つ実物のセクション枠
+          (position:static)は①では一度も選べないと実測で判明。②(Gapと同じ「↑親を選ぶ」
+          で選んだ親gapEl)へ対象を変更した
+③副産物    selectParent()が「常に①の直接の親固定・複数回押しても進まない」既存の制約を
+          発見・修正。gapElが既にセットされていれば、そのさらに親を対象にする形にし、
+          押すたびに1階層ずつ祖先へ遡れるようにした。ボタン文言も「↑ さらに親「(次の
+          要素名)」へ」のように動的に変わる（feedback_ui_must_be_self_explanatory通り、
+          説明でなく画面自体で伝える）
+実測      headless Chrome+CDPで3回検証（ピタゴラスへ委譲）。比率非対象=保存1件のみ／
+          比率対象・モードA=padding-top/bottomと--sp-t/--sp-bの2件同時／モードB=alert
+          で拒否・件数不変／既存の位置編集・Gap編集は無傷／5階層(bridge-label→…→
+          sec-mission)の遡りで実物到達・Padding編集・反映・比率計算式の温存を確認／
+          html(最上位)まで遡るとボタン無効化で安全停止／`.footer`と`.sec-mission`の
+          両方で実CSSへ1件ずつ反映→比率計算式が消えずに残ることを確認→完全復元
+```
+
+**★できなかったこと（正直に）**：`.footer`のようにscan()候補が子孫に0件のセクションには、
+①からの経路が原理的に存在せず現状のUIでは到達できない（実測：footer配下の絶対配置候補
+0件）。次に触る人向けの対処案（クラス名直接入力欄／セクション一覧プルダウン／scan()の
+対象拡張）は出口ファイルに記載。Hug/Fill・Wrapは未着手（有璽氏に渡した取説の②③）。
+
+出口 `~/.vivid-relay/chopper_padding_result.md`。未コミットのまま（redeploy.sh未実行）。
