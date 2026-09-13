@@ -348,3 +348,35 @@ SYNC_STATUS.md   🔴 未取込 4件（2026-09-13 09:30 時点）  ★mtime 2分
 
 **巡回のコマンドへの反映**：色と mtime を見たあと、**merge を打つ前に必ず fetch して
 ahead/behind を自分で数える**。0 0 なら前面で sync を1回叩くだけで🟢/🟡へ戻る。
+
+### 🔴2026-09-14 00:00 ★③枝分かれが再発。★自動の merge は衝突で abort していた
+
+巡回で mini の `vivid-ai-hq` を数えたら **behind 68 / ahead 18** だった。
+**★mini 側の担当は68件古い規範・記憶・WORKING.md を読んで動いていた。**
+
+```
+★見張りは正しく鳴っていた   mini の ~/.claude/SYNC_STATUS.md
+                            「🔴 いま読んでいる WORKING.md / MEMORY.md は古い（未取込68件）」
+★それでも止まらなかった     ログには "Already up to date." が並ぶ（fetch は成功している）
+真因                        ★分岐。ff-only は不可。vivid-sync.sh は次に merge を試すが、
+                            ★衝突4件で abort していた＝「取り込めないまま毎回成功に見える」
+衝突していたもの            memory/MEMORY.md ／ feedback_stop_asking_just_do_it.md ／
+                            project_ai_office_console.md ／ reference_two_sessions_built_the_same_thing.md
+                            ★全部が「両方とも本物の追記」＝どちらも消してはいけない型
+```
+
+**手当て（2026-09-14 00:20・実測で解消）**
+```
+やり方  規範どおり★両方を残してマージ（衝突マーカーだけ外し、HEAD側とorigin側を順に並べる）
+        ★残ったマーカー0件を機械で確認してから commit
+結果    behind 0 / ahead 0（push済み）。SYNC_STATUS も🔴→🟡（未コミット2件のみ）へ
+★副作用 両方残したぶん索引が二重になり ★MEMORY.md が 25,764バイト＝上限25KBを超えた
+        （超えると届かない）。2組を1行へ統合し 25,149バイトへ戻した
+```
+
+**★学び**
+- **★「Already up to date.」は取り込めた証拠にならない。** fetch の成功を pull の成功と読まない
+- **★自動の merge が abort したことがログに残っていなかった。** 静かに失敗していた
+  → ★次にやるなら `vivid-sync.sh` が abort したときに Slack へ1行出す（未実装）
+- **★衝突を「両方残す」で解くと、索引は必ず膨らむ。** 解いた直後に MEMORY.md の
+  ★行数とバイト数を数えること（上限 200行 / 25KB）
