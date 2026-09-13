@@ -110,4 +110,5 @@
 - [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
 - [Web制作ルールを資産に](project_web_build_rules_asset.md) — ✅9/10 ★Cがブラウザで使える(lsu-editor/・合言葉つき・遅延1〜6分)。config1本で別サイトへ。★find -deleteは-pruneを無効化し巻き込む
 - [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
+- [セクション間マージンをPC比率で縮小](project_lifestandup_website_wordpress.md) — ★9/13 有璽氏「広すぎる」の仮説的中(80%が980/540px未対応)。--sp-scale-tablet/mobile+floor32pxで20ファイル一括縮小
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
