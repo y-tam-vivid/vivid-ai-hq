@@ -96,7 +96,7 @@
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — ★403=Mitigations(DDoS防御)・時間帯で振れる。★1回0枚で断定せず再試行／スクショはstatic-previewを配信して撮る／枠100本･日次リセット。数字と解除手順は本文へ戻した(9/12)
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [AIの使用量を数える](project_ai_usage_tracking.md) — ★9/12 毎日22:30両機でCSVへ。★cache読取が額の7割($301/407)。★プランの残%とChatGPT Plusは取れない
-- [AI社員オフィス＝会議室](project_ai_office_console.md) — ★9/12 優先①本人②社内③外部(福祉施設の事務)。★指示はSlackと画面の両方＝入口2･台帳1。★スマホ必須で画面は2層
+- [AI社員オフィス＝会議室](project_ai_office_console.md) — ★9/13 ★タイムリーにできる＝30秒(稼働盤で実証済)。Artifactは原理的に自動更新不可→Vercelへ移す工事を走行中。指示はSlackと画面の両方
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [本番WPは読むだけで測れる](project_lifestandup_website_wordpress.md) — **★9/9 公開APIとHTMLのcurlだけで移行の未確定8→4件。★top(14)/blog(16)確定・/trial・★Emanon BusinessはProの子テーマ（Proも要る）。★人へ聞く前に公開URLから数える**
