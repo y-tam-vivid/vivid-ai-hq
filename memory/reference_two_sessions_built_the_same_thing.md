@@ -659,3 +659,23 @@ Stopフックが鳴るまで放置すると、その間に他セッションが�
 **★規範に書いてあることは、コードを grep して数えるまで「守られている」と言えない。**
 今回は「pkill -f 不可」が memory にあったのに、**実物に3箇所あった**。
 ★恒久ルールを足したら、その場で `grep -rn` して既存の違反を数えること。
+
+**★同じ日に残り3箇所も潰した（2026-09-13 21:20）** ── 前節の学び「恒久ルールを足したら
+その場で grep して既存の違反を数える」を実行したところ、**まだ3箇所あった**。
+
+```
+kb_check.sh:71 ／ kb_check11.sh:67 ／ kb_live.sh:281
+  pkill -f "http.server 8877"    ← かわちばなしの検証スクリプト
+直した形（シェル・3本とも同じ4行）
+  for _p in $(/usr/sbin/lsof -ti tcp:8877 2>/dev/null); do
+    ps -p "$_p" -o command= 2>/dev/null | grep -q "http.server" && kill "$_p" 2>/dev/null
+  done
+★壊して確かめた  本物のhttp.server → 止まる（lsof・curl の2経路で停止確認）
+                  nc で8877を占有  → 「http.serverでないので止めない」★生存
+実測              ★実行される pkill -f ＝ 0件（~/.vivid-relay/*.py *.sh ／ vivid-ai-hq/bin）
+控え              _backups/kb_{check,check11,live}.sh.bak_20260913-pkill
+```
+
+**★1回の grep で終わらせない。**最初に editor_apply.py の3箇所を直した時点で
+「直した」と言いかけたが、範囲を広げて数え直したら**同じ型がもう3箇所**あった。
+★恒久ルールの違反は、1つ見つけたら**必ず全域を数える**（見つけた場所の周辺だけ見ない）。
