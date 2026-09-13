@@ -236,18 +236,26 @@ def main():
     return 0
 
 
+# ★心拍名はレジスタの行名と完全一致させる（1文字でもズレると黙って着弾しない）。
+#   この処理は両機で動くので、レジスタも機械ごとに1行ある（2026-09-13 つるが分けた）。
+MACHINE = "Mac mini" if "mini" in HOST.lower() else "MacBook"
+PROC_NAME = f"AI使用量の集計（ai_usage_report・{MACHINE}）"
+
+
 def _beat(result, message):
     """心拍を打つ。★成功でも失敗でも打つ（fukuchi-core「心拍を打つ。成功でも失敗でも」）。
 
-    ★引数は (name, result='成功', message='', when=None)。2026-09-12 に ok=True で呼んで
-      TypeError になり、初回発火で心拍が1本も届かなかった。★道具は要約でなく実物の
-      シグネチャを見る → [[reference_sheets_no_credentials_on_mini]] と同じ型。
+    ★2026-09-12〜13 に2回続けて着弾しなかった。原因は別々：
+      ① ok=True で呼んで TypeError（正しくは result=）。★道具は実物のシグネチャを見る
+      ② 機械名なしの名前で打っていたが、レジスタの行は機械名つきだった
+         ＝ heartbeat.beat は title の完全一致で探すので、1文字違えば黙って届かない
+    ★「心拍を打てた」と画面に出ても、レジスタに着いたかは別。★レジスタ側で必ず読み返す。
     """
     try:
         sys.path.insert(0, str(HOME / ".vivid-relay"))
         import heartbeat  # noqa
-        heartbeat.beat("AI使用量の集計（ai_usage_report）", result=result, message=message)
-        print(f"（心拍: {result} / {message}）")
+        ok = heartbeat.beat(PROC_NAME, result=result, message=message)
+        print(f"（心拍: {PROC_NAME} → {result} / {message} / 着弾={ok}）")
     except Exception as e:
         print(f"（★心拍を打てなかった: {e}）", file=sys.stderr)
 

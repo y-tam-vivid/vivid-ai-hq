@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.vivid.ai-usage-report</string>
+
+    <!-- AI使用量の日次集計（読むだけ・CSVへ積む）
+
+         ★cron ではなく launchd を使う理由:
+         cron は予定時刻に機械が寝ていると、その回を捨てる。
+         2026-09-12 22:30、MacBook は閉じていて回が飛んだ（実測: CSVが17:29のまま）。
+         launchd の StartCalendarInterval は、寝ていた場合は復帰後に実行する。
+         同じ理由で browser_hygiene / Downloads整理も launchd へ移してある。
+
+         ★USER を決め打ちしない: 置く機械ごとにパスが違う（yujimac / yuji_macmini）。
+         設置は bin/install_launchd.sh が $HOME を埋めてから配置する。
+
+         設置: bash bin/install_launchd.sh
+         確認: launchctl list | grep ai-usage-report
+         外す: launchctl bootout gui/$UID/com.vivid.ai-usage-report -->
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>__HOME__/vivid-ai-hq/bin/ai_usage_report.py</string>
+        <string>--run</string>
+        <string>--beat</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>22</integer>
+        <key>Minute</key>
+        <integer>30</integer>
+    </dict>
+
+    <key>WorkingDirectory</key>
+    <string>__HOME__/vivid-ai-hq</string>
+
+    <key>StandardOutPath</key>
+    <string>__HOME__/.vivid-relay/usage/report.log</string>
+    <key>StandardErrorPath</key>
+    <string>__HOME__/.vivid-relay/usage/report.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
