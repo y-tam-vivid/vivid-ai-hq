@@ -60,4 +60,6 @@
 - [fresh eyes 2パス方式](reference_fresh_eyes_two_pass.md) — 検問インフラ限定。★8/29初実演＝A疑義10件→Bで消えたのは2件(実測で消した)・Bで新規1件。Aが0件でもBを省かない／依頼文で型を指定しないと使われない
 - [申告が無くても差分は読める](reference_read_the_change_from_the_revision.md) — 旧版はrevisionsのexportLinksで.xlsx化（get_mediaは404）／★保険であって申告を省く根拠でない=最後に必ず報告を書く
 - [文字混入は「これから出る字」しか止まらない](reference_unicode_escape_kanji_swap.md) — ★9/9 ⚙️レジスタ備考に簡体字「晓」（晒の誤り）が在庫として残っていた。Stopフック検査4はtranscriptだけを見る＝導入(9/5)以前にNotion/シートへ書かれた混入は素通り。DBを丸ごと引いて数え直すしかない
+- [固定値は時間で静かに腐る](reference_constants_that_rot.md) — ★エラーも警告も出ず心拍も緑のまま通る。実測2件＝①9/12 かわちばなし「今月」が`getMonth()===8`で9月固定（10月に既定の一覧が空になる）②9/6 corp_lookup.py:30 が国税庁データを07-31版で固定（更新は動いているのに読む側が古い・同じ値が2箇所・**未修正**）。★「いま」を含む語は時計から導く／ファイルは最新を選ぶ。★見つかるのは実物を描いたときだけで、コードを眺めても出ない
+- [日次ジョブは定刻に動かない](project_automation_register.md) — ★9/12実測 07:50→08:00 / 08:15→08:30 / 09:35→09:45＝15分巡回で拾うので10〜15分遅れる。レジスタの「予定」は「この時刻以降、最初の巡回で動く」と書き、期待間隔にこの15分を織り込む（定刻基準だと🟡が毎日立つ）。crontab直書きのものはこの遅れが無い
 - [成果物は受け取り手の要件で検査する](feedback_deliverable_must_satisfy_receiver_not_just_self_check.md) — ★9/9 テーマzipが「theme/lifestandup/style.css」の2階層で本番WPに弾かれた。自分側の数え上げ(ファイル本数)は全部合格していた＝受信側(WordPress)の構造要件が検査に無かった
