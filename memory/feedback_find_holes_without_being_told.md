@@ -124,7 +124,29 @@ memory_sweep（ロビン）など他の `claude -p` 定期実行も同じ構造�
 **★今日型は異常ではない。** 人がターミナルで叩けば通る（2026-09-07 に実測済み・
 以降4行が登録され現在22行稼働）。**8/20型と同じ「crontabが壊れた」と報告しないこと。**
 
+### ★2026-09-13 自己監査 ── 「心拍の行はあるのに1度も着弾していない」2型
+
+```
+型A  呼び出しが間違っていて except で握りつぶす
+     bin/ai_usage_report.py  heartbeat.beat(..., ok=True) ← beat() に ok 引数は無い
+     9/12の新設から毎晩 TypeError → 「心拍を打てなかった」をログにだけ出して rc=0
+     ★行は有効=OFFで⚪＝どこにも赤が立たない。ログを読みに行かないと見えない
+型B  cron では動いているのに心拍コードが0行
+     ~/.vivid-relay/vivi_patrol.py（*/5）。行は 9/8 に作ったが有効=OFF
+     名前チェックが毎朝「実体消失」を鳴らす＝★慢性の🟡1件がこれだった
+```
+
+**★この2本を含むコミットに検査役の名前が無かった**（self_audit の代理指標どおり）。
+**How to apply:** 新設コミットの検査では「心拍が実際にレジスタへ着弾したか」まで見る。
+`--beat` の文字列が crontab にあることは着弾の証拠にならない。
+**両機で動く仕事は行を機械ごとに分ける**（同名だと片方の生存が他方の停止を隠す）。
+
+**★つるの「直す」はコードに及ぶと hook_role_guard に止められる**（mini の claude -p は
+agent_id が無くビビ扱い・既知の誤判定）。回避しない。**コードはピタゴラスへ渡し、
+レジスタ（Notion）の行はつるが直す**、と割って同じ回に終える。
+
 関連 [[reference_hooks_enforce_what_discipline_cannot]]
+[[reference_heartbeat_proves_life_not_results]]
 [[reference_monitor_must_exclude_parked]] [[project_automation_register]]
 [[feedback_use_the_team_not_alone]] [[feedback_write_back_before_you_go]]
 [[reference_dangerous_entrypoints]]
