@@ -53,6 +53,62 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-13】会議室をVercelへ出す（30秒更新・担当の動き出しは即時・レジスタ30分）── ✅完了
+
+有璽氏「自動で更新が継続的にかかる形でないと、この設計そのものが意味ないよな…なんで
+止まってんのって話やし、止まらんように設計して」への対応。Artifactの会議室は原理的に
+自動更新できない（publishは会話からしか叩けない）ため、稼働盤と同じVercel+Blob経路へ移した。
+**台帳（00/01/02/40/08）・kintoneへは1文字も書いていない。Notionはレジスタを読むだけ（書込み0件）。**
+
+```
+新設   ~/.vivid-relay/{office_data.py, office_build.py, office_realtime_push.py,
+       office_running_ping.py}（すべて読むだけ・git管理外）
+       web/kadoban/api/office.js（新規・git管理下）
+改修   web/kadoban/vercel.json（/office → /office.html のrewrite追加）
+       bin/kadoban_deploy.sh（office.html・api/office.jsの運搬を追加。既存の
+       index.html/api/data.js運搬は無傷・diffで確認済み）
+       ~/.vivid-relay/run_agent.sh（起動直後・完了直後にoffice_running_ping.pyを
+       バックグラウンド呼び出し。★失敗しても起動そのものは止めない設計）
+       crontab（既存の稼働盤30分おき行へoffice系3本を追加。50行→50行、
+       差分1行のみで確認済み。★office_data.py/realtime_push.py/build.pyは
+       すべて || true で握り、既存の稼働盤パイプラインを壊さない）
+```
+
+**★実測（3種の間隔）**
+```
+画面の更新30秒     office.html側でsetInterval(30000)実装済み。fetch('/api/office')で
+                  30秒おきにBlobの中身を取りに行く（稼働盤rtPollと同じ作法）
+担当の動き出し即時  ★実測で「即時」ではなく「起動から8〜25秒後」と判明（Vercel Blobの
+                  読み取りにCDNキャッシュがあり、書込み直後の反映に遅延がある）。
+                  --cache-control-max-age 0 を指定して改善（既定30日→0）。
+                  それでも反映まで最短8秒・実測で最大25秒かかるケースを確認。
+                  画面は30秒ポーリングと合わせ、体感で最大1分弱後に反映される計算
+レジスタ30分       既存の稼働盤cron(3,33 * * * *=30分おき)へ相乗り。次回の自然発火は
+                  cronの次回巡回まで（★このセッションでは自然発火は未確認・手動実行
+                  で3回通し確認済み）
+```
+
+**🔴正直な限界（次に触る人へ）**
+```
+① office_running_ping.pyはBlobのread-modify-write方式。複数の担当がほぼ同時に
+   起動/終了すると、CDNキャッシュされた古い値を読んで上書きするロストアップデートの
+   リスクが残る（実測で1回、doneの反映が先行するstartの直後に埋もれる現象を確認・
+   cache-control-max-age 0指定後は解消したが、極端に短い間隔での競合は理論上残る）
+② ⚙️自動処理レジスタへの新規行（office_data.py・office_realtime_push.pyの心拍）は
+   作っていない（依頼の「Notionは読むだけ」制約のため）。現状は「レジスタに無いので
+   心拍を送れない」という警告がログに出るだけで実害は無いが、稼働の可視化はできていない
+③ MacBookへは未配布（~/.vivid-relay/はgit管理外）。mini専用のまま
+④ 承認ボタン（Slack側との書き戻し連携）は今回のスコープ外。押した記録はブラウザの
+   メモリ内にのみ残り、リロードで消える（画面上にもその旨を明記済み）
+⑤ 合言葉ありでの実際の表示確認はAIからは検証不可能（Vercel Secret型の既知の制約・
+   稼働盤と同じ）。認証なし401は3経路（/office・/office.html・/api/office）で実測確認済み
+```
+
+出口 `~/.vivid-relay/office_vercel_result.md`。Slackへnotify.tell()で完了報告予定。
+検査はステラへ回す（自己採点にしない）。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【リリス / mini 2026-09-11】職員インタビュー1名（児童指導員・パート）を追記 ── ✅完了。commit `8942c71`（push未実施）
 
 有璽氏の依頼「取材の回答が1件埋まったので追記して」（スプレッドシート

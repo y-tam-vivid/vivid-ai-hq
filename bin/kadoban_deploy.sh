@@ -197,6 +197,9 @@ cp "$REPO/web/kadoban/middleware.js" "$SITE/middleware.js" 2>/dev/null
 #   （画面側のJSはfetch失敗を検知して古いまま表示を続けるだけ・rt-fresh参照）。
 mkdir -p "$SITE/api"
 cp "$REPO/web/kadoban/api/data.js" "$SITE/api/data.js" 2>/dev/null
+# ★2026-09-13 追加（会議室のVercel化）: office.js（Blobから会議室データを返す）を運ぶ。
+#   ★このファイルが無くても本体（index.html）のデプロイ自体は壊れない。
+cp "$REPO/web/kadoban/api/office.js" "$SITE/api/office.js" 2>/dev/null
 
 # ① 中身を用意する（この機械に無ければ mini から取りに行く）
 if [ ! -f "$SRC_LOCAL" ]; then
@@ -238,6 +241,16 @@ fi
 
 if [ "$GUARD_OK" = "1" ]; then
   cp "$SRC_LOCAL" "$SITE/index.html"
+
+  # ★2026-09-13 追加（会議室のVercel化）: office.html（会議室・30秒ポーリング版）を運ぶ。
+  #   ★無ければ運ばないだけ（本体=稼働盤のデプロイは壊さない）。/office はvercel.jsonのrewriteで解決
+  mkdir -p "$SITE"
+  if [ -f "$HOME/.vivid-relay/office.html" ]; then
+    cp "$HOME/.vivid-relay/office.html" "$SITE/office.html"
+    echo "  会議室(office.html) を公開先へ運んだ"
+  else
+    echo "  🔴 office.html が無い（この機械では未生成）"
+  fi
 
 # ★2026-09-07 担当のアイコンを一緒に運ぶ（有璽氏「アイコンは表示されていないよ」）
 #   HTML は assets/agents/<担当>.png を相対で参照している。ここでコピーしないと
