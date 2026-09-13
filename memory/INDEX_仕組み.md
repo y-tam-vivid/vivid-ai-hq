@@ -63,3 +63,4 @@
 - [固定値は時間で静かに腐る](reference_constants_that_rot.md) — ★エラーも警告も出ず心拍も緑のまま通る。実測2件＝①9/12 かわちばなし「今月」が`getMonth()===8`で9月固定（10月に既定の一覧が空になる）②9/6 corp_lookup.py:30 が国税庁データを07-31版で固定（更新は動いているのに読む側が古い・同じ値が2箇所・**未修正**）。★「いま」を含む語は時計から導く／ファイルは最新を選ぶ。★見つかるのは実物を描いたときだけで、コードを眺めても出ない
 - [日次ジョブは定刻に動かない](project_automation_register.md) — ★9/12実測 07:50→08:00 / 08:15→08:30 / 09:35→09:45＝15分巡回で拾うので10〜15分遅れる。レジスタの「予定」は「この時刻以降、最初の巡回で動く」と書き、期待間隔にこの15分を織り込む（定刻基準だと🟡が毎日立つ）。crontab直書きのものはこの遅れが無い
 - [成果物は受け取り手の要件で検査する](feedback_deliverable_must_satisfy_receiver_not_just_self_check.md) — ★9/9 テーマzipが「theme/lifestandup/style.css」の2階層で本番WPに弾かれた。自分側の数え上げ(ファイル本数)は全部合格していた＝受信側(WordPress)の構造要件が検査に無かった
+- [出力は残らないと存在しない](reference_output_captured_but_unrecorded.md) — ★9/13 editor_apply.pyはprintが正しいのにcrontabが`>/dev/null`で捨てログ0。git管理下を書いてもcommitせず他機へ届かず。修正=出力先を.logへ／適用ごとにgit commit(0件時は空コミット禁止)
