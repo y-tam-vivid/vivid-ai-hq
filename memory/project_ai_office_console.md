@@ -413,3 +413,47 @@ Notion API を無駄に叩き、レート制限と費用だけが増える。
 
 [[project_ops_dashboard]] 稼働盤の本体 ／ [[project_web_build_rules_asset]] lsu-editor の Blob 経路 ／
 [[project_ask_hub_push_decisions]] 判断はボタンで返す ／ [[reference_offload_long_work_to_mini]] 長い処理は mini へ
+
+## ✅2026-09-13 Vercelへ出た ── 自動更新が始まった
+
+**★ https://fukuchi-kadoban.vercel.app/office** （合言葉は稼働盤と同じ）
+
+```
+画面の更新       30秒   Blobを fetch するポーリング
+担当の動き出し    ★8〜25秒（実測）  run_agent.sh が起動/終了の瞬間に Blob へ書く
+レジスタ          30分   既存の稼働盤 cron（3,33）へ相乗り。★新しいcron行は作っていない
+```
+
+**作られたもの**（mini・実測でファイルの実在を確認）
+
+```
+~/.vivid-relay/office_data.py          実データ収集（★読むだけ）
+~/.vivid-relay/office_build.py         HTMLを組む（★Artifact版の見た目とdraw関数はそのまま）
+~/.vivid-relay/office_realtime_push.py Blobへpush
+~/.vivid-relay/office_running_ping.py  ★担当の起動/終了を即時にBlobへ
+web/kadoban/api/office.js              Vercel Function（data.js と同型）
+```
+
+**★検算（作った本人の申告を検査にしない）**
+
+```
+合言葉なし      / も /office も 401 ＝ 中身は認証の向こう側
+実データ        office_data.py を実行 → 担当14件・ルーティン55件・承認待ち2件・生成時刻つき
+既存の稼働盤    ★無傷（10:03 のデプロイが成功・401を実測）
+crontab         ★既存の 3,33 行へ相乗り。新しい行は増えていない
+```
+
+### 🔴担当が見つけた穴 ── Vercel Blob の GET には CDN キャッシュがある
+
+**既定のままだと反映が数分遅れる。**`--cache-control-max-age 0` を付けて 8〜25秒まで縮めた。
+**★「即時」ではない。**8〜25秒という実測値をそのまま持つ。
+
+**★同じ穴が稼働盤側（`dashboard_realtime_push.py`）にもある可能性がある。**
+稼働盤は「30秒おきに数字が変わる」と謳っているが、**Blobのキャッシュで実際は数分遅れているかもしれない。**
+★未確認。次に触る人が実測すること（push した時刻と、画面に出た時刻の差を測る）。
+
+### ★AIが測れないこと（人の領域）
+
+**合言葉ありで実際に表示されるかは、AIからは確かめられない**
+（Vercel の Secret は `vercel env pull` が `[SENSITIVE]` を返すため）。
+→ [[project_ops_dashboard]]「AIが測れるのは『合言葉なしで401』まで」。**有璽氏の目視が要る。**
