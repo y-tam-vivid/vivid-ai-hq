@@ -60,7 +60,7 @@
 - [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★数えるもの5つ目＝★未コミットの積み残し。担当が終わった瞬間にgit statusを数える／PID指定・pkill -f不可
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
-- [担当が落ちる真因はスリープ](feedback_use_the_team_not_alone.md) — ⛔「1体を長く使うと落ちる」は**誤診**（分割しても3体落ちた）。★真因はMacBookのスリープ。**長い作業はminiで走らせる**→[[reference_offload_long_work_to_mini]]
+- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/13 run_agent.sh経由だと起動直後に落ちた(台帳に完了なし･成果物0)。直接叩くと走る＝差はこの1点。原因未特定･bash -xで追う／ssh断はPIDで生死を見る
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — **🔴9/9 承認をもらった005を★1時間半投げていなかった（★記録はした＝記録は着手ではない）。★承認をもらったら記録と同じターンで投げる。投げられないなら★時刻で言う。★毎回の報告に「承認済みで未着手」の行を置く**
 - [手順書が読まれない理由](reference_why_manuals_are_not_read.md) — ★一度間違えると二度と読まれない。○×を求めると信頼が下がる
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — **★9/9外部調査＝この分野に★定説は無い（複数の情報源が「初期段階」と明言）。★15体規模の公開事例は0件。★一致は3つだけ＝①独立したcontext ②★作成者と検証者の分離(cross-checkと一致) ③★ハーネス側で強制。★輸入では解けない＝自前で決めて実測で直す**／★3回目。提案/作成の前にmemoryとNotionを数える。「無いから作る」禁止
