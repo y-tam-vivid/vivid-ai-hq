@@ -232,22 +232,34 @@ def main():
         print("\n★表示だけ。CSVへ書くには --run を付ける。")
 
     if a.beat:
-        try:
-            sys.path.insert(0, str(HOME / ".vivid-relay"))
-            import heartbeat  # noqa
-            # ★2026-09-13 つる：ok=True は beat() に無い引数で、初回(9/12)から心拍が1回も届いていなかった。
-            #   両機で動く仕事なので名前も機械ごとに分ける（同名だと片方の生存がもう片方の停止を隠す）。
-            machine = "Mac mini" if "mini" in HOST.lower() else "MacBook"
-            heartbeat.beat(f"AI使用量の集計（ai_usage_report・{machine}）",
-                           "成功", f"{len(recs)}行 / transcript {files}本")
-        except Exception as e:
-            print(f"（心拍を打てなかった: {e}）")
+        _beat("成功", f"{len(recs)}行 / transcript {files}本 / {HOST}")
     return 0
 
 
+def _beat(result, message):
+    """心拍を打つ。★成功でも失敗でも打つ（fukuchi-core「心拍を打つ。成功でも失敗でも」）。
+
+    ★引数は (name, result='成功', message='', when=None)。2026-09-12 に ok=True で呼んで
+      TypeError になり、初回発火で心拍が1本も届かなかった。★道具は要約でなく実物の
+      シグネチャを見る → [[reference_sheets_no_credentials_on_mini]] と同じ型。
+    """
+    try:
+        sys.path.insert(0, str(HOME / ".vivid-relay"))
+        import heartbeat  # noqa
+        heartbeat.beat("AI使用量の集計（ai_usage_report）", result=result, message=message)
+        print(f"（心拍: {result} / {message}）")
+    except Exception as e:
+        print(f"（★心拍を打てなかった: {e}）", file=sys.stderr)
+
+
 if __name__ == "__main__":
+    # ★落ちた回も「失敗」の心拍を打つ。打たないと沈黙になり、遅延と区別できない
+    #   （Manus監視が401で落ち続けたのに🔴が「沈黙」としてしか出なかった型
+    #    → [[reference_ran_is_not_succeeded]]「動いた」と「成功した」は別）
     try:
         sys.exit(main())
     except Exception as e:
         print(f"★失敗: {e}", file=sys.stderr)
+        if "--beat" in sys.argv:
+            _beat("失敗", f"{type(e).__name__}: {e}"[:180])
         sys.exit(1)

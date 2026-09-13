@@ -615,3 +615,16 @@ scope）。★画像・バイナリ生成物は上書きされても気づきに
 - **書いたら、その場で自分のファイルだけを明示して commit する。**放置した分は他人の袋に入る
 - **★`git status` が空なのは「確定した」証拠であって「自分が確定させた」証拠ではない。**
   commit のあと `git log --oneline -3 -- <file>` で、自分のcommitに入ったかまで見る
+
+## ★2026-09-12 また巻き込まれた（今日2度目・commit 293fcbe と同じ型）
+
+JFBI サイトの作業中、`WORKING.md` `INDEX_発信.md`
+`feedback_one_route_is_not_verification.md` `feedback_dont_wait_for_the_full_set.md` の4本が、
+**別セッション（かわちばなし）の commit に入っていた。** 自分では一度も commit していない。
+
+**★被害は無いが、commit メッセージと中身が食い違う。**
+「かわちばなし：公開を止めた」という commit に JFBI の記録が入っている＝
+**後から履歴を辿る人が見つけられない。**
+
+**★片づけるのはこちら側。** 書いたら早めに自分で commit する。
+Stopフックが鳴るまで放置すると、その間に他セッションが走れば必ず巻き込まれる。
