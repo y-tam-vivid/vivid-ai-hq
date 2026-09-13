@@ -270,6 +270,45 @@ if [ -d "$ICONS_SRC" ]; then
 else
   echo "  🔴 アイコンの置き場が無い: $ICONS_SRC"
 fi
+
+# ★2026-09-13 会議室の立ち絵14枚も一緒に運ぶ（有璽氏「イラストが非表示の状態です」）
+#   ★2026-09-07 の稼働盤アイコンと★まったく同じ事故。
+#   作った側と画面側が別で、★運ぶ人がいなかったのが原因。
+#   office.html は chars/<担当>.png を相対で参照している。ここでコピーしないと
+#   14人ぶん全部が壊れた画像で出る。
+#   ★置き場は 320px 版（原寸1024pxは表示76pxに対して過大・18MB→1.7MB）。
+PORTRAIT_SRC="$HOME/.vivid-relay/assets/agents_portrait/320"
+if [ -d "$PORTRAIT_SRC" ]; then
+  mkdir -p "$SITE/chars"
+  cp "$PORTRAIT_SRC"/*.png "$SITE/chars/" 2>/dev/null || true
+  n=$(ls "$SITE/chars"/*.png 2>/dev/null | wc -l | tr -d " ")
+  echo "  立ち絵 ${n}枚 を公開先へ運んだ"
+  # ★画面が実際に要る名前は office_data.json の members[].id にある。そこと突き合わせる。
+  #   ⛔旧版は office.html を grep していたが、実物は chars/${m.id}.png という
+  #     JSのテンプレート文字列で、正規表現に一度も当たらなかった＝★検査が走っていなかった。
+  #     （2026-09-13 実測。「0件だから正常」と「0件しか見ていない」は別物）
+  OFFICE_JSON="$HOME/.vivid-relay/office_data.json"
+  if [ -f "$OFFICE_JSON" ]; then
+    /usr/bin/python3 - "$OFFICE_JSON" "$SITE/chars" <<'PYEOF'
+import json, os, sys
+data, chars = sys.argv[1], sys.argv[2]
+try:
+    ids = [m["id"] for m in json.load(open(data)).get("members", [])]
+except Exception as e:
+    print("  🔴 office_data.json が読めない: %r" % e)
+    sys.exit(0)
+missing = [i for i in ids if not os.path.exists(os.path.join(chars, i + ".png"))]
+if missing:
+    print("  🔴 画面が要るのに立ち絵が無い（%d/%d）: %s" % (len(missing), len(ids), ", ".join(missing)))
+else:
+    print("  立ち絵は %d人ぶん とも揃っている" % len(ids))
+PYEOF
+  else
+    echo "  🔴 office_data.json が無い＝立ち絵の過不足を数えられない"
+  fi
+else
+  echo "  🔴 立ち絵の置き場が無い: $PORTRAIT_SRC"
+fi
 else
   placeholder
 fi
