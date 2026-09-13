@@ -14,6 +14,14 @@ metadata:
 **★いまは議論しない。認識として持つ。** こちらから議題を立てない
 （いまのフェーズは LIFE STAND UP の実装。→ [[feedback_let_it_settle_before_adding]]）。
 
+## ★着手前に読むこと（2026-09-13 チョッパー追記）
+
+`_tools/wordpress` は**複数セッションが同時に使う共用の検証環境**。CSS/PHPを編集しても
+`activate_theme.php`（丸ごと削除→再コピー）を叩かないと反映されないが、★別セッションが
+同じ環境をポートで使って計測中に叩くと相手の計測を壊すリスクがある。触る前に必ず
+`ps aux | grep sweep_widths` 等で稼働中の別プロセスが無いか確認すること。
+共用環境に触れずCSSの効果だけ確かめる孤立検証の作り方 → [[reference_shared_wp_test_env_collision]]
+
 ---
 
 ## いま何が起きているか（★資産になっていない）
