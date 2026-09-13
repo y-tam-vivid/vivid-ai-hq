@@ -16,7 +16,7 @@
 - [非対話ではPermissionRequestが鳴らない](reference_permission_request_hook_headless.md) — ★2026-09-06 実測10ケース＋実体の文字列。`claude -p`では承認フックが一度も発火せず、dontAskの自動拒否をallowで上書きもできない＝「Slackのボタンで端末の承認を代行」は非対話については成立しない。PreToolUseは非対話でも発火する（allow/deny/ask/deferを返せる）
 - [検問は1か所に置いて分岐から呼ぶ](reference_permission_request_hook_headless.md) — ★9/6 `mcp__`だけ早期returnで長さ判定を素通りし、外部へ書くMCPが中身0行＋許可ボタンで出ていた。分岐ごとに書くと後から増えた分岐だけ検問の外に出る
 - [取り込めない日はorigin/mainを直接読む](reference_silent_sync_failure.md) — ★9/7 miniはbehind34＋他セッションの書きかけ5本でmergeできず。`git show origin/main:<path>`と`git grep origin/main`で重複を回避。**手元に無い＝未記録の証拠にならない**
-- [汚れ1件の中身を見る](reference_silent_sync_failure.md) — **🔴9/12 3回目＝behind13の真因は衝突でも枝分かれでもなく★未追跡の生成物1件（dashboard_history/*.gz）。vivid-sync.sh:71のDIRTYは`??`も数え、:89のゲートがmergeを1回も試さない。★`wc -l`が0か1かでなく先頭2文字を見る。`??`の生成物なら止める理由にならない＝`git merge origin/main`。①'の自動確定は60分ルールで書きたての生成物を拾えない**
+- [汚れ1件の中身を見る](reference_silent_sync_failure.md) — **✅9/14 構造を直した＝DIRTY_TRACKED新設（判定は`--untracked-files=no`・人へ見せるDIRTYは従来どおり）。隔離環境で再現し「直す前=試さない／直した後=ff-only成功・未追跡は無事」を実測。★9/12に同じ真因（未追跡の生成物1件でゲートが1回もmergeを試さない）を特定しながら★手順（人が見たらmerge）だけ書いて構造を直さず、2日間 毎日ほぼ24時間 受信が止まり続けた＝記録は再発を止めない**
 - [巡回はSYNC_STATUSの色も数える](reference_silent_sync_failure.md) — **🔴9/11 13分おきの巡回を10回まわし、走行中0件だけ見て🔴(未取込12件)を素通り。★走行中0件＝異常なしではない。★クリーンなのに取り込めない＝汚れでなく枝分かれ(ahead10/behind12)＝mergeが要る**
 - [🔴には2種類ある](reference_silent_sync_failure.md) — **★9/11「未取込N件」＝自分でmergeして解く／「リモートに繋がっていない」＝通信断で打つ手なし。★後者は`git ls-remote origin HEAD`が返れば一過性。色は入口であって結論ではない**
 - [色より先にmtimeを見る](reference_silent_sync_failure.md) — **🔴9/11 一過性と判定したが★SYNC_STATUSが67分止まっていた(cron 4回未発火)。真因はMacBookのスリープ(pmset実測16:09-16:36)。★30分以上古い🔴は状態でなく機械停止の証拠。手当ては`bash bin/vivid-sync.sh`1手**
