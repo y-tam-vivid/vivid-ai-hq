@@ -4229,3 +4229,35 @@ avatar(72px丸)と大きな名前文字(34px)は英字1文字を前提にした�
   `count( lsu_staff_slot_order() )` で動的化した → [[feedback_categories_always_grow]]
 - ★Q4の回答をQAの最後と結びのメッセージに二重で使っている（アンケートに材料がこれ1文しか
   無く、創作を避けた）。**次に取材票を作るときは「メッセージ欄」を1問足す。**
+
+## ✅2026-09-13 ★C(lsu-editor)へオートレイアウト対応(親を選ぶ＋Gap編集)── チョッパー／mini
+
+**★有璽氏の決定（2026-09-13）**：「オートレイアウトが使える状態になってからじゃないと
+使うのは危ない。今だと前のままで意味がない」＝★Cは絶対配置(top/left/width/height)しか
+触れない状態のままでは使わない、という判断。これを受け、①親を選ぶ ②Gap編集 の2つだけを
+追加した（Padding・Fixed/Hug/Fill・Wrapは次回・今回はスコープ外）。
+対象は `lsu-editor.html`（ローカル版）と `vercel-editor/lsu-editor/index.html`（Vercel版）の
+2本のみ。lsu-editor-rules.js／lsu-save.php／editor_apply.py／editor-save.jsは無改修
+（property名の検証が元々`^[a-zA-Z-]+$`という汎用正規表現で、gapも最初から許可されていたため）。
+**★デプロイしていない**（実装・単体実測まで。redeploy.sh未実行）。
+出口 `~/.vivid-relay/chopper_autolayout_result.md`（a〜dの実測結果全文）。
+
+```
+実装   resolveExistingSelector(el, propTest) を第2引数化（既定=元の位置系正規表現のまま・
+       既存呼び出し元は無改修）。gapは propTest=/(^|[;\s{])gap\s*:/ で既存ブロックを検索。
+       「↑ 親を選ぶ」ボタン→親のdisplay:flex/gridのときだけGap欄を出す。
+       保存は既存pending配列・A/B保存形式・openConfirm/doSaveをそのまま流用
+       （新しい保存経路は作っていない）。
+実測   隔離環境(/tmp・本番8750/theme/lifestandup/とは無関係)でheadless Chrome+CDPにより
+       実機検証：①既存gap値の更新(10px→32px)が実際にディスクへ反映・他プロパティ無傷
+       ②新規gap追加(grid親・未設定→16px追加)③block親ではGap欄が出ない④既存の位置
+       ドラッグ編集(top/left/width/right)が無傷、を4件とも実測確認済み
+```
+
+**🔴発見（今回のバグではないが記録）**：`lsu-save.php`/`editor_apply.py`の`set_prop()`
+（新規プロパティを既存ブロックへ追記する処理）は、ブロック内の**最後の宣言が末尾セミコロン
+無し**だと、追記した新プロパティが前の宣言の値へセミコロンなしで連結され、**壊れたCSSに
+なる**（実機で再現：`.test-deco-b{...;color:#fff\n  right:auto;\n}`）。
+★これは9/10の★C新設時からある既存の欠陥で、position系プロパティの追加でも同確率で起きる
+（gap固有ではない）。次にPadding等「新規追加」系の機能を増やすときは、
+`set_prop()`側で「追記前に末尾セミコロンを保証する」対処を検討する価値がある。

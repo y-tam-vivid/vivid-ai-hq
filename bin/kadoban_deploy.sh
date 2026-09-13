@@ -203,6 +203,11 @@ cp "$REPO/web/kadoban/api/office.js" "$SITE/api/office.js" 2>/dev/null
 # ★2026-09-13 追加（③）: office-answer.js（会議室で押した回答をBlobへ受ける口）を運ぶ。
 #   ★これが無いと、ボタンは押せるのに /api/office-answer が404＝何も起きない。
 cp "$REPO/web/kadoban/api/office-answer.js" "$SITE/api/office-answer.js" 2>/dev/null
+# ★2026-09-13 追加: package.json（@vercel/blob）を運ぶ。
+#   🔴これが無いと office-answer.js の import が解決できず★500を返す
+#     （有璽氏が実際に押して "A server error has occurred" を踏んだ）。
+#   ★data.js / office.js は fetch だけなので依存が要らず、これまで気づけなかった。
+cp "$REPO/web/kadoban/package.json" "$SITE/package.json" 2>/dev/null
 
 # ① 中身を用意する（この機械に無ければ mini から取りに行く）
 if [ ! -f "$SRC_LOCAL" ]; then
