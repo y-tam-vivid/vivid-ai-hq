@@ -53,6 +53,33 @@
 
 ## Mac mini セッション
 
+### 【チョッパー / mini 2026-09-14 10:2x】①リンク切れ ②スマホでテープを消す ③他17ページの検証 ── 着手
+
+有璽氏が実機で確認して出した指示。**★「問題なければ走らせようと思います。こちらでね」＝
+有璽氏が公開へ進む判断をする前段。★検証で不合格が出たら直す前に一覧で見せる。**
+
+```
+★確定した決定（有璽氏）
+  20-39pxの79件 ／ メディアクエリ内133件   ★対象外で確定（触らない）
+  スマホのマスキングテープ                  ★消す。★タブレット(541-980px)は残す
+
+①リンク  /stand-up/「3つのプログラムを見る」（ピンクのボタン）が効かない
+         ★真因確定：href="#sec-programs" ＝ページ内アンカーだが★飛び先id は0件
+         → lsu_link('programs')（functions.php:895 に定義済み）へ。
+         ★隣の「1日の流れを見る」は lsu_link('schedule') で正しい＝片方だけ書き方が別だった
+         ★あわせて他ページの「飛び先が無い #アンカー」を数えさせる
+②テープ  body.lsu-stand-up-top .tape-vertical を @media(max-width:540px) で display:none
+         ★CSSは消さない（隠すだけ＝戻せる）。★恒久ルール③はPC/タブレットで有効のまま
+③検証    9/14のマージン調整は★代表5ページしか見ていない。残り17ページを同じ基準で
+         （横あふれ/重なりの新規増加/PC幅不変）。★不合格は直さず一覧で報告させる
+```
+
+**★デプロイさせない・git add もさせない**（commitは窓口）。
+指示文 `~/.vivid-relay/chopper_fix_link_tape.txt` ／ 出口 `chopper_link_tape_result.md`。
+
+**★同じ対象に手をつけないでください**: `theme/lifestandup/page-templates/stand-up-top.php` ／
+`theme/lifestandup/assets/css/` 配下
+
 ### 【チョッパー / mini 2026-09-14】★マージン全体の数え直しと調整 ── ✅完了。commit `54b9e5e`・★デプロイ済み
 
 **https://lifestandup-preview.vercel.app/stand-up/ （09:58 Ready・合言葉なし401を実測）**
