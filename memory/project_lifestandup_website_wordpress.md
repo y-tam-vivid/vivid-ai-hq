@@ -4552,3 +4552,45 @@ dist/_test_20260914/検査に弾かれた版_残骸混入_122416.zip        ← 
 
 **★今回の本番アップロードは 122527 版（Version表記は 0.1.0-draft のまま）で進めてよい。**
 中身は9/14版で正しい。★次回のzipから 0.1.2 と表示されるので、そこから新旧を見分けられる。
+
+## 🔴2026-09-14 ブログの写真が小さく並ぶ ── ★テーマとWordPressのCSSが二重にかかっていた
+
+有璽氏がライブプレビューで発見：「**ちっちゃい写真がいっぱいあって。3枚並びとかそういうこと
+なんだと思う**」。★見立ては正確だった。
+
+```
+★真因（実物のCSSで確定）
+  WordPress  wp-includes/blocks/gallery/style.min.css
+             .wp-block-gallery.has-nested-images figure.wp-block-image:not(#individual-image){
+                 width: calc(33.33% - …) }      ★:not(#id) ＝ ID1個分の詳細度で非常に強い
+  テーマ      news-detail.css:64  .wp-block-gallery{display:grid; …}
+             news-detail.css:67  .wp-block-gallery figure{… width:auto}  ★詳細度で負ける
+  結果        gridのセル(1/3幅)の中に さらに width:33.33% ＝ ★実質1/9まで縮む
+```
+
+**⛔私の最初の見立ては誤っていた。** 「テーマは columns-3/columns-4 にしか対応していない」と
+報告したが、**85-95行目に columns-default（3列）・1枚なら全幅・2枚なら2列・columns-1・columns-2
+が既に実装されていた。★64-71行だけを見て、85行以降を見落としていた。**
+
+★型：**CSSの不具合を見るとき、同じセレクタが★ファイルの離れた場所にもあると想定して数える。**
+`grep -n '<クラス名>' <file>` を1回通せば全部出る。★上から順に読んで途中で結論を出さない。
+
+**✅直した ── 有璽氏の指示「★写真の部分の並びだけ変えて。他は変えないで」に沿って1行**
+
+```css
+body.lsu-news-detail .article-body .wp-block-gallery.has-nested-images
+  figure.wp-block-image:not(#individual-image){width:auto;margin:0}
+```
+```
+★同じ :not(#individual-image) を使い body を1つ足して詳細度で上回る
+★当たる範囲   ギャラリーの中の figure だけ（単独写真・見出し・本文・表には当たらない）
+実測          削除0件・括弧23本一致・★撮影して目視（3枚並びは3列・2枚は2列・大きく表示）
+              単独の集合写真は従来どおり幅いっぱい＝★他は変わっていない
+```
+
+**★9/9の「崩れ無し」確認が見落とした理由** ── 見ていたのは「★縦1列に潰れていないか」だけ。
+**「元のサイトと同じ見え方か」を見ていなかった。** 2列にはなっていたので合格に見えた。
+★次に既存記事の移行を確認するときは、**元サイトの同じ記事と並べて見る。**
+
+★zipを作り直した（`lifestandup-theme_20260914-151756.zip`・Version 0.1.3-20260914）。
+★今日入れた検査dが効き、2箇所のバージョンを揃えてから出せた。
