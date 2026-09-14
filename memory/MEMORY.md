@@ -59,7 +59,7 @@
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本・報告に混ぜない。kindは8種／投げる前にpreview／投げたら必ずanswer_of()を見る（押されても聞いた側へ返らない）。🔴9/7 4回目＝1通ずつでなく★Slackへ出る経路を全部数えて揃える。押せないものが混ざると判断が沈む（DM7通中押せるのは2通）。出すのはボタン・受けるのは会話でもよいが★出した側が台帳を閉じる**
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/12★2回。足りない→待つで止めるな。器を縮める／依頼文を作る**
 - [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★数えるもの5つ目＝★未コミットの積み残し。担当が終わった瞬間にgit statusを数える／PID指定・pkill -f不可
-- [直した所は配られるか](reference_fix_where_git_reaches.md) — ★bin/hooks/に同名があれば~/.vivid-relay/を直しても15分で消える。触る前に1回ls
+- [直した所は配られるか](reference_fix_where_git_reaches.md) — 🔴9/14★同じ日に4回。手順書に落とした当日に自分が関所2(ver上げ)を飛ばした。★機械で時刻を比べて止める(未実装)
 - [担当が増えたら3か所](reference_new_agent_needs_three_places.md) — ★9/13 チョッパー追加で席が出なかった。名鑑を正本へ寄せた
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/13 run_agent.sh経由だと起動直後に落ちた(台帳に完了なし･成果物0)。直接叩くと走る＝差はこの1点。原因未特定･bash -xで追う／ssh断はPIDで生死を見る
