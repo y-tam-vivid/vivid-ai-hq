@@ -4330,3 +4330,45 @@ body直下の`.sec-*`セクションのpadding-top/bottomがPC用の1値のみ�
 対象拡張）は出口ファイルに記載。Hug/Fill・Wrapは未着手（有璽氏に渡した取説の②③）。
 
 出口 `~/.vivid-relay/chopper_padding_result.md`。未コミットのまま（redeploy.sh未実行）。
+
+### ✅2026-09-14 チョッパー：有璽氏の実機指摘6点（削除／スマホ限定削除／変更の積み上げ／
+サイズ変更／選択枠のズレ／iframeと実機の見え方）に対応
+
+```
+①②消せない・スマホだけ消したい  display:noneで隠すパネルを新設（消さない・戻せる）。
+                              既存のmode B(この幅だけ)保存経路をそのまま使う
+③積み上がり(最重要)   ★真因：1回のドラッグでleft/right/width/topの4件が毎回push。
+                      upsertPending()で「同file+selector+mode(+width)+property」を
+                      上書きに変更。表示もfile+selector単位で「◯◯（4個の値を変更）」の
+                      1行へ束ねた。件数表示もグループ数に。実測：同一要素を5回ドラッグ
+                      してもchgCountは常に"1"
+④サイズ変更が伝わらない  ★機能は元から実装済みだった（8ハンドル・resize処理）。
+                        画面が伝えていなかっただけ。.handleへcursor(nwse-resize等)を
+                        追加＋選択時に1行ヒント表示。「説明を足すでなく画面で伝える」
+⑤選択枠のズレ         ★真因確定：tape-vertical等はtransform:rotate(3deg)。
+                      getBoundingClientRect()は常に外接矩形を返すため回転本体とズレる。
+                      getRotationAwareRect()で一時的にtransform:noneにして測り、選択枠
+                      にも同じtransformをかけて描画。★検証で1度「height307px対
+                      選択枠90px」の食い違いが出たが、これはクリック座標が偶然
+                      .deco-leaf-2(rotate15deg)の候補ボックスに当たっていた検証ミスと
+                      判明（DOM直接指定で再検証し完全一致を確認）。★限界：8ハンドル
+                      自体は回転前矩形の四隅に軸並行のまま置く（回転対応は未実装）
+⑥iframeと実機の見え方  ★仮説「iframeのpx固定とスクロールバー分のズレ」は実測で否定
+                      （820px幅でEmulation.setDeviceMetricsOverrideとiframe方式の
+                      clientWidthが完全一致・差0px）。★ただし別の真因が既存記憶にある：
+                      ★Cは7段階の固定幅(375/390/414/768/820/1366/1920)しか見られないが
+                      実機は連続リサイズできる。有璽氏が目分量でリサイズした幅が
+                      820pxちょうどとは限らず、中間帯(780-850px等)にだけ崩れがあれば
+                      ★Cの7点では再現できない → [[reference_endpoints_pass_middle_breaks]]
+                      と同型。sweep_widths.py(連続幅の掃引)との連携が次の一手
+```
+
+**★発見（次に触る人向け）**：ローカル検証サーバー(8750)が実際に配信する実体は
+`_tools/wordpress/wp-content/lsu-editor.html`という別の複製（.gitignore対象）で、
+正本(`lsu-editor.html`)とは**自動同期されない**。今回の変更を機に手動で1回同期したが、
+次に正本を直す人は複製への反映を忘れないこと。
+
+対象3ファイル(lsu-editor.html／vercel-editor/lsu-editor/index.html／
+static-preview/lsu-editor/index.html)は同期済み・diff一致確認済み。node --checkで
+両ファイルとも構文OK。**デプロイ・git commitは未実施**（窓口・有璽氏の判断待ち）。
+出口 `~/.vivid-relay/chopper_editor_fix_result.md`。
