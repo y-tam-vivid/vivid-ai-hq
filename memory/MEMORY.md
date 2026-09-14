@@ -112,5 +112,5 @@
 - [Web制作ルールを資産に](project_web_build_rules_asset.md) — ★9/13 レスポンシブ専任チョッパー新設(14体目)。★Cの台帳はprintを捨てているだけ
 - [オートレイアウトが要る](project_web_build_rules_asset.md) — ★9/13 ★marginの94.7%がPC値のままスマホへ。直すのは値でなく幅ごとの比率(⑤に前例)
 - [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
-- [セクション間マージンをPC比率で縮小](project_lifestandup_website_wordpress.md) — ★9/13 --sp-scale-tablet/mobile+floor32pxで20ファイル一括縮小。★続けて★Cへ内側の余白(Padding)を追加。対象は②親(gapEl)・--sp-t/--sp-bと同時更新で比率温存。footerは経路無く未到達
+- [縦の余白は4つある](project_web_build_rules_asset.md) — **★9/14 padding だけ直して「ほぼ完了」と報告＝★marginがほぼ手つかずだった(571件)。★158件を追加で比率化・デプロイ済。残＝20-39px79件/MQ内133件**
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
