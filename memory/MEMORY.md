@@ -71,7 +71,7 @@
 - [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全／**★対策は層をまたいで用意する（検知・予防・解除）。検知だけでは止まる回数は1回も減らない**／★記録は再発を止めない＝入口に検問を置く（全部本文へ）
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — **★9/9 初めて穴を名指しで数えた＝Ｃ(在るのに効かない)3件。★C-1 hook_interactive_guardは★settings.json未登録＋★毎朝の点検CASESにも無い＝二重の見えなさ(4日)。★新しい検問は同じターンでCASESにも足す。✅C-1は有璽氏の承認で修正済(両機7本とも正常)。★足した瞬間に環境依存の誤検知が出た＝★環境変数に依存するフックは点検も同じenvで叩く**／8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
-- [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/8 頻度も1日2回→毎時(07-22時)へ。crontab直書き・daily_jobs.conf側は無効化のみ**
+- [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/14 失敗を「成功」で打つ実例（npxがcronのPATHに無く214回）。成功は副作用を読み返してから**
 - [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/14 0件相手の「異常なし」は合格でなく未測定(4本中3本が空振り)
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
@@ -113,5 +113,6 @@
 - [Web制作ルールを資産に](project_web_build_rules_asset.md) — ★9/13 レスポンシブ専任チョッパー新設(14体目)。★Cの台帳はprintを捨てているだけ
 - [オートレイアウトが要る](project_web_build_rules_asset.md) — ★9/13 ★marginの94.7%がPC値のままスマホへ。直すのは値でなく幅ごとの比率(⑤に前例)
 - [恒久ルール⑤40px比例](project_lifestandup_website_wordpress.md) — ★9/10 Web40px基準にsp/tablet比例(24/35px)。④判断つかない分類は廃止
+- [セクション間マージンをPC比率で縮小](project_lifestandup_website_wordpress.md) — 158件比率化。20-39px帯限定対象外
 - [縦の余白は4つある](project_web_build_rules_asset.md) — ★9/14 padding だけ見て「ほぼ完了」＝margin 571件が手つかず。158件を比率化・出した
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
