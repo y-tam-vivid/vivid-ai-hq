@@ -91,7 +91,7 @@
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **★9/9 有璽氏が★本番WordPressの許可を出した（恒久制約の解除）。✅9/9 21:40 ★本番で新テーマが動いた（方式B・インストール済み／★有効化していない＝サイトは不変）。★不可逆は「有効化」の1手だけ＝そこは人が押す。★順序（デモ完成→zip→本番）は許可が出ても崩さない**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★9/14 5例目＝消えたのは控えでなく★点検の道具(/tmp)。巡回が空振り→check_kadoban.shへ
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
-- [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
+- [鍵は出力に一度も通さない](reference_tool_results_cache_keeps_secrets.md) — ★9/14「先頭30字」で29字の鍵が丸ごと出た。出すのは長さと形だけ／探索と格納は1本に
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/11 sshが断続的にタイムアウト(3回)。★1回で落ちたと判定しない＝再試行3回＋別経路。★担当はPIDで生死を見る
 - [rc=0でも依頼は未達](reference_offload_long_work_to_mini.md) — ★9/13 Stop hookの差し戻しに答えて終了。★出口ファイルをlsするまで完了と言わない
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
