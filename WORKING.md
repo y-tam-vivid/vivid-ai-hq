@@ -4257,8 +4257,9 @@ v2/v3/無印の.dc.html・22MBの書き出し版・1751の控えが消失。当�
   - 対象 `https://orange-works.co`（★本番）。書くのは **work 投稿42件・work_genre 7ターム・メディア・
     固定ページ `/works/service/`**。★**すべて下書き（draft）で入れ、公開は有璽氏が確認してから**
   - **触らない**: 既存11ページ・既存の実績5件（/about/・/about/forbusinesses/）・フォーム・テーマ本体・プラグイン設定
-  - **現在地（23時台）**: ✅実績42件・固定ページ2枚（14229/14230）をすべて draft で投入済み（2経路で検算一致）。
-    ★テーマ設定（一覧ページの指定・スラッグ）は未変更＝有璽氏の判断待ち（Slack ask_hub `#8104ef`・種別 開発）。公開も未実施
+  - **現在地（23:4x）**: ✅実績42件・固定ページ2枚（14229/14230）投入済み → ★draft から private へ（外から404を実測）。
+    ✅名称を「芽育クリエイティブラボ」へ（有璽氏）・本文をチラシv1.2へ。✅#8104ef=A・works_list_page=14229 保存済み。
+    🔴実績一覧グリッドが /works/ に出ない＝未解決。公開は未実施
   - **★並走**: Desktop側の Claude Code が同じWPでSEO作業中（鍵 claude-kiji）。当方は追加のみ・既存ページ/設定に触らない
   - **★同じ対象に手をつけないでください**: orange-works.co の work / work_genre / `~/orangeworks-portfolio/tools/wp_import_works.py`
 
