@@ -65,3 +65,5 @@
 - [日次ジョブは定刻に動かない](project_automation_register.md) — ★9/12実測 07:50→08:00 / 08:15→08:30 / 09:35→09:45＝15分巡回で拾うので10〜15分遅れる。レジスタの「予定」は「この時刻以降、最初の巡回で動く」と書き、期待間隔にこの15分を織り込む（定刻基準だと🟡が毎日立つ）。crontab直書きのものはこの遅れが無い
 - [成果物は受け取り手の要件で検査する](feedback_deliverable_must_satisfy_receiver_not_just_self_check.md) — ★9/9 テーマzipが「theme/lifestandup/style.css」の2階層で本番WPに弾かれた。自分側の数え上げ(ファイル本数)は全部合格していた＝受信側(WordPress)の構造要件が検査に無かった
 - [出力は残らないと存在しない](reference_output_captured_but_unrecorded.md) — ★9/13 editor_apply.pyはprintが正しいのにcrontabが`>/dev/null`で捨てログ0。git管理下を書いてもcommitせず他機へ届かず。修正=出力先を.logへ／適用ごとにgit commit(0件時は空コミット禁止)
+- [共有の置き場へ書くと相手を巻き込む](reference_shared_write_races.md) — ★9/13同型3件: Blob上書き消失/git addが書きかけごと載る/再コピー
+- [検証用WPは共用資源](reference_shared_wp_test_env_collision.md) — ★9/13 activate_theme.phpは丸ごと消して再コピー。計測中は叩かず孤立検証
