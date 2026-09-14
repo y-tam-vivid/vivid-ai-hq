@@ -20,3 +20,5 @@ metadata:
 未ログインで開けないものは、リンクでなく**画像（Artifact）で渡す**か、見るための手順（ログインURL・許可IP）まで添える。
 
 → [[feedback_one_route_is_not_verification]] ／ [[project_orangeworks_portfolio_site]]
+
+**✅裏付け（9/15 00:0x）**：有璽氏がログイン側で見られた＝真因は未ログインで確定（有璽氏の実見＋未ログインcurl の2経路）。
