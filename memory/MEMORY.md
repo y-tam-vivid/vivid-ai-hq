@@ -80,7 +80,7 @@
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
 - [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — ★6例目。届く場所へ渡すまでが完了。Slack添付/Drive/open
 - [配布物は受け取り手の要件で](project_lifestandup_website_wordpress.md) — ★9/14 検査が本物を止めた(残骸8件が混入)。控えを配布物の中に置かない
-- [本番WP公開へ](project_lifestandup_website_wordpress.md) — ★9/14 zipは①上げる②有効化とも人の手（themesはGETのみ・実測）。渡す前にテーマ側の残りを数える。🔴本番WPの鍵が両機に無い
+- [本番WP公開へ](project_lifestandup_website_wordpress.md) — ★9/14 zipは上げるも有効化も人の手（実測）。🔴本番WPの鍵が両機に無い
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消(Stopフック検査4)。★9/9に本番3例目「этот」・4例目「진」(進)を機械が先に検出＝★同日2回働いた。★意味の同じ外国語に化けるので目視では素通り**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
