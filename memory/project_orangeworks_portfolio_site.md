@@ -203,3 +203,14 @@ WordPress版の原稿 → `~/orangeworks-portfolio/deliverables/wp_site_copy.md`
 手順の提示・プレビューを見ての指摘。**構築そのものは有璽氏の手番**。
 分担を変えるならSTUDIOをやめる判断が要る（Vercel＋静的サイトなら全部AIで組めるが、
 職員が更新できなくなる）。
+
+## ★2026-09-14 23時台 鍵の受け渡し（mini・ビビ）
+
+```
+受領     有璽氏がSlack DMで鍵を送付 → mini の ~/.orangeworks-wp.env に保存（600・★MacBookは未配布）
+         ★claude-works か claude-kiji かは未照合
+実測     users/me は★正しい鍵でも わざと誤った鍵でも同じ rest_not_logged_in(401)
+         ＝★鍵の正誤ではなく、認証ヘッダーがWPまで届いていない（nginx・Xserver系）
+         ★「401だから鍵が違う」と判定しない。鍵を作り直しても直らない
+次       ①Desktop側(claude-kiji)がどの経路で書けているかを見る ②届かない真因(ヘッダー除去/セキュリティ系プラグイン)の特定
+```
