@@ -4260,6 +4260,12 @@ v2/v3/無印の.dc.html・22MBの書き出し版・1751の控えが消失。当�
   - **現在地（23:4x）**: ✅実績42件・固定ページ2枚（14229/14230）投入済み → ★draft から private へ（外から404を実測）。
     ✅名称を「芽育クリエイティブラボ」へ（有璽氏）・本文をチラシv1.2へ。✅#8104ef=A・works_list_page=14229 保存済み。
     🔴実績一覧グリッドが /works/ に出ない＝未解決。公開は未実施
+  - **★9/14 23:5x 有璽氏 退勤。明日の再開点**：
+    ①住所 ✅フッター(Elementor 11691)と/about/(11095)を「オースクレインハイツ101」へ（未ログインcurlで実測・控え work/wp_address_elementor_backup_20260914.json）
+    ②「102号室」33か所（旧ブログ30・recruit・privacy）は未変更＝ask_hub `#6eeae8` の回答待ち（控え work/wp_address_backup_20260914-234624.json）
+    ③一覧グリッドが出ない ＝ ask_hub `#1e8e0b`（実績1件だけ公開して試すか）の回答待ち
+    ④有璽氏が見て404だった真因＝未ログイン。private は未ログインに404。明日はログインして見るか画像で渡す
+  - **★Desktop側SEOへ未連絡**：住所(NAP)を変えた。構造化データ・Googleビジネスプロフィールとの突合はSEO側の範囲
   - **★並走**: Desktop側の Claude Code が同じWPでSEO作業中（鍵 claude-kiji）。当方は追加のみ・既存ページ/設定に触らない
   - **★同じ対象に手をつけないでください**: orange-works.co の work / work_genre / `~/orangeworks-portfolio/tools/wp_import_works.py`
 

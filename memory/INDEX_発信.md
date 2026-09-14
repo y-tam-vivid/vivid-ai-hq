@@ -29,7 +29,7 @@
 - [グループ5法人のブログとCMS](reference_group_blogs_and_cms.md) — **ILIFE/ビビッド/オレンジワークス=WordPress・ふくち。=STUDIO・NPO=Jimdo**。★ビビッドはwww付きが正／原稿はCMSごとに形を変えて渡す／**★オレンジワークスは.coと.orgが別物。.coが本体でwp-json200＝AIがページを作れる**
 - [イベント運用スキル群](project_event_skills_suite.md) — ★8/28導入・両機14本。**8/29 Word/PowerPoint/PDF/ffmpeg整備完了(②③④)。①snspipeフォントはdiff提示・承認待ち**／**Notion🗓️イベント管理は9列しかなく推測禁止5項目の置き場が無い**／工程は必ず全部通るわけではない(報告書までは一体)
 - [ブランドテーマ3種](reference_brand_themes.md) — ふくち。/119番/tane.の実データは揃っている(作り直さない)／**★tane.の配色がDriveとNotionで5色とも食い違い・未決**／Notionのブランドガイドは「110番」のまま古い／NPOは専用VI無し
-- [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **★9/14 実績42件+2ページ投入済(private・外から404)。名称は芽育クリエイティブラボ。🔴一覧グリッドが出ない＝未解決**／Desktop側SEOと並走(鍵claude-kiji・触らない)
+- [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **★9/14 実績42件+2ページ(private)。住所ハイツ101へ(フッター・about)。🔴一覧が出ない#1e8e0b／102号室33件#6eeae8 回答待ち**／Desktop側SEOと並走(鍵claude-kiji・触らない)
 - [LIFE STAND UP 本番サーバの実態](project_lifestandup_website_wordpress.md) — 🔴9/4実測**PHP7.4**(開発は8.3)／**バックアップ0本**／ステージング無し／有効テーマは**Emanon Business**(Proでない)／**SNS自動投稿が有効=134本移行で暴発**／記事134件一致
 - [LIFE STAND UP サイト(WordPress)](project_lifestandup_website_wordpress.md) — ★9/3 トップ1本完成(実WP有効化・再現度0px)。**applyTweaksは8版＝top-pageの結果を横展開するな**／**★文言2本は採用する側が逆(指定はaudit_tweaks.py冒頭)**／図案A/C/Dはarchive/へ保管後に削除／CSSは共通化しない／内部リンク310本／工数58〜107h／**Emanon Proのフォルダを消さない**
 - [LIFE STAND UP デザイン正本とブログ](project_lifestandup_website_wordpress.md) — ★9/5 正本は**mini の`~/design_handoff_v2.0/`**(Drive v2.1は別物・build_pages.pyのSRCは触らない)／🔴**「photo-gridは2列固定・3列不可」は誤り＝`.cols-3`が実在**(移行可否をこの理由で狭めない)
