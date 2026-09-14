@@ -77,8 +77,9 @@
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [sheets_clientはクラス](reference_sheets_no_credentials_on_mini.md) — ★9/11 sc.Sheets()を作る。meta()の戻りは name/rows(titleでない)。★道具は要約でなく実物のソースを見る
 - [kintoneの列は写しの写し](reference_stale_copy_of_kintone_columns.md) — ★未接続。雛形62列もSkill61列も実物より短い。無いと断定しない
-- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — **🔴9/9 5例目＝「着手完了」と報告したが実物は全部mini内で★有璽氏へ0件。★報告前に「本人はどこで見られるか」を自問し、見られないなら★まだ完了でなく中間物と言う**／渡すのはSlack添付/Driveのリンク。★その場で使うファイルは`open`でFinderを開く(6例目・zipはminiに在り触れなかった)／**★9/8 4例目＝ローカルのファイルパスも届かない。実測値の羅列は成果物でない。見える形にして渡すまでが1セット**
-- [渡す物は受け取り手の要件で数える](project_lifestandup_website_wordpress.md) — **★9/9 テーマzipが本番でインストール失敗（階層が1つ深い）。★「ファイルが在る」と「相手が使える形か」は別。zipは`unzip -l`の先頭3行を見る**
+- [ターミナルからコピーできない](feedback_cannot_copy_from_terminal.md) — ★6例目。届く場所へ渡すまでが完了。Slack添付/Drive/open
+- [配布物は受け取り手の要件で](project_lifestandup_website_wordpress.md) — ★9/14 検査が本物を止めた(残骸8件が混入)。控えを配布物の中に置かない
+- [本番WP実装へ(9/14)](project_lifestandup_website_wordpress.md) — ★実測1.5h(人45-60分/AI30分)。ブログ134本+2210枚=11.1分。zip済
 - [書く前にdiffを見せる](feedback_show_diff_before_edit.md) — 変更内容と同時に触る全ファイルを出して承認を待つ
 - [日本語に別の文字が混入する](reference_unicode_escape_kanji_swap.md) — ★\uエスケープで漢字化け／**★9/5機械で解消(Stopフック検査4)。★9/9に本番3例目「этот」・4例目「진」(進)を機械が先に検出＝★同日2回働いた。★意味の同じ外国語に化けるので目視では素通り**
 - [検査に出す版を固定する](reference_freeze_the_version_under_review.md) — ★検査中に作る側が触ると判定がどの版か不明。sha256を添えて渡す
@@ -87,7 +88,7 @@
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★担保2つとも効かず。自動確定の7割は生成物のみ／差し戻しは4回とも空振り／★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
 - [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **⛔9/9真因＝本数でなく1本の長さ(180B超が40/78本)。★降ろさず「本文へ戻す」。消す前に本文に在るか数える。bin/check_index_line_length.py**
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **★9/9 有璽氏が★本番WordPressの許可を出した（恒久制約の解除）。✅9/9 21:40 ★本番で新テーマが動いた（方式B・インストール済み／★有効化していない＝サイトは不変）。★不可逆は「有効化」の1手だけ＝そこは人が押す。★順序（デモ完成→zip→本番）は許可が出ても崩さない**
-- [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★消える場所もgit下も不可。**★9/8 4例目＝相手のツールの作業フォルダも不可。控えは_backups/へ**
+- [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★9/14 5例目＝消えたのは控えでなく★点検の道具(/tmp)。巡回が空振り→check_kadoban.shへ
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
 - [MCPの読取は平文で残る](reference_tool_results_cache_keeps_secrets.md) — ★tool-results/に機微が残る。掃除で消えない・親が最後に消す
 - [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/11 sshが断続的にタイムアウト(3回)。★1回で落ちたと判定しない＝再試行3回＋別経路。★担当はPIDで生死を見る
