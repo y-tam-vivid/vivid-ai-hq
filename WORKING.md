@@ -4252,6 +4252,15 @@ v2/v3/無印の.dc.html・22MBの書き出し版・1751の控えが消失。当�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ビビ / MacBook 2026-09-14 23時】オレンジワークス ポートフォリオ `/works/` を本番WPへ実装 ── 着手（読む→下書きで書く）**
+  - 有璽氏「WordPressのログインがようやく完了したので実装しましょう」
+  - 対象 `https://orange-works.co`（★本番）。書くのは **work 投稿42件・work_genre 7ターム・メディア・
+    固定ページ `/works/service/`**。★**すべて下書き（draft）で入れ、公開は有璽氏が確認してから**
+  - **触らない**: 既存11ページ・既存の実績5件（/about/・/about/forbusinesses/）・フォーム・テーマ本体・プラグイン設定
+  - **現在地（23時台）**: 投入スクリプト実装・ドライラン合格。★当方専用の鍵「claude-works」の保存待ち（有璽氏の手・`~/.orangeworks-wp.env` は空）
+  - **★並走**: Desktop側の Claude Code が同じWPでSEO作業中（鍵 claude-kiji）。当方は追加のみ・既存ページ/設定に触らない
+  - **★同じ対象に手をつけないでください**: orange-works.co の work / work_genre / `~/orangeworks-portfolio/tools/wp_import_works.py`
+
 - **【リリス / MacBook 2026-09-12】JFBI 調査研究サイト（1ページ・静的）を実装しVercelへ ── ✅完了。公開済み**
   - **★有璽氏が見るURL: https://jfbi.vivid-global.com/**（合言葉なし・検索よけ3重・2026-09-12開通）
   - 入力 `~/Downloads/発達特性とお金の調査研究サイト/`（**読むだけ。1バイトも書き換えていない**・sha256で確認）
