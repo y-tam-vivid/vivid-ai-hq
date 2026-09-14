@@ -53,32 +53,120 @@
 
 ## Mac mini セッション
 
-### 【チョッパー / mini 2026-09-14 07:48】★Cへの指摘6件（有璽氏が実機で確認）── 走行中 PID 4060
+### 【チョッパー / mini 2026-09-14 10:1x】リンク修正・スマホのテープ削除・残り15ページ検証 ── ✅完了
 
-有璽氏が★Cを実機で触って出した6点。**①②③④を直す／⑤⑥は実測で真因を特定する。**
+有璽氏の実機指摘3点＋確定事項2点（★20-39px79件・メディアクエリ内133件は対象外で確定／
+スマホのテープは削除・タブレットは残す）への対応。対象は`theme/lifestandup/`のみ。
+本番サーバー・本番WP管理画面・DNS／台帳・Notion・kintoneへは1文字も書いていない。
+`redeploy.sh`未実行・デプロイ未実施・**git add未実施**（ファイルを直すところまで）。
 
 ```
-①削除ができない        ★実測：保存できるのは 位置/サイズ/Gap/Padding のみ。削除は無い
-②スマホだけ消したい     ★やり方は既にある（@media max-width で display:none・9/10に前例）
-                       → ★Cの画面から1クリックで積める形にする。★消さず隠す
-③ためた変更が積み上がる  ★実測：1回のドラッグで★4件（left/right/width/top）が別々に積まれる
-                       ★有璽氏「マスキングテープを動かしたログはあくまで一つ」
-                       → 表示と取消を★ファイル+セレクタ単位で束ねる。同じ場所は上書き（積まない）
-④サイズ変更ができない    ★★事実が逆。既に動いている（handle8個・resize実装・width:10.41%が実際に積まれた）
-                       → ★機能でなく★画面を直す（つまむ場所と効果が画面で分かる形へ）
-⑤選択枠と本体がずれる    ★枠は getBoundingClientRect＝回転した要素では外接矩形になりずれる
-                       → ★推測で直さない。transform/iframe座標系を実測してから
-⑥Cとデモが同じか不明    ★実測：U=q.u||'/stand-up/' ＝★同じURLをiframeで読む＝中身は同じ実体
-                       ★だが見え方は別。疑い＝スクロールバー15px前後／ズーム／DPR
-                       → ★同じ幅で「Cの値」と「実機相当の値」を並べ、差の出どころを名指し
+Aリンク  stand-up-top.php「3つのプログラムを見る」= href="#sec-programs"（同ページ内に
+        id無し＝死んでいた）→ lsu_link('programs')へ修正。他ページの同型死にリンクは
+        全テンプレート機械走査で0件（lsu_links()全19キーの呼び出し側も未定義キー0件）
+Bテープ  stand-up-top.css 540px以下の既存空ルール.tape-vertical{}へ
+        display:none !important追加（削除でなく隠す）。980px以下(タブレット帯)は
+        別ブロックのright基準配置が生きたまま。実測：375px→display:none/height0、
+        768〜980px→display:block/height310（消しすぎていないことを確認）
+C検証   残り15ページ×3幅(375/390/768)横あふれ=45/45差分0px。margin158件の
+        before/after突合(15ページ×3幅)＝新規増加0件（合計101→93、唯一の差は
+        stand-up-top@375の-8件＝margin効果でなくテープ非表示化の効果の可能性が高いと
+        正直に注記）。代表5ページ分(先行9/14実施・290→290)と合わせ全20ページで
+        margin変更による重なりの新規増加は0件
 ```
 
-**★デプロイさせていない**（有璽氏が触っている最中。出すタイミングは窓口が決める）。
-指示文 `~/.vivid-relay/chopper_editor_fix.txt` ／ ログ `chopper_20260914.log` ／
-出口 `~/.vivid-relay/chopper_editor_fix_result.md`。
+★実装（css/php）はこのセッションで直接編集（role_guard対象外拡張子）。検証用`.py`
+新規作成のみsystem-developer(ピタゴラス)へ委譲（role_guardの誤検出でメインセッション
+扱いのため・既知の型）。正本theme/lifestandup/は検証中も1文字も書き換えず、配信用
+コピー(`_tools/wordpress/...`)側だけを一時操作してdeploy.pyで復帰、2経路で一致確認済み。
 
-**★同じ対象に手をつけないでください**: `~/lifestandup-wp/lsu-editor.html` ／
-`vercel-editor/lsu-editor/index.html` ／ `static-preview/lsu-editor/index.html`
+**★残っているもの**：タブレット帯のテープの重なり自体は今回未検証（消す対象ではないため）。
+重なりの絶対数（recruit-interview14件・stand-up-top18件等）を直す依頼は受けていない
+ため未対応。href="#"単体（約80件）は既存memoryで分類済みのまま今回は触っていない。
+
+出口 `~/.vivid-relay/chopper_link_tape_result.md`。**デプロイ判断の材料は揃った。
+commit・デプロイは窓口判断待ち。**
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【チョッパー / mini 2026-09-14 09:1x】全体のマージンを改めて確認・調整 ── ✅完了
+
+有璽氏の指示「調整を、全体のマージンを改めて確認し調整してください。仕上がってないものが
+あるのかなというふうに確認していて思います」への対応。**対象は
+`~/lifestandup-wp/theme/lifestandup/` のCSS（`assets/css/*.css`・`style.css`）のみ。**
+本番サーバー・本番WP管理画面・DNS／台帳・Notion・kintoneへは1文字も書いていない。
+redeploy.sh未実行・デプロイ未実施・git add -A不使用・pkill -f不使用。**commitは実行していない**
+（明示的な指示が無かったため。9/13の型に合わせた）。
+
+```
+① 数え上げ  738件（padding/margin top/bottom・23ファイル全数走査）。
+            ★対象(全幅・40px以上・比率なし)=158件・46パターン
+② 分類     158件全て「セクション/ブロック間の余白」と判定。装飾・テープは0件混入。
+            触らない/迷う=0件（全部直す）
+③ 実装     158/158マッチ。既存のpx値は1文字も変更せず、--sp-t/--sp-b追加＋
+            @media(980px/540px)追加のみ。実装はピタゴラス(system-developer)へ委譲
+            （role_guardがメインセッション誤検出で.py直接Write拒否のため）
+④ 実測     チョッパー本人が独立に検算（ピタゴラスの申告を鵜呑みにせず再実行）。
+            括弧23ファイル一致／3幅計算式一致／PC幅(1440px)完全不変／
+            横あふれ15ケース0px／★重なり290件→290件で新規増加0件
+            （ピタゴラスは重なり未実施だったため、直す前へ一時復元して比較検算した）
+```
+
+出口 `~/.vivid-relay/chopper_margin_all_result.md`。バックアップ
+`~/lifestandup-wp/theme/lifestandup/_backup/20260914-margin-all/`。
+
+**★残っているもの（正直に）**: 20-39px・メディアクエリ内の余白は対象外のまま。
+`.pcat`等の意匠寄りの区切りは機械基準で拾ったのみで意匠上の最終確認は有璽氏へ。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
+### 【チョッパー / mini 2026-09-14】★Cへの指摘6件（有璽氏が実機で確認）── ✅完了
+
+有璽氏が★Cを実機で触って出した6点。①②③④を実装・⑤⑥は実測で真因を特定した。
+**対象は`lsu-editor.html`（正本）／`vercel-editor/lsu-editor/index.html`／
+`static-preview/lsu-editor/index.html`の3ファイルのみ（同期・diff一致確認済み）。**
+theme/CSS/PHP・本番サーバー・本番WP管理画面・DNS／台帳・Notion・kintoneへは1文字も
+書いていない。**デプロイ・git commitは未実施**（窓口・有璽氏の判断待ち）。redeploy.sh
+未実行・git add -A不使用・pkill -f不使用。
+
+```
+①②消せない・スマホだけ消したい  ✅display:noneで隠すパネルを新設（消さない・戻せる）。
+                              既存のmode B(この幅だけ)保存経路をそのまま使う
+③積み上がり(最重要)   ✅真因：1回のドラッグでleft/right/width/topの4件が毎回push。
+                      upsertPending()で「同file+selector+mode(+width)+property」を
+                      上書きに変更。表示もfile+selector単位で「◯◯（4個の値を変更）」の
+                      1行へ束ねた。実測：同一要素を5回ドラッグしてもchgCountは常に"1"
+④サイズ変更が伝わらない  ✅機能は元から実装済みだった（8ハンドル・resize処理）。
+                        .handleへcursor(nwse-resize等)追加＋選択時に1行ヒント表示
+⑤選択枠のズレ         ✅真因確定：tape-vertical等はtransform:rotate(3deg)。
+                      getBoundingClientRect()は外接矩形を返すため回転本体とズレる。
+                      getRotationAwareRect()で一時的にtransform:noneにして測り、選択枠
+                      にも同じtransformをかけて描画。実測で本体と完全一致を確認
+                      （★検証1回目は別要素(.deco-leaf-2)を誤クリックしていただけと判明。
+                      DOM直接指定で再検証し解消）。★限界：8ハンドル自体は回転前矩形の
+                      四隅に軸並行のまま置く（未対応）
+⑥iframeと実機の見え方  ✅仮説「iframeのpx固定とスクロールバー分のズレ」は実測で否定
+                      （820px幅でEmulation実機相当とiframe方式のclientWidthが完全一致・
+                      差0px）。★ただし別の真因：★Cは7段階の固定幅しか見られないが実機は
+                      連続リサイズできる。有璽氏の目分量の幅が820pxちょうどとは限らず、
+                      中間帯にだけ崩れがあれば★Cの7点では再現できない
+                      → [[reference_endpoints_pass_middle_breaks]]と同型。
+                      sweep_widths.py(連続幅の掃引)との連携が次の一手（提案のみ・未実装）
+```
+
+**★発見（次に触る人向け）**：ローカル検証サーバー(8750)が実際に配信する実体は
+`_tools/wordpress/wp-content/lsu-editor.html`という別の複製（.gitignore対象・
+正本とは自動同期されない）。今回1回同期したが、次に正本を直す人は反映を忘れないこと。
+
+node --checkで両ファイルとも構文OK。headless Chrome+CDPで①③④⑤を実測確認済み。
+出口 `~/.vivid-relay/chopper_editor_fix_result.md`。memory
+`project_lifestandup_website_wordpress.md`にも記録済み。
+
+**★role_guardフックの誤検出**（agent_id欠落）に当たり、検証用.pyスクリプトの
+作成・実行はサブエージェント（ピタゴラス）へ委譲した（Bash経由の回避はしていない）。
+実装コード本体（.html 3本）は対象拡張子外だったため直接編集した。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
 
 ### 【チョッパー / mini 2026-09-13】★C(lsu-editor)へ内側の余白(Padding)を追加 ── ✅完了
 
