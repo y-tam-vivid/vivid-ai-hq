@@ -47,7 +47,7 @@
 - [AI資産カタログ](ai-asset-catalog.md) — Drive`AI資産_正本/`を正本と宣言済＝vivid-ai-hqの設計と要調整
 - [Downloads整理の2段設計](downloads-archive-system.md) — Stage1は自動化OK／Stage2(事業部・個人)は人＋AI。自動振り分け禁止
 - [確認は溜めて報告は溜めない](feedback_batch_the_checks.md) — **🔴9/13★3回目。有璽氏から「随時共有して」。★出す単位は作業1つ終わるたび。待ち時間こそ黙らない**
-- [「できない」の前に試す](feedback_verify_before_declining.md) — **🔴9/14 ★未確定は3段（①公式を読む②実測③人に聞く）。①を飛ばし「画面を1枚ください」で止めた。読んだら5分で埋まり工程ごと消えた**／9/12 記憶で書いて外した
+- [「できない」の前に試す](feedback_verify_before_declining.md) — **🔴9/14 未確定は3段(①公式②実測③人に聞く)。①を飛ばした。★公式を読んだ後も実画面で名前と★画面の役割を読む(見る画面でなく取り出す画面だった)**
 - [止まるな・滞留をゼロに](feedback_stop_asking_just_do_it.md) — ★9/14 4件目＝書いて渡さず終えた。★言う＝やる。未来形は人が押す時だけ
 - [読む人の言葉で書く](feedback_write_for_the_reader.md) — ★9/13 選択肢は人の1日で並べ短所も書く／可視化は問題だけが目に入る形に
 - [触る画面は説明でなく画面自体を直す](feedback_ui_must_be_self_explanatory.md) — **🔴9/10同日2回目「使い方がよくわからん」＝説明を足しても直らない。ウィザード型(1度に1指示)へ**
