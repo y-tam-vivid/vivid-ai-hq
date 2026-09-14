@@ -114,10 +114,38 @@ if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -gt 0 ] && [ "$DIRTY_TRACKED" -eq 0 ]; t
       BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
       AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
     else
+      # ============================================================
+      # ★2026-09-14 新設：追記型のファイルだけ、衝突を★機械が解く
+      # ------------------------------------------------------------
+      # ★なぜ ── 「衝突したら人が両方を残して解く」設計だったが、
+      #   ★その人（AI）が28日間1度も拾わず、43件溜まった（2026-09-14 実測）。
+      #   有璽氏「全部止まっとる」。★拾う人がいない前提で設計し直す。
+      # ★対象は memory/*.md と WORKING.md だけ。どちらも★追記型なので
+      #   「両方残す」で内容が壊れない（恒久ルールもそう定めている）。
+      # ★コード（.py/.sh/.js/.php）が衝突したら★従来どおり abort して🔴。
+      #   実装の混在は機械で解いてはいけない。
+      # ============================================================
+      AUTO_RESOLVE="no"
+      _conf=$(git diff --name-only --diff-filter=U 2>/dev/null)
+      if [ -n "$_conf" ] && ! echo "$_conf" | grep -qvE '^(memory/.*\.md|WORKING\.md)$'; then
+        # ★全部が追記型 ＝ 両方を残して解く（<<<<<<< ======= >>>>>>> の3行だけ削る）
+        echo "$_conf" | while IFS= read -r _f; do
+          [ -f "$_f" ] || continue
+          /usr/bin/sed -i '' -e '/^<<<<<<< /d' -e '/^=======$/d' -e '/^>>>>>>> /d' "$_f" 2>/dev/null || true
+        done
+        if git add -u >/dev/null 2>&1 && \
+           git commit -q -m "同期の衝突を機械が解いた（★両方の記録を残す・相手の行を消していない）" >/dev/null 2>&1; then
+          AUTO_RESOLVE="yes"; MERGED="yes"
+          BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
+          AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+        fi
+      fi
+      if [ "$AUTO_RESOLVE" != "yes" ]; then
       git merge --abort >/dev/null 2>&1 || true
       # ★2026-09-14 追加：abort したことがどこにも残らず、68件まで積み上がった。
       #   毎ターン届く SYNC_STATUS.md へ理由を出す（ログは見に行かないと分からない）。
       MERGE_CONFLICT="yes"
+      fi
     fi
   fi
 fi

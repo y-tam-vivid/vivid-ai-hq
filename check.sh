@@ -130,4 +130,36 @@ else
 fi
 
 say ""
+say "── 9. ★作った検問が動き続けているか（2026-09-14 新設）"
+# ★なぜ要るか（実測）── memory に「機械化した」と★23回書いたのに、
+#   作った5本のうち★実際に呼ばれていたのは1本だけだった。4本は
+#   「作った → 登録しなかった → 誰も気づかないまま死んでいた」。
+#   有璽氏「作りっぱなしで終わらせんなよ。★動き続けること」（2026-09-14）
+#   ★ここで止めるのは「作ったのに繋いでいない」もの。★助言でなく★NGにする。
+for _f in bin/check_index_line_length.py bin/kb_schema_check.py; do
+  if [ -f "$_f" ]; then
+    _n=$(basename "$_f")
+    # ★自分自身（check.sh）から呼ばれていれば「繋がっている」
+    if grep -q "$_n" check.sh 2>/dev/null; then :; else
+      ng "★$_n は作ってあるが、どこからも呼ばれていません（作りっぱなし）"
+    fi
+  fi
+done
+# ★索引の1行180バイト検査 ── memory/MEMORY.md を毎回見る
+if [ -f bin/check_index_line_length.py ]; then
+  _idx=$(python3 bin/check_index_line_length.py 2>&1)
+  if echo "$_idx" | grep -qE "超|🔴"; then
+    say "  △ 索引に180バイトを超える行があります（助言）:"
+    echo "$_idx" | grep -E "超|🔴" | head -3 | sed 's/^/      /'
+  else
+    ok "索引の1行は180バイト以内"
+  fi
+fi
+# ★器と表示のズレ検査
+if [ -f bin/kb_schema_check.py ]; then
+  _kb=$(python3 bin/kb_schema_check.py 2>&1 | tail -3)
+  say "  ・器と表示のズレ: $(echo "$_kb" | tail -1)"
+fi
+
+say ""
 [ $NG -eq 0 ] && { say "✅ ズレなし"; exit 0; } || { say "❌ ズレを検出。上記を解消してから commit すること"; exit 1; }
