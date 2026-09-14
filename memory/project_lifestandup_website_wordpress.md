@@ -4988,3 +4988,37 @@ Jetpackタイルの15本は**今も元のまま**（＝直す対象かどうか�
 `/stand-up/`→「/立ち上がる/」、「already exists」→「心配している」）。
 ★訳せた行だけ日本語・訳せない行は英語のまま、が見分け方。
 ★人に画面を見せるとき、**翻訳がかかっている前提で「実際の値はこうです」と添える。**
+
+### 【リリス 2026-09-14】デモ⇄WordPress 突合検査 compare_demo_vs_wp.py を新設・build_theme_zip.sh へ配線 ── ✅完了
+
+有璽氏「WordPress側で一個一個確認しなあかんのやったら、デモサイトでやってきた意味がない。
+お前が責任を持ってデモサイト通りの形に持っていけ」への対応。同日午前の実害
+（page-setup.php が `_lsu_source` を落とし本番21ページが崩れた／HTTP200・リンク生存・
+文字列一致では1件も検出できなかった）を踏まえ、①読み込むCSS ②bodyクラス(lsu-*)
+③section出現順(骨格) ④page-template-*クラス ⑤WP側単体の内部整合、の5点を機械で
+突合する `~/lifestandup-wp/compare_demo_vs_wp.py`（新規）を作成し、
+`migration/build_theme_zip.sh` の先頭（zip作成前）へゲートとして組み込んだ。
+
+```
+★role_guardの誤検出でこのセッション（リリス）からWriteが拒否され、
+  ピタゴラス（system-developer）へ正規に委譲して実装・実測した（Bash回避なし）
+ページ列挙  build_pages.py の URL_MAP(20) + useful + legal-disclosure = PAGE_CASES(22)
+            ＋ useful-article/news-article = SINGULAR_CASES(2) ＝ 計24
+            （check_overlap_all.py の URL_MAP+EXTRA_CASES と同じ網羅の型に揃えた）
+実測        22ページ全部で現時点は食い違い0件。build_theme_zip.sh 経由でzip作成も完走
+```
+
+**★重要な発見（次に同種の検証を書く人へ）**：`--break-source` で `_lsu_source` だけを
+削除しても、①②⑤は一切壊れなかった。理由は同日中に functions.php:1272〜へ
+**二重の保険**（`_wp_page_template` からの逆算 → それも無ければ page-setup.php の
+URL対応表からの逆算）が既に入っていたため。**_lsu_source と _wp_page_template の
+両方を消して初めて**、④テンプレートクラス（`body_class()` がWPコアの `_wp_page_template`
+メタを直接見るため保険の対象外）だけが壊れることを実測で確認した。
+→ **「今日直したバグ」の再現テストを書くときは、直した瞬間のコードに残っている
+  他の保険機構を確認してから壊す範囲を決める。** 片方だけ壊すと「直った」と誤判定する。
+
+**★対応表(`lsu_page_setup_definitions`)に載っていない新規ページで同種の事故が起きた
+場合、①②⑤も正しく検出できるはずだが未検証**（対応表自体の編集が要るため試していない）。
+
+出口 `~/.vivid-relay/lilith_diff_result.md`。
+**★同じ対象に手をつけないでください**: なし（作業完了）
