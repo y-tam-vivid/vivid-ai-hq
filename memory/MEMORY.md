@@ -53,7 +53,7 @@
 - [触る画面は説明でなく画面自体を直す](feedback_ui_must_be_self_explanatory.md) — **🔴9/10同日2回目「使い方がよくわからん」＝説明を足しても直らない。ウィザード型(1度に1指示)へ**
 - [通知は押せる形＋読める形に](feedback_write_for_the_reader.md) — **🔴9/8「長ったらしいのは見づらい」＝親は「◯時の通知です」＋要約だけ・★詳細はスレッドへ追記（chat.postMessageのtsをthread_tsに）。出す側の部品で揃える**／ ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
 - [土台にも日付がある](reference_stale_premise_daily.md) — **★9/10 器は9/9・成果物は9/10で★1日で前提が変わっていた。★都度の指摘に頼らず機械で数える＝bin/kb_schema_check.py（表示側のキー⇄器の列⇄taxonomy）。★名前で見つかるズレだけ。意味の変化は人が見る**
-- [見本の値が実データの顔で残る](reference_mockup_values_survive_as_real.md) — ★9/13 消したら今度は空に。毎日数える検問(office_fake_check)
+- [見本の値が実データの顔で残る](reference_mockup_values_survive_as_real.md) — ★9/14 隣の枠が丸ごとダミー。同種の枠を全部数えてから直す
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★真因は速さのために確かさを落とすこと。数える部品を1か所へ集約し読むだけにする。件数は数え方を添える
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 🔴9/10「★60px左手に配置」を「60px以上内側ならOK」と読み替え7/6箇所を無変更。★位置か下限かは動詞で決まる／件数0を合格にしない
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本・報告に混ぜない。kindは8種／投げる前にpreview／投げたら必ずanswer_of()を見る（押されても聞いた側へ返らない）。🔴9/7 4回目＝1通ずつでなく★Slackへ出る経路を全部数えて揃える。押せないものが混ざると判断が沈む（DM7通中押せるのは2通）。出すのはボタン・受けるのは会話でもよいが★出した側が台帳を閉じる**
@@ -70,7 +70,7 @@
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★9/5 役割検問がmini担当セッションを誤検出(agent_id無=ビビと断定)
 - [作って繋いで動かし続ける](reference_make_it_impossible_not_detectable.md) — 🔴9/14「機械化」23回中動いてたのは1本。①作②繋③発火を実測
 - [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全／**★対策は層をまたいで用意する（検知・予防・解除）。検知だけでは止まる回数は1回も減らない**／★記録は再発を止めない＝入口に検問を置く（全部本文へ）
-- [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — **★9/9 初めて穴を名指しで数えた＝Ｃ(在るのに効かない)3件。★C-1 hook_interactive_guardは★settings.json未登録＋★毎朝の点検CASESにも無い＝二重の見えなさ(4日)。★新しい検問は同じターンでCASESにも足す。✅C-1は有璽氏の承認で修正済(両機7本とも正常)。★足した瞬間に環境依存の誤検知が出た＝★環境変数に依存するフックは点検も同じenvで叩く**／8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
+- [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — **★在るのに効かない穴＝新しい検問を足したら同じターンで毎朝の点検CASESにも足す。★規範の変更とお金はいまもaskに無い（全部本文へ）**
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/14 失敗を「成功」で打つ実例（npxがcronのPATHに無く214回）。成功は副作用を読み返してから**
 - [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/14 0件相手の「異常なし」は合格でなく未測定(4本中3本が空振り)
