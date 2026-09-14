@@ -68,6 +68,7 @@
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — **★9/9外部調査＝この分野に★定説は無い（複数の情報源が「初期段階」と明言）。★15体規模の公開事例は0件。★一致は3つだけ＝①独立したcontext ②★作成者と検証者の分離(cross-checkと一致) ③★ハーネス側で強制。★輸入では解けない＝自前で決めて実測で直す**／★3回目。提案/作成の前にmemoryとNotionを数える。「無いから作る」禁止
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★9/5 役割検問がmini担当セッションを誤検出(agent_id無=ビビと断定)
+- [作ったら繋いで動かし続ける](reference_make_it_impossible_not_detectable.md) — 🔴9/14「機械化した」23回中★動いていたのは1本。①作②繋③発火を実測
 - [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全／**★対策は層をまたいで用意する（検知・予防・解除）。検知だけでは止まる回数は1回も減らない**／★記録は再発を止めない＝入口に検問を置く（全部本文へ）
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — **★9/9 初めて穴を名指しで数えた＝Ｃ(在るのに効かない)3件。★C-1 hook_interactive_guardは★settings.json未登録＋★毎朝の点検CASESにも無い＝二重の見えなさ(4日)。★新しい検問は同じターンでCASESにも足す。✅C-1は有璽氏の承認で修正済(両機7本とも正常)。★足した瞬間に環境依存の誤検知が出た＝★環境変数に依存するフックは点検も同じenvで叩く**／8/29に0→4へ。★規範の変更とお金は今もaskに無く無防備
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
