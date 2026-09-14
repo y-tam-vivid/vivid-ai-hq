@@ -53,3 +53,21 @@ metadata:
 
 関連 [[feedback_one_route_is_not_verification]] ／ [[reference_row_reference_rots_on_rebuild]] ／
 [[reference_freeze_the_version_under_review]] ／ [[project_telapo_list_other_services]]
+
+**★`git add <ディレクトリ>` は、そこに★新しくできたファイルも巻き込む（2026-09-14）**
+
+```
+やったこと  git add -- theme/lifestandup/assets/css theme/lifestandup/style.css
+期待        変更のあった23本
+★実際      ★24本。1本多い
+正体        assets/css/style.css ＝★テーマ本体(95KB)の完全な複製。
+            作業中のスクリプトが誤って作っていた（読み込まれてはいない）
+```
+
+**★数が合わないまま commit しなかったから見つかった。**
+`git diff --cached --name-status` で **★新規(A)が在るか**を見れば1行で分かる。
+`--name-only` では M と A の区別がつかない ＝ ★見分けられない道具で数えていた。
+
+**★「名指しで add」はファイル名を書くこと。ディレクトリ名はその中の全部を名指ししたことになる。**
+恒久ルール「`git add -A` を使わない」の本意は★意図しないものを混ぜないことなので、
+ディレクトリ指定でも同じ事故が起きる。**add したら必ず `--name-status` で数える。**
