@@ -53,6 +53,42 @@
 
 ## Mac mini セッション
 
+### 【リリス / mini 2026-09-14 21時台】recruit-interview 5人目「Kさん」表記＋写真追加 ── ✅完了
+
+有璽氏の指示「パート指導員の方の写真が入っていないので、何かは入れてください。
+指導員さんとなっているので、これはKさんにしてください。二人被ってしまいますが、
+致し方ないです」への対応。対象は `~/lifestandup-wp/{theme/lifestandup/functions.php,
+theme/lifestandup/style.css, photos.json}` ＋新規 `theme/lifestandup/assets/photos/
+iv-p-photo.jpg` のみ。本番サーバー・本番WP管理画面・DNS／台帳・Notion・kintone・Slackへは
+1文字も書いていない。redeploy.sh未実行・git add -A不使用（名指しaddのみ・**commit未実施＝
+窓口判断待ち**）。
+
+```
+①表記   'p'スロットのinitialを「指導員」→「K」へ。既存Kさん('k'スロット)との
+        イニシャル重複は有璽氏が明示承認済み（統合・別文字への変更はしていない）
+②写真   本人の写真候補が無い(roster内に該当なし)ため、iv-d-photo(Photo-19・
+        施設外観)と同じ考え方でPhoto-26(LIFE STAND UP入口・人物ゼロ)を採用。
+        roster内で唯一未使用だった残り3候補(221=児童の顔が鮮明／152=送迎ドライバー
+        本人の顔で誤帰属になる／188=別枠指定済み+キャラ商品混入)は原寸検分のうえ見送り
+実測    スクショで5人の並びを実見(PC/SP)・他4名はfunctions.php diff+写真4枚のsha256で
+        無傷確認・横あふれ8点(375/390/768/1440×2ページ)すべて0px・
+        compare_demo_vs_wp.py --skip-sync で「デモ通り(食い違い0件)」
+🔴発見  ★作業中、別セッション(チョッパー・port8750で全22ページ計測中)の存在に気づかず
+        `deploy.py`(activate_theme.phpと同型の危険な全削除→再コピー)を2回実行した。
+        影響の有無は未確認（memory/reference_shared_wp_test_env_collision.mdへ再発として
+        記録済み。以降はcompare_demo_vs_wp.py --skip-syncのみ使用）
+```
+
+出口 `~/.vivid-relay/lilith_kfix_result.md`（①〜⑥全項目）。
+成果物 `migration/dist/lifestandup-theme_20260914-210757.zip`
+（Version 0.1.9-20260914・受け取り要件a/b/c/d全合格・iv-p-photo.jpg同梱確認済み）。
+
+**★人の判断が要る3点**：①写真を本人のものへ差し替えるか ②重なりcountの厳密な
+回帰確認（変更前スナップショットが無いため今回は絶対値のみ）③チョッパーの計測結果
+（`~/.vivid-relay/chopper_local_result.md`）が揃っているか確認してほしい。
+
+**★同じ対象に手をつけないでください**: なし（作業完了・commit待ち）
+
 ### 【チョッパー / mini 2026-09-14 10:1x】リンク修正・スマホのテープ削除・残り15ページ検証 ── ✅完了
 ### 【ビビ / MacBook 2026-09-14】★編集ツールを作り直す範囲 ── ★有璽氏の判断待ち3点
 
