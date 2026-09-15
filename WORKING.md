@@ -53,6 +53,28 @@
 
 ## Mac mini セッション
 
+### 【ビビ→ピタゴラス / mini 2026-09-15】週1報告シート→空き状況ページの下書き道具 ── ✅完了
+
+有璽氏の構想「現場から吸い上がる仕組み→本部事務がAIを活用し掲載できるプロセス」への
+第一歩。**★読むだけの道具。元のスプレッドシート・本番WP・台帳・Notion・kintone・Slackへは
+1文字も書いていない。** 対象は新規シート `1LXx6y0TqBeFpphD3HjtCpe8f3nD7nAVnumc6ZpKZ_JA`
+「LIFE STAND UP 現場からの週1報告（空き枠・イベント）」（タブ①空き枠②イベント③書き方）。
+
+```
+新設   ~/.vivid-relay/availability_from_sheet.py（role_guard誤検出でAgent委譲・既知の型）
+       lsu_availability_data()（9/14新設のavailability.php側）が読む書式へ変換
+       ★記入例（記入者=全角括弧のプレースホルダー）を機械的に除外・掲載済み行も除外
+実測   --selftest全項目OK（実物PHPバイナリでのPython再実装との構造一致含む）。
+       シートは着手前後で全セル完全一致（無傷）
+```
+
+**★--runのような本番反映機能は無い**（WP書込み経路・本部事務の最終確認の位置づけが
+未確定＝設計の分岐）。出口 `~/.vivid-relay/sheet2page_result.md` に判断待ちとして明記。
+現時点でシートに実データは無く記入例のみ＝次回現場記入後に本番挙動の再確認が要る。
+記録 → `memory/project_lifestandup_website_wordpress.md`「★2026-09-15」節。
+
+**★同じ対象に手をつけないでください**: なし（作業完了）
+
 ### 【リリス / mini 2026-09-14 21時台】recruit-interview 5人目「Kさん」表記＋写真追加 ── ✅完了
 
 有璽氏の指示「パート指導員の方の写真が入っていないので、何かは入れてください。
