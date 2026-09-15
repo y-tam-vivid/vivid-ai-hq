@@ -74,6 +74,7 @@
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — **★在るのに効かない穴＝新しい検問を足したら同じターンで毎朝の点検CASESにも足す。★規範の変更とお金はいまもaskに無い（全部本文へ）**
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/14 失敗を「成功」で打つ実例（npxがcronのPATHに無く214回）。成功は副作用を読み返してから**
+- [止まりが伝わらないのは黙りが2つ](reference_two_silences_hide_a_stop.md) — ★9/15 Blob停止に9時間気づけず。cronの出力が消える＋画面が黙る
 - [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/14 0件相手の「異常なし」は合格でなく未測定(4本中3本が空振り)
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ

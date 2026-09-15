@@ -870,3 +870,41 @@ cron      50 8 * * *（毎日08:50）→ office_fake_check.log
 🔴**踏んだ罠**：`running()` には return が2つある（心拍経路とpsの予備経路）。
 正規表現で最初の1つに入れたら**予備経路のほうだった**＝`last` が常に null。
 ★**同じ関数に return が複数あるときは、どの経路が実際に走るかを実測してから入れる。**
+
+
+## 🔴2026-09-15 本当に止まった ── Vercel Blob が Billing State: Inactive で停止
+
+有璽氏「なぜかわからないが止まってるよ。なんで？」
+
+```
+実測  blob list-stores --scope fuku-chi-vivid
+        fukuchi-kadoban-data      ● Suspended  206.32KB  202ファイル  7d
+        lifestandup-editor-data   ● Suspended  411B      2ファイル    5d
+      get-store → Billing State: Inactive ／ Updated At: 2026-09-15 00:42:01
+```
+
+**★容量超過ではない。課金が有効でないため。** 判断は ask_hub `#3c17b2` で有璽氏へ
+（1 課金を戻す／2 Blobを使わない形へ作り替える（費用0・更新は30分間隔になる）／3 止めたまま）。
+押す場所 https://vercel.com/fuku-chi-vivid/~/stores/blob/store_q0z2tSgdx1CBz2qc
+
+**★9時間気づけなかった理由は別にある** → [[reference_two_silences_hide_a_stop]]
+①cronの出力がどこにも残らない書き方だった ②画面が「読めていない」と言わなかった。
+どちらも直した（可逆なので判断を待たずに実施）。
+
+## 🔴2026-09-15 走っているのに0人と出ていた（これも同じ日に見つかった）
+
+```
+実測  ps      リリス(69923)・ピタゴラス(69925) が走行中
+      心拍    9/15 のファイルが★1つも無い（run_agent.sh を通さない直接起動）
+      running() → count=0 ／ error="psにだけ居る(心拍を書いていない起動)"
+      画面    ★その error を1行も出していなかった
+```
+
+**★心拍だけを見ると、直接起動は永遠に0人。** ps で見えているなら走っている。
+→ `agent_running.py` を直し、**心拍を書かない起動も件数・一覧へ入れる**ようにした。
+担当名は**指示文の「あなたはリリス（web-developer）です」から読む**（推測ではない）。
+経過は ps の etime から。**doing だけは心拍にしか無いので「分かりません」と正直に出す。**
+
+🔴**踏んだ罠**：`noteEl` が既に使われており変数名が衝突。`node --check` が捕まえた。
+**★出していたら画面が丸ごと止まっていた**（本物の「止まってる」を自分で作るところだった）。
+★JSを触ったら毎回 `node --check` を通す。
