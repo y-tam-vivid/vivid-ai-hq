@@ -126,7 +126,14 @@ if [ "$FETCH_RC" -eq 0 ] && [ "$BEHIND" -gt 0 ] && [ "$DIRTY_TRACKED" -eq 0 ]; t
       #   実装の混在は機械で解いてはいけない。
       # ============================================================
       AUTO_RESOLVE="no"
-      _conf=$(git diff --name-only --diff-filter=U 2>/dev/null)
+      # ★2026-09-16 修正（つる実測・ピタゴラス対応）：core.quotepath の既定(true)により
+      #   git diff --name-only は日本語ファイル名を "memory/INDEX_\347\231\272\344\277\241.md"
+      #   のようにクォート＋8進エスケープで返す。この文字列は下の grep 判定に一致せず
+      #   「追記型ではない」と誤判定され、自動解決に入らず abort → 🔴のまま固定する。
+      #   実害: memory/INDEX_発信.md 等の日本語ファイル名を含む衝突が一度も自動解決されず
+      #   24.5時間 取り残された（コード(.py/.sh等)側は0件・追記型md側だけが衝突する状況）。
+      #   -c core.quotepath=false で無効化し、生の（クォートしない）ファイル名を得る。
+      _conf=$(git -c core.quotepath=false diff --name-only --diff-filter=U 2>/dev/null)
       if [ -n "$_conf" ] && ! echo "$_conf" | grep -qvE '^(memory/.*\.md|WORKING\.md)$'; then
         # ★全部が追記型 ＝ 両方を残して解く（<<<<<<< ======= >>>>>>> の3行だけ削る）
         echo "$_conf" | while IFS= read -r _f; do
