@@ -52,7 +52,7 @@
 - [読む人の言葉で書く](feedback_write_for_the_reader.md) — ★9/14「塞がっている」は通じない。①どの仕事②何があれば③どこを押すか
 - [触る画面は説明でなく画面自体を直す](feedback_ui_must_be_self_explanatory.md) — **🔴9/10同日2回目「使い方がよくわからん」＝説明を足しても直らない。ウィザード型(1度に1指示)へ**
 - [通知は押せる形＋読める形に](feedback_write_for_the_reader.md) — **🔴9/8「長ったらしいのは見づらい」＝親は「◯時の通知です」＋要約だけ・★詳細はスレッドへ追記（chat.postMessageのtsをthread_tsに）。出す側の部品で揃える**／ ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
-- [土台にも日付がある](reference_stale_premise_daily.md) — **★9/15 同じ役割の定義が2本（ローカル用/本番用）あり指示文は古い方だけ指していた。「◯◯へ足して」と書く前に唯一か数える**／★9/10 機械で数える＝bin/kb_schema_check.py（全部本文へ）
+- [土台にも日付がある](reference_stale_premise_daily.md) — ★9/15 同じ役割の定義が2本あり指示文は古い方だけ指していた。足す前に唯一か数える
 - [見本の値が実データの顔で残る](reference_mockup_values_survive_as_real.md) — ★9/14 隣の枠が丸ごとダミー。同種の枠を全部数えてから直す
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★真因は速さのために確かさを落とすこと。数える部品を1か所へ集約し読むだけにする。件数は数え方を添える
 - [直った基準を目的側に](reference_verify_outcome_not_mechanism.md) — 🔴9/10「★60px左手に配置」を「60px以上内側ならOK」と読み替え7/6箇所を無変更。★位置か下限かは動詞で決まる／件数0を合格にしない
