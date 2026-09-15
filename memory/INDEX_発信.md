@@ -77,3 +77,9 @@
 - [LSU WordPress移行(②)を実機で通した](project_lifestandup_website_wordpress.md) — ★9/9 ローカル検証WPでテーマ有効化+ブログ134本を実投入(129本新規+既存5本、過不足0)。**news.phpはpage_for_postsに依存しない=②投稿ページ設定は不要と判明**。既存blog_import.phpの画像ロジックを流用(車輪の再発明を避けた)。php -S単一ワーカーは重いリクエストで丸ごと落ちる→撮影前後にcurl生存確認必須
 - [LSU テープ×写真mergeを完了](project_lifestandup_website_wordpress.md) — ★9/9 CSS7本競合を1本ずつ統合(片側丸ごと採用せず)。132通り実測0件・写真移動/011は無傷。★非線形バグ症状はcalc(A+max(0,B))でも直らないことがある＝固定widthがコンテナ超過している可能性を先に切り分ける
 - [区分は必ず増える](feedback_categories_always_grow.md) — ★9/9に同じ指摘が2件（LSU「カテゴリは増える想定で」／かわちばなし「その他も」）。選択肢を決めたらその場で①その他②1か所にまとめる③その他の色 の3つを用意する／**★9/11 増えるのは区分だけでなく★件数。器は正しく増えたのに本文の日本語「4名の言葉には」が3箇所ベタ書きで残った。1件足すときは`grep -nE "[0-9]+名|[0-9]+件"`で数字を数え、データから出ているか手書きかを見る**
+- [かわちばなし・読者像](project_kawachibanashi_portal.md) — ★9/16 子育て世帯でなく★親子＋母親・動きが活発でお金を使う層へ寄せる
+- [かわちばなし・書き手は募集口](project_kawachibanashi_portal.md) — ★9/16 子ども/ママ/福祉の3種をサイトで募集。実測=取材･ライター0件
+- [かわちばなし・LINEは2本](project_kawachibanashi_portal.md) — ★9/16 公式LINE=まとめ／オープンチャット=数多く。サイトは入口。実測0件
+- [かわちばなし・将来は有料枠](project_kawachibanashi_portal.md) — ★9/16 いまapply.htmlは「無料」を4回言い切り。恒久の約束にしない
+- [かわちばなし・収益は6本](project_kawachibanashi_portal.md) — ★9/16 掲載料でなく★集客装置。動員と制作へ繋ぐ／広告･ECは後
+- [md2pdfはコードフェンス不可](feedback_confirm_the_deliverable_form.md) — ★9/16 ```が文字で出る。枠は表か素の行。1枚は画像で見る
