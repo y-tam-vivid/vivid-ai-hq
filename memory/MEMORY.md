@@ -98,6 +98,7 @@
 - [rc=0でも依頼は未達](reference_offload_long_work_to_mini.md) — ★9/13 Stop hookの差し戻しに答えて終了。★出口ファイルをlsするまで完了と言わない
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [公開が詰まる真因は grep -r](project_lifestandup_website_wordpress.md) — **🔴9/9 redeploy.shが2回詰まった(21分/6分)。⛔★「真因＝grep -r」は不十分だった＝★直しても3回目も止まった。★手で打つと数秒・スクリプト内だと止まる＝★未特定。✅9/10 ★手動6手順が3回目も成功(13分)。★指示文へ毎回6手順を書くのが速い。★redeploy.shは直さない。★安全装置を外すのでなく速くする。★npx をcronから呼ぶ時は`< /dev/null`**
+- [無料プランは規約でも詰まる](reference_free_plan_blocks_on_terms_not_only_limits.md) — ★9/15 Vercel Hobbyは非商用のみ。19案件が対象
 - [無料枠は容量でなく回数で尽きる](reference_free_tier_dies_by_count_not_size.md) — ★9/15 Blob停止は課金でなく書込2,880回/月(枠2,000)
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — ★403=Mitigations(DDoS防御)・時間帯で振れる。★1回0枚で断定せず再試行／スクショはstatic-previewを配信して撮る／枠100本･日次リセット。数字と解除手順は本文へ戻した(9/12)
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
@@ -110,7 +111,7 @@
 - [IGをサイトへ出す](project_lifestandup_website_wordpress.md) — **✅9/9 IG側は完了。★ショートコード=`[instagram-feed feed=1]`（保存済）。★動くのは本番WPだけ・デモは静的で展開されない。残＝テーマへdo_shortcode+フォールバックを仕込む／余計な4プラグイン停止。★同日4件が同じ根＝実物を見ずに人の画面を指示した**
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
 - [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — 文面と画像まで1セット／★施設IGに業界の話は不可
-- [外の知を先に見る](feedback_look_outside_before_reinventing.md) — **🔴9/13★2回目。★調査は「症状」でなく「そもそもどう構築するか」から投げる。★自分の設計を疑う問いを依頼文に1つ必ず入れる**／自前パッチの前にクローバーへ
+- [外の知を先に見る](feedback_look_outside_before_reinventing.md) — **✅9/15★3回目は先手で正解。★依頼文に「うちの作りを疑って」を入れる**
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
 - [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
