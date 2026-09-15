@@ -209,6 +209,14 @@ cp "$REPO/web/kadoban/api/office-answer.js" "$SITE/api/office-answer.js" 2>/dev/
 #   ★data.js / office.js は fetch だけなので依存が要らず、これまで気づけなかった。
 cp "$REPO/web/kadoban/package.json" "$SITE/package.json" 2>/dev/null
 
+# ★2026-09-15 追加：会議室のデータを★静的ファイルとしても一緒に出す。
+#   🔴Vercel Blob の無料枠は 書き込み2,000回/月・読み取り10,000回/月しかなく、
+#     30分ごとのpush（2本で月2,880回）だけで超える。実際 09-15 00:42 に止まった。
+#   ★Edge Requests の枠は月100万回。静的ファイルなら桁違いに余裕がある。
+#   ★Blobの経路は消していない。画面はBlobを先に試し、ダメならこちらへ落ちる。
+cp "$HOME/.vivid-relay/office_data.json" "$SITE/office-data.json" 2>/dev/null \
+  && echo "  会議室のデータを静的ファイルとしても運んだ（Blobが止まっても読める）"
+
 # ① 中身を用意する（この機械に無ければ mini から取りに行く）
 if [ ! -f "$SRC_LOCAL" ]; then
   scp -q -o ConnectTimeout=8 "$SRC_REMOTE" "$SITE/_dashboard.html" 2>/dev/null && SRC_LOCAL="$SITE/_dashboard.html"
