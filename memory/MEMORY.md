@@ -120,5 +120,5 @@
 - [セクション間マージンをPC比率で縮小](project_lifestandup_website_wordpress.md) — 158件比率化。20-39px帯限定対象外
 - [縦の余白は4つある](project_web_build_rules_asset.md) — ★9/14 padding だけ見て「ほぼ完了」＝margin 571件が手つかず。158件を比率化・出した
 - [オレンジワークスWPの鍵](project_orangeworks_portfolio_site.md) — ★9/14 鍵はminiに保存。★正誤どちらの鍵でも401＝認証ヘッダーがWPへ届いていない。鍵の再発行では直らない
-- [芽育ラボ](project_orangeworks_portfolio_site.md) — ★9/15 実績67件公開・区分順(投稿日)／★E 45件のイラストは未確認
+- [芽育ラボ](project_orangeworks_portfolio_site.md) — ★9/15 公開75件(一覧は67)。イラスト8件は保存し直し待ち=WPログイン切れ
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
