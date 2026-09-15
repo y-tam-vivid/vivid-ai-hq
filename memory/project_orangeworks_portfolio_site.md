@@ -420,6 +420,16 @@ recruit        Elementor Table 2つ(12a765b/8e30d07)の table_body[5]「30-211 1
             本文に実物の作品画像4枚（Webサイト/グラフィック/ロゴ・名刺/イラスト・企業ビジュアル）③/works/(14229)先頭に
             見出し画像(media 14476・作品12点＋オレンジ帯)＝HTMLウィジェット。テーマ見出し帯は★見た目だけ隠しh1は残した
             控え work/wp_page_14229_before_banner_*.json・wp_post_14458_before_bodyimgs_*.json
+          ★9/15 10:4x 有璽氏が追加材料をURLで共有（自社関連・★制作事例として掲載したい）
+            株式会社ILIFE WEBサイトリニューアル https://i-life-fukushi.com/ （★新テーマ lifestandup が本番で稼働中を実測）
+            日本発達特性金融行動支援機構 https://jfbi.vivid-global.com/ ／オレンジワークス藤井寺WEBサイトリニューアル
+            https://orange-works.co/ ／ふくち。グループWEBサイト https://fuku-chi.com/ （STUDIO）
+            → 画面を撮って既存のWeb実績と同じ見せ方(PC＋スマホの見本画像)に加工し、実績を下書きで追加する
+          ✅9/15 11:5x 4件を★下書きで追加 work-430 ILIFE(14485)/440 JFBI(14490)/450 OW(14495)/460 ふくち。(14500)・分類Webサイト
+            道具 tools/capture_site.py(撮影・読むだけ)→tools/make_web_sheet.py(既存0009と同じ横長シート)→tools/wp_add_web_works.py
+            台帳 work/wp_created_web_20260915-115234.json ／ 撮影 source_追加_20260915/web_capture/
+            ★未確定：ふくち。の制作年(サイト表記「2026/v1」から2026と置いた)・概要文は当方の下書き
+            ★一覧に出すには公開＋管理画面での更新1回（_exclude_in_works_list）＝有璽氏のOK待ち
           ★文字サイズの実測：ブログ記事の本文＝★15px（テーマ設定 #content）／Elementorで作ったページ＝18px
             ＝ブログだけ小さい。変えるとテーマで出す全ページ（記事・実績詳細）に効く → 有璽氏へ値を提案中
 ```
