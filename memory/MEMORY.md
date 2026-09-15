@@ -49,7 +49,7 @@
 - [確認は溜めて報告は溜めない](feedback_batch_the_checks.md) — **🔴9/13★3回目。有璽氏から「随時共有して」。★出す単位は作業1つ終わるたび。待ち時間こそ黙らない**
 - [「できない」の前に試す](feedback_verify_before_declining.md) — **🔴9/14 未確定は3段(①公式②実測③人に聞く)。①を飛ばした。★公式を読んだ後も実画面で名前と★画面の役割を読む(見る画面でなく取り出す画面だった)**
 - [人の手を煩わせるな](feedback_stop_asking_just_do_it.md) — 🔴9/14恒久「出戻りが多い自分でやれ」。投げる前に①鍵②コードで解けるか
-- [読む人の言葉で書く](feedback_write_for_the_reader.md) — ★9/14「塞がっている」は通じない。①どの仕事②何があれば③どこを押すか
+- [読む人の言葉で書く](feedback_write_for_the_reader.md) — ★9/15 表→1行へ変換すると列の見出しが落ちる。★画面の文字を声に出して読む
 - [触る画面は説明でなく画面自体を直す](feedback_ui_must_be_self_explanatory.md) — **🔴9/10同日2回目「使い方がよくわからん」＝説明を足しても直らない。ウィザード型(1度に1指示)へ**
 - [通知は押せる形＋読める形に](feedback_write_for_the_reader.md) — **🔴9/8「長ったらしいのは見づらい」＝親は「◯時の通知です」＋要約だけ・★詳細はスレッドへ追記（chat.postMessageのtsをthread_tsに）。出す側の部品で揃える**／ ★届くだけでは不足。営業以外はDM／★9/4「通知が来ない」＝届く方も未達。送った≠届いた
 - [土台にも日付がある](reference_stale_premise_daily.md) — ★9/15 同じ役割の定義が2本あり指示文は古い方だけ。足す前に唯一か数える
@@ -119,4 +119,5 @@
 - [セクション間マージンをPC比率で縮小](project_lifestandup_website_wordpress.md) — 158件比率化。20-39px帯限定対象外
 - [縦の余白は4つある](project_web_build_rules_asset.md) — ★9/14 padding だけ見て「ほぼ完了」＝margin 571件が手つかず。158件を比率化・出した
 - [オレンジワークスWPの鍵](project_orangeworks_portfolio_site.md) — ★9/14 鍵はminiに保存。★正誤どちらの鍵でも401＝認証ヘッダーがWPへ届いていない。鍵の再発行では直らない
+- [芽育ラボのサムネ型](project_orangeworks_portfolio_site.md) — ✅9/15採用＝4:3枠に原寸全体を収める(詰めない)。★追加分も同じ型で揃える
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
