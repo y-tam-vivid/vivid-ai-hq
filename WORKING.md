@@ -4252,6 +4252,21 @@ v2/v3/無印の.dc.html・22MBの書き出し版・1751の控えが消失。当�
 
 ### 進行中（MacBookセッション記入）
 
+- **【ビビ / MacBook 2026-09-15 10時】LIFE STAND UP ── 空き状況ページを新設・B（掲載の仕組み）着手**
+  ```
+  ✅ /availability/ 新設   commit ea37d63（リリス）。★記事で積まず1ページ書き換え
+                          本文へ1行1枠で書く → テンプレートが表に整形（プラグイン増やさない）
+                          ★実測：0件/読めない行/事業所2つ の3ケースを画像で確認
+  ✅ フッターへリンク      commit cc01c04（リリス）。INFO列の先頭・★22/22ページで実測
+  走行中 B                 ピタゴラス PID 69925 → ~/.vivid-relay/availability_from_sheet.py
+                          シート→掲載できる下書き（★読むだけ・本番へ書く機能は作らない）
+                          出口 ~/.vivid-relay/sheet2page_result.md
+  ★有璽氏の構想（未確定）  空き状況 → 申し込み/問い合わせ/利用希望。★呼び方が3通り＝固めない
+  ```
+  **★同じ対象に手をつけないでください**: `theme/lifestandup/{page-templates/availability.php,
+  assets/css/availability.css, footer.php, inc/page-setup.php}` ／
+  `~/.vivid-relay/availability_from_sheet.py` ／ 現場シート `1LXx6y0TqBeFpphD3HjtCpe8f3nD7nAVnumc6ZpKZ_JA`
+
 - **【ビビ / MacBook 2026-09-14 24時】LIFE STAND UP ── ★明日の再開点（有璽氏は帰宅・離席中に進めた分）**
   ```
   ✅ トップのお知らせ欄    ダミー4件 → 実データへ（有璽氏が実機で確認済み）
