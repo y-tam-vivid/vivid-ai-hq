@@ -120,5 +120,5 @@
 - [縦の余白は4つある](project_web_build_rules_asset.md) — ★9/14 padding だけ見て「ほぼ完了」＝margin 571件が手つかず。158件を比率化・出した
 - [オレンジワークスWPの鍵](project_orangeworks_portfolio_site.md) — ★9/14 鍵はminiに保存。★正誤どちらの鍵でも401＝認証ヘッダーがWPへ届いていない。鍵の再発行では直らない
 - [芽育ラボのサムネ型](project_orangeworks_portfolio_site.md) — ✅9/15採用＝4:3枠に原寸全体を収める(詰めない)。★追加分も同じ型で揃える
-- [OW区分ボタン・記事画像](project_orangeworks_portfolio_site.md) — ★9/15 ヘッダー直下はダサい→見出し帯の下へ／実績の告知画像はAI生成でなく実物の作品で
+- [OW区分ボタン・記事画像](project_orangeworks_portfolio_site.md) — ★9/15 ヘッダー直下はダサい→見出し帯の下へ／実績の告知画像はAI生成でなく実物の作品で／★件数は出さない
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
