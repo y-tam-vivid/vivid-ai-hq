@@ -60,6 +60,7 @@
 - [自分に見えた≠相手に見える](reference_private_pages_404_for_the_viewer.md) — ★9/14 非公開WPはログイン中の自分にだけ見えた。リンクを渡す前に未ログインで開く
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/12★2回。足りない→待つで止めるな。器を縮める／依頼文を作る**
 - [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — 🔴9/15 積み残し18→30件で★2日減らず＝記録では止まらない。.gitignoreか捨て場を決める／pkill -f不可
+- [日本語名は判定を外す](reference_nonascii_filename_breaks_the_check.md) — 🔴9/16 gitが日本語パスをクォートし判定が外れる。★人でなく機械が落ちていた
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — 🔴9/14★同じ日に4回。手順書に落とした当日に自分が関所2(ver上げ)を飛ばした。★機械で時刻を比べて止める(未実装)
 - [担当が増えたら3か所](reference_new_agent_needs_three_places.md) — ★9/13 チョッパー追加で席が出なかった。名鑑を正本へ寄せた
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
@@ -100,8 +101,7 @@
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 🔴9/15 Blob2ストアともSuspended＝★C保存と会議室ボタン停止。★403を「0件」と読み成功を打つ実装あり／403=Mitigationsは時間帯で振れる
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [AIの使用量を数える](project_ai_usage_tracking.md) — ★9/12 毎日22:30両機でCSVへ。★cache読取が額の7割($301/407)。★プランの残%とChatGPT Plusは取れない
-- [AI社員オフィス＝会議室](project_ai_office_console.md) — ★9/13 会議室と羅針盤は agent_running.py の1本を読む／ボタンは本物。残＝1回押す
-- [AI社員オフィス＝会議室](project_ai_office_console.md) — **🔴9/13 走行中が★常に0件だった(ps -eo etimesはmacOSに無くrc=0で壊れる)。★羅針盤と二重管理・★即時pushは未実装**／Slackは埋もれる＝判断待ちタブが要る
+- [AI社員オフィス＝会議室](project_ai_office_console.md) — **🔴9/13 走行中が★常に0件(ps -eo etimesはmacOSに無くrc=0で壊れる)。★即時pushは未実装**／会議室と羅針盤はagent_running.pyの1本を読む／ボタンは本物・残＝1回押す／Slackは埋もれる＝判断待ちタブが要る
 - [稼働盤Artifactが止まる](project_ops_dashboard_artifact.md) — ★解決。Vercel(fukuchi-kadoban)へ2時間おき＋Basic認証。有璽氏の操作は無し
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [本番WPは読むだけで測れる](project_lifestandup_website_wordpress.md) — **★9/9 公開APIとHTMLのcurlだけで移行の未確定8→4件。★top(14)/blog(16)確定・/trial・★Emanon BusinessはProの子テーマ（Proも要る）。★人へ聞く前に公開URLから数える**
