@@ -341,7 +341,10 @@ recruit        Elementor Table 2つ(12a765b/8e30d07)の table_body[5]「30-211 1
             ③追加の材料＝ある。★加工が要る可能性。「少ないより多い方が見栄えはいい」
               「渡して加工までやってくれるなら助かる」＝★受け取り→掲載用に加工→掲載までこちらで引き受ける
               共有方法は未定 → 受け取りフォルダを用意して案内（~/orangeworks-portfolio/source_追加_20260915/・案内txt入り）
-          ✅9/15 ⑤書体を M PLUS 2 へ：Elementor サイトキット(11573)の12か所
+          ⛔9/15 有璽氏の訂正「フォントの件間違えやった。★Zen Kaku Gothic New に変えて」＝★最終決定は Zen Kaku Gothic New（M PLUS 2 は取り消し）
+          ✅9/15 サイトキット(11573)の同じ12か所を Zen Kaku Gothic New へ差し替え済み（M PLUS 2・Zen Maru とも残0）
+            実測：公開12ページとも Google Fonts の読み込みが Zen+Kaku+Gothic+New・サイトのCSSに旧書体0件
+          ✅9/15（下は M PLUS 2 に一度変えた時の記録。同じ12か所を Zen Kaku Gothic New へ差し替える）⑤書体を M PLUS 2 へ：Elementor サイトキット(11573)の12か所
             （system_typography 4・custom_typography 1・body・h1〜h6）。旧値は12か所とも "Zen Maru Gothic"
             実測：公開12ページとも Google Fonts の読み込みが M+PLUS+2・キットCSSに Zen Maru 0件
             ★残り1か所＝/makemarket/ の <br> に貼り付けで付いた inline style（文字が無く見た目に影響なし）
