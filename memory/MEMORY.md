@@ -59,7 +59,7 @@
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本・報告に混ぜない。kindは8種／投げる前にpreview／投げたら必ずanswer_of()を見る（押されても聞いた側へ返らない）。🔴9/7 4回目＝1通ずつでなく★Slackへ出る経路を全部数えて揃える。押せないものが混ざると判断が沈む（DM7通中押せるのは2通）。出すのはボタン・受けるのは会話でもよいが★出した側が台帳を閉じる**
 - [自分に見えた≠相手に見える](reference_private_pages_404_for_the_viewer.md) — ★9/14 非公開WPはログイン中の自分にだけ見えた。リンクを渡す前に未ログインで開く
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/12★2回。足りない→待つで止めるな。器を縮める／依頼文を作る**
-- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★数えるもの5つ目＝★未コミットの積み残し。担当が終わった瞬間にgit statusを数える／PID指定・pkill -f不可
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — 🔴9/15 積み残し18→30件で★2日減らず＝記録では止まらない。.gitignoreか捨て場を決める／pkill -f不可
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — 🔴9/14★同じ日に4回。手順書に落とした当日に自分が関所2(ver上げ)を飛ばした。★機械で時刻を比べて止める(未実装)
 - [担当が増えたら3か所](reference_new_agent_needs_three_places.md) — ★9/13 チョッパー追加で席が出なかった。名鑑を正本へ寄せた
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
@@ -97,7 +97,7 @@
 - [rc=0でも依頼は未達](reference_offload_long_work_to_mini.md) — ★9/13 Stop hookの差し戻しに答えて終了。★出口ファイルをlsするまで完了と言わない
 - [上書きの器に過去は無い](reference_overwriting_containers_have_no_past.md) — 定期化する前に「遡れるか」を決める。残す単位は日ごと最新1本・数字(JSON)で残す
 - [公開が詰まる真因は grep -r](project_lifestandup_website_wordpress.md) — **🔴9/9 redeploy.shが2回詰まった(21分/6分)。⛔★「真因＝grep -r」は不十分だった＝★直しても3回目も止まった。★手で打つと数秒・スクリプト内だと止まる＝★未特定。✅9/10 ★手動6手順が3回目も成功(13分)。★指示文へ毎回6手順を書くのが速い。★redeploy.shは直さない。★安全装置を外すのでなく速くする。★npx をcronから呼ぶ時は`< /dev/null`**
-- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — ★403=Mitigations(DDoS防御)・時間帯で振れる。★1回0枚で断定せず再試行／スクショはstatic-previewを配信して撮る／枠100本･日次リセット。数字と解除手順は本文へ戻した(9/12)
+- [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 🔴9/15 Blob2ストアともSuspended＝★C保存と会議室ボタン停止。★403を「0件」と読み成功を打つ実装あり／403=Mitigationsは時間帯で振れる
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [AIの使用量を数える](project_ai_usage_tracking.md) — ★9/12 毎日22:30両機でCSVへ。★cache読取が額の7割($301/407)。★プランの残%とChatGPT Plusは取れない
 - [AI社員オフィス＝会議室](project_ai_office_console.md) — ★9/13 会議室と羅針盤は agent_running.py の1本を読む／ボタンは本物。残＝1回押す
@@ -106,6 +106,7 @@
 - [記憶の層分け設計](project_memory_layer_design.md) — ★8/25実装＋つるで到達確認済(届いた)。残=索引から降ろす承認
 - [本番WPは読むだけで測れる](project_lifestandup_website_wordpress.md) — **★9/9 公開APIとHTMLのcurlだけで移行の未確定8→4件。★top(14)/blog(16)確定・/trial・★Emanon BusinessはProの子テーマ（Proも要る）。★人へ聞く前に公開URLから数える**
 - [IGをサイトへ出す](project_lifestandup_website_wordpress.md) — **✅9/9 IG側は完了。★ショートコード=`[instagram-feed feed=1]`（保存済）。★動くのは本番WPだけ・デモは静的で展開されない。残＝テーマへdo_shortcode+フォールバックを仕込む／余計な4プラグイン停止。★同日4件が同じ根＝実物を見ずに人の画面を指示した**
+- [ページ登録は2か所](reference_fix_where_git_reaches.md) — ★9/15 create_pages.php(ローカル)とinc/page-setup.php(本番)の両方に足す
 - [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
 - [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — 文面と画像まで1セット／★施設IGに業界の話は不可
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — **🔴9/13★2回目。★調査は「症状」でなく「そもそもどう構築するか」から投げる。★自分の設計を疑う問いを依頼文に1つ必ず入れる**／自前パッチの前にクローバーへ
