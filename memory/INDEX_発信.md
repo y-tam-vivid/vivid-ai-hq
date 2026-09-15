@@ -29,6 +29,7 @@
 - [グループ5法人のブログとCMS](reference_group_blogs_and_cms.md) — **ILIFE/ビビッド/オレンジワークス=WordPress・ふくち。=STUDIO・NPO=Jimdo**。★ビビッドはwww付きが正／原稿はCMSごとに形を変えて渡す／**★オレンジワークスは.coと.orgが別物。.coが本体でwp-json200＝AIがページを作れる**
 - [イベント運用スキル群](project_event_skills_suite.md) — ★8/28導入・両機14本。**8/29 Word/PowerPoint/PDF/ffmpeg整備完了(②③④)。①snspipeフォントはdiff提示・承認待ち**／**Notion🗓️イベント管理は9列しかなく推測禁止5項目の置き場が無い**／工程は必ず全部通るわけではない(報告書までは一体)
 - [ブランドテーマ3種](reference_brand_themes.md) — ふくち。/119番/tane.の実データは揃っている(作り直さない)／**★tane.の配色がDriveとNotionで5色とも食い違い・未決**／Notionのブランドガイドは「110番」のまま古い／NPOは専用VI無し
+- [APIで入れたデータは画面に出ない](reference_api_writes_skip_the_ui_side_effects.md) — ★9/14-15 **同じ型を2案件で。** 表示側のクエリが、管理画面の保存フックしか書かない値を条件にしている（work=`_exclude_in_works_list`・LSU=`_lsu_source`）。**★「読み返して入っている」は入れた側の1経路。もう1経路は未ログインで一覧を開いて数える**／★最短の検出＝UIで1件作りAPIの1件とメタを全部並べて差分／★投入の完了条件は「入った」でなく「表示側の条件を満たした」
 - [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **★9/15 実績42件を公開(外から200を実測)。一覧/works/とご依頼ページは非公開。🔴一覧に並べる保存し直し41件＝Chromeのログイン切れで停止。住所101・表記統一は済**／Desktop側SEOと並走(鍵claude-kiji・触らない)
 - [LIFE STAND UP 本番サーバの実態](project_lifestandup_website_wordpress.md) — 🔴9/4実測**PHP7.4**(開発は8.3)／**バックアップ0本**／ステージング無し／有効テーマは**Emanon Business**(Proでない)／**SNS自動投稿が有効=134本移行で暴発**／記事134件一致
 - [LIFE STAND UP サイト(WordPress)](project_lifestandup_website_wordpress.md) — ★9/3 トップ1本完成(実WP有効化・再現度0px)。**applyTweaksは8版＝top-pageの結果を横展開するな**／**★文言2本は採用する側が逆(指定はaudit_tweaks.py冒頭)**／図案A/C/Dはarchive/へ保管後に削除／CSSは共通化しない／内部リンク310本／工数58〜107h／**Emanon Proのフォルダを消さない**
