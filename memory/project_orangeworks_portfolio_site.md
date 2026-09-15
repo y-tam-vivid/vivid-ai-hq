@@ -443,7 +443,10 @@ recruit        Elementor Table 2つ(12a765b/8e30d07)の table_body[5]「30-211 1
             2枚目：切り抜きギャラリーをやめ★「ページ全体」シート1枚(PCはページ最後まで・スマホは上から2列)を横幅いっぱい
             実測：本文の画像2枚とも960×679＝縦横比そのまま(切れていない)・ギャラリー0 ／ REST本文で4件とも制作年2026 → 一致
             道具 tools/make_web_sheet.py（make_page 追加）／tools/wp_update_web_works.py
-          ⏸9/15 芽育ラボの緑2案を作成（まだ反映していない）work/eyecatch/green_compare_banner.jpg
+          ✅9/15 有璽氏「Bで」＝★芽育ラボの色は★オレンジワークスの緑 #1C6835 に確定（ロゴの緑#019E45は不採用）
+            差し替え済み：記事14458 アイキャッチ14520・本文4枚14521〜14524／/works/見出し画像 14525（Elementor HTMLウィジェット）
+            台帳 work/wp_meiku_green_*.json ／ 控え work/wp_post_14458_before_green_*.json ／ 旧画像(14466〜14476)は消していない
+          ⏸→済：9/15 芽育ラボの緑2案を作成work/eyecatch/green_compare_banner.jpg
             A 芽育ロゴの緑#019E45 ／ B オレンジワークスの緑#1C6835。道具 tools/make_meiku_images.py --color
             差し替え対象＝/works/見出し画像(media 14476)・記事14458のアイキャッチ(14466)と本文画像4枚
           ✅9/15 15時 有璽氏「/works/ でマウスを重ねた時の作品名を2〜3pt小さく」→ テーマ既定 .object-item h2 26px を★23pxへ
