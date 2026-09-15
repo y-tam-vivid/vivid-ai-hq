@@ -62,7 +62,11 @@
 - [かわちばなし・新着だけ取る](project_kawachibanashi_portal.md) — ★9/13 毎回全件を開かない。RSS/新着/lastmodで差分。★集めると選ぶを分ける
 - [競合は検索で出るかで測る](project_kawachibanashi_portal.md) — ⛔9/13訂正 記事数でなく★狙う検索語で上位に出るか。大手が本命の可能性
 - [同領域は協力者候補でもある](project_kawachibanashi_portal.md) — ★9/13 競合として避けない。情報・取材・告知の経路になる。2列で材料を出す
-- [かわちばなし・差別化と認知](project_kawachibanashi_portal.md) — ★9/13 宿題＝①認知②地元民への目線③独自性。★他県の事例を先に見てから提案する
+- [かわちばなし・独自性](project_kawachibanashi_portal.md) — ★9/15 誰が書くか＝子ども/福祉/ママ3班＋リレー。NPO枠でPR TIMES月4回
+- [かわちばなし・巻き込む順序](project_kawachibanashi_portal.md) — ⛔9/15訂正 ★①NPOの大人へ賛同②自分たちの活動を載せる③外部取材
+- [かわちばなし・子ども広報部](project_kawachibanashi_portal.md) — ★9/15 器はNPO側。行先3段階＝①NPO自身の発信②寄稿③★共同運営。口頭用の資料を作る
+- [NPOサイトを作り直す](reference_group_blogs_and_cms.md) — ★9/15決着 9/5の3択は全部外れ＝④新規制作。LSU完成→NPOサイト→ブログ→IG。未着手
+- [かわちばなし・4市に人が居る](project_kawachibanashi_portal.md) — ★9/15 羽曳野=有璽氏/藤井寺=施設/柏原=同僚/松原=知人。串刺しの根拠
 - [さかにゅーが本命の参考事例](project_kawachibanashi_portal.md) — ★9/13 記事16,061本・毎月110-175本・★ぱどのFC運営・紙も出す・市民ライター・PR記事で収益
 - [🔴読者は子育て世代・お母さん方](project_kawachibanashi_portal.md) — ★9/13 初期構想からぶらさない。★歴史は目的でなく地域に親しみを持つ手段。1〜2文で添える
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
