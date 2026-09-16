@@ -31,6 +31,7 @@
 - [ブランドテーマ3種](reference_brand_themes.md) — ふくち。/119番/tane.の実データは揃っている(作り直さない)／**★tane.の配色がDriveとNotionで5色とも食い違い・未決**／Notionのブランドガイドは「110番」のまま古い／NPOは専用VI無し
 - [APIで入れたデータは画面に出ない](reference_api_writes_skip_the_ui_side_effects.md) — ★9/14-15 **同じ型を2案件で。** 表示側のクエリが、管理画面の保存フックしか書かない値を条件にしている（work=`_exclude_in_works_list`・LSU=`_lsu_source`）。**★「読み返して入っている」は入れた側の1経路。もう1経路は未ログインで一覧を開いて数える**／★最短の検出＝UIで1件作りAPIの1件とメタを全部並べて差分／★投入の完了条件は「入った」でなく「表示側の条件を満たした」
 - [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **★9/15 実績42件を公開(外から200を実測)。一覧/works/とご依頼ページは非公開。🔴一覧に並べる保存し直し41件＝Chromeのログイン切れで停止。住所101・表記統一は済**／Desktop側SEOと並走(鍵claude-kiji・触らない)
+- [オレンジワークス ポートフォリオサイト](project_orangeworks_portfolio_site.md) — **★9/15 一覧/works/と実績42件を公開(未ログインで42件並ぶを2経路で実測)。ご依頼ページは料金確定まで非公開・一覧からのリンクも外した(控えあり)**／Desktop側SEOと並走(鍵claude-kiji・触らない)
 - [LIFE STAND UP 本番サーバの実態](project_lifestandup_website_wordpress.md) — 🔴9/4実測**PHP7.4**(開発は8.3)／**バックアップ0本**／ステージング無し／有効テーマは**Emanon Business**(Proでない)／**SNS自動投稿が有効=134本移行で暴発**／記事134件一致
 - [LIFE STAND UP サイト(WordPress)](project_lifestandup_website_wordpress.md) — ★9/3 トップ1本完成(実WP有効化・再現度0px)。**applyTweaksは8版＝top-pageの結果を横展開するな**／**★文言2本は採用する側が逆(指定はaudit_tweaks.py冒頭)**／図案A/C/Dはarchive/へ保管後に削除／CSSは共通化しない／内部リンク310本／工数58〜107h／**Emanon Proのフォルダを消さない**
 - [LIFE STAND UP デザイン正本とブログ](project_lifestandup_website_wordpress.md) — ★9/5 正本は**mini の`~/design_handoff_v2.0/`**(Drive v2.1は別物・build_pages.pyのSRCは触らない)／🔴**「photo-gridは2列固定・3列不可」は誤り＝`.cols-3`が実在**(移行可否をこの理由で狭めない)
@@ -63,7 +64,11 @@
 - [かわちばなし・新着だけ取る](project_kawachibanashi_portal.md) — ★9/13 毎回全件を開かない。RSS/新着/lastmodで差分。★集めると選ぶを分ける
 - [競合は検索で出るかで測る](project_kawachibanashi_portal.md) — ⛔9/13訂正 記事数でなく★狙う検索語で上位に出るか。大手が本命の可能性
 - [同領域は協力者候補でもある](project_kawachibanashi_portal.md) — ★9/13 競合として避けない。情報・取材・告知の経路になる。2列で材料を出す
-- [かわちばなし・差別化と認知](project_kawachibanashi_portal.md) — ★9/13 宿題＝①認知②地元民への目線③独自性。★他県の事例を先に見てから提案する
+- [かわちばなし・独自性](project_kawachibanashi_portal.md) — ★9/15 誰が書くか＝子ども/福祉/ママ3班＋リレー。NPO枠でPR TIMES月4回
+- [かわちばなし・巻き込む順序](project_kawachibanashi_portal.md) — ⛔9/15訂正 ★①NPOの大人へ賛同②自分たちの活動を載せる③外部取材
+- [かわちばなし・子ども広報部](project_kawachibanashi_portal.md) — ★9/15 器はNPO側。行先3段階＝①NPO自身の発信②寄稿③★共同運営。口頭用の資料を作る
+- [NPOサイトを作り直す](reference_group_blogs_and_cms.md) — ★9/15決着 9/5の3択は全部外れ＝④新規制作。LSU完成→NPOサイト→ブログ→IG。未着手
+- [かわちばなし・4市に人が居る](project_kawachibanashi_portal.md) — ★9/15 羽曳野=有璽氏/藤井寺=施設/柏原=同僚/松原=知人。串刺しの根拠
 - [さかにゅーが本命の参考事例](project_kawachibanashi_portal.md) — ★9/13 記事16,061本・毎月110-175本・★ぱどのFC運営・紙も出す・市民ライター・PR記事で収益
 - [🔴読者は子育て世代・お母さん方](project_kawachibanashi_portal.md) — ★9/13 初期構想からぶらさない。★歴史は目的でなく地域に親しみを持つ手段。1〜2文で添える
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★9/8に18枠中17枠を作り直し差し替え済(残=insta-6・クレジット切れ)。★学び=「揃っていない」は平均輝度でなく暗部の割合で測る。指標を2回まちがえた
@@ -74,3 +79,9 @@
 - [LSU WordPress移行(②)を実機で通した](project_lifestandup_website_wordpress.md) — ★9/9 ローカル検証WPでテーマ有効化+ブログ134本を実投入(129本新規+既存5本、過不足0)。**news.phpはpage_for_postsに依存しない=②投稿ページ設定は不要と判明**。既存blog_import.phpの画像ロジックを流用(車輪の再発明を避けた)。php -S単一ワーカーは重いリクエストで丸ごと落ちる→撮影前後にcurl生存確認必須
 - [LSU テープ×写真mergeを完了](project_lifestandup_website_wordpress.md) — ★9/9 CSS7本競合を1本ずつ統合(片側丸ごと採用せず)。132通り実測0件・写真移動/011は無傷。★非線形バグ症状はcalc(A+max(0,B))でも直らないことがある＝固定widthがコンテナ超過している可能性を先に切り分ける
 - [区分は必ず増える](feedback_categories_always_grow.md) — ★9/9に同じ指摘が2件（LSU「カテゴリは増える想定で」／かわちばなし「その他も」）。選択肢を決めたらその場で①その他②1か所にまとめる③その他の色 の3つを用意する／**★9/11 増えるのは区分だけでなく★件数。器は正しく増えたのに本文の日本語「4名の言葉には」が3箇所ベタ書きで残った。1件足すときは`grep -nE "[0-9]+名|[0-9]+件"`で数字を数え、データから出ているか手書きかを見る**
+- [かわちばなし・読者像](project_kawachibanashi_portal.md) — ★9/16 子育て世帯でなく★親子＋母親・動きが活発でお金を使う層へ寄せる
+- [かわちばなし・書き手は募集口](project_kawachibanashi_portal.md) — ★9/16 子ども/ママ/福祉の3種をサイトで募集。実測=取材･ライター0件
+- [かわちばなし・LINEは2本](project_kawachibanashi_portal.md) — ★9/16 公式LINE=まとめ／オープンチャット=数多く。サイトは入口。実測0件
+- [かわちばなし・将来は有料枠](project_kawachibanashi_portal.md) — ★9/16 いまapply.htmlは「無料」を4回言い切り。恒久の約束にしない
+- [かわちばなし・収益は6本](project_kawachibanashi_portal.md) — ★9/16 掲載料でなく★集客装置。動員と制作へ繋ぐ／広告･ECは後
+- [md2pdfはコードフェンス不可](feedback_confirm_the_deliverable_form.md) — ★9/16 ```が文字で出る。枠は表か素の行。1枚は画像で見る
