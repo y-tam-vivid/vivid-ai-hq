@@ -81,7 +81,8 @@
 - [区分は必ず増える](feedback_categories_always_grow.md) — ★9/9に同じ指摘が2件（LSU「カテゴリは増える想定で」／かわちばなし「その他も」）。選択肢を決めたらその場で①その他②1か所にまとめる③その他の色 の3つを用意する／**★9/11 増えるのは区分だけでなく★件数。器は正しく増えたのに本文の日本語「4名の言葉には」が3箇所ベタ書きで残った。1件足すときは`grep -nE "[0-9]+名|[0-9]+件"`で数字を数え、データから出ているか手書きかを見る**
 - [かわちばなし・読者像](project_kawachibanashi_portal.md) — ★9/16 子育て世帯でなく★親子＋母親・動きが活発でお金を使う層へ寄せる
 - [かわちばなし・書き手は募集口](project_kawachibanashi_portal.md) — ★9/16 子ども/ママ/福祉の3種をサイトで募集。実測=取材･ライター0件
-- [かわちばなし・LINEは2本](project_kawachibanashi_portal.md) — ★9/16 公式LINE=まとめ／オープンチャット=数多く。サイトは入口。実測0件
+- [かわちばなし・LINEは公式だけ](project_kawachibanashi_portal.md) — ⛔9/16訂正 ★オープンチャットは載せない＝流入させる側
 - [かわちばなし・将来は有料枠](project_kawachibanashi_portal.md) — ★9/16 いまapply.htmlは「無料」を4回言い切り。恒久の約束にしない
 - [かわちばなし・収益は6本](project_kawachibanashi_portal.md) — ★9/16 掲載料でなく★集客装置。動員と制作へ繋ぐ／広告･ECは後
 - [md2pdfはコードフェンス不可](feedback_confirm_the_deliverable_form.md) — ★9/16 ```が文字で出る。枠は表か素の行。1枚は画像で見る
+- [かわちばなし・16版で3件済](project_kawachibanashi_portal.md) — ✅9/16 書き手/募集/読者像/並びは実装済。★残=OC外す・幅掃き
