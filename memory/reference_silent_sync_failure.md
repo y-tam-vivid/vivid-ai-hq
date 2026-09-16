@@ -446,3 +446,63 @@ git なら通せた取り込みまで自分で止める。** ここでは「未�
 **cron が回ったあとに自分が push しただけ**だった。
 ★同じ数字が「仕組みの故障」と「自分がさっき足した」の両方から出る。
 **先に「最後に cron が回った時刻」と「自分が push した時刻」を並べる。**
+
+---
+
+## 🔴2026-09-16 ★毎朝の棚卸しが読む「前日の実績」は、遅れている機では3割しか見えない
+
+**ロビンの毎朝の棚卸しへ材料を渡す `bin/hooks/memory_sweep.py` は、★ローカルの HEAD しか
+見ていない。** この朝、mini は behind 48 / ahead 6 で、**未取込48件は全部 9/15 付**だった。
+
+```
+実測（2経路）
+  経路1  memory_sweep.py と同じ形（HEAD のみ）   9/15 の commit = ★20件
+  経路2  origin/main を含めて数え直す            9/15 の commit = ★68件（union）
+  ＝ ★材料は 20/68。★7割が見えないまま「前日の実績」として渡っていた
+ソース  bin/hooks/memory_sweep.py:54
+        git log --since ... --until ...   ★fetch も origin/main の指定も無い
+```
+
+**★実害は「見落とし」ではなく「二重記録」。** 未取込48件の中で、向こうの機は既に
+**memory を19ファイル（新規3・更新16）書き終えていた**
+（`reference_free_plan_blocks_on_terms_not_only_limits` ほか）。
+手元だけを見て書けば、同じ内容をもう1本作る → [[reference_two_sessions_built_the_same_thing]]。
+
+- **★問題は、半分の材料が「前日の全部」に見える形で渡ること。** 上の 2026-09-07 節は
+  読む側へ「先に origin を grep しろ」と書いてあるが、**材料の側が黙って半分を落としている。**
+  規律で補う対策は、規律が切れた回にだけ効かない
+  → [[reference_make_it_impossible_not_detectable]]。
+- **★棚卸しの一手目（merge できない日でも通る・作業ツリーに触れない）**
+
+```
+git fetch -q origin
+git log --since='<前日> 00:00' --until='<前日> 23:59' --oneline HEAD origin/main | sort -u | wc -l
+git diff --name-only HEAD origin/main -- memory/     ★向こうで既に書かれたファイル
+```
+
+- ★直すなら `memory_sweep.py:54` を `HEAD origin/main` にする（＋事前 fetch）。
+  **設計の分岐ではなく単純な取りこぼしなので、次に触る人は直してよい。**
+
+### ★枝分かれ＋衝突が2日で再発した ── 文面は直った。解く人が来なかった
+
+```
+9/14 00:00  behind 68 / ahead 18   衝突4件  → 人（AI）が両方残して解いた
+9/16 08:xx  behind 48 / ahead  6   衝突3件  → ★解かれないまま丸1日
+```
+
+**★9/14 に直したのは「🔴の文面」であって「解く人が来ること」ではない。**
+今回 SYNC_STATUS は設計どおり「★自動マージが★衝突して中止された」と正しく出していた。
+**文面は正しい。それでも1日止まった。** 9/14 の記録が
+「次にやるなら abort を Slack へ1行出す（未実装）」と書いた項目が、**2日で必要性を実証した。**
+
+- **★9/14 に塞いだ穴（未追跡 .gz でゲートが閉じる）は今日も塞がっている。**
+  未コミットは `?? data/dashboard_history/*.gz` の1件だけで、取り込みは実際に試されていた。
+  **止めているのは別の穴。** ★同じ🔴でも真因は毎回違う（これで6型目）。
+- **★MEMORY.md は枝分かれすれば必ず衝突する。** 9/14・9/16 とも衝突ファイルに入っている
+  ── **両機が毎日そこへ索引を足すから。** 新しい記憶の索引は**分野索引（INDEX_◯◯.md）へ置く。**
+  MEMORY.md へ足すほど、衝突と 25KB 超過（9/14 に実際に超えた）が両方起きやすくなる
+  → [[feedback_memory_index_hygiene]]。
+- ★今回の衝突3件 ＝ `memory/MEMORY.md` ／ `memory/INDEX_発信.md` ／
+  `memory/project_lifestandup_website_wordpress.md`。
+  **`git merge-tree --write-tree HEAD origin/main` で作業ツリーに触れずに測れる**
+  （解く前に「何件・どれが衝突するか」だけ先に知りたいときはこれ）。
