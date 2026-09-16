@@ -86,3 +86,4 @@
 - [かわちばなし・収益は6本](project_kawachibanashi_portal.md) — ★9/16 掲載料でなく★集客装置。動員と制作へ繋ぐ／広告･ECは後
 - [md2pdfはコードフェンス不可](feedback_confirm_the_deliverable_form.md) — ★9/16 ```が文字で出る。枠は表か素の行。1枚は画像で見る
 - [かわちばなし・16版で3件済](project_kawachibanashi_portal.md) — ✅9/16 書き手/募集/読者像/並びは実装済。★残=OC外す・幅掃き
+- [渡し物はDriveの案件フォルダへ](reference_backups_in_volatile_places.md) — ★9/16恒久 DL/Desktopは不可(1塊200MB)。★制作物と同じ所へ置く
