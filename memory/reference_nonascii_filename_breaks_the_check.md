@@ -62,3 +62,25 @@ Python の subprocess で git の出力を split して突き合わせている
 
 関連 → [[reference_silent_sync_failure]] ／ [[reference_make_it_impossible_not_detectable]] ／
 [[reference_a_warning_nobody_owns]]
+
+## ✅2026-09-16 09:45 ★本番で発火した ── 隔離での実測は「まだ③ではない」
+
+修正（`3f51e8b` 08:54）は**隔離gitに bare remote と2クローンを立てて実測**したものだった。
+**★それは①作った・②繋いだ まで。③本番での発火は別に確かめる。**
+
+```
+09-16 08:54  3f51e8b  修正を入れる（隔離gitで実測済み）
+09-16 09:45  c8725ce  ★本番で merge commit が生成された（親 afe49b6 / 260e7db）
+                      20ファイル・+1,503行。★衝突した日本語名 memory/INDEX_発信.md も解けた
+                      ★両側の行が残っている（相手の行を消していない）ことを diff --cc で確認
+09-17 08:xx  ★behind 0 / ahead 0。★9/15 と 9/16 の commit 件数が HEAD と origin で一致（8 = 8）
+```
+
+**★「直った」の証拠は翌朝の数字。** 修正した当日の「通った」ではなく、
+**翌朝 behind=0 に戻っていること**まで見て初めて直ったと言える。
+→ [[reference_make_it_impossible_not_detectable]]（①作②繋③発火）
+
+**🔴★ただし、発火した結果、別の上限を破った。**
+自動解決は「両方残す」ので MEMORY.md が +862B して**上限（24,986B）を超えた**。
+**★詰まりを直すと、詰まっていたものが一度に流れる。流れた先の器を測る。**
+→ [[feedback_memory_index_hygiene]]「★同期の自動解決は『上限』を知らない」
