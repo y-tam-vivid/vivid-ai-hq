@@ -76,7 +76,7 @@
 - [次の回に何が届くか](reference_what_actually_reaches_the_next_turn.md) — ★公式仕様。MEMORY.mdは200行or25KB。フック25種中3種のみ使用
 - [心拍は生死しか見ない](reference_heartbeat_proves_life_not_results.md) — 成果の数字と期待値／★落ちると心拍ゼロ＝遅延と同色。該当11本→**9/8 progress_report.py修正済み・残10本**／**★9/14 失敗を「成功」で打つ実例（npxがcronのPATHに無く214回）。成功は副作用を読み返してから**
 - [止まりが伝わらないのは黙りが2つ](reference_two_silences_hide_a_stop.md) — ★9/15 Blob停止に9時間気づけず。cronの出力が消える＋画面が黙る
-- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/14 0件相手の「異常なし」は合格でなく未測定(4本中3本が空振り)
+- [誰も拾わない警告は無に等しい](reference_a_warning_nobody_owns.md) — ★9/17 累計770件は新しい1件を隠す＝差を出す。0件の合格は未測定
 - [探さずに人へ投げるな](reference_no_gate_on_asking_the_human.md) — ★8/29 Stopフックに検査2。未検索で「無い」と言うと差し戻す
 - [判断待ちは両方向で壊れる](reference_pending_decision_does_not_pause_the_pipeline.md) — ★9/5解決。pendingはask_hubへ聞く。孤児はlink_pendingで結ぶ
 - [sheets_clientはクラス](reference_sheets_no_credentials_on_mini.md) — ★9/11 sc.Sheets()を作る。meta()の戻りは name/rows(titleでない)。★道具は要約でなく実物のソースを見る
@@ -90,7 +90,7 @@
 - [穴は指摘される前に探す](feedback_find_holes_without_being_told.md) — ★9/13 心拍の行はあるが未着弾2本／9/12 同じ誤診3回目。レジスタは既知→備考→有効の順で読む
 - [成果物の形式と本数を復唱](feedback_confirm_the_deliverable_form.md) — 形式/本数/出口を先に確定／**★9/12 文面は書く前に①誰に②相手の既知③何をしてほしいか**／★.mdでなくbin/md2pdf.pyでPDF化
 - [離席前に書き戻す](feedback_write_back_before_you_go.md) — ★担保2つとも効かず。自動確定の7割は生成物のみ／差し戻しは4回とも空振り／★①離席宣言③区切りは規律依存で止まる／②無操作は原理的に不可→Stopフックと機械で担保
-- [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **🔴9/16 自動解決(両方残す)が上限を破る。★解決直後にサイズを測る／降ろさず本文へ戻す**
+- [索引は1行180バイトまで](feedback_memory_index_hygiene.md) — **★9/18 180B超53/108本＝リンク部が固定費で不可。硬い上限は全体24,986Bだけ**
 - [権限も環境の一部](reference_permissions_are_part_of_the_environment.md) — **★9/9 有璽氏が★本番WordPressの許可を出した（恒久制約の解除）。✅9/9 21:40 ★本番で新テーマが動いた（方式B・インストール済み／★有効化していない＝サイトは不変）。★不可逆は「有効化」の1手だけ＝そこは人が押す。★順序（デモ完成→zip→本番）は許可が出ても崩さない**
 - [控えは置き場も中身も](reference_backups_in_volatile_places.md) — ★9/14 5例目＝消えたのは控えでなく★点検の道具(/tmp)。巡回が空振り→check_kadoban.shへ
 - [gitに入れた機微は消せない](reference_secrets_in_git_history.md) — ★9/4 口座番号がpush済。作業場所をrepo外へ・履歴の書き換えは要承認
