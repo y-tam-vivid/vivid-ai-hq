@@ -31,7 +31,52 @@ import json
 import datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-LOG = os.path.join(HERE, 'corrections.log')
+# ★2026-09-19 ロビン依頼で追加。hook_selfcheck.py の探針（毎朝08:20/08:40）が
+#   このスクリプトを直接叩いており、LOG は HERE（__file__ 基準）でパスを組んでいたため
+#   HOME環境変数の差し替えでは汚染を防げなかった（hook_session_writeback.py の
+#   HOME差し替え方式が効かない別の実装だった）。環境変数で上書きできるようにし、
+#   selfcheck側は探針実行時だけこれを一時ファイルへ向ける。
+LOG = os.environ.get('VIVID_CORRECTIONS_LOG') or os.path.join(HERE, 'corrections.log')
+
+# ★2026-09-19 ロビン依頼で追加（実測：corrections.log 637行の86%が有璽氏の発言でなかった）。
+#   UserPromptSubmit は「有璽氏がキーボードで打った」場合だけでなく、
+#   ①エージェント起動（`claude -p "あなたは◯◯です。…"`）
+#   ②バックグラウンドタスク完了通知（<task-notification>タグ）
+#   ③run_agent.sh が毎回自動で先頭に挿入する定型警告文
+#   でも発火する。これらは有璽氏の発言ではないため、記録対象から外す。
+#
+#   ★誤除外を避けるため、判定は「有璽氏が絶対に書かない形」に限定する
+#   （長さや語気の強さでは切らない。有璽氏は長文で厳しい語を使って指示することがあるため）。
+#
+#   実測で確認した各パターンの特徴：
+#   ① 冒頭が「あなたは「◯◯」...です。」で始まり、本文中に自分の役割定義ファイル
+#      （`.claude/agents/*.md`）を名指しして「読んで」と指示する構造を持つ。
+#      → 冒頭に「あなたは」があり、かつ `.claude/agents/` パスがあり、かつ
+#        「読んで」または「読み」がある、の3条件AND。単独の条件では有璽氏の
+#        発言を誤って弾く恐れがあるため複合条件にした。
+#   ② 冒頭が `<task-notification>` タグで始まる（実測：163行すべて先頭一致）。
+#   ③ 「★機械が自動で付けた」と「run_agent.sh」の両方を含む
+#      （実測：run_agent.sh のこの定型文を含む行は9行、全て一致）。
+#
+#   ★これで直ったのは①〜③の3経路だけ。実測で「重要な制約：…触れないでください」型
+#   （2行・検証用テスト指示文とみられる）と「★★前回のあなたは、やり切らずに
+#   終わりました」型（5行・タスク再試行のシステム通知とみられる）も見つかったが、
+#   件数が少なく判定条件を一般化すると誤除外のリスクが高いため、今回は対象にしていない。
+_AGENT_BOOT_HEAD_RE = re.compile(r'^\s*あなたは')
+
+
+def _is_non_utterance(text):
+    """有璽氏の発言でないと機械的に判定できる形なら True。"""
+    head = text[:400]
+    if '<task-notification>' in head:
+        return True
+    if '★機械が自動で付けた' in text and 'run_agent.sh' in text:
+        return True
+    if (_AGENT_BOOT_HEAD_RE.match(head)
+            and '.claude/agents/' in text
+            and ('読んで' in text or '読み' in text)):
+        return True
+    return False
 
 # ★2026-08-20 有璽氏の指摘で作り直した。
 #   最初の版は「怒り」を検出する作りだった。それでは**怒られるまで記録しない**。
@@ -73,6 +118,9 @@ def main():
 
     text = str(d.get('prompt') or d.get('user_prompt') or '')
     if not text.strip():
+        print(json.dumps({}))
+        return
+    if _is_non_utterance(text):
         print(json.dumps({}))
         return
 

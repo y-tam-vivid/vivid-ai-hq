@@ -108,6 +108,15 @@ for case in CASES:
     envx = dict(os.environ)
     if len(case) >= 4 and case[3]:
         envx.update(case[3])
+    # ★2026-09-19 ロビン依頼で追加（穴①：探針が本番ログを汚染していた）。
+    #   実測：hook_catch_correction.py の LOG は HERE（__file__基準）でパスを組んでおり、
+    #   hook_session_writeback.py と違って HOME環境変数の差し替えでは防げなかった。
+    #   同スクリプトを VIVID_CORRECTIONS_LOG 環境変数対応にしたので、探針側は
+    #   ここで一時ファイルへ向ける（_probe_writeback_stop() の HOME差し替えと同じ発想）。
+    tmp_corr_dir = None
+    if f == 'hook_catch_correction.py':
+        tmp_corr_dir = tempfile.mkdtemp(prefix='selfcheck_corr_')
+        envx['VIVID_CORRECTIONS_LOG'] = os.path.join(tmp_corr_dir, 'corrections.log')
     try:
         r=subprocess.run(['/usr/bin/python3',os.path.join(HERE,f)],input=inp,
                          capture_output=True,text=True,timeout=20,env=envx)
@@ -116,6 +125,9 @@ for case in CASES:
         if not ok: ng.append('%s ： 反応しない' % f)
     except Exception as e:
         ng.append('%s ： %s' % (f,str(e)[:80]))
+    finally:
+        if tmp_corr_dir:
+            shutil.rmtree(tmp_corr_dir, ignore_errors=True)
 for chk in PLAIN_CHECKS:
     try:
         msg = chk()
