@@ -87,3 +87,4 @@
 - [md2pdfはコードフェンス不可](feedback_confirm_the_deliverable_form.md) — ★9/16 ```が文字で出る。枠は表か素の行。1枚は画像で見る
 - [かわちばなし・16版で3件済](project_kawachibanashi_portal.md) — ✅9/16 書き手/募集/読者像/並びは実装済。★残=OC外す・幅掃き
 - [渡し物はDriveの案件フォルダへ](reference_backups_in_volatile_places.md) — ★9/16恒久 DL/Desktopは不可(1塊200MB)。★制作物と同じ所へ置く
+- [JFBI調査研究サイト](project_jfbi_research_site.md) — ★9/19 協力団体a’s(岡崎)を掲載済み＝本体は短く・詳細ページ/partners/as-to-the-story/。ロゴも入った。正本は~/jfbi-research-site/README.md
