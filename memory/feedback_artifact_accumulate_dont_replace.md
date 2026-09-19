@@ -161,3 +161,10 @@ Manus が作った原寸    1080 × 1350 px
 ★あわせて、**「置いた」と書く前に実際に置かれたかを確認する。**
 Manus に「原寸を Drive へ保存せよ」と指示しただけで、保存されたことを確認せずに
 「Drive にあります」と書いていた。指示は実行の証拠にならない。
+
+## ★2026-09-20 Notionでも同じ（有璽氏）
+「同じNotionのリンク内に結果を出力してください」── **分析ページに図解を足すときも、新しいページを作らずそのページへ積む。**
+- 図解の作り方（実測で通した経路）：HTML を書く → `Google Chrome --headless --screenshot`（`--force-device-scale-factor=2`）で PNG 化 → `notion-create-file-upload` で URL を取り → `curl -F file=@...` で POST → 返る `markdown_source` を `notion-update-page` の `insert_content`（position=end）で貼る。
+- ★画像生成AIに日本語の図解を描かせない（文字が崩れる）。**HTMLで組んで撮る。**
+- ★出す前に自分でPNGを開いて、名前・数値・文字の欠けを見る。
+
