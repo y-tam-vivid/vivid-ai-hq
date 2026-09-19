@@ -362,3 +362,9 @@ C サブドメイン等に別で作る            分離できるがサーバー
 
 **★索引から本文へ戻した（2026-09-09・索引の長さを詰めたため）**
 - ★allowに*があってもaskが勝つ
+
+## ★2026-09-19 実例：離席中は Slack の直接送信が止まる
+- 有璽氏が離席した状態（承認できない＝don't ask）で `mcp__claude_ai_Slack__slack_send_message` を呼ぶと拒否される（ask 登録のため）。
+- **代わりの経路は mini の `notify.tell()`**（`ssh mini 'cd ~/.vivid-relay && python3 -c "import notify; notify.tell(...)"'`）。実測で DM へ届いた（戻り値 True・2回）。
+- ★「離席するので Slack に通知して」と言われたら、最初から mini の notify 経由で出す。
+
