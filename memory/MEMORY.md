@@ -101,7 +101,7 @@
 - [公開が詰まる真因は grep -r](project_lifestandup_website_wordpress.md) — **🔴9/9 redeploy.shが2回詰まった(21分/6分)。⛔★「真因＝grep -r」は不十分だった＝★直しても3回目も止まった。★手で打つと数秒・スクリプト内だと止まる＝★未特定。✅9/10 ★手動6手順が3回目も成功(13分)。★指示文へ毎回6手順を書くのが速い。★redeploy.shは直さない。★安全装置を外すのでなく速くする。★npx をcronから呼ぶ時は`< /dev/null`**
 - [Vercel無料プランの保護](reference_vercel_free_plan_protection.md) — 🔴9/15 Blob2ストアともSuspended＝★C保存と会議室ボタン停止。★403を「0件」と読み成功を打つ実装あり／403=Mitigationsは時間帯で振れる
 - [無料プランは規約でも詰まる](reference_free_plan_blocks_on_terms_not_only_limits.md) — ★9/15 Vercel Hobbyは非商用のみ。19案件が対象
-- [無料枠は容量でなく回数で尽きる](reference_free_tier_dies_by_count_not_size.md) — ★9/15 Blob停止は課金でなく書込2,880回/月(枠2,000)
+- [無料枠は容量でなく回数で尽きる](reference_free_tier_dies_by_count_not_size.md) — 🔴9/19「Blob不使用へ」と回答済・案は未提出。★C保存と会議室ボタンが403で6日停止
 - [Vercelの403と枠](reference_vercel_free_plan_protection.md) — ★1回0枚で断定せず再試行／スクショはstatic-previewを配信して撮る／枠100本･日次リセット。手順は本文
 - [Secretは読み出せない](project_ops_dashboard.md) — **✅9/9決着＝稼働盤は正常（有璽氏「見れています」）。⛔401は当方の誤診＝`vercel env pull`は`[SENSITIVE]`(11文字)を返す。★AIが測れるのは「合言葉なしで401」まで。「ありで200」は人の領域＝★測れないと分かったら担当を起こす前に人へ1行聞く（今回は順番が逆だった）**
 - [AIの使用量を数える](project_ai_usage_tracking.md) — ★9/12 毎日22:30両機でCSVへ。★cache読取が額の7割($301/407)。★プランの残%とChatGPT Plusは取れない

@@ -67,3 +67,30 @@ office_realtime_push      30分ごと(3,33)  48回/日 → 1,440回/月
 
 関連 [[reference_two_silences_hide_a_stop]] [[project_ai_office_console]]
 [[reference_vercel_free_plan_protection]] [[feedback_look_outside_before_reinventing]]
+
+## 🔴 有璽氏は答えた。誰も動いていない（2026-09-21 つる実測）
+
+**止まっているのは仕組みではなく、決定のあとの一手。**
+
+```
+09-15 00:42  Blob 2ストアが停止（403）
+09-15 09:56  ask_hub で問う → 有璽氏「他社がどうやっているか調べて」
+09-15 19:02  調査結果を問い直す → ★status=open のまま 今日まで6日 放置
+09-19 08:49  ★有璽氏が回答「3 Blobを使わない作りへ変える案を出させる」
+09-21 08:40  ★案は出ていない。403 は今朝も出続けている
+```
+
+**実測2経路** ── ① `~/.vivid-relay/editor_apply.err` が 1.1MB・Traceback **672件**（全部
+`HTTPError 403`）② ⚙️自動処理レジスタが **🔴失敗 4件**（editor_apply / office_answer_apply /
+office_realtime_push / dashboard_realtime_push）。どれも既知=False＝誰も拾っていない。
+
+- **★検知は正しく働いている。**9/17 につるが「落ちても失敗心拍を打つ」形へ直したので、
+  レジスタは6日間ずっと🔴を出し、メッセージに 403 まで書いていた。**読む人がいなかっただけ。**
+- **★実害**：①★C（lsu-editor）でブラウザから保存しても CSS へ適用されない
+  ②会議室のボタンを押しても台帳へ入らない ③稼働盤・会議室の数字が更新されない。
+  **有璽氏が押しても何も起きない状態が6日続いている。**
+- **★「期待間隔を超えたか」だけで検査すると、この4件は1件も出ない**（毎5分きちんと起動して、
+  きちんと落ちているので遅延ゼロ）。**🚦状態と最終結果を見ること。**
+  → [[reference_heartbeat_proves_life_not_results]]
+
+関連 [[reference_a_warning_nobody_owns]] [[project_ai_office_console]]
