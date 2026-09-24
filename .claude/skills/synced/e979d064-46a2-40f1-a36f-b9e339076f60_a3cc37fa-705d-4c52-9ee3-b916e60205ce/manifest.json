@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1790202130572,
+  "lastUpdated": 1790258450445,
   "skills": [
     {
       "skillId": "import-memory",
@@ -27,8 +27,9 @@
       "skillId": "skill_01JTRTCXBMUk5e4vdZGBKLCQ",
       "name": "yuji-philosophy-thought",
       "description": "田村有璽の根源哲学「理解→応援→活きる」の三角形循環、九鬼修造「いきの構造」との接続、日本人の根源的倫理観、中間共同体論、「大衆になるな、民衆であれ」の思想を体現するスキル。発達障害当事者としての原体験から生まれた「応援の伝播塔」としての使命と、日本民族レベルでの哲学的背景を統合した深い対話が可能",
-      "source": "custom",
-      "updatedAt": "2026-04-27T10:43:28.369180Z"
+      "source": "plugin",
+      "updatedAt": "2026-04-27T10:43:28.369018Z",
+      "backingPluginId": "plugin_01DUbDDwVyJTsTvmrRxv3ShC"
     },
     {
       "skillId": "morning",
@@ -107,8 +108,9 @@
       "skillId": "skill_01J4TB3JvtmBYp1X7qV4DsH1",
       "name": "standup-event-notion-importer",
       "description": "放課後等デイサービス「LIFE STAND UP」のイベント企画・報告書（Google Drive上のGoogleドキュメント）を、 Notionの3データベース構造（イベントDB／場所マスター／在庫DB）へ正確かつ重複なく移行・登録するスキル。 長期休暇イベント（夏・冬・春）や施設内イベントの過去データ一括移行、現場が統一Wordテンプレート＋Excel試算表で 起票した新規イベントの企画登録・実施後の報告更新のいずれにも使う。 「イベントをNotionに登録して」「○○年の夏（冬・春）のイベントを移行して」「企画報告書をNotionに入れて」 「イベント企画・報告書フォルダを処理して」「STAND UPのイベントDBに入れて」「このイベントの企画をNotionに起票して」 「実施したイベントの報告をNotionに反映して」などの依頼が来たら必ずこのスキルを使うこと。 Google DriveのイベントフォルダとNotionのイベント管理DBが関わる作業では、明示的に「スキルを使って」と言われなくても このスキルを参照すること。別チャット・別アカウントからの依頼でも本スキルの手順に従えば同一品質で登録できる。",
-      "source": "custom",
-      "updatedAt": "2026-06-18T03:57:25.283817Z"
+      "source": "plugin",
+      "updatedAt": "2026-06-18T03:57:25.283699Z",
+      "backingPluginId": "plugin_011NqCUEuVc6kQY8nMAHveHL"
     },
     {
       "skillId": "skill_01UGntAr8bmgdNkt8MwqEFRW",
