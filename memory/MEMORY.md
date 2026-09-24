@@ -30,7 +30,7 @@
 - [ルールを足す前に既存と突合](project_lifestandup_website_wordpress.md) — **★9/10 恒久ルール追加3条を突合＝重複2・★変更1・拡大1。★「追加」と言われても実質★前の決定の上書きのことがある。★数値(px/%)が出たら過去の値を必ず引く**
 - [「良い」を作り直さない](feedback_dont_remake_what_was_approved.md) — 変えるのは名指しされた要素だけ／不採用ラベルを勝手に貼らない
 - [型を作る前に数える](feedback_check_the_archive_first.md) — ★「揃えろ/合わせて」は作り直しの許可になる(2回目)。触らない対象を列挙
-- [特別な理由がなければ全ページ統一](feedback_uniform_unless_reason.md) — **★9/12 同じ文字列でなく同じ対象を揃える**／9/8で5回目
+- [特別な理由がなければ全ページ統一](feedback_uniform_unless_reason.md) — **★9/24 写真の比率も対象＝7回目。1枚ずつ最適化せず★枠は1種類・中身はcontain**
 - [作業前にcwdを読む](feedback_read_the_workspace_first.md) — START_HERE/AGENTS/README/.envを先に読む。読まずに「できない」と言わない
 - [道具ごとの鍵の在り処](reference_tool_access_map.md) — ★能力は書かない(腐る)。bin/capability_check.shで毎回取りに行く
 - [様子を見てから足す](feedback_let_it_settle_before_adding.md) — 入れた仕組みは使ってから次。器を同時に立てない
