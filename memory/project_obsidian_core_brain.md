@@ -35,3 +35,7 @@ metadata:
   Obsidian Sync は `.git` を運ばないので、MacBook 側に「git でないコピー」がもう1つできる
 - パスの依存：crontab 4行・~/.claude のリンク3本・launchd 1本・~/.vivid-relay 35本・リポジトリ内37本
 - MOC の元の文面にも「GitHub管理下のソースコード（Sync対象外）」とあった
+- ★決定（2026-09-25 有璽氏）：**実体は動かさない。Sync対象外にした 10_Skills_Repository へリンクで置く。**
+  MOC は相対リンク化済み（../10_Skills_Repository/{vivid-ai-hq,agents,skills,output-styles}/）。
+  `.claude` は Obsidian に見えないので agents/skills/output-styles は別リンクで出す。
+  グローバル設定は `~/vivid-ai-hq` のまま（実体が動かないため書き換え不要）
