@@ -27,3 +27,11 @@ metadata:
 **Why:** 規範の正本を2か所に置くと二重管理になる（fukuchi-core「どれが正本か先に決める」）。
 **How to apply:** fukuchi-core 本文の改訂・@import の差し替えは「規範の変更」＝要承認。
 移行が済むまでは、どちらの記述を正とするか都度確かめる。[[project_memory_layer_design]]
+
+**★2026-09-25 リポジトリを保管庫へ入れる前に分かったこと（実測）**
+- Core_Brain は Obsidian Sync が有効（`.obsidian/core-plugins.json` の sync=true）
+  ＝保管庫の中へ入れた瞬間、vivid-ai-hq（122MB・memory 262本）がクラウドと他端末へ同期され始める
+- MacBook には別の git クローンがある ＝ **git と Obsidian Sync が同じファイルを取り合う**。
+  Obsidian Sync は `.git` を運ばないので、MacBook 側に「git でないコピー」がもう1つできる
+- パスの依存：crontab 4行・~/.claude のリンク3本・launchd 1本・~/.vivid-relay 35本・リポジトリ内37本
+- MOC の元の文面にも「GitHub管理下のソースコード（Sync対象外）」とあった
