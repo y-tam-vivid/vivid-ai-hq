@@ -125,3 +125,4 @@
 - [オレンジワークスWPの鍵](project_orangeworks_portfolio_site.md) — ★9/14 鍵はminiに保存。★正誤どちらの鍵でも401＝認証ヘッダーがWPへ届いていない。鍵の再発行では直らない
 - [芽育ラボ](project_orangeworks_portfolio_site.md) — ★9/15 公開75件・一覧75件(イラストA+B 8件含む)／110分割と要確認4件は判断待ち
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
+- [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 9/24方針。★00_Systemは.md.md二重拡張子・@importは未切替
