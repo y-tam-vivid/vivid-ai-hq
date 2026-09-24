@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1790258450445,
+  "lastUpdated": 1790268389562,
   "skills": [
     {
       "skillId": "import-memory",
@@ -49,8 +49,9 @@
       "skillId": "skill_01JyRtqNghrufftAHaJFwRrT",
       "name": "prose-architect-editor",
       "description": "対外向けの長文原稿を、構成設計から文体適用・推敲・校閲・文字数管理まで一定品質で仕上げるためのスキル。書籍・取材インタビュー記事を主たる想定としつつ、提案書・コラム・Web記事・会社案内・寄稿文・登壇原稿など対外資料全般の長文ライティングで汎用的に使用する。「記事の構成を考えて」「原稿を整えて」「インタビュー記事を書きたい」「この文章を校閲して」「冗長な部分や重複を直して」「文字数に収めて」「対外向けの長文を作りたい」「ライターに戻す前に確認したい」などのフレーズで必ずトリガーすること。また、方向性・力点の言語化、現在→過去→未来などの構成設計、地の文と会話文の文体使い分け、推敲時の二重表現・重複の検出、文字数の機械的計測、研究倫理や社外秘に配慮した未確定情報の表現管理を伴う原稿作業全般で使用する。単なる短文の作成ではなく、構成判断や校閲を要する長文・対外原稿の作業で参照すること。",
-      "source": "custom",
-      "updatedAt": "2026-06-07T01:42:38.846888Z"
+      "source": "plugin",
+      "updatedAt": "2026-06-07T01:42:38.846749Z",
+      "backingPluginId": "plugin_013aiuPUCojyoZnwpESbxYyj"
     },
     {
       "skillId": "skill_015cjHjm1ua1Rv7yfjKkysLr",
@@ -191,5 +192,8 @@
       "source": "anthropic",
       "updatedAt": "2026-09-22T18:00:37.886566Z"
     }
+  ],
+  "pendingClaims": [
+    "21558:Thu Sep 24 10:51:24 2026/prose-architect-editor"
   ]
 }
