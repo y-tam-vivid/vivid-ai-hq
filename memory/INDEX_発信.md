@@ -88,5 +88,5 @@
 - [かわちばなし・16版で3件済](project_kawachibanashi_portal.md) — ✅9/16 書き手/募集/読者像/並びは実装済。★残=OC外す・幅掃き
 - [渡し物はDriveの案件フォルダへ](reference_backups_in_volatile_places.md) — ★9/16恒久 DL/Desktopは不可(1塊200MB)。★制作物と同じ所へ置く
 - [JFBI調査研究サイト](project_jfbi_research_site.md) — ★9/24 協力団体★2件（a’s岡崎／リライフ訪問看護ステーション柏原）。写真の枠は3:4の1種類へ統一。**★a’sへの確認は有璽氏が実施中**
-- [もらった素材は開いて数える](reference_supplied_material_needs_screening.md) — ★9/24「掲載用写真」18枚に★仕入れ単価の焼き込み1枚が混在。①写り込んだ文字②第三者③重複④画面で読めるか＋顔を数えてから載せる
+- [もらった素材は開いて数える](reference_supplied_material_needs_screening.md) — ★9/24 仕入れ単価の写り込み等4枚を外した／**★同日 追記：「サイトに載っている」は「配ってよい」ではない。Exifは空＝出どころは聞くしかない**
 - [1件だと枠が全幅へ伸びる](reference_grid_collapses_when_only_one.md) — ★9/24 CSSのauto-fitは1件のとき列を畳んでカードを全幅へ伸ばす→auto-fillへ。★枠を先に出すときは0/1/2/3件の絵を実際に描いて隣のブロックと揃える
