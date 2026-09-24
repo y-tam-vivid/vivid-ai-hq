@@ -25,4 +25,4 @@
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本。★出した側が台帳を閉じる。詳細は本文**
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/12★2回。足りない→待つで止めるな。器を縮める／依頼文を作る**
 - [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync除外・リンク4本(mini済/MacBook残)
-- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — 読むだけ版あり。★全社DBは3件・有璽氏個人0件＝同期先の再確認待ち
+- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — ★決定：1件1か所・個人画面は見せるだけ・個人DBは作り直し可。設計提示中
