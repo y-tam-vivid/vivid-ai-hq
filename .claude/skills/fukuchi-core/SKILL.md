@@ -17,6 +17,18 @@ description: ふくち。グループ全AI共通の正本規範。判断軸(00�
      ═══════════════════════════════════════════════════════════════ -->
 
 
+## ★正本の置き場（2026-09-24 有璽氏決定・最優先）
+
+```
+動的なルール・ナレッジ   Obsidian ~/Documents/Core_Brain/00_System/   ★正本（Obsidian Sync）
+                         入口 = 🗺️_Index_MOC.md ／ 00_Secretary_Core.md ／ 02_Current_Focus.md
+完成したコード・スキル   ~/vivid-ai-hq（git）  将来 Core_Brain/10_Skills_Repository/ へ内包
+```
+
+- **食い違ったら Core_Brain が正。**このファイル（fukuchi-core）は Core_Brain へ移し終えるまでの併読扱い
+- 新しいルール・恒久の知識は、ここや MEMORY.md を膨らませず **Core_Brain の MOC へ足す**
+- 00_System は人がスマホ・MacBookから同時に編集する。書き換えるときは衝突に配慮する
+
 # 思考OSコア ─ 00 共通層（人としての判断軸）
 
 > 個人・法人のどちらの仕事にも効く土台をここに置く。法人固有は `10-法人.md`、個人固有は `20-個人.md`。
