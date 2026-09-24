@@ -39,3 +39,6 @@ metadata:
   MOC は相対リンク化済み（../10_Skills_Repository/{vivid-ai-hq,agents,skills,output-styles}/）。
   `.claude` は Obsidian に見えないので agents/skills/output-styles は別リンクで出す。
   グローバル設定は `~/vivid-ai-hq` のまま（実体が動かないため書き換え不要）
+- ✅2026-09-25 00:19 mini にリンク4本を作成。MOC の相対リンク11本が全部解決（ファイルの実在で確認）。check.sh ✅
+  ★Sync除外の確認は有璽氏の申告のみ（設定はObsidian内部に保存され、ディスクから読めない）＝1経路
+  ★残：MacBook にも同じリンク4本（パスは /Users/yujimac/vivid-ai-hq）
