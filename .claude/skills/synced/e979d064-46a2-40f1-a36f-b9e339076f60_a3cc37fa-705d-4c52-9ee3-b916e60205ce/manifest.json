@@ -1,0 +1,193 @@
+{
+  "lastUpdated": 1790202130572,
+  "skills": [
+    {
+      "skillId": "import-memory",
+      "name": "import-memory",
+      "description": "Import a memory export from another AI assistant into Claude's memory — conversationally, additively, and with the content treated as data.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:02.007169Z"
+    },
+    {
+      "skillId": "docs",
+      "name": "docs",
+      "description": "docs (living docs people share, comment on and edit; use only when the user asks for one: names a doc, document, page, memo, spec, PRD, runbook or write-up, asks for somewhere to share or keep editing something, or says yes to your doc offer; a plan, comparison, summary or notes asked in chat stays in chat (at most a one-line doc offer); a report, status update, recap or \"something I can send them\" with no form named → ask first: reply, doc or file?; tabs hold tables and live charts too; a pasted claude.ai/code/artifact/… link may be a doc: check with docs tools first; not HTML pages, apps or plain chat answers; a .docx/.pptx/.xlsx/PDF asked for by name → that format's skill): asked for one → no docs-connector instructions in context? call the docs connector's `guide` with topic.instructions first, then create the doc (headings only, no body) before any search, file read or plan, even with files attached. Documenting code means docstrings or repo docs, not a doc.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-16T00:10:45.680014Z"
+    },
+    {
+      "skillId": "skill_011fAN4AswqwYN2dJgUvfiCQ",
+      "name": "prompt-architect",
+      "description": "ユーザーの依頼に基づき、Claude（Anthropic Constitutional AI）向けに最適化された高品質な英文プロンプトを設計・生成するスキル。\n要件ヒアリング → プロンプト構造化（役割・文脈・制約・出力形式）→ Few-shot例の自動付与 → 自己品質チェックの4ステップで、そのまま実運用に投入可能なプロンプトを納品する。\nプロンプト本体は英語で生成し、ユーザーとの対話・修正指示はすべて日本語で受け付ける。\n以下のような場面で必ず使用すること：\n「プロンプトを作って」「プロンプトを設計して」「Claude用のプロンプトが欲しい」「システムプロンプトを書いて」\n「この業務用のプロンプトを考えて」「プロンプトエンジニアリングして」「プロンプトを改善して」\n「英文プロンプトを作成して」「prompt を書いて」「instruction を作って」\nまた、ユーザーが特定のタスク（要約・翻訳・分類・抽出・生成・分析等）をLLMに繰り返し実行させたい意図を示した際にも、\n明示的な依頼がなくてもこのスキルの適用を提案すること。",
+      "source": "plugin",
+      "updatedAt": "2026-04-23T02:52:49.596001Z",
+      "backingPluginId": "plugin_01PuEjX8MscsV7ZL5dGvyc6A"
+    },
+    {
+      "skillId": "skill_01JTRTCXBMUk5e4vdZGBKLCQ",
+      "name": "yuji-philosophy-thought",
+      "description": "田村有璽の根源哲学「理解→応援→活きる」の三角形循環、九鬼修造「いきの構造」との接続、日本人の根源的倫理観、中間共同体論、「大衆になるな、民衆であれ」の思想を体現するスキル。発達障害当事者としての原体験から生まれた「応援の伝播塔」としての使命と、日本民族レベルでの哲学的背景を統合した深い対話が可能",
+      "source": "custom",
+      "updatedAt": "2026-04-27T10:43:28.369180Z"
+    },
+    {
+      "skillId": "morning",
+      "name": "morning",
+      "description": "Render the user's morning brief as a styled HTML artifact, or set it up as a recurring weekday task. Use only when the user explicitly asks to run, see, or set up their morning brief, or if they invoke /morning by name. A question about their day, schedule, or calendar is not by itself a request for the brief; answer it directly instead.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.990356Z"
+    },
+    {
+      "skillId": "skill_01TiGFLCVy6VHXuX5WmdFUiZ",
+      "name": "notion-memo-router",
+      "description": "日々パソコンのメモ帳等で控えているメモ（MTGメモ・タスク・アカウント情報・APIキー・雑多なメモ）を貼り付けるだけで、内容を仕分けして適切なNotionデータベースへ投入するスキル。行頭タグ（#task /",
+      "source": "custom",
+      "updatedAt": "2026-06-18T01:54:34.824034Z"
+    },
+    {
+      "skillId": "skill_01JyRtqNghrufftAHaJFwRrT",
+      "name": "prose-architect-editor",
+      "description": "対外向けの長文原稿を、構成設計から文体適用・推敲・校閲・文字数管理まで一定品質で仕上げるためのスキル。書籍・取材インタビュー記事を主たる想定としつつ、提案書・コラム・Web記事・会社案内・寄稿文・登壇原稿など対外資料全般の長文ライティングで汎用的に使用する。「記事の構成を考えて」「原稿を整えて」「インタビュー記事を書きたい」「この文章を校閲して」「冗長な部分や重複を直して」「文字数に収めて」「対外向けの長文を作りたい」「ライターに戻す前に確認したい」などのフレーズで必ずトリガーすること。また、方向性・力点の言語化、現在→過去→未来などの構成設計、地の文と会話文の文体使い分け、推敲時の二重表現・重複の検出、文字数の機械的計測、研究倫理や社外秘に配慮した未確定情報の表現管理を伴う原稿作業全般で使用する。単なる短文の作成ではなく、構成判断や校閲を要する長文・対外原稿の作業で参照すること。",
+      "source": "custom",
+      "updatedAt": "2026-06-07T01:42:38.846888Z"
+    },
+    {
+      "skillId": "skill_015cjHjm1ua1Rv7yfjKkysLr",
+      "name": "vivid-sns-illust-prompt-generator",
+      "description": "田村有璽の個人Instagramアカウント向けに、Nano Banana（Gemini 2.5 Flash Image）で生成する「3Dレンダリング寄り温かみ系イラスト」のプロンプトを生成するスキル。福祉×IT・DX、福祉×お金、パーソナル：思想の3テーマで使用される。投稿文と投稿テーマカテゴリを入力として、ブランドガイドラインに沿ったシーン記述型プロンプト（日本語版・英語版）を出力する。「イラストプロンプトを作って」「Nano Bananaのイラストプロンプトが欲しい」「投稿に合わせたイラストを生成したい」などのフレーズで必ず使用する。`vivid-sns-image-prompt-generator`の後継スキルとして独立構築されており、当面は本スキル単独で動作する。オーケストレーター統合は別途対応予定。",
+      "source": "plugin",
+      "updatedAt": "2026-05-06T01:03:21.542934Z",
+      "backingPluginId": "plugin_014u4na7J7ne6AcskPb89yDD"
+    },
+    {
+      "skillId": "skill_01S5BVR86VtCGnWy8YNysvXq",
+      "name": "vivid-sns-image-prompt-generator",
+      "description": "ビビッドグループ用のSNS投稿に添える画像生成プロンプトを、Nano Banana（Gemini 2.5 Flash Image）向けに最適化して生成するスキル。投稿文の内容とプロジェクト内のvisual_guideline.mdに沿ってシーン記述型プロンプトを出力する。data_sources.md経由で過去投稿の画像も参照し、ビジュアルトーンの一貫性を保つ。「画像プロンプトを作って」「Nano Bananaのプロンプトが欲しい」「投稿に合わせた画像を生成したい」「ビジュアルプロンプトを出して」など、SNS用画像生成プロンプトに関わるあらゆる依頼で必ず使用すること。投稿文生成スキルの後段、もしくはオーケストレータースキルから呼び出される前提で設計されているが、単独でも使用可能。",
+      "source": "custom",
+      "updatedAt": "2026-04-16T02:50:09.080168Z"
+    },
+    {
+      "skillId": "skill_01LDFT3KckhNqThADr7pQX7u",
+      "name": "riyousha-futan-pdf-splitter",
+      "description": "「利用者負担上限額管理結果表」PDFを施設ごとに自動分割・結合・リネームするスキル。月次でダウンロードされる複数ページの管理結果票PDFを受け取り、(1)1ページずつ分割→(2)各ページに含まれる事業所名のユニーク数だけ複製→(3)施設ごとに該当ページを結合→(4)「YYYY_MM_施設名_利用者負担上限額管理結果表.pdf」にリネーム→(5)入力フォルダ配下の YYYY-MM/ サブフォルダに保存、までを一気通貫で実行する。トリガー条件：「利用者負担上限額管理結果表」「利用者負担」「上限額管理」「上限額管理結果」「管理結果票」「児童発達支援の管理結果」「放課後等デイサービスの管理結果」「今月分を処理」「今月のPDFを処理」「施設別に分けて」「事業所別に分けて」に言及があった場合。またデスクトップの「利用者負担上限額管理結果表」フォルダにPDFが入っている状態で「処理して」「分けて」と言われた場合も積極的にトリガーすること。",
+      "source": "custom",
+      "updatedAt": "2026-05-13T02:15:30.575663Z"
+    },
+    {
+      "skillId": "skill_01VE8TWTn6V5q2c8RVYoD5h8",
+      "name": "vivid-sns-qa-checker",
+      "description": "ビビッドグループ用に生成されたSNS投稿文と画像生成プロンプトが、プロジェクト内のqa_criteria.mdに定義された品質基準を満たしているかを判定するQAスキル。過去投稿（data_sources.md経由で取得）との一貫性（スタイル・トーンの違和感のなさ）も判定対象に含む。合格/不合格の判定と、不合格の場合の具体的な修正指示を返す。「QAチェックして」「品質チェックをかけて」「投稿文と画像プロンプトをレビューして」「ガイドラインに沿っているか確認して」など、SNSコンテンツの品質判定に関わるあらゆる依頼で必ず使用すること。オーケストレータースキルから自動再生成ループの判定として呼び出される前提で設計されているが、単独でも使用可能。",
+      "source": "custom",
+      "updatedAt": "2026-04-16T02:50:09.686243Z"
+    },
+    {
+      "skillId": "skill_01RtawxJbJwAMoyTGxqygsRq",
+      "name": "reply-unblocker",
+      "description": "「返さなきゃいけないのに返せていない連絡」を、雑な音声メモ一言から即送信できる文面3案に変換するスキル。断り・保留・遅延謝罪・日程変更・見送り連絡のいずれにも対応し、必ず戦略の異なる3案を出して最終選択をユーザーに残す。以下のような場面で必ず使用すること：「これ断りたいんだけど」「返信が遅れてしまった」「なんて返せばいい」「行けなくなった」「返事してない案件がある」「気まずくて連絡できていない」「angry断り方を考えて」「〇〇さんに連絡しないと」。また、ユーザーが未返信・放置している連絡について言及した場合や、返信をためらっている様子が読み取れる場合は、明示的な依頼がなくてもこのスキルを適用すること。ユーザーが断りづらさ・返信の先延ばし・関係悪化への不安を口にした時点でトリガーする。",
+      "source": "plugin",
+      "updatedAt": "2026-09-07T06:30:46.840439Z",
+      "backingPluginId": "plugin_013raP4HTUiGBv7dzDuY1B94"
+    },
+    {
+      "skillId": "skill_01DYbGV8mbFNfyQbSA2wBSpA",
+      "name": "fukuchi-deck-builder",
+      "description": "ふくち。グループ専用のスライド資料（PowerPoint/PDF）を、固定ブランドデザインで生成するスキル。 紺・ティール・ふくち。オレンジの配色、Noto Sans CJK、循環図・カードグリッド・Before/After比較表・ ロードマップ・組織図・会社概要カードといった専用デザイン部品を組み合わせ、構成は都度自由に決めて 資料を作る「部品ライブラリ型」スキル。以下のいずれかに該当したら必ずこのスキルを使うこと: 「ふくち。グループの資料／パンフレット／会社案内／提案資料／スライドを作って」「同じデザインで別資料」 「前回と同じフォーマットで」「ふくち。グループの○○向け資料」「FUKUCHIの資料を清書」など、 ふくち。グループ（ふくち。／ビビッド／ILIFE／SWELLSOCIETY／リアンライフ）のスライド資料作成・清書・ デザイン適用に関わるあらゆる依頼。資料の構成が企業向け17ページ構成でなくても、行政向け・福祉施設向け・ 投資家向け・採用向けなど読者や枚数が違っても、ふくち。グループの資料である限り必ずこのスキルを使う。 既存ドラフト（PDF/PPTX/Word/テキスト）の清書依頼でも、出力がふくち。グループのスライドなら使用する。",
+      "source": "plugin",
+      "updatedAt": "2026-05-18T09:10:35.658137Z",
+      "backingPluginId": "plugin_01CtaBX142FgZZGnZejiEb23"
+    },
+    {
+      "skillId": "skill_01VNLQqTPQBUVL9AVQS8pWsz",
+      "name": "yuji-brand-history",
+      "description": "田村有璽（株式会社ふくち。代表取締役／「ふくち。」グループ代表）の経歴・原体験・思想・事業変遷を正確に保持し、用途と公開レベルに応じて一貫した人物・事業記述を生成するスキル。プロフィール文（書籍・Web・登壇者紹介・SNS等、各種文字数）、経歴紹介、取材・インタビューの想定問答素材、会社沿革の語り、自己紹介テキストなど「田村有璽個人と『ふくち。』グループの物語・事実を語るテキスト」を作成・推敲・校閲するあらゆる場面で必ず使用すること。「田村のプロフィールを書いて」「経歴をまとめて」「登壇者紹介文を作って」「取材用の想定問答を用意して」「会社の沿革を語って」「自己紹介文を作って」などのフレーズはもちろん、田村有璽本人や「ふくち。」グループの来歴・原体験・思想に言及する記述を生成する依頼全般でトリガーすること。事実関係（設立年・法人名・原体験の細部）の揺れや、社外非公開情報の誤った露出を防ぐことが本スキルの主目的であるため、断片的な事実を一つでも書く場合でも参照すること。なお営業資料・事業計画書・スライド資料そのものの作成はfukuchi-deck-builder等の専用スキルが担うため、本スキルは「人物・事業を語る物語/事実テキスト」に用途を絞る。",
+      "source": "custom",
+      "updatedAt": "2026-06-07T01:43:13.979518Z"
+    },
+    {
+      "skillId": "skill_01J4TB3JvtmBYp1X7qV4DsH1",
+      "name": "standup-event-notion-importer",
+      "description": "放課後等デイサービス「LIFE STAND UP」のイベント企画・報告書（Google Drive上のGoogleドキュメント）を、 Notionの3データベース構造（イベントDB／場所マスター／在庫DB）へ正確かつ重複なく移行・登録するスキル。 長期休暇イベント（夏・冬・春）や施設内イベントの過去データ一括移行、現場が統一Wordテンプレート＋Excel試算表で 起票した新規イベントの企画登録・実施後の報告更新のいずれにも使う。 「イベントをNotionに登録して」「○○年の夏（冬・春）のイベントを移行して」「企画報告書をNotionに入れて」 「イベント企画・報告書フォルダを処理して」「STAND UPのイベントDBに入れて」「このイベントの企画をNotionに起票して」 「実施したイベントの報告をNotionに反映して」などの依頼が来たら必ずこのスキルを使うこと。 Google DriveのイベントフォルダとNotionのイベント管理DBが関わる作業では、明示的に「スキルを使って」と言われなくても このスキルを参照すること。別チャット・別アカウントからの依頼でも本スキルの手順に従えば同一品質で登録できる。",
+      "source": "custom",
+      "updatedAt": "2026-06-18T03:57:25.283817Z"
+    },
+    {
+      "skillId": "skill_01UGntAr8bmgdNkt8MwqEFRW",
+      "name": "vivid-sns-text-generator",
+      "description": "ビビッドグループ用のSNS投稿文を、プロジェクト内に格納されたブランド情報・コンテンツテーマ・プラットフォーム仕様に基づいて生成するスキル。過去投稿はdata_sources.mdに記載されたNotion等の外部データソースからリアルタイムに取得し、過去の投稿と違和感のないスタイル・文体・構成で新規投稿文を生成する。「投稿文を作って」「SNSの文章を生成して」「Instagramの投稿テキストを書いて」「noteの記事案を出して」「今週の投稿を考えて」など、SNSテキスト作成に関わるあらゆる依頼で必ず使用すること。プロジェクト内にbrand_info.md、content_themes.md、platform_spec.md、data_sources.md等が存在する場合は積極的にトリガーすること。後続の画像プロンプト生成・QA判定スキルと組み合わせて使うこともできる単独スキル。",
+      "source": "custom",
+      "updatedAt": "2026-04-16T02:50:07.963513Z"
+    },
+    {
+      "skillId": "skill_01CYBPGkomCQedAh6GALYrFq",
+      "name": "vivid-sns-orchestrator",
+      "description": "ビビッドグループ用のSNSコンテンツを「外部データソースから過去投稿取得→投稿文生成→画像プロンプト生成→QA判定→不合格時は自動再生成（最大3回）」のフローで一気通貫に生成するオーケストレータースキル。data_sources.mdに記載されたNotion等のURLから過去投稿をリアルタイム取得し、スタイル一貫性を保証する。「SNSコンテンツを作って」「投稿一式を作成して」「今週のSNSをまとめて作って」「投稿文と画像プロンプトを一緒に出して」「SNS配信用のセットを作って」など、SNSコンテンツの一括生成に関わるあらゆる依頼で必ず使用すること。",
+      "source": "plugin",
+      "updatedAt": "2026-04-16T02:50:06.547567Z",
+      "backingPluginId": "plugin_011Wx2CnQGLHgh9sgqrBdbGL"
+    },
+    {
+      "skillId": "pdf",
+      "name": "pdf",
+      "description": "Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.",
+      "source": "anthropic",
+      "updatedAt": "2026-07-10T19:23:15.432550Z"
+    },
+    {
+      "skillId": "skill_0152MCakHsd2XgPVPMSVmrEb",
+      "name": "sns-content-generator",
+      "description": "SNS広報コンテンツ（Instagram法人・Instagram個人・note）のテキストと、\nGemini Imagen向け画像生成プロンプト（英文）を一気通貫で生成するスキル。\nプロジェクト内のMarkdownファイルを情報源として読み込み、テーマ候補の提案から\nテキスト・画像プロンプトの生成まで自動で行う。\n\n以下のような場面で必ず使用すること：\n- 「Instagram投稿を作りたい」「SNSのコンテンツを作って」\n- 「noteの記事案を出して」「今週の投稿テーマを考えて」\n- 「画像生成のプロンプトが欲しい」「Imagenのプロンプトを作って」\n- プロジェクト内にbrand_info.md / content_themes.md / post_history.md / youtube_sources.mdが存在する場合",
+      "source": "plugin",
+      "updatedAt": "2026-04-08T02:41:29.655217Z",
+      "backingPluginId": "plugin_01NUS2M5di1pndibVkXP4Ncg"
+    },
+    {
+      "skillId": "skill_01NBY9hgWueqTv2Rnx7nqFZ6",
+      "name": "looker-studio-advisor",
+      "description": "Comprehensive advisor skill for building BI dashboards with Google Looker Studio (formerly Data Studio). Covers dashboard design, KPI design, data source connections (Google Sheets, GA4), calculated fields, layout optimization, performance tuning, sharing/permission setup, AND step-by-step operational guidance. Trigger this skill whenever the user mentions: Looker Studio, Data Studio, dashboard construction, BI, KPI design, data visualization, report creation, GA4 integration, spreadsheet integration, calculated fields, blending, or any data-driven reporting needs — even if they don't explicitly say 'Looker Studio'. Also trigger for questions about chart selection, scorecard design, data freshness settings, or how-to questions about Looker Studio operations (e.g., 'how do I add a data source', 'how to create a calculated field', 'where is the blend setting').",
+      "source": "custom",
+      "updatedAt": "2026-04-12T05:33:22.756571Z"
+    },
+    {
+      "skillId": "skill-creator",
+      "name": "skill-creator",
+      "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
+      "source": "anthropic-example",
+      "updatedAt": "2026-09-14T19:41:01.499089Z"
+    },
+    {
+      "skillId": "skill_01Q8CvWB5hkpAfw4i2Js5dCb",
+      "name": "schedule-finder",
+      "description": "Googleカレンダー（仕事・個人の複数カレンダー対応）を読み込み、指定された日程・時間枠の空き時間を1時間単位でピックアップし、LINE・メール・Slackなど指定フォーマットで出力するスキル。「空き時間を調べて」「日程候補を出して」「来週の空きを教えて」「○曜日から△曜日の間で空いてる時間は？」「アポイントの候補を出して」など、日程調整・スケジュール確認・MTG設定に関わるあらゆるフレーズで必ず使用すること。ユーザーが時間帯や出力先を指定している場合でも、していない場合でも、このスキルを積極的に活用すること。",
+      "source": "custom",
+      "updatedAt": "2026-04-12T05:30:17.838855Z"
+    },
+    {
+      "skillId": "skill_01TSjHhX5tTfMUbqjHKJ5aWC",
+      "name": "sitemap-architect",
+      "description": "Web サイト構築前のサイトマップ設計スキル。マーケティング資料・提案書・競合分析等の プロジェクト格納ファイルをソースとして、情報設計（IA）の専門知識に基づいたサイトマップと 「なぜこの構成が最適か」を論証する提案ドキュメントを生成する。 アウトプットはプロジェクトナレッジで指定されたフォーマット（スプレッドシート構成・提案書テンプレート）に準拠する。 トリガー条件：「サイトマップ」「サイト構成」「ページ構成案」「IA設計」「情報設計」 「サイトマップ提案」「ページ一覧」「ディレクトリマップ」「サイト設計」「ナビゲーション設計」 「サイトツリー」「sitemap」「site architecture」「information architecture」 「ページ階層」「URL設計」「コンテンツマップ」「サイトマップを作って」「構成案を出して」 に言及がある場合。また、Webサイト新規構築やリニューアルの文脈でページ構成・階層設計に 関わるあらゆるリクエストでこのスキルをトリガーすること。 web-consulting-proposal スキルの分析結果がプロジェクトに存在する場合は積極的に活用する。",
+      "source": "custom",
+      "updatedAt": "2026-04-12T05:35:37.679237Z"
+    },
+    {
+      "skillId": "docx",
+      "name": "docx",
+      "description": "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx) or Word templates (.dotx). Triggers include: any mention of Microsoft Word Documents, such as 'Word doc', 'word document', '.docx', '.dotx', 'microsoft doc'. Also use when extracting or reorganizing content from .docx or .dotx files, inserting or replacing images in documents, find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a deliverable as a Word or .docx file (to download, email or print), use this skill. However, if they ask for a document, page, report, memo, or notes WITHOUT naming a file format and the session offers Claude's own dedicated document or page skill or connector, use that instead, even if they will email or print it. Do NOT use for PDFs, spreadsheets, Google Docs, or coding unrelated to document generation.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-23T04:00:28.352014Z"
+    },
+    {
+      "skillId": "xlsx",
+      "name": "xlsx",
+      "description": "Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .xltx, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \"the xlsx in my downloads\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-14T21:00:33.324012Z"
+    },
+    {
+      "skillId": "pptx",
+      "name": "pptx",
+      "description": "Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations as PowerPoint (.pptx) files; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email, summary, or creating a different type of slide deck); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user asks for a PowerPoint or .pptx file, or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. However, when the user asks for a deck, slides, a slide deck, or a presentation without naming a file format, default to using a dedicated slide-deck artifact type or a separate slides skill if this session offers one; otherwise, use this skill.",
+      "source": "anthropic",
+      "updatedAt": "2026-09-22T18:00:37.886566Z"
+    }
+  ]
+}
