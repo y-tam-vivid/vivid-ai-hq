@@ -1,12 +1,16 @@
 ---
 name: notion-focus-sync
-description: Obsidian の 02_Current_Focus.md に書いた「- [ ] タスク」と、Notion 🗂個人タスク／✅ビビッドタスク管理DB（全社）を同期し、2つのDBの間でタスクを移す。★設計確定・同期スクリプト未実装（2026-09-25）。「フォーカスをNotionへ」「Current_Focusを同期」「全社へ移す」「個人へ移す」等で読む。
+description: Obsidian の 02_Current_Focus.md に書いた「- [ ] タスク」と、Notion 🗂個人タスク／✅ビビッドタスク管理DB（全社）を同期し、2つのDBの間でタスクを移す。★同期スクリプト実装済み・cron未登録（2026-09-25）。「フォーカスをNotionへ」「Current_Focusを同期」「全社へ移す」「個人へ移す」等で読む。
 ---
 
 # notion-focus-sync（旧称 Skill_Notion_Sync）
 
-> 状態：2026-09-25 設計確定。**同期スクリプトは未作成・自動実行は未登録。**
-> 読むだけの取得スクリプト `fetch_notion_tasks.py` のみある（旧仕様・全社DBだけを見る）。
+> 状態：2026-09-25 実装完了（往復テスト済み・ドーベルマン検査の指摘6点を反映済み）。
+> **cronは未登録。検査待ち。**
+> `~/.vivid-relay/notion_focus_sync.py`（Obsidian⇔個人DB／全社DBの同期本体）と
+> `~/.vivid-relay/import_chatwork_done.py`（Chatwork処理済み履歴の一回きり取り込み・
+> 既定dry-run）の2本がある。★`import_chatwork_done.py --run` は 2026-09-25 にビビが実行済み（完了履歴601件）。
+> 旧・読むだけの取得スクリプト `fetch_notion_tasks.py` はこのフォルダにある（旧仕様・全社DBだけを見る）。
 
 ## 置き場（タスクは1件1か所）
 
@@ -63,8 +67,13 @@ Obsidian で行に #全社 を足す/消す → 上と同じ動き
 5. 既定は読むだけ（dry-run）。`--run` のときだけ書く。毎回の差分をログへ残す
 6. 書き出すとき pw／パスワード／token を含む行は伏せる
 
-## 実行（予定）
+## 実行（現在地）
 
-- 置き場：`~/.vivid-relay/notion_focus_sync.py`（mini）。実装はピタゴラス
-- 手動で数回 → つる（データ）・ドーベルマン（自動処理）の検査 → mini の cron（15分ごと）
-- ⚙️自動処理レジスタへ行を作り、成功でも失敗でも心拍を打つ
+- **notion_focus_sync.py**（mini・実装ピタゴラス）：既定dry-run・`--run`で実書き込み。
+  `--beat` で `~/.vivid-relay/heartbeat.py` の `beat()` を成功/失敗どちらでも打つ
+  （行名「Obsidian⇔Notion 個人・全社タスク同期」・⚙️レジスタへの新規行作成はしない＝ビビが行う）。
+  二重起動防止（fcntl）・state不在/破損時はreopenを判定しない・state途中保存・
+  Obsidian Sync巻き戻り対策（読み返し確認＋24時間以内同名重複ガード）を実装済み。
+- **import_chatwork_done.py**（mini）：一回きり。既定dry-run。★2026-09-25 実行済み（601件）。二度目を流しても重複は作らない
+- **cronは未登録。** 手動で数回 → つる（データ）・ドーベルマン（自動処理）の検査 → mini の cron（15分ごと）
+- ⚙️自動処理レジスタへ行を作るのはビビ。作成後、`--beat` 付きで cron 登録する
