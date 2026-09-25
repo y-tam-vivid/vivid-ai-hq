@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1790268389562,
+  "lastUpdated": 1790292605257,
   "skills": [
     {
       "skillId": "import-memory",
@@ -72,8 +72,9 @@
       "skillId": "skill_01LDFT3KckhNqThADr7pQX7u",
       "name": "riyousha-futan-pdf-splitter",
       "description": "「利用者負担上限額管理結果表」PDFを施設ごとに自動分割・結合・リネームするスキル。月次でダウンロードされる複数ページの管理結果票PDFを受け取り、(1)1ページずつ分割→(2)各ページに含まれる事業所名のユニーク数だけ複製→(3)施設ごとに該当ページを結合→(4)「YYYY_MM_施設名_利用者負担上限額管理結果表.pdf」にリネーム→(5)入力フォルダ配下の YYYY-MM/ サブフォルダに保存、までを一気通貫で実行する。トリガー条件：「利用者負担上限額管理結果表」「利用者負担」「上限額管理」「上限額管理結果」「管理結果票」「児童発達支援の管理結果」「放課後等デイサービスの管理結果」「今月分を処理」「今月のPDFを処理」「施設別に分けて」「事業所別に分けて」に言及があった場合。またデスクトップの「利用者負担上限額管理結果表」フォルダにPDFが入っている状態で「処理して」「分けて」と言われた場合も積極的にトリガーすること。",
-      "source": "custom",
-      "updatedAt": "2026-05-13T02:15:30.575663Z"
+      "source": "plugin",
+      "updatedAt": "2026-05-13T02:15:30.575479Z",
+      "backingPluginId": "plugin_01LioVZ8deekMJUQY439hTh2"
     },
     {
       "skillId": "skill_01VE8TWTn6V5q2c8RVYoD5h8",
@@ -192,8 +193,5 @@
       "source": "anthropic",
       "updatedAt": "2026-09-22T18:00:37.886566Z"
     }
-  ],
-  "pendingClaims": [
-    "21558:Thu Sep 24 10:51:24 2026/prose-architect-editor"
   ]
 }

@@ -237,3 +237,25 @@ hook_writeback.log の中身     出ていた「★差し戻した」は9/14〜9
   行に日付があるログは日付でも絞る。**日付を持たないログ（kb_live14 等・9/22 の inventory_check.log も同型）は
   そもそも「いつの失敗か」を測れない**＝ログ側に時刻を入れる → [[reference_log_needs_an_exit]]
 - 読む側の当座の作法：**材料のログ行は、ファイルの mtime を1回見てから前日分として扱う。**
+
+## ★4つ目の型 ── Claude Desktop の `<system-reminder>` が「有璽氏の発言」になる（2026-09-25 ロビン実測）
+
+9/24夜、有璽氏が Claude Desktop（mini）で Core_Brain 移行の会話をした。材料の「有璽氏の発言」4件のうち
+**★2件はアプリが差し込んだ `<system-reminder>`**（本人は1文字も書いていない）。
+
+```
+23:20:12  "The user started this session without choosing a project folder … scratch workspace …"
+23:41:41  "When this session moved to /Users/yuji_macmini/Documents/Core_Brain, the app copied …"
+          ＝ フォルダ未選択で始めた／途中でフォルダへ移した ときにアプリが本文へ差し込む
+実測2経路  ①corrections.log 全650行中 `<system-reminder>` を含むのは★この2行だけ（どちらも9/24）
+          ②hook_catch_correction.py の _is_non_utterance は `<task-notification>` しか見ていない（:71）
+判定       4ラベル全部（事実/制約/恒久のルール/繰り返しの指摘）が付く＝★最も重く見える形で届く
+```
+
+- **★9/19 の3経路（探針・起動プロンプト・task-notification）と同じ穴の4つ目。** 面（Desktop）を増やすと
+  新しい「人でない本文」が増える。**面を足したら、その面が差し込む定型文を1回 corrections.log で探す。**
+- **直し方（コード＝ピタゴラス案件・未着手）**：冒頭400字に `<system-reminder>` があれば除外、を1行足す。
+  ★ただし有璽氏が貼り付けた本物の文にこのタグが混ざる形はまだ見ていない＝除外は冒頭一致に限る
+- 副産物の事実：**Desktop でフォルダ未選択のセッションは cwd が scratch（リポジトリ外）**。
+  mini は `~/.claude/CLAUDE.md` が全cwdで読まれるので規範は届くが、`vivid-ai-hq/CLAUDE.md` は読まれない。
+  途中でフォルダを移すとアプリがファイルをコピーする（★元は scratch 側に残る＝2つになる）
