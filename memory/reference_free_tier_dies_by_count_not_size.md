@@ -81,6 +81,10 @@ office_realtime_push      30分ごと(3,33)  48回/日 → 1,440回/月
 09-25 08:4x  ★まだ出ていない（有璽氏の回答から6日）。403 は office_answer_apply.log だけで1,980回
              editor_apply.err の Traceback 672件・🔴4件とも既知=False のまま（つる 自己監査）
              ★#4394bc（Pro / Cloudflare / 現状維持）も status=open のまま10日
+09-26 08:5x  ★まだ出ていない（回答から7日）。editor_apply.err 1.2MB。
+             ★副作用：~/Library/Logs/vivid-kadoban-cron.log が 156MB（suspended 1,561回）
+             → つるが gzip で退避（…upto20260926.gz・中身はハッシュで一致確認）
+             ★cron_alive.py は4本中 editor_apply しか🔴にしない（ログ更新＝動いている扱い）
 ```
 **★この件の持ち主がいない。**判断（#4ec39b）は済んでいて、残っているのは「案を作る」という
 AIの作業だけ。誰にも割り振られていないので、毎朝検知されては流れている。
