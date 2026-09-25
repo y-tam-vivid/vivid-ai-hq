@@ -102,3 +102,8 @@ metadata:
   ★軽微：「社畜眼鏡 X投稿文」は未選択の同名行のIDも旧IDに入っている（中身同一・実害なし）
 - 🔴10:3x ピタゴラスが修正中に取り込み601件を「誤実行」と判断してアーカイブ → 10:47 ビビが流し直して復旧（666件・状態分布も元どおり）
 - ✅ピタゴラスの修正6点完了（state無しでreopenしない実測・途中保存・心拍・ロック・巻き戻り対策）。★残る既知限界：巻き戻り×同時移動の狭いケースで1件重複しうる
+- ✅10:53 手動 `--run --beat` を2回：1回目＝Notionの🔥次15件を Obsidian「## Notionから」へ・テスト行を完了で作成／2回目＝変更なし（冪等）。心拍「成功」着弾。⚙️レジスタ行 `3e67b1568b5781039bc8e56879533c25`
+- 🔴自動起動が載らない（2026-09-25）
+  ①crontab：このアプリのセッションから `crontab file`／`crontab -` とも30秒無応答（8/20と同じ症状が継続）。投函口 cron_apply.sh は定期実行に入っていない
+  ②launchd（~/Library/LaunchAgents/com.vivid.notion-focus-sync.plist・StartInterval 900）：登録は通るが、起動時に ★~/Documents の保護（TCC）で `PermissionError` → 停止・plist は `_backups/…plist.pending` へ退避。失敗の心拍は届いた（黙らない）
+  ★Obsidian 保管庫を ~/Documents に置く限り、自動実行には「フルディスクアクセス」か保管庫の移動が要る＝有璽氏の判断待ち。レジスタは 有効=オフ／既知=オン
