@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1790292605257,
+  "lastUpdated": 1790379005255,
   "skills": [
     {
       "skillId": "import-memory",
@@ -65,8 +65,9 @@
       "skillId": "skill_01S5BVR86VtCGnWy8YNysvXq",
       "name": "vivid-sns-image-prompt-generator",
       "description": "ビビッドグループ用のSNS投稿に添える画像生成プロンプトを、Nano Banana（Gemini 2.5 Flash Image）向けに最適化して生成するスキル。投稿文の内容とプロジェクト内のvisual_guideline.mdに沿ってシーン記述型プロンプトを出力する。data_sources.md経由で過去投稿の画像も参照し、ビジュアルトーンの一貫性を保つ。「画像プロンプトを作って」「Nano Bananaのプロンプトが欲しい」「投稿に合わせた画像を生成したい」「ビジュアルプロンプトを出して」など、SNS用画像生成プロンプトに関わるあらゆる依頼で必ず使用すること。投稿文生成スキルの後段、もしくはオーケストレータースキルから呼び出される前提で設計されているが、単独でも使用可能。",
-      "source": "custom",
-      "updatedAt": "2026-04-16T02:50:09.080168Z"
+      "source": "plugin",
+      "updatedAt": "2026-04-16T02:50:09.080058Z",
+      "backingPluginId": "plugin_01ALzHmdwmzUxM12kGxKQu8Q"
     },
     {
       "skillId": "skill_01LDFT3KckhNqThADr7pQX7u",
@@ -148,8 +149,9 @@
       "skillId": "skill_01NBY9hgWueqTv2Rnx7nqFZ6",
       "name": "looker-studio-advisor",
       "description": "Comprehensive advisor skill for building BI dashboards with Google Looker Studio (formerly Data Studio). Covers dashboard design, KPI design, data source connections (Google Sheets, GA4), calculated fields, layout optimization, performance tuning, sharing/permission setup, AND step-by-step operational guidance. Trigger this skill whenever the user mentions: Looker Studio, Data Studio, dashboard construction, BI, KPI design, data visualization, report creation, GA4 integration, spreadsheet integration, calculated fields, blending, or any data-driven reporting needs — even if they don't explicitly say 'Looker Studio'. Also trigger for questions about chart selection, scorecard design, data freshness settings, or how-to questions about Looker Studio operations (e.g., 'how do I add a data source', 'how to create a calculated field', 'where is the blend setting').",
-      "source": "custom",
-      "updatedAt": "2026-04-12T05:33:22.756571Z"
+      "source": "plugin",
+      "updatedAt": "2026-04-12T05:33:22.756460Z",
+      "backingPluginId": "plugin_015cLHrZ5iTeeLMuSowGVSHr"
     },
     {
       "skillId": "skill-creator",
@@ -162,15 +164,17 @@
       "skillId": "skill_01Q8CvWB5hkpAfw4i2Js5dCb",
       "name": "schedule-finder",
       "description": "Googleカレンダー（仕事・個人の複数カレンダー対応）を読み込み、指定された日程・時間枠の空き時間を1時間単位でピックアップし、LINE・メール・Slackなど指定フォーマットで出力するスキル。「空き時間を調べて」「日程候補を出して」「来週の空きを教えて」「○曜日から△曜日の間で空いてる時間は？」「アポイントの候補を出して」など、日程調整・スケジュール確認・MTG設定に関わるあらゆるフレーズで必ず使用すること。ユーザーが時間帯や出力先を指定している場合でも、していない場合でも、このスキルを積極的に活用すること。",
-      "source": "custom",
-      "updatedAt": "2026-04-12T05:30:17.838855Z"
+      "source": "plugin",
+      "updatedAt": "2026-04-12T05:30:17.838710Z",
+      "backingPluginId": "plugin_01FAwZ6zpWJrRMuKc5gzxsCN"
     },
     {
       "skillId": "skill_01TSjHhX5tTfMUbqjHKJ5aWC",
       "name": "sitemap-architect",
       "description": "Web サイト構築前のサイトマップ設計スキル。マーケティング資料・提案書・競合分析等の プロジェクト格納ファイルをソースとして、情報設計（IA）の専門知識に基づいたサイトマップと 「なぜこの構成が最適か」を論証する提案ドキュメントを生成する。 アウトプットはプロジェクトナレッジで指定されたフォーマット（スプレッドシート構成・提案書テンプレート）に準拠する。 トリガー条件：「サイトマップ」「サイト構成」「ページ構成案」「IA設計」「情報設計」 「サイトマップ提案」「ページ一覧」「ディレクトリマップ」「サイト設計」「ナビゲーション設計」 「サイトツリー」「sitemap」「site architecture」「information architecture」 「ページ階層」「URL設計」「コンテンツマップ」「サイトマップを作って」「構成案を出して」 に言及がある場合。また、Webサイト新規構築やリニューアルの文脈でページ構成・階層設計に 関わるあらゆるリクエストでこのスキルをトリガーすること。 web-consulting-proposal スキルの分析結果がプロジェクトに存在する場合は積極的に活用する。",
-      "source": "custom",
-      "updatedAt": "2026-04-12T05:35:37.679237Z"
+      "source": "plugin",
+      "updatedAt": "2026-04-12T05:35:37.679119Z",
+      "backingPluginId": "plugin_01RVVqvGiw5R3EpQ3dnYJ7J9"
     },
     {
       "skillId": "docx",
