@@ -103,3 +103,7 @@ office_realtime_push / dashboard_realtime_push）。どれも既知=False＝誰�
   → [[reference_heartbeat_proves_life_not_results]]
 
 関連 [[reference_a_warning_nobody_owns]] [[project_ai_office_console]]
+
+- **★2026-09-27 つる自己監査：まだ止まっている（8日目）。**4本とも🔴失敗・既知=False のまま。
+  editor_apply.err は「HTTP Error 403: Forbidden」を5分おきに出し続け、cron_alive も
+  「editor_apply.py 58時間 更新なし」と出している。**検知は3経路とも鳴っている。持ち主だけが居ない。**
