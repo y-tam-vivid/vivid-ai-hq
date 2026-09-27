@@ -78,7 +78,16 @@ office_realtime_push      30分ごと(3,33)  48回/日 → 1,440回/月
 09-15 19:02  調査結果を問い直す → ★status=open のまま 今日まで6日 放置
 09-19 08:49  ★有璽氏が回答「3 Blobを使わない作りへ変える案を出させる」
 09-21 08:40  ★案は出ていない。403 は今朝も出続けている
+09-25 08:4x  ★まだ出ていない（有璽氏の回答から6日）。403 は office_answer_apply.log だけで1,980回
+             editor_apply.err の Traceback 672件・🔴4件とも既知=False のまま（つる 自己監査）
+             ★#4394bc（Pro / Cloudflare / 現状維持）も status=open のまま10日
+09-26 08:5x  ★まだ出ていない（回答から7日）。editor_apply.err 1.2MB。
+             ★副作用：~/Library/Logs/vivid-kadoban-cron.log が 156MB（suspended 1,561回）
+             → つるが gzip で退避（…upto20260926.gz・中身はハッシュで一致確認）
+             ★cron_alive.py は4本中 editor_apply しか🔴にしない（ログ更新＝動いている扱い）
 ```
+**★この件の持ち主がいない。**判断（#4ec39b）は済んでいて、残っているのは「案を作る」という
+AIの作業だけ。誰にも割り振られていないので、毎朝検知されては流れている。
 
 **実測2経路** ── ① `~/.vivid-relay/editor_apply.err` が 1.1MB・Traceback **672件**（全部
 `HTTPError 403`）② ⚙️自動処理レジスタが **🔴失敗 4件**（editor_apply / office_answer_apply /
@@ -94,3 +103,7 @@ office_realtime_push / dashboard_realtime_push）。どれも既知=False＝誰�
   → [[reference_heartbeat_proves_life_not_results]]
 
 関連 [[reference_a_warning_nobody_owns]] [[project_ai_office_console]]
+
+- **★2026-09-27 つる自己監査：まだ止まっている（8日目）。**4本とも🔴失敗・既知=False のまま。
+  editor_apply.err は「HTTP Error 403: Forbidden」を5分おきに出し続け、cron_alive も
+  「editor_apply.py 58時間 更新なし」と出している。**検知は3経路とも鳴っている。持ち主だけが居ない。**
