@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1790379005255,
+  "lastUpdated": 1790476870686,
   "skills": [
     {
       "skillId": "import-memory",
@@ -42,8 +42,9 @@
       "skillId": "skill_01TiGFLCVy6VHXuX5WmdFUiZ",
       "name": "notion-memo-router",
       "description": "日々パソコンのメモ帳等で控えているメモ（MTGメモ・タスク・アカウント情報・APIキー・雑多なメモ）を貼り付けるだけで、内容を仕分けして適切なNotionデータベースへ投入するスキル。行頭タグ（#task /",
-      "source": "custom",
-      "updatedAt": "2026-06-18T01:54:34.824034Z"
+      "source": "plugin",
+      "updatedAt": "2026-06-18T01:54:34.823937Z",
+      "backingPluginId": "plugin_01AUbwXvvwQpDdtL2hvtRTzT"
     },
     {
       "skillId": "skill_01JyRtqNghrufftAHaJFwRrT",
@@ -81,8 +82,9 @@
       "skillId": "skill_01VE8TWTn6V5q2c8RVYoD5h8",
       "name": "vivid-sns-qa-checker",
       "description": "ビビッドグループ用に生成されたSNS投稿文と画像生成プロンプトが、プロジェクト内のqa_criteria.mdに定義された品質基準を満たしているかを判定するQAスキル。過去投稿（data_sources.md経由で取得）との一貫性（スタイル・トーンの違和感のなさ）も判定対象に含む。合格/不合格の判定と、不合格の場合の具体的な修正指示を返す。「QAチェックして」「品質チェックをかけて」「投稿文と画像プロンプトをレビューして」「ガイドラインに沿っているか確認して」など、SNSコンテンツの品質判定に関わるあらゆる依頼で必ず使用すること。オーケストレータースキルから自動再生成ループの判定として呼び出される前提で設計されているが、単独でも使用可能。",
-      "source": "custom",
-      "updatedAt": "2026-04-16T02:50:09.686243Z"
+      "source": "plugin",
+      "updatedAt": "2026-04-16T02:50:09.686131Z",
+      "backingPluginId": "plugin_01He24LjjxYEa5siLCNucngX"
     },
     {
       "skillId": "skill_01RtawxJbJwAMoyTGxqygsRq",
@@ -104,8 +106,9 @@
       "skillId": "skill_01VNLQqTPQBUVL9AVQS8pWsz",
       "name": "yuji-brand-history",
       "description": "田村有璽（株式会社ふくち。代表取締役／「ふくち。」グループ代表）の経歴・原体験・思想・事業変遷を正確に保持し、用途と公開レベルに応じて一貫した人物・事業記述を生成するスキル。プロフィール文（書籍・Web・登壇者紹介・SNS等、各種文字数）、経歴紹介、取材・インタビューの想定問答素材、会社沿革の語り、自己紹介テキストなど「田村有璽個人と『ふくち。』グループの物語・事実を語るテキスト」を作成・推敲・校閲するあらゆる場面で必ず使用すること。「田村のプロフィールを書いて」「経歴をまとめて」「登壇者紹介文を作って」「取材用の想定問答を用意して」「会社の沿革を語って」「自己紹介文を作って」などのフレーズはもちろん、田村有璽本人や「ふくち。」グループの来歴・原体験・思想に言及する記述を生成する依頼全般でトリガーすること。事実関係（設立年・法人名・原体験の細部）の揺れや、社外非公開情報の誤った露出を防ぐことが本スキルの主目的であるため、断片的な事実を一つでも書く場合でも参照すること。なお営業資料・事業計画書・スライド資料そのものの作成はfukuchi-deck-builder等の専用スキルが担うため、本スキルは「人物・事業を語る物語/事実テキスト」に用途を絞る。",
-      "source": "custom",
-      "updatedAt": "2026-06-07T01:43:13.979518Z"
+      "source": "plugin",
+      "updatedAt": "2026-06-07T01:43:13.979370Z",
+      "backingPluginId": "plugin_018Sx4uUSqBvaXrFzKm858Es"
     },
     {
       "skillId": "skill_01J4TB3JvtmBYp1X7qV4DsH1",
@@ -119,8 +122,9 @@
       "skillId": "skill_01UGntAr8bmgdNkt8MwqEFRW",
       "name": "vivid-sns-text-generator",
       "description": "ビビッドグループ用のSNS投稿文を、プロジェクト内に格納されたブランド情報・コンテンツテーマ・プラットフォーム仕様に基づいて生成するスキル。過去投稿はdata_sources.mdに記載されたNotion等の外部データソースからリアルタイムに取得し、過去の投稿と違和感のないスタイル・文体・構成で新規投稿文を生成する。「投稿文を作って」「SNSの文章を生成して」「Instagramの投稿テキストを書いて」「noteの記事案を出して」「今週の投稿を考えて」など、SNSテキスト作成に関わるあらゆる依頼で必ず使用すること。プロジェクト内にbrand_info.md、content_themes.md、platform_spec.md、data_sources.md等が存在する場合は積極的にトリガーすること。後続の画像プロンプト生成・QA判定スキルと組み合わせて使うこともできる単独スキル。",
-      "source": "custom",
-      "updatedAt": "2026-04-16T02:50:07.963513Z"
+      "source": "plugin",
+      "updatedAt": "2026-04-16T02:50:07.963329Z",
+      "backingPluginId": "plugin_01LgH9ax6g62QBMJPkFQnrgK"
     },
     {
       "skillId": "skill_01CYBPGkomCQedAh6GALYrFq",
