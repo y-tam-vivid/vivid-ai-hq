@@ -21,7 +21,7 @@ metadata:
   控え `~/.vivid-relay/_backups/claude_global_CLAUDE.md.bak_20260924`
 - fukuchi-core 冒頭に「正本の置き場」節を追加（控え `_backups/fukuchi-core_SKILL.md.bak_20260924`）
 - MEMORY.md を 25,009B→約2.8KB へ。旧本体110行は `INDEX_全体.md`、全文は `_archive/MEMORY_full_20260924.md`
-- ★残：MacBook の `~/.claude/CLAUDE.md` は機械ローカル＝未切替（git で配れない）
+- ✅2026-09-25 完了：MacBook の `~/.claude/CLAUDE.md` にも 00_System 3本の @import を追加（有璽氏が手作業・申告）
 - ★残：02_Current_Focus は 0バイト・10_Skills_Repository は空
 
 **Why:** 規範の正本を2か所に置くと二重管理になる（fukuchi-core「どれが正本か先に決める」）。
@@ -41,4 +41,6 @@ metadata:
   グローバル設定は `~/vivid-ai-hq` のまま（実体が動かないため書き換え不要）
 - ✅2026-09-25 00:19 mini にリンク4本を作成。MOC の相対リンク11本が全部解決（ファイルの実在で確認）。check.sh ✅
   ★Sync除外の確認は有璽氏の申告のみ（設定はObsidian内部に保存され、ディスクから読めない）＝1経路
-  ★残：MacBook にも同じリンク4本（パスは /Users/yujimac/vivid-ai-hq）
+- ✅2026-09-25 完了：MacBook にもリンク4本を作成（有璽氏が手作業。`有璽_My_Brain/10_Skills_Repository/` に4本の実在を確認）
+- 保管庫のフォルダ名は端末で異なる：mini＝`~/Documents/Core_Brain/`／MacBook＝`~/Documents/有璽_My_Brain/`（Obsidian Syncで同一内容）。MOC §0・§6 に併記済み
+- notion-focus-sync は SKILL.md 登録済みだが、自動実行に載るまで MOC §7（設計中）に留め、§3 は14本のまま（2026-09-25 有璽氏決定）
