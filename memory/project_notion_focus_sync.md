@@ -129,3 +129,9 @@ metadata:
   ビビが dry-run（想定1件＝タグ書き戻しのみ）→ `--run --beat` → 直後の dry-run **想定アクション 0件**（受け入れ基準を満たした）。国保連の行に `#全社` が付いたことを実物で確認
   ★限界：`which` を持たない古い行は、人が意図的に `#全社` を外しても「タグ書き戻し」側に倒れる（安全側）
 - 次：ドーベルマン検査 → 有璽氏のフルディスクアクセス追加 → launchd（`_backups/…plist.pending` を戻す）
+- ✅2026-09-28 ドーベルマン判定「載せてよい（条件つき）」。9/25の指摘5点はコードで塞がっていると確認
+  条件1 plist を中継役(/usr/bin/python3＝xcode-select shim)でなく実体へ → ✅済：`…/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9`（控え `.pending.bak_shim_20260928`）
+    ★フルディスクアクセスは**この実体パス**へ付ける（TCC は exec 後のバイナリを見るため shim に付けても効かない可能性。未実測）
+  条件2 launchctl load 後、最初の自然発火ログを1回目視
+  条件3 次の本物の「全社へ移す/個人へ移す」で Obsidian のタグが即時に付くか確認（唯一の実例では自己修復に1周かかった）
+  未解明：同じ回で 81eb が「外れた」と「取り込み」の両方に出た（人がNotionを触った可能性・1経路）
