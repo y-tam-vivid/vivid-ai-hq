@@ -69,3 +69,4 @@
 - [出力は残らないと存在しない](reference_output_captured_but_unrecorded.md) — ★9/13 editor_apply.pyはprintが正しいのにcrontabが`>/dev/null`で捨てログ0。git管理下を書いてもcommitせず他機へ届かず。修正=出力先を.logへ／適用ごとにgit commit(0件時は空コミット禁止)
 - [共有の置き場へ書くと相手を巻き込む](reference_shared_write_races.md) — ★9/13同型3件: Blob上書き消失/git addが書きかけごと載る/再コピー
 - [検証用WPは共用資源](reference_shared_wp_test_env_collision.md) — ★9/14再発。deploy.py等も同型危険。計測中は他セッションの使用有無を先に確認
+- [再起動後のPIDロック誤認](reference_pid_lock_reused_after_reboot.md) — ★9/28 slack_socketがPID再利用で黙って停止。ロックはPIDの生死でなくコマンド名まで見る（恒久対策は未実施）
