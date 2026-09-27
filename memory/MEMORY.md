@@ -25,5 +25,5 @@
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本。★出した側が台帳を閉じる。詳細は本文**
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/12★2回。足りない→待つで止めるな。器を縮める／依頼文を作る**
 - [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync除外・リンク4本(両機済)／★MacBookは9/27まで@importが空振り→Core_Brainリンクで解消
-- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — 同期は手動なら動く。★自動起動は~/Documents保護で止まる=有璽氏の判断待ち
+- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — ★未送信20行(9/27)。自動起動は~/Documents保護で停止→mini復帰後にA(フルディスクアクセス)で再開。MacBookから代走しない
 - [ツールの使い分けと導入状況](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚・git=完成品。★施設側はClaude未導入・Notionは有璽氏個人＋一部

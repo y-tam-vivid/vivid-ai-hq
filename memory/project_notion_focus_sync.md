@@ -107,3 +107,10 @@ metadata:
   ①crontab：このアプリのセッションから `crontab file`／`crontab -` とも30秒無応答（8/20と同じ症状が継続）。投函口 cron_apply.sh は定期実行に入っていない
   ②launchd（~/Library/LaunchAgents/com.vivid.notion-focus-sync.plist・StartInterval 900）：登録は通るが、起動時に ★~/Documents の保護（TCC）で `PermissionError` → 停止・plist は `_backups/…plist.pending` へ退避。失敗の心拍は届いた（黙らない）
   ★Obsidian 保管庫を ~/Documents に置く限り、自動実行には「フルディスクアクセス」か保管庫の移動が要る＝有璽氏の判断待ち。レジスタは 有効=オフ／既知=オン
+
+**★2026-09-27 再開点（有璽氏 外出中・mini へ ssh 不通＝今日は実行不可）**
+- 未送信：Current_Focus 35行中20行に `<!-- n: -->` 無し（9/25 10:53 の手動実行以降、同期は走っていない。確かめ方は目印の数だけ＝1経路）
+- 推奨はA＝mini のフルディスクアクセスへ python を追加（Bは保管庫を~/Documentsの外へ移す）。有璽氏の選択はまだ
+- ★MacBook からは代走しない：スクリプトと state は mini にしか無い。別の機で走らせると同じ行を二重に作りうる
+- ★Notion MCP で20行を手で作るのもしない：目印が付かず、後で同期が同じタスクをもう1件作る
+- mini 復帰後の順：①ssh 疎通 ②launchd が実際に起動する python の実体パスを確認して有璽氏へ渡す ③追加後に手動 `--run --beat` 1回 ④ドーベルマン検査 ⑤15分ごとの自動実行を有効化
