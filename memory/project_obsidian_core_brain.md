@@ -44,3 +44,6 @@ metadata:
 - ✅2026-09-25 完了：MacBook にもリンク4本を作成（有璽氏が手作業。`有璽_My_Brain/10_Skills_Repository/` に4本の実在を確認）
 - 保管庫のフォルダ名は端末で異なる：mini＝`~/Documents/Core_Brain/`／MacBook＝`~/Documents/有璽_My_Brain/`（Obsidian Syncで同一内容）。MOC §0・§6 に併記済み
 - notion-focus-sync は SKILL.md 登録済みだが、自動実行に載るまで MOC §7（設計中）に留め、§3 は14本のまま（2026-09-25 有璽氏決定）
+- 🔴2026-09-27 発見・修正：MacBook の `~/.claude/CLAUDE.md` は `Documents/Core_Brain/…` を @import していたが、MacBook の実フォルダは `有璽_My_Brain`
+  ＝**9/25〜9/27、MacBook では 00_System が1度も読み込まれていなかった**（@import は存在しないパスを黙って捨てる）。
+  ★「追加した（申告）」は届いたことの証拠にならない。直し：`~/Documents/Core_Brain -> 有璽_My_Brain` のリンクを作成＝両機とも同じパスで届く
