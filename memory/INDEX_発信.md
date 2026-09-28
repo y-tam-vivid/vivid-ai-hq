@@ -51,6 +51,7 @@
 - [LSU 法定開示に年度・更新頻度を明記](project_lifestandup_website_wordpress.md) — ★9/7 自己評価=毎年度／支援プログラム=改定時、と混ぜていた共通注記を分離。年度は`meta`1箇所・来年はそことPDF差替のみでよい。5帯とも横あふれ0
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない／**★9/8 miniにmasked/が無くぼかしガードが機能しない。対象5番号を扱う前に必ずself_test()で確認**
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
+- [南河内こどもステーション](project_minamikawachi_kodomo_station_site.md) — ★9/28 素案v1をデモ公開 https://minamikawachi-kodomo-demo.vercel.app ／本実装は未着手・★日本語ファイル名はVercelで404
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★**公開 https://kawachibanashi.vercel.app**／**★イベント情報の器（スプレッドシート23列）を新設＝AIが書ける正本**。詳細の見せ方3案は保留
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
 - [Claude Designへの渡し方](reference_claude_design_local_edit_not_reflected.md) — **✅画像はチャット添付＋「生成不要・配置だけ」を1行目に。★9/9 Driveリンクは開けない(本文で渡す)／ロゴPNGから絵の切出し不可／生成は向こうの財布(Gamma)＝絵はこちらで作る**
