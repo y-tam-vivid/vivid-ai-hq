@@ -506,3 +506,10 @@ git diff --name-only HEAD origin/main -- memory/     ★向こうで既に書か
   `memory/project_lifestandup_website_wordpress.md`。
   **`git merge-tree --write-tree HEAD origin/main` で作業ツリーに触れずに測れる**
   （解く前に「何件・どれが衝突するか」だけ先に知りたいときはこれ）。
+
+**★2026-09-27 3つ目の型：中身0バイトの `.git/index.lock` が残り、MacBook の受信が丸2日止まった**
+- `.git/index.lock`（0B・mtime 9/25 08:25）が残存。git プロセスは0件（`pgrep -x git` 空）
+  ＝どこかの git が途中で落ちて置き去り。以後 commit も merge も全部 `index.lock: File exists` で拒否
+- SYNC_STATUS は「未取込22件・未コミットあり」と出すだけで、**真因（ロック）を名指ししない**
+- 直し方：`pgrep -x git` が空であることを確かめてからロックを退避（`~/.vivid-relay/_backups/index.lock.stale_20260925`）
+- ★`vivid-sync.sh` にロックの年齢検査を足す余地あり（未実装）

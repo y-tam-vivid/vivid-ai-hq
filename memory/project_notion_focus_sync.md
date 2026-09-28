@@ -107,3 +107,31 @@ metadata:
   ①crontab：このアプリのセッションから `crontab file`／`crontab -` とも30秒無応答（8/20と同じ症状が継続）。投函口 cron_apply.sh は定期実行に入っていない
   ②launchd（~/Library/LaunchAgents/com.vivid.notion-focus-sync.plist・StartInterval 900）：登録は通るが、起動時に ★~/Documents の保護（TCC）で `PermissionError` → 停止・plist は `_backups/…plist.pending` へ退避。失敗の心拍は届いた（黙らない）
   ★Obsidian 保管庫を ~/Documents に置く限り、自動実行には「フルディスクアクセス」か保管庫の移動が要る＝有璽氏の判断待ち。レジスタは 有効=オフ／既知=オン
+
+**★2026-09-27 再開点（有璽氏 外出中・mini へ ssh 不通＝今日は実行不可）**
+- 未送信：Current_Focus 35行中20行に `<!-- n: -->` 無し（9/25 10:53 の手動実行以降、同期は走っていない。確かめ方は目印の数だけ＝1経路）
+- 推奨はA＝mini のフルディスクアクセスへ python を追加（Bは保管庫を~/Documentsの外へ移す）。有璽氏の選択はまだ
+- ★MacBook からは代走しない：スクリプトと state は mini にしか無い。別の機で走らせると同じ行を二重に作りうる
+- ★Notion MCP で20行を手で作るのもしない：目印が付かず、後で同期が同じタスクをもう1件作る
+- mini 復帰後の順：①ssh 疎通 ②launchd が実際に起動する python の実体パスを確認して有璽氏へ渡す ③追加後に手動 `--run --beat` 1回 ④ドーベルマン検査 ⑤15分ごとの自動実行を有効化
+
+**★2026-09-28 mini 復帰（有璽氏が起動）**
+- ssh 経由なら保管庫を読める（dry-run 通過・想定28件）。launchd 起動だけが TCC で拒否（同日のログで再確認）
+- 🔴dry-run で見つけた欠陥：`resolve_date()` は過ぎた日付を翌年にする＝**完了済みの @9/26 が期日 2027-09-26 で作られる**（17件）。
+  `--run` する前に止めた。修正はピタゴラスへ（「過ぎてから約半年以内は今年のまま」）
+- launchd の実行ファイルは `/usr/bin/python3`（中継役）→実体 `/Library/Developer/CommandLineTools/usr/bin/python3`
+- ✅2026-09-28 08:28 年ずれ修正（1行・ビビが diff と dry-run で再確認＝期日21件すべて2026）→ `--run --beat` を1回。rc=0・書き戻し一致・ログ `~/.vivid-relay/notion_focus_sync_run_20260928.log`
+- 🔴直後の dry-run が0件にならない＝**自動化に載せると15分ごとに暴れる欠陥が2つ**（自動化は止めたまま・再実行もしていない）
+  ①往復：Notionの「全社へ移す」で個人→全社へ移したのに、Obsidian の行へ `#全社` を書かない → 次回「#全社が外れた」と読み全社→個人へ戻す（国保連の1件）
+  ②「Focusから外れた」（page 8177）が毎回出る＝Notionのメモへ15分ごとに追記し続ける
+  → ピタゴラスへ修正依頼。★受け入れ基準＝run の直後の dry-run が「想定アクション 0件」
+- ✅2026-09-28 08:43 往復・重複追記をピタゴラスが修正（stateに移動元DB`which`・`focus_dropped`を持つ／移動時にObsidianの`#全社`も書き換え。単体24ケース合格）。
+  ビビが dry-run（想定1件＝タグ書き戻しのみ）→ `--run --beat` → 直後の dry-run **想定アクション 0件**（受け入れ基準を満たした）。国保連の行に `#全社` が付いたことを実物で確認
+  ★限界：`which` を持たない古い行は、人が意図的に `#全社` を外しても「タグ書き戻し」側に倒れる（安全側）
+- 次：ドーベルマン検査 → 有璽氏のフルディスクアクセス追加 → launchd（`_backups/…plist.pending` を戻す）
+- ✅2026-09-28 ドーベルマン判定「載せてよい（条件つき）」。9/25の指摘5点はコードで塞がっていると確認
+  条件1 plist を中継役(/usr/bin/python3＝xcode-select shim)でなく実体へ → ✅済：`…/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9`（控え `.pending.bak_shim_20260928`）
+    ★フルディスクアクセスは**この実体パス**へ付ける（TCC は exec 後のバイナリを見るため shim に付けても効かない可能性。未実測）
+  条件2 launchctl load 後、最初の自然発火ログを1回目視
+  条件3 次の本物の「全社へ移す/個人へ移す」で Obsidian のタグが即時に付くか確認（唯一の実例では自己修復に1周かかった）
+  未解明：同じ回で 81eb が「外れた」と「取り込み」の両方に出た（人がNotionを触った可能性・1経路）
