@@ -1,17 +1,21 @@
 ---
 name: project_notion_focus_sync
-description: Obsidian 02_Current_Focus ⇄ Notion ✅ビビッドタスク管理DB の同期スキル。2026-09-25 設計中・未実装
+description: Obsidian 02_Current_Focus ⇄ Notion 個人DB／全社DB の同期。★2026-09-29 稼働中（launchd 15分・mini）。完了行は翌日以降 90_Archive へ移る
 metadata:
   type: project
 ---
+
+> ⛔2026-09-30 つる：下の12〜14行目（同期先未確定・スクリプト未作成・cron未登録）は★9/25時点の状態で、いまは古い。
+> 実測：レジスタ「Obsidian⇔Notion 個人・全社タスク同期」🟢正常・最終実行 09-30 08:33 ／ `90_Archive/完了_2026-09.md` に40行。
+> ★この古い2行が地雷インデックス経由で毎回「未実装」と注入されていた。行は消さず経緯として残す。
 
 2026-09-25 有璽氏「個人の思考やAIへの指示はObsidian、公式な進捗・マニュアルはNotion」。
 二重管理の手間をなくすバケツリレーとして同期を作る。
 
 - 仕様案の正本 → `.claude/skills/notion-focus-sync/SKILL.md`（MOC の Skill_Notion_Sync）
 - ★鍵は既存の `NOTION_TOKEN`（~/.vivid-relay/config.env）で足りる。データソース 62c7fadf に 200 を実測
-- ★同期先DBは未確定（全社DB＋オーナー区分=有璽氏個人 を推奨。候補に 個人DB_Task もある）
-- ★スクリプト未作成・cron 未登録。手動→つる/ドーベルマン検査→cron の順
+- ⛔（9/25時点・古い）同期先DBは未確定（全社DB＋オーナー区分=有璽氏個人 を推奨。候補に 個人DB_Task もある）
+- ⛔（9/25時点・古い＝9/29から稼働中）スクリプト未作成・cron 未登録。手動→つる/ドーベルマン検査→cron の順
 
 **Why:** 手で2か所に書くと片方が腐る（二重管理）。
 **How to apply:** Obsidian は文言が正・Notion は Status/期日が正。消す同期はしない。[[project_obsidian_core_brain]]
