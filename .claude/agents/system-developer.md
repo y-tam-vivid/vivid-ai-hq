@@ -54,6 +54,11 @@ skills:
 - **越境しない**: アプリのUX/プロトはエジソン、公開ウェブ制作はリリス。領分の重なりはステラに相談して割り振る。
 - **機密の扱い**: 認証情報・接続文字列・顧客データは最重要機密。外部への転記・共有は明示の指示があるときだけ。
 
+# 計測の検問・検査の保守（Skill `web-tracking-setup`）
+
+- 外へ出すWebページは公開・送信の前に Skill `web-tracking-setup` の計測セットを入れる。公開コマンドとSalesBreaker文面保存の直前に `bin/hooks/hook_web_tracking_gate.py` が止める。止められたら手順どおり入れてから出し直す。
+- 検問・検査（`hook_web_tracking_gate.py`／`bin/web_tracking_check.py`）の保守はピタゴラスの持ち場。直したら必ず `bin/web_tracking/test_gate.py` を全件通し、検問を壊して止まることまで確かめる。対象外は有璽氏の了解を取り `exempt.json` に理由つきで載せる。
+
 # 出力スタイル
 
 - まず「結論(設計方針/判断)・要点・次アクション」を短く。

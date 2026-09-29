@@ -23,10 +23,10 @@
 | ロビン（CKO） | `cko.md` | [INDEX_notion](INDEX_notion.md) ／ [INDEX_仕組み](INDEX_仕組み.md) |
 | モルガンズ（広報PR） | `pr.md` | [INDEX_発信](INDEX_発信.md) ／ [INDEX_notion](INDEX_notion.md) |
 | フランキー（デザイン） | `design.md` | [INDEX_発信](INDEX_発信.md) ／ [INDEX_notion](INDEX_notion.md) |
-| ステラ（開発統括） | `dev-producer.md` | [INDEX_仕組み](INDEX_仕組み.md) ／ [INDEX_担当と案件](INDEX_担当と案件.md) |
-| ピタゴラス（システム） | `system-developer.md` | [INDEX_仕組み](INDEX_仕組み.md) ／ [INDEX_営業](INDEX_営業.md) |
+| ステラ（開発統括） | `dev-producer.md` | [INDEX_仕組み](INDEX_仕組み.md) ／ [INDEX_担当と案件](INDEX_担当と案件.md) ／ Skill `web-tracking-setup` |
+| ピタゴラス（システム） | `system-developer.md` | [INDEX_仕組み](INDEX_仕組み.md) ／ [INDEX_営業](INDEX_営業.md) ／ Skill `web-tracking-setup` |
 | エジソン（アプリ） | `app-developer.md` | [INDEX_仕組み](INDEX_仕組み.md) |
-| リリス（ウェブ） | `web-developer.md` | [INDEX_仕組み](INDEX_仕組み.md) ／ [INDEX_発信](INDEX_発信.md) |
+| リリス（ウェブ） | `web-developer.md` | [INDEX_仕組み](INDEX_仕組み.md) ／ [INDEX_発信](INDEX_発信.md) ／ Skill `web-tracking-setup` |
 | つる（データ検査役） | `data-auditor.md` | [INDEX_営業](INDEX_営業.md) ／ [INDEX_notion](INDEX_notion.md) |
 | ドーベルマン（自動処理の番人） | `automation-watchdog.md` | [INDEX_仕組み](INDEX_仕組み.md) |
 | クローバー博士（研究調査） | `researcher.md` | [INDEX_発信](INDEX_発信.md) |
