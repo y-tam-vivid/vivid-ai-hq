@@ -152,3 +152,33 @@ metadata:
 - ✅2026-09-29 有璽氏決定：完了 [x] 行は**完了の翌日以降、同期が `90_Archive/完了_YYYY-MM.md` へ移す**（消さない・Notionは✅完了のまま）。既存の完了40行も初回で移す
   「消しても戻る」は有璽氏の伝え方の問題で**不具合ではなかった**（有璽氏）。上の未解明は取り下げ
   → ピタゴラスへ実装依頼（稼働中の本体は直接書き換えず、控え→テスト→差し替え）
+
+**✅2026-09-29 23:20 完了行の片付け機能を実装・本体へ反映済み（ピタゴラス）**
+- 対象は `~/.vivid-relay/notion_focus_sync.py`（launchdで15分ごと稼働中の本体）のみ。
+  控え `~/.vivid-relay/_backups/notion_focus_sync.py.bak_20260929_archive`（差し替え前・sha一致確認済み）
+- 完了日の決め方：①Notion側の完了日/Completed Date ②state「初めて[x]を見た日」（first_seen_done）
+  ③どちらも無い行は、この機能の**初回の--run実行だけ**「導入時点の既完了行」として即座に移す
+  （state `_archive_feature_initialized` フラグ。以後は②の翌日判定へ移行）
+- 90_Archive/完了_YYYY-MM.md（完了日の年月）へ**そのまま**（目印つき）追記。二重書き防止は
+  state `archived` フラグ＋ファイル内マーカー検索の二重で担保。Notionは触らない（✅完了のまま）
+- 「Focusから外れた」扱いにしない：③のfocus_dropped判定ループでarchivedならスキップ。
+  Notion側で未完了/🔥次へ戻せば④の取り込みロジックで自然にCurrent_Focusへ復帰し、
+  state再作成でarchivedが外れる（実測確認済み）
+- 書き戻しの一体性：Archiveへの追記は、Current_Focusのmtime再確認→os.replaceが**実際に成功した後**
+  にのみ行う。mtime不一致で書き戻しを見送った回はArchiveへも一切書かない（単体テストで確認）
+- 🔴実装中に発見・修正した既存バグ：②の突合ループが`state[t.marker]`を毎回丸ごと新しい辞書で
+  上書きしており、first_seen_done/archivedが同期のたびに消えていた（単体テストで発覚）。
+  prevの当該キーをcarryする形に修正
+- 🔴テストで発見：`build_backup()`のデフォルト引数`backup_dir=BACKUP_DIR`がモジュールロード時に
+  束縛され、隔離テストのはずが本物の`~/.vivid-relay/_backups/focus/`を7件汚染した（全部確認し
+  テスト由来と確定の上で削除済み・本物のCurrent_Focus/state/Notionには到達していない）。
+  `backup_dir=None`にし呼び出し時にグローバル変数を参照する形へ修正
+- 単体テスト51件全合格（両機のpython3.9で実行）：既存行の初回一括／翌日判定／二重書き防止／
+  Focusから外れた扱いにしない／Notion未完了へ戻すと復帰／mtime不一致で片方だけ動かない／
+  目印無し行は対象外／Notion完了日を優先、の8シナリオ＋既存reopen/移動/Focus外れたの回帰3本
+- 本物へdry-run実行（--runは未実行）：現在40件の完了行中**18件**が導入時点の既完了行として
+  移動対象と判定された（残り22件はNotion側の完了日が今日のため今回はスキップ＝正しい挙動）
+- ★90_Archiveディレクトリは未作成（次回launchdの自動--run実行で自動作成される見込み）
+- ★次に見る人向け：次回の自動実行（15分以内）後、`~/Documents/Core_Brain/90_Archive/完了_2026-09.md`
+  が作られ18件前後入っているか、Current_Focusから該当行が消えているか、を1回確認すること。
+  自己採点にせず、cross-check（ステラ等）へ検査を回す前段としてこの記録を残す

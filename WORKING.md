@@ -53,6 +53,34 @@
 
 ## Mac mini セッション
 
+### 【ピタゴラス / mini 2026-09-29】notion_focus_sync.pyへ完了行の片付け機能を追加 ── ✅完了。次回自動実行を1回確認すること
+
+有璽氏の決定（2026-09-29・詳細は `memory/project_notion_focus_sync.md`）を実装。
+**対象は `~/.vivid-relay/notion_focus_sync.py`（launchd 15分ごと稼働中の本体）のみ。**
+本物の Notion・台帳・kintone・Slack へは1文字も書いていない。**--run は実行していない**
+（dry-run のみ。本番反映は次回の自動巡回に任せる）。
+
+```
+仕組み    完了[x]行のうち完了日が今日より前のものを 90_Archive/完了_YYYY-MM.md へ移す
+          （消さない・Notionは✅完了のまま）。目印無し行は対象外。移動は
+          「Focusから外れた」扱いにしない（Notion側で未完了に戻せば復帰する）
+控え      ~/.vivid-relay/_backups/notion_focus_sync.py.bak_20260929_archive（差し替え前）
+検証      単体テスト51件全合格（両機のpython3.9）。8シナリオ＋既存reopen/移動/
+          Focus外れたの回帰3本。本物へdry-run→40件中18件が移動対象と判定（残22件は
+          Notion側完了日が今日のため今回スキップ＝正しい挙動）
+🔴発見    実装中に2つのバグを見つけ修正済み：①state[marker]の丸ごと上書きで
+          first_seen_doneが毎回消えていた ②build_backup()のデフォルト引数が
+          モジュールロード時に束縛され、隔離テストのはずが本物の
+          ~/.vivid-relay/_backups/focus/ を7件汚染（テスト由来と確認の上で削除済み。
+          Core_Brain本体・state・Notionへの到達は無し）
+```
+
+**★残作業**：次回のlaunchd自動実行（15分以内）後に `~/Documents/Core_Brain/90_Archive/完了_2026-09.md`
+が作られ18件前後入っているか、Current_Focusから該当行が消えているかを1回確認すること。
+**★自己採点にしていない。cross-check（ステラ等）への検査依頼はビビ経由で出すこと。**
+
+**★同じ対象に手をつけないでください**: なし（作業完了・次回自動実行の確認待ち）
+
 ### 【ロビン / mini 2026-09-22】毎朝の棚卸し ── ✅完了。★週次検査の「ズレ3件」に偽物が1件
 
 前日（9/21・月）実績の棚卸し。**読むだけで実測し、書いたのは memory 2本だけ**（本文＋索引1行）。
