@@ -78,6 +78,9 @@ metadata:
 - **✅9/29夜 有璽氏「地図を白黒に」→ `filter:grayscale(1)`（簡易版・LSUと同じ）**。公開元 `~/kodomo-station-demo-v11/`
   ★限界＝ピンも灰色。ピンだけ赤く残すには Maps JavaScript API（課金）が要る＝LSUで有璽氏が不要と判断済み
   ★計測の検問は「公開コマンドに $OUT 等の変数」を文字どおり読み、検査できないと警告する。対象外登録（~/kodomo-station-demo-v*）で実害なし
+- **✅9/29夜 有璽氏「セピア調に」→ `grayscale(1) sepia(.45) contrast(.95) brightness(1.02)`**。公開元 `~/kodomo-station-demo-v12/`
+  ★踏んだ：置換の文字列が一致せず空振り→差分確認が「同じもの同士」を比べて"1か所のみ"と誤って出た。
+    ★差分確認は「変わった行数が0でないこと」も併せて見る（今回 2行＝1か所で確認し直した）
 - 要差替12項目は README「未確定・要差替 一覧」が正本
 
 関連：[[reference_vercel_free_plan_protection]]
