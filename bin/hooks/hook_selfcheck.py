@@ -20,6 +20,8 @@ CASES=[
  #   ★判定できないときは通す（fail-open）。cron や ssh 経由では環境変数が無く {} が返り、
  #   ★「反応しない」と誤検知する（★mini で実際に出た）。★そこで env を明示して叩く。
  ('hook_interactive_guard.py','{"tool_name":"AskUserQuestion","tool_input":{"questions":[]},"session_id":"selfcheck"}','additionalContext',{'CLAUDE_CODE_ENTRYPOINT':'cli'}),
+ # ★2026-09-29 追加（有璽氏「即実装」）。計測タグの無い見本ページを公開しようとして★止まる（deny）のが正常。
+ ('hook_web_tracking_gate.py','{"tool_name":"Bash","tool_input":{"command":"vercel deploy --cwd ~/vivid-ai-hq/bin/web_tracking/selfcheck_fixture"},"cwd":"/","session_id":"selfcheck"}','deny'),
 ]
 
 # ★2026-08-30 つる依頼で修正（旧 PLAIN_CASES の穴C）。

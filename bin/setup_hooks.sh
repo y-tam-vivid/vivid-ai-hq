@@ -75,6 +75,10 @@ SPEC = [
     #   一度も登録されておらず、毎朝の生死点検の対象にも入っていなかった（★二重の見えなさ・4日間）。
     #   非対話の担当が AskUserQuestion を呼ぶと、答える人がいないため無言で止まり続ける。それを止める。
     ('PreToolUse',       'hook_interactive_guard.py',  'AskUserQuestion',         10),
+    # ★2026-09-29 有璽氏「即実装。一般のサイトでも標準に」。Webページの公開（vercel deploy 等）と
+    #   SalesBreaker の文面保存の直前に、計測セット（SB・GA4・Clarity・クリックログ）を検査して
+    #   揃っていなければ止める。対象外は bin/web_tracking/exempt.json（理由つき）。
+    ('PreToolUse',       'hook_web_tracking_gate.py',  'Bash',                    30),
 ]
 
 hooks = d.setdefault('hooks', {})

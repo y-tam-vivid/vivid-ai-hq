@@ -11,7 +11,15 @@ LPに限らない。**外へ出すページは全部これを通す。** 送っ�
 ```
 部品    ~/vivid-ai-hq/bin/web_tracking/snippet.html   <head> 直後に貼る。{{…}} 4か所を差し替える
 検査    ~/vivid-ai-hq/bin/web_tracking_check.py        ✗が1つでもあれば終了コード1 ＝ 公開・送信しない
+★検問  ~/vivid-ai-hq/bin/hooks/hook_web_tracking_gate.py（2026-09-29 有璽氏「即実装・一般のサイトでも標準に」）
+        Webページの公開コマンド（vercel・netlify・wrangler・firebase・surge・redeploy.sh）と
+        SalesBreaker の文面保存（curl で templates/save）の直前に自動で検査し、✗なら★機械が止める
+        両機へは setup_hooks.sh が15分以内に自動配布。毎朝の hook_selfcheck で生死を点検
+        直したら必ず bin/web_tracking/test_gate.py（24件）を全件通す
+対象外  ~/vivid-ai-hq/bin/web_tracking/exempt.json    社内画面・スタッフ確認用・解析しないと決めたサイト。★理由必須・有璽氏の了解
 ```
+**★スキルを読み忘れても、公開の瞬間に検問が止める。止められたら、この手順どおりに入れてから出し直す。**
+★効かない場面：cron が直接走らせる公開（Claude を通らない）／Python スクリプトの中から SalesBreaker へ保存する場合（コマンドに現れない）／Next.js 等の HTML を持たないサイト（警告だけ出して通す→公開後に URL で検査する）。
 
 ## 何が取れるか（4つは役割が重ならない。全部要る）
 

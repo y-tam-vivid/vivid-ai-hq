@@ -9,6 +9,9 @@ metadata:
 
 > **★2026-09-29 スキル化した → Skill `web-tracking-setup`**（部品 `bin/web_tracking/snippet.html`・検査 `bin/web_tracking_check.py`）。
 > 有璽氏「LPだけでなく普通のWebでも同じように。絶対に構築するスキルに」。**対象はSB経由のLPに限らず、外へ出すページ全部**。
+> **★2026-09-29 有璽氏「即実装。一般のサイトでも同じなら★標準にする。サイト改善にもつなげる。
+> ビビ経由でステラ・ピタゴラス・チョッパーにも共有」** → 公開・送信コマンドの直前に検査を走らせ✗なら止めるフック
+> `bin/hooks/hook_web_tracking_gate.py` を新設（setup_hooks.sh の SPEC で両機へ）。
 > 追加分：クリックログ（案=パス／経路=utm_source／押した場所=data-cta を GA4 と Clarity の両方へ）。
 
 **2026-08-28 有璽氏の指示。ゲームブル案件に限らない。今後 SalesBreaker を経由する
