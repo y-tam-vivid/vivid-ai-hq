@@ -44,6 +44,10 @@ metadata:
   ★有璽氏「差し替えた写真はそのまま維持」＝build_site.py の PHOTO_OVERRIDES を新版にも当て直す運用で確定
   ★構築3からデザインシステム一式（styles.css・tokens・components等）が同梱されたが、ページが読むのは
   assets/ と support.js だけ（実測）＝公開には含めない
+- **9/29 有璽氏「差し替え写真をClaude Design側にも渡したい」**→ 一式を用意
+  `~/Downloads/こどもステーション_ClaudeDesign用_写真_20260929/`（同じものをDrive制作フォルダにも）
+  中身＝写真2枚・00_一覧.jpg・01_指示文.txt（生成不要・配置だけ）。★渡すのは有璽氏（チャットに添付）
+  ★Claude Design側が差し替えを終えたら、build_site.py の PHOTO_OVERRIDES は外してよい（二重管理を解消）
 - 要差替12項目は README「未確定・要差替 一覧」が正本
 
 関連：[[reference_vercel_free_plan_protection]]
