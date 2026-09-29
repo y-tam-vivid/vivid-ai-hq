@@ -1,13 +1,39 @@
 {
   "_説明": "計測の検問（hook_web_tracking_gate.py）で止めない公開先。★1件ずつ理由を書く。足すときは有璽氏の了解を取る。",
   "_own_domains": "SalesBreaker の文面に書かれたURLのうち、★ここに載っているドメイン（とそのサブドメイン）だけ着地先として検査する。自社以外（カレンダー予約リンク等）は検査せず注記のみ。自社の新しいドメインを持ったらここへ足す。空／無いときは全URLを検査する。",
-  "own_domains": ["vivid-global.com"],
+  "own_domains": [
+    "vivid-global.com",
+    "orange-works.co",
+    "i-life-fukushi.com",
+    "fuku-chi.com"
+  ],
   "_paths": "path はディレクトリ（完全一致かパス区切り単位の配下。* は1階層内だけ）か URL（https://ホスト/ ★ホスト完全一致）。",
   "paths": [
-    {"path": "~/vivid-ai-hq/web/kadoban", "reason": "社内の稼働盤（Basic認証・外部の人は見ない）", "added": "2026-09-29"},
-    {"path": "~/lifestandup-wp/static-preview", "reason": "スタッフ確認用の仮公開（Basic認証）。本番WordPressへ入れるときは別途計測を入れる", "added": "2026-09-29"},
-    {"path": "~/jfbi-research-site", "reason": "有璽氏の決定（2026-09-12）『アクセス解析は入れない』", "added": "2026-09-29"},
-    {"path": "~/kodomo-station-demo*", "reason": "先方（南河内こどもステーション）確認用のデモ。本番公開時に外す", "added": "2026-09-29"},
-    {"path": "https://jfbi.vivid-global.com/", "reason": "有璽氏の決定（2026-09-12）『アクセス解析は入れない』", "added": "2026-09-29"}
-  ]
+    {
+      "path": "~/vivid-ai-hq/web/kadoban",
+      "reason": "社内の稼働盤（Basic認証・外部の人は見ない）",
+      "added": "2026-09-29"
+    },
+    {
+      "path": "~/lifestandup-wp/static-preview",
+      "reason": "スタッフ確認用の仮公開（Basic認証）。本番WordPressへ入れるときは別途計測を入れる",
+      "added": "2026-09-29"
+    },
+    {
+      "path": "~/jfbi-research-site",
+      "reason": "有璽氏の決定（2026-09-12）『アクセス解析は入れない』",
+      "added": "2026-09-29"
+    },
+    {
+      "path": "~/kodomo-station-demo*",
+      "reason": "先方（南河内こどもステーション）確認用のデモ。本番公開時に外す",
+      "added": "2026-09-29"
+    },
+    {
+      "path": "https://jfbi.vivid-global.com/",
+      "reason": "有璽氏の決定（2026-09-12）『アクセス解析は入れない』",
+      "added": "2026-09-29"
+    }
+  ],
+  "_own_domains_note": "2026-09-29 有璽氏：オレンジワークス・LIFE STAND UP 本番・ふくち。サイトも含める"
 }
