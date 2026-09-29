@@ -27,4 +27,4 @@
 - [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync除外・リンク4本(両機済)／★MacBookは9/27まで@importが空振り→Core_Brainリンクで解消
 - [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — 9/28 欠陥3件修正・手動同期済み(直後dry-run 0件)。ドーベルマン条件つき合格。残＝有璽氏がpython3.9実体へフルディスクアクセス→launchd→初回目視。MacBookから代走しない
 - [ツールの使い分けと導入状況](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚・git=完成品。★施設側はClaude未導入・Notionは有璽氏個人＋一部／日々のメモは3か所に分散(Macメモ帳・Chatwork・iPhoneメモ)→Obsidian 01_Inbox のデイリーノートへ集約開始(9/27・振り分けは未)
-- [Web公開前の計測は標準](reference_salesbreaker_campaign_setup.md) — 9/29〜全Webページ必須。Skill web-tracking-setup／公開コマンド直前に検問が機械で止める
+- [Web公開前の計測は標準](reference_salesbreaker_campaign_setup.md) — 9/29〜全Web必須。Skill web-tracking-setup・公開直前に検問が止める
