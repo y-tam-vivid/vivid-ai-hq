@@ -101,7 +101,63 @@ def _check_hook_session_writeback():
         return None
     return 'hook_session_writeback.py ： 反応しない（出力先頭: %s）' % detail
 
-PLAIN_CHECKS = [_check_hook_session_writeback]
+def _check_web_gate_sb():
+    """★2026-09-29 追加（検査の指摘）。計測の検問の「SalesBreaker 文面」経路の生死を点検する。
+    見本（vercel 側）だけ点検していると、SB 経路が壊れても気づけない。
+    ネットには出ない：127.0.0.1 の一時サーバに「計測の無いページ」を置き、その URL を文面に入れた
+    保存コマンドを検問へ流す。着地先を自社ドメイン扱いにするため、一時の exempt.json を
+    VIVID_GATE_EXEMPT で渡す（本物の exempt.json には触らない）。deny が返れば正常。
+    ★ログ ~/.vivid-relay/web_tracking_gate.log へ「止めた（SB文面）」が毎朝1行増える（既存の見本ケースと同じ）"""
+    import http.server, threading
+
+    class H(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            body = '<!doctype html><html><head><title>t</title></head><body>selfcheck 計測なし</body></html>'.encode()
+            self.send_response(200); self.send_header('Content-Type', 'text/html; charset=utf-8')
+            self.send_header('Content-Length', str(len(body))); self.end_headers(); self.wfile.write(body)
+
+        def log_message(self, *a):
+            pass
+
+    srv = http.server.HTTPServer(('127.0.0.1', 0), H)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    tmpdir = tempfile.mkdtemp(prefix='selfcheck_gate_')
+    try:
+        ex = os.path.join(tmpdir, 'exempt.json')
+        with open(ex, 'w') as f:
+            json.dump({'own_domains': ['127.0.0.1'], 'paths': []}, f)
+        url = 'http://127.0.0.1:%d/' % srv.server_address[1]
+        cmd = ("curl -X POST https://salesbreaker.jp/api/operator/v0/templates/save -d '{\"b\":\"%s\"}'" % url)
+        payload = json.dumps({'tool_name': 'Bash', 'tool_input': {'command': cmd}, 'cwd': '/tmp', 'session_id': 'selfcheck'})
+        env = dict(os.environ)
+        env['VIVID_GATE_EXEMPT'] = ex
+        env['VIVID_GATE_SB_BUDGET'] = '10'
+        r = subprocess.run(['/usr/bin/python3', os.path.join(HERE, 'hook_web_tracking_gate.py')], input=payload,
+                           capture_output=True, text=True, timeout=30, env=env)
+        d = json.loads(r.stdout or '{}')
+        if d.get('hookSpecificOutput', {}).get('permissionDecision') == 'deny':
+            return None
+        return 'hook_web_tracking_gate.py（SB文面） ： 反応しない（出力先頭: %s）' % (r.stdout or r.stderr)[:120]
+    finally:
+        srv.shutdown()
+        srv.server_close()
+        shutil.rmtree(tmpdir, ignore_errors=True)
+
+
+def _web_gate_registration_problem(s):
+    """★settings.json に計測の検問が Bash 向けに登録されているか。
+    settings.json は機械ローカル（git外）で手で編集される＝行が消えても誰も気づけない
+    （フックが在っても登録が無ければ、点検の見本ケースは通るのに実際の公開は素通りする）"""
+    for e in s.get('hooks', {}).get('PreToolUse', []):
+        if any('hook_web_tracking_gate.py' in (h.get('command') or '') for h in e.get('hooks', [])):
+            m = e.get('matcher')
+            if m in (None, '', '*') or 'Bash' in m:
+                return None
+            return 'settings.json ： hook_web_tracking_gate.py の matcher が Bash を含まない（%s）＝検問が効かない' % m
+    return 'settings.json ： hook_web_tracking_gate.py が PreToolUse に登録されていない＝検問が効かない'
+
+
+PLAIN_CHECKS = [_check_hook_session_writeback, _check_web_gate_sb]
 
 ng=[]
 for case in CASES:
@@ -135,7 +191,7 @@ for chk in PLAIN_CHECKS:
         msg = chk()
         if msg: ng.append(msg)
     except Exception as e:
-        ng.append('hook_session_writeback.py ： %s' % str(e)[:80])
+        ng.append('%s ： %s' % (getattr(chk, '__name__', 'check'), str(e)[:80]))
 # settings.json に登録されているか
 # ★Stop を 2026-08-29 に追加。settings.json は機械ローカル（git外）で手で編集されるため、
 #   Stop の行が消えても誰も気づけなかった（それが唯一の機械ゲート）。
@@ -143,6 +199,8 @@ try:
     s=json.load(open(os.path.expanduser('~/.claude/settings.json')))
     for ev in ('PreToolUse','UserPromptSubmit','PermissionRequest','Stop'):
         if ev not in s.get('hooks',{}): ng.append('settings.json に %s が無い' % ev)
+    _p = _web_gate_registration_problem(s)
+    if _p: ng.append(_p)
 except Exception as e:
     ng.append('settings.json を読めない ： %s' % e)
 # ★本数はベタ書きしない（数えた結果を出す）。bin/hooks/hook_output_guard.py の型

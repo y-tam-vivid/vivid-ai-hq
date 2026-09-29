@@ -9,17 +9,31 @@ description: ふくち。グループが外へ出すWebページ（LP・サー�
 LPに限らない。**外へ出すページは全部これを通す。** 送ってから・公開してからでは、その間の記録は永久に取り返せない（2026-08 ゲームブル第1波の18社で実証）。
 
 ```
-部品    ~/vivid-ai-hq/bin/web_tracking/snippet.html   <head> 直後に貼る。{{…}} 4か所を差し替える
+部品    ~/vivid-ai-hq/bin/web_tracking/snippet.html（v2）  <head> 直後に貼る。{{…}} 4か所を差し替える
 検査    ~/vivid-ai-hq/bin/web_tracking_check.py        ✗が1つでもあれば終了コード1 ＝ 公開・送信しない
 ★検問  ~/vivid-ai-hq/bin/hooks/hook_web_tracking_gate.py（2026-09-29 有璽氏「即実装・一般のサイトでも標準に」）
         Webページの公開コマンド（vercel・netlify・wrangler・firebase・surge・redeploy.sh）と
         SalesBreaker の文面保存（curl で templates/save）の直前に自動で検査し、✗なら★機械が止める
         両機へは setup_hooks.sh が15分以内に自動配布。毎朝の hook_selfcheck で生死を点検
-        直したら必ず bin/web_tracking/test_gate.py（24件）を全件通す
+        直したら必ず bin/web_tracking/test_gate.py（110件・ネットに出ない・JS は node で実行）を全件通す
+        公開の検査：<html を持つ完全なページだけ数える（partials/components/includes と断片は除外・.htm も見る）。
+                    300枚を超えたら黙らず「未検査N枚」を出す。タグは <script> の中に在ることが条件（コメント・本文の文字列は数えない）
+        SB の検査：着地先は並列で取得・全体20秒の上限。★上限までに検査できなかった分は止めずに警告で通す
+                    （検査不能で止めると、SB 障害・ネット断のたびに全送信が止まる。計測が無いと分かったものは deny のまま）
 対象外  ~/vivid-ai-hq/bin/web_tracking/exempt.json    社内画面・スタッフ確認用・解析しないと決めたサイト。★理由必須・有璽氏の了解
+        paths：ディレクトリは完全一致かパス区切り単位の配下／URL は★ホスト完全一致（host.evil.example は通らない）
+        own_domains：★SB の文面で着地先として検査する自社ドメイン（いまは vivid-global.com）。
+                     文面のカレンダー予約リンク等の他社URLは検査せず注記のみ。★自社で新しいドメインを持ったらここへ足す
 ```
 **★スキルを読み忘れても、公開の瞬間に検問が止める。止められたら、この手順どおりに入れてから出し直す。**
-★効かない場面：cron が直接走らせる公開（Claude を通らない）／Python スクリプトの中から SalesBreaker へ保存する場合（コマンドに現れない）／Next.js 等の HTML を持たないサイト（警告だけ出して通す→公開後に URL で検査する）。
+★効かない場面（＝守れない。ここは人が手で検査を通す）：
+- cron が直接走らせる公開（Claude を通らない）
+- Python 等のスクリプトの中から SalesBreaker へ保存する場合（コマンドに現れない）
+- 文面を変数・ファイルの中身で組み立てて送る場合のうち、コマンド文字列にも @file にも URL が現れないもの（例：`$(cat …)` や別スクリプトが作ったファイルを標準入力で渡す）
+- `sudo -u root vercel` のように、包む語の値つきオプションの値が先頭語に見える形
+- Next.js 等の HTML を持たないサイト（警告だけ出して通す→公開後に URL で検査する）
+★拾える包み方：`url=$(…)`／timeout・nohup・nice・xargs・sudo・env の後ろ／`bash -c '…'`／`if …; then`／`pushd X && …`／`(cd X && …)`／`vercel <dir> --prod`。
+★閲覧は止めない：`vercel --scope team ls`・`--help`・`-h`（値を取るオプションの値をサブコマンドと読み違えない）。
 
 ## 何が取れるか（4つは役割が重ならない。全部要る）
 
@@ -33,8 +47,10 @@ LPに限らない。**外へ出すページは全部これを通す。** 送っ�
 クリックログが自動で付けるもの：
 ```
 lp_variant   URLのパスから作る   /kids/a → kids-a ／ / → root
-lp_source    ?utm_source= の値   無ければ referral / direct
-cta          押した要素の data-cta（無ければリンク先）
+lp_source    ?utm_source= の値   無ければ referral / direct。★最初のページで決めて sessionStorage に保持し、
+                                 同じサイトの2ページ目以降も同じ経路（最初が direct/referral なら後から来た utm を採る）
+cta          押した要素の data-cta（無ければリンク先。★tel: と mailto: は中身を送らず "tel" "mailto" だけ）
+form_submit  form の送信（data-cta の有無を問わず。Enter キー送信も。action のクエリは送らない）
 ```
 
 ## 手順（ページの作り方を問わず同じ）

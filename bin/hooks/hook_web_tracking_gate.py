@@ -13,50 +13,96 @@ Webページを外へ出す直前に「計測セット」が入っているか�
 何を止めるか（Bash のコマンド文字列で判定）
   公開   vercel deploy / vercel --prod ／ netlify deploy ／ wrangler pages deploy ／ firebase deploy
          ／ surge ／ redeploy.sh
-  送信   SalesBreaker の templates/save（文面に入れたURLの着地先を検査する）
+         ★包み方に依らず拾う：url=$(…)／timeout・nohup・nice・xargs・sudo・env の後ろ／
+           bash -c '…'／if …; then／pushd X && …／(cd X && …)／vercel <dir> --prod
+  送信   SalesBreaker の templates/save（文面に入れた★自社ドメインのURLの着地先を検査する）
 
 どう検査するか
-  公開 → 出す場所（--cwd ／ 直前の cd ／ 位置引数 ／ payload の cwd）の HTML を全部
+  公開 → 出す場所（--cwd ／ 直前の cd・pushd ／ 位置引数 ／ payload の cwd）の HTML を全部
          bin/web_tracking_check.py の check_html() に通す。✗ が1つでもあれば deny。
-  送信 → コマンド文字列と -d @file の中の https URL を取得して検査。✗ なら deny。
+         partials/components/includes 配下と <html を含まない断片は数えない。.htm も見る。
+         300枚を超えたら黙らず「未検査N枚」を出す。
+  送信 → コマンド文字列と @file（-d/--data/--data-binary）の中の http(s) URL を取り出し、
+         exempt.json の own_domains に当たる★自社の着地先だけを取得して検査する。
+         自社以外（カレンダー予約リンク等）は検査せず注記だけ。着地先は並列で取得し、全体に時間上限がある。
 
 止めない場合（★全部ログに残す）
   ・公開先が bin/web_tracking/exempt.json に理由つきで載っている（社内画面・スタッフ確認用・
     有璽氏が「解析を入れない」と決めたサイト 等）
   ・HTML が1枚も見つからない（Next.js 等のビルド型）→ 止めずに警告だけ返す（静的検査ができないため）
+  ・SB の着地先を時間内に検査できなかった → deny せず警告で通す。
+    ★理由：「計測が無いものを出さない」が絶対であって、検査が終わらないことを止める理由にはしない。
+      止めると SalesBreaker 側の障害・ネット断のたびに全送信が止まる。fail-open（下）と方針を揃える。
+      ただし「開けない（接続拒否・DNS・404）」と「計測が無い」は従来どおり deny。
   ・このフック自身が落ちた → 通す（fail-open。検問の故障で全作業を止めない）
 
-★cron から直接走るデプロイ（kadoban_deploy.sh 等）は Claude Code を通らないので、このフックは効かない。
-  対象は「AIが Bash で公開・送信するとき」。
+★守れない場面（SKILL の「効かない場面」と同じ）
+  ・cron から直接走るデプロイ（kadoban_deploy.sh 等）は Claude Code を通らない
+  ・SB の文面を変数やファイルの中身で組み立てて送る／Python 等のスクリプトの中から送る（コマンドに現れない）
+  ・sudo -u root vercel のように、runner の値つきオプションの値が先頭語に見える形
 
 出力  deny のときは hookSpecificOutput.permissionDecision = "deny"（exit 0・JSON）
 ログ  ~/.vivid-relay/web_tracking_gate.log
+
+テスト用の環境変数（★フックは Claude 本体の子プロセスなので、Bash コマンドの前置きでは変えられない）
+  VIVID_GATE_EXEMPT          exempt.json の場所を差し替える（test_gate.py・hook_selfcheck.py が使う）
+  VIVID_GATE_SB_BUDGET       SB 着地先の検査の全体上限（秒・既定20）
+  VIVID_GATE_SB_URL_TIMEOUT  1本ごとの上限（秒・既定8）
 """
 import fnmatch
 import json
 import os
 import re
 import shlex
+import socket
 import sys
+import threading
 import time
+import urllib.error
+import urllib.parse
 import urllib.request
 
 REPO = os.path.expanduser("~/vivid-ai-hq")
 sys.path.insert(0, os.path.join(REPO, "bin"))
-EXEMPT_FILE = os.path.join(REPO, "bin", "web_tracking", "exempt.json")
+EXEMPT_FILE = os.environ.get("VIVID_GATE_EXEMPT") or os.path.join(REPO, "bin", "web_tracking", "exempt.json")
 LOG = os.path.expanduser("~/.vivid-relay/web_tracking_gate.log")
+
+
+def _envf(name, default):
+    try:
+        return float(os.environ.get(name, default))
+    except Exception:
+        return float(default)
+
+
+SB_BUDGET = _envf("VIVID_GATE_SB_BUDGET", 20)
+SB_URL_TIMEOUT = _envf("VIVID_GATE_SB_URL_TIMEOUT", 8)
 
 OTHER_PUBLISH = {  # コマンド名 → 公開を意味するサブコマンド（None=コマンドだけで公開）
     "netlify": "deploy", "firebase": "deploy", "surge": None, "wrangler": "deploy",
 }
 SB_SEND = re.compile(r"salesbreaker\.jp/api/operator/v\d+/templates/save")
+URL_RE = re.compile(r"https?://[A-Za-z0-9._~:/?#\[\]@!$&()*+,;=%-]+")
 VERCEL_READ = {"ls", "list", "inspect", "logs", "env", "whoami", "login", "logout", "link", "project",
                "projects", "domains", "alias", "firewall", "pull", "dns", "certs", "teams", "switch",
                "help", "rm", "remove", "promote", "rollback", "redeploy", "bisect", "build", "dev",
-               "init", "git", "integration", "secrets", "target", "blob", "cache", "--version", "-v"}
-RUNNERS = {"npx", "pnpm", "bunx", "yarn", "dlx", "exec", "--yes", "-y", "sudo", "env", "time"}
-SKIP_DIRS = {"node_modules", ".git", ".vercel", ".next", "_backup", "archive", "review"}
+               "init", "git", "integration", "secrets", "target", "blob", "cache"}
+VERCEL_READ_FLAGS = {"--help", "-h", "--version", "-v"}
+# ★値を1つ取るオプション。値を「サブコマンド」と読み違えない（vercel --scope team ls）
+VERCEL_VALUE_OPTS = {"--scope", "-S", "--token", "-t", "--cwd", "-A", "--local-config", "--global-config",
+                     "-Q", "--team", "--target", "-e", "--env", "-b", "--build-env", "-m", "--meta",
+                     "--regions", "--archive"}
+# コマンドを包む語（後ろが本体）。数値・オプション（timeout 120／nice -n 10／xargs -I{}）も一緒に飛ばす
+RUNNERS = {"npx", "pnpm", "bunx", "yarn", "dlx", "exec", "--yes", "-y", "sudo", "env", "time",
+           "nohup", "nice", "command", "builtin", "xargs", "timeout", "stdbuf", "setsid", "caffeinate",
+           "if", "then", "else", "elif", "do", "while", "until", "!", "{", "}", "$"}
+SHELLS = {"bash", "sh", "zsh"}
+ASSIGN = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
+NUMERIC = re.compile(r"^\d+(\.\d+)?[smhd]?$")
+SKIP_DIRS = {"node_modules", ".git", ".vercel", ".next", "_backup", "archive", "review",
+             "partials", "components", "includes"}
 MAX_FILES = 300
+PUNCT = ";&|\n()`"
 
 
 def log(msg):
@@ -79,112 +125,195 @@ def out(decision=None, reason="", context=""):
     sys.exit(0)
 
 
-def commands(cmd):
+def commands(cmd, depth=0):
     """シェルの文字列を「実行されるコマンドごとのトークン列」に分ける。
-    ★heredoc の本文・クォート内の文字（commit メッセージ等）はコマンドとして数えない"""
+    ★heredoc の本文・クォート内の文字（commit メッセージ等）はコマンドとして数えない
+    ★$( ) ( ) ` ` の中も別コマンドとして数える。bash -c '…' の中身は再帰して数える"""
     cmd = re.sub(r"<<-?\s*(['\"]?)(\w+)\1[^\n]*\n.*?\n\s*\2\s*(\n|$)", "\n", cmd, flags=re.S)
-    lx = shlex.shlex(cmd, posix=True, punctuation_chars=";&|\n")
+    lx = shlex.shlex(cmd, posix=True, punctuation_chars=PUNCT)
     lx.whitespace = " \t\r"
     lx.whitespace_split = True
-    out, cur = [], []
+    parts, cur = [], []
     try:
         for t in lx:
-            if t and set(t) <= set(";&|\n"):
+            if t and set(t) <= set(PUNCT):
                 if cur:
-                    out.append(cur)
+                    parts.append(cur)
                 cur = []
             else:
                 cur.append(t)
     except ValueError:
         return []
     if cur:
-        out.append(cur)
+        parts.append(cur)
     res = []
-    for toks in out:
-        i = 0
-        while i < len(toks) and (toks[i] in RUNNERS or re.match(r"^[A-Z_][A-Z0-9_]*=", toks[i])):
+    for toks in parts:
+        i, seen_runner = 0, False
+        while i < len(toks):
+            t = toks[i]
+            if t in RUNNERS:
+                seen_runner = True
+            elif ASSIGN.match(t):
+                pass
+            elif seen_runner and (t.startswith("-") or NUMERIC.match(t)):
+                pass
+            else:
+                break
             i += 1
-        if i < len(toks):
-            res.append(toks[i:])
+        if i >= len(toks):
+            continue
+        toks = toks[i:]
+        if os.path.basename(toks[0]) in SHELLS and depth < 3:
+            rest = toks[1:]
+            inner = None
+            for j, t in enumerate(rest):
+                if re.match(r"^-[a-zA-Z]*c[a-zA-Z]*$", t) and j + 1 < len(rest):
+                    inner = rest[j + 1]
+                    break
+            if inner is not None:
+                res.extend(commands(inner, depth + 1))
+                continue
+        res.append(toks)
     return res
 
 
-def is_publish(cmd):
-    """実行されるコマンドの先頭語で判定する。
-    vercel：後ろの最初の言葉が 無い／deploy／パス＝公開。ls 等の閲覧は公開ではない
+def vercel_words(toks):
+    """vercel の引数から、オプションとその値を除いた語だけを返す（先頭がサブコマンド or 公開先のパス）"""
+    words, skip = [], False
+    for t in toks[1:]:
+        if skip:
+            skip = False
+        elif t in VERCEL_VALUE_OPTS:
+            skip = True
+        elif not t.startswith("-"):
+            words.append(t)
+    return words
+
+
+def find_publish(cmd):
+    """公開コマンドを探す。見つかれば (種類, トークン列)、無ければ None。
+    vercel：ls 等の閲覧・--help は公開ではない。サブコマンドが 無い／deploy／パス＝公開
     ★promote/rollback/redeploy は既にある版を出し直すだけで、中身を検査できないので対象外"""
     for toks in commands(cmd):
-        if os.path.basename(toks[0]) in {"bash", "sh", "zsh"} and len(toks) > 1:
+        if os.path.basename(toks[0]) in SHELLS and len(toks) > 1:
             toks = toks[1:]  # bash ./redeploy.sh の形
         name = os.path.basename(toks[0])
-        words = [t for t in toks[1:] if not t.startswith("-")]
-        sub = words[0] if words else None
         if name == "vercel":
-            if sub in VERCEL_READ or "--version" in toks:
+            if any(t in VERCEL_READ_FLAGS for t in toks[1:]):
                 continue
-            return True
+            words = vercel_words(toks)
+            if words and words[0] in VERCEL_READ:
+                continue
+            return "vercel", toks
         if name == "redeploy.sh":
-            return True
+            return "redeploy", toks
         if name in OTHER_PUBLISH and (OTHER_PUBLISH[name] is None or OTHER_PUBLISH[name] in toks):
-            return True
-    return False
+            return "other", toks
+    return None
 
 
-def deploy_dir(cmd, cwd):
+def deploy_dir(cmd, cwd, found):
     """公開する場所を推定する。★推定であることをログに残す"""
     m = re.search(r"--cwd[= ]+(\S+)", cmd)
     if m:
         return os.path.expanduser(m.group(1).strip("'\""))
     base = cwd
-    for m in re.finditer(r"\bcd\s+([^;&|]+?)\s*(&&|;)", cmd):
+    for m in re.finditer(r"(?<![\w/.-])(?:cd|pushd)\s+([^;&|()]+?)\s*(?:&&|;|\)|$)", cmd):
         p = os.path.expanduser(m.group(1).strip().strip("'\""))
         base = p if os.path.isabs(p) else os.path.join(base, p)
-    try:
-        toks = shlex.split(cmd.split("&&")[-1].split(";")[-1])
-    except ValueError:
-        toks = []
-    if "deploy" in toks:
-        rest = toks[toks.index("deploy") + 1:]
-        for t in rest:
-            if not t.startswith("-") and os.path.isdir(os.path.join(base, os.path.expanduser(t))):
-                return os.path.join(base, os.path.expanduser(t))
+    kind, toks = found
+    if kind == "vercel":
+        words = vercel_words(toks)
+        cands = words[1:] if words and words[0] == "deploy" else words  # vercel <dir> --prod
+    elif "deploy" in toks:
+        cands = [t for t in toks[toks.index("deploy") + 1:] if not t.startswith("-")]
+    else:
+        cands = []
+    for t in cands:
+        if os.path.isdir(os.path.join(base, os.path.expanduser(t))):
+            return os.path.join(base, os.path.expanduser(t))
     return base
 
 
-def exempt_reason(path):
+def load_exempt():
     try:
-        rules = json.load(open(EXEMPT_FILE, encoding="utf-8"))
+        return json.load(open(EXEMPT_FILE, encoding="utf-8"))
     except Exception:
-        return None
+        return {}
+
+
+def _glob_match(rp, real):
+    """パスのルール照合。★完全一致か「パス区切り単位」の配下だけ一致（foo が foobar に一致しない）。
+    glob は1セグメントごとに照合する（* が / を跨がない）"""
+    pat = os.path.expanduser(rp)
+    parts = pat.split("/")
+    gi = next((i for i, p in enumerate(parts) if any(c in p for c in "*?[")), None)
+    if gi is None:
+        base = os.path.realpath(pat)
+        return real == base or real.startswith(base.rstrip("/") + "/")
+    base = os.path.realpath("/".join(parts[:gi]) or "/")
+    tail = [t for t in parts[gi:] if t]
+    rp_, bp_ = [x for x in real.split("/") if x], [x for x in base.split("/") if x]
+    if rp_[:len(bp_)] != bp_:
+        return False
+    rest = rp_[len(bp_):]
+    return len(rest) >= len(tail) and all(fnmatch.fnmatchcase(r, t) for r, t in zip(rest, tail))
+
+
+def exempt_reason(path):
+    rules = load_exempt()
     is_url = path.startswith("http")
-    real = path if is_url else os.path.realpath(path)
+    if is_url:
+        host = (urllib.parse.urlparse(path).hostname or "").lower()
+    else:
+        real = os.path.realpath(path)
     for r in rules.get("paths", []):
-        rp = r["path"]
+        rp = r.get("path", "")
         if rp.startswith("http") != is_url:
             continue
-        pat = rp if (is_url or "*" in rp) else os.path.realpath(os.path.expanduser(rp))
-        pat = os.path.expanduser(pat)
-        if fnmatch.fnmatch(real, pat) or real == pat or real.startswith(pat.rstrip("/*") + "/"):
+        if is_url:
+            # ★ホスト完全一致（https://host/ ・ https://host ・ https://host* のどれで書いても同じ）。
+            #   前方一致にすると host.evil.example や host@evil.example まで通る
+            m = re.match(r"^https?://([^/*?\s]+)", rp)
+            if m and host and host == m.group(1).lower().split(":")[0]:
+                return r.get("reason", "理由未記入")
+        elif _glob_match(rp, real):
             return r.get("reason", "理由未記入")
     return None
 
 
+def is_document(path):
+    """<html か <!doctype を持つ完全なページか（断片は数えない）"""
+    try:
+        with open(path, "rb") as f:
+            head = f.read(65536).decode("utf-8", "replace")
+    except Exception:
+        return True  # 読めないものは検査に回して「読めない」と出す
+    return bool(re.search(r"<html\b|<!doctype", head, re.I))
+
+
 def html_files(root):
-    """★範囲が広すぎる（ホーム直下・/tmp 等）ときは None を返して検査しない＝警告で通す"""
+    """戻り値 (検査するファイル, 未検査の枚数, 除外した断片の枚数)。
+    ★範囲が広すぎる（ホーム直下・/tmp 等）ときは None を返して検査しない＝警告で通す"""
     if os.path.realpath(root) in {os.path.realpath(os.path.expanduser("~")), "/", "/tmp", "/private/tmp"}:
         return None
-    found, seen = [], 0
+    found, seen, unchecked, frags = [], 0, 0, 0
     for d, dirs, files in os.walk(root):
         seen += 1
         if seen > 3000:
             return None
-        dirs[:] = [x for x in dirs if x not in SKIP_DIRS and not x.startswith(".")]
-        for f in files:
-            if f.endswith(".html") and ".bak" not in f and not f.endswith(".dc.html"):
-                found.append(os.path.join(d, f))
-                if len(found) >= MAX_FILES:
-                    return found
-    return found
+        dirs[:] = sorted(x for x in dirs if x not in SKIP_DIRS and not x.startswith("."))
+        for f in sorted(files):
+            if not f.lower().endswith((".html", ".htm")) or ".bak" in f or f.endswith(".dc.html"):
+                continue
+            p = os.path.join(d, f)
+            if len(found) >= MAX_FILES:
+                unchecked += 1  # ★黙って切り捨てない。数えて出す
+            elif is_document(p):
+                found.append(p)
+            else:
+                frags += 1
+    return found, unchecked, frags
 
 
 def failures(html):
@@ -192,21 +321,26 @@ def failures(html):
     return [f"{name}（{note}）" for name, ok, note in check_html(html) if ok is False]
 
 
-def gate_publish(cmd, cwd):
-    root = deploy_dir(cmd, cwd)
+def gate_publish(cmd, cwd, found):
+    root = deploy_dir(cmd, cwd, found)
     reason = exempt_reason(root)
     if reason:
         log(f"通した（対象外） {root} ／ {reason}")
         out(context=f"計測の検問：{root} は対象外として登録済み（{reason}）。")
-    files = html_files(root) if os.path.isdir(root) else []
-    if files is None:
+    r = html_files(root) if os.path.isdir(root) else ([], 0, 0)
+    if r is None:
         log(f"通した（範囲が広すぎ・警告） {root}")
         out(context=f"★計測の検問：公開する場所 {root} が広すぎて検査できなかった。"
                     "--cwd で公開フォルダを明示するか、公開後に web_tracking_check.py <URL> を通すこと。")
+    files, unchecked, frags = r
     if not files:
-        log(f"通した（HTML無し・警告） {root}")
-        out(context=f"★計測の検問：{root} に HTML が見つからず静的に検査できなかった。"
-                    "公開後に python3 ~/vivid-ai-hq/bin/web_tracking_check.py <URL> を必ず通すこと。")
+        log(f"通した（HTML無し・警告） {root} 断片{frags}枚 未検査{unchecked}枚")
+        out(context=f"★計測の検問：{root} に検査できる HTML（<html を持つ完全なページ）が見つからず静的に検査できなかった"
+                    f"（断片として除外 {frags}枚）。公開後に python3 ~/vivid-ai-hq/bin/web_tracking_check.py <URL> を必ず通すこと。")
+    more_note = ""
+    if unchecked:
+        more_note = (f"\n★未検査{unchecked}枚（1回の検査は{MAX_FILES}枚まで）。残りは公開後に "
+                     "python3 ~/vivid-ai-hq/bin/web_tracking_check.py <URL> --paths … で検査すること。")
     bad = {}
     for f in files:
         try:
@@ -216,47 +350,94 @@ def gate_publish(cmd, cwd):
         if ng:
             bad[os.path.relpath(f, root)] = ng
     if not bad:
-        log(f"通した（全{len(files)}枚 ✓） {root}")
-        out(context=f"計測の検問：{len(files)}枚とも計測セットあり（発火の確認は別）。")
+        log(f"通した（全{len(files)}枚 ✓・未検査{unchecked}枚・断片{frags}枚） {root}")
+        out(context=f"計測の検問：{len(files)}枚とも計測セットあり（発火の確認は別）。" + more_note)
     lines = [f"・{k}：{' ／ '.join(v)}" for k, v in list(bad.items())[:8]]
     more = f"\n…ほか {len(bad) - 8} 枚" if len(bad) > 8 else ""
-    log(f"止めた {root} ✗{len(bad)}/{len(files)}枚")
+    log(f"止めた {root} ✗{len(bad)}/{len(files)}枚 未検査{unchecked}枚")
     out("deny",
-        f"★計測セットが揃っていないので公開を止めた（{len(bad)}/{len(files)}枚）。\n" + "\n".join(lines) + more +
+        f"★計測セットが揃っていないので公開を止めた（{len(bad)}/{len(files)}枚）。\n" + "\n".join(lines) + more + more_note +
         "\n直し方：Skill web-tracking-setup の手順どおり ~/vivid-ai-hq/bin/web_tracking/snippet.html を <head> に入れる。"
         "\n社内画面など計測が不要な場所なら、理由を書いて ~/vivid-ai-hq/bin/web_tracking/exempt.json へ載せる（有璽氏の了解が要る）。")
 
 
+def _check_one(u, per):
+    """着地先を1本検査する。戻り値 ("ok"|"ng"|"timeout", [✗の一覧])"""
+    try:
+        req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0 (fukuchi gate)"})
+        with urllib.request.urlopen(req, timeout=per) as r:
+            return "ok", failures(r.read(2000000).decode("utf-8", "replace"))
+    except (socket.timeout, TimeoutError):
+        return "timeout", []
+    except urllib.error.URLError as e:
+        if isinstance(e.reason, (socket.timeout, TimeoutError)):
+            return "timeout", []
+        return "ng", [f"開けない（{str(e)[:60]}）"]
+    except Exception as e:
+        return "ng", [f"開けない（{str(e)[:60]}）"]
+
+
+def check_landings(urls, budget, per):
+    """★並列で取得し、全体に時間上限を設ける（直列だと 1本×8秒×本数 で検問自体が固まる）。
+    戻り値 {url: (状態, ✗一覧)}。上限までに終わらなかった url は入らない"""
+    import web_tracking_check  # noqa: F401  ← スレッドの外で先に読み込む
+    results = {}
+
+    def work(u):
+        results[u] = _check_one(u, per)
+
+    threads = [threading.Thread(target=work, args=(u,), daemon=True) for u in urls]
+    for t in threads:
+        t.start()
+    deadline = time.time() + budget
+    for t in threads:
+        t.join(max(0.0, deadline - time.time()))
+    return dict(results)
+
+
 def gate_sb_send(cmd, cwd):
     text = cmd
-    for m in re.finditer(r"@(\S+)", cmd):
-        p = os.path.join(cwd, os.path.expanduser(m.group(1).strip("'\"")))
-        if os.path.isfile(p):
-            text += "\n" + open(p, encoding="utf-8", errors="replace").read()
-    urls = sorted(set(u.rstrip(".,)\"'\\") for u in re.findall(r"https://[^\s\"'<>\\]+", text)
-                      if "salesbreaker.jp" not in u and "sbroute.net" not in u))
+    for m in re.finditer(r"@([^\s\"']+)", cmd):  # -d @f ／ -d@f ／ --data @f ／ --data-binary @f
+        p = os.path.join(cwd, os.path.expanduser(m.group(1)))
+        try:
+            if os.path.isfile(p):
+                text += "\n" + open(p, encoding="utf-8", errors="replace").read(1000000)
+        except Exception:
+            pass
+    text = text.replace("\\/", "/")  # JSON の https:\/\/ エスケープ
+    urls = sorted(set(u.rstrip(".,)\"';") for u in URL_RE.findall(text)))
+    urls = [u for u in urls if "salesbreaker.jp" not in u and "sbroute.net" not in u]
     if not urls:
         log("通した（SB文面・URL無し）")
         out(context="計測の検問：文面に着地先URLが無い（認知目的なら可）。")
-    bad, skipped = [], 0
+    own = [d.lower() for d in load_exempt().get("own_domains", [])]  # ★無ければ全URLを検査（安全側）
+    mine, others, skipped = [], [], 0
     for u in urls:
-        if exempt_reason(u):
+        host = (urllib.parse.urlparse(u).hostname or "").lower()
+        if own and not any(host == d or host.endswith("." + d) for d in own):
+            others.append(u)
+        elif exempt_reason(u):
             skipped += 1
-            continue
-        try:
-            req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0 (fukuchi gate)"})
-            with urllib.request.urlopen(req, timeout=15) as r:
-                ng = failures(r.read().decode("utf-8", "replace"))
-        except Exception as e:
-            ng = [f"開けない（{str(e)[:60]}）"]
-        if ng:
-            bad.append(f"・{u}：{' ／ '.join(ng)}")
-    if not bad:
-        log(f"通した（SB文面 ✓{len(urls) - skipped}・対象外{skipped}）")
-        out(context=f"計測の検問：着地先 {len(urls) - skipped} 本は計測セットあり／対象外 {skipped} 本。")
-    log(f"止めた（SB文面） ✗{len(bad)}")
-    out("deny", "★文面の着地先に計測セットが無いので保存を止めた。\n" + "\n".join(bad) +
-        "\n着地先へ Skill web-tracking-setup の計測セットを入れてから保存すること。")
+        else:
+            mine.append(u)
+    note = ""
+    if others:
+        note = f"／自社以外のURL {len(others)}本は検査していない（{', '.join(others[:3])}）"
+    res = check_landings(mine, SB_BUDGET, SB_URL_TIMEOUT) if mine else {}
+    bad = [f"・{u}：{' ／ '.join(v[1])}" for u, v in res.items() if v[1]]
+    late = [u for u in mine if u not in res or res[u][0] == "timeout"]
+    if bad:
+        log(f"止めた（SB文面） ✗{len(bad)} 時間切れ{len(late)}")
+        out("deny", "★文面の着地先に計測セットが無いので保存を止めた。\n" + "\n".join(bad) +
+            (f"\n（ほか {len(late)} 本は時間内に検査できなかった）" if late else "") +
+            "\n着地先へ Skill web-tracking-setup の計測セットを入れてから保存すること。")
+    if late:
+        log(f"通した（SB文面・検査できなかった{len(late)}本・警告） {late}")
+        out(context=f"★計測の検問：着地先 {len(late)} 本を時間内（全体{SB_BUDGET:g}秒）に検査できなかった。止めずに通したが、"
+                    "保存前に python3 ~/vivid-ai-hq/bin/web_tracking_check.py <URL> を必ず手で通すこと。"
+                    f"（{', '.join(late[:3])}）{note}")
+    log(f"通した（SB文面 ✓{len(mine)}・対象外{skipped}・自社以外{len(others)}）")
+    out(context=f"計測の検問：着地先 {len(mine)} 本は計測セットあり／対象外 {skipped} 本{note}。")
 
 
 def main():
@@ -272,8 +453,9 @@ def main():
     if any(os.path.basename(t[0]) in {"curl", "wget", "http", "https", "xh"} and any(SB_SEND.search(x) for x in t)
            for t in commands(cmd)):
         gate_sb_send(cmd, cwd)
-    if is_publish(cmd):
-        gate_publish(cmd, cwd)
+    found = find_publish(cmd)
+    if found:
+        gate_publish(cmd, cwd, found)
     sys.exit(0)
 
 

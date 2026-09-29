@@ -1,10 +1,11 @@
-<!-- ===== ふくち。計測セット v1（bin/web_tracking/snippet.html）=====
-     <head> の直後に丸ごと貼る。{{…}} の4か所だけ差し替える。
-       {{SB_TRACK_ID}} / {{SB_TRACK_TOKEN}}  SalesBreaker 1行タグ（どの会社が来たか）
+<!-- ===== ふくち。計測セット v2（bin/web_tracking/snippet.html）=====
+     <head> の直後に丸ごと貼る。二重の波括弧で書かれた4か所（下の script 内）だけ差し替える。
+       SB_TRACK_ID / SB_TRACK_TOKEN  SalesBreaker 1行タグ（どの会社が来たか）
                          SalesBreaker 画面の「1行タグ」から id と token をそのまま写す
-       {{GTM_ID}}        GTM コンテナ（GA4 はコンテナ内で配信）
-       {{CLARITY_ID}}    Microsoft Clarity（録画・ヒートマップ・クリック）★サイトごとに1つ作る
+       GTM_ID            GTM コンテナ（GA4 はコンテナ内で配信）
+       CLARITY_ID        Microsoft Clarity（録画・ヒートマップ・クリック）★サイトごとに1つ作る
      ボタンやリンクに data-cta="<置き場所>" を付けると、どれが押されたかが案別に残る。
+     v2（2026-09-29）：経路（utm_source）を最初のページで確定して保持／tel・mailto は種別だけ送る／form 送信も記録
      ============================================================== -->
 <script src="https://salesbreaker.jp/v1/sb-track.js?id={{SB_TRACK_ID}}&amp;token={{SB_TRACK_TOKEN}}" async></script>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{GTM_ID}}');</script>
@@ -15,19 +16,48 @@
   var seg = location.pathname.split('/').filter(Boolean);           // 例 /kids/a → ['kids','a']
   var variant = seg.join('-').replace(/\.html?$/, '').replace(/-?index$/, '') || 'root';
   var q = new URLSearchParams(location.search);
-  var source = q.get('utm_source') || (document.referrer ? 'referral' : 'direct');
+  // 経路：最初に決まったものを sessionStorage に保持し、同じサイトの2ページ目以降も使う
+  // （2ページ目の参照元は自分のサイトなので、保持しないと ig から来た人が referral になる）。
+  // ただし最初が direct / referral のときは、あとで来た utm_source（より確かな情報）を採る。
+  // sessionStorage が使えない環境（プライベート等）では、従来どおりそのページだけで決める。
+  var KEY = 'fk_lp_source';
+  function ssGet(){ try { return sessionStorage.getItem(KEY); } catch(e){ return null; } }
+  function ssSet(v){ try { sessionStorage.setItem(KEY, v); } catch(e){} }
+  var utm = q.get('utm_source'), stored = ssGet(), source;
+  if (utm && (!stored || stored === 'direct' || stored === 'referral')) { source = utm; ssSet(source); }
+  else if (stored) { source = stored; }
+  else { source = utm || (document.referrer ? 'referral' : 'direct'); ssSet(source); }
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event: 'page_meta', lp_variant: variant, lp_source: source });
   function cl(){ try { window.clarity && window.clarity.apply(null, arguments); } catch(e){} }
   cl('set', 'lp_variant', variant);
   cl('set', 'lp_source', source);
+  // 押した場所の名前。tel: と mailto: は電話番号・メールアドレスを送らず種別だけにする
+  function ctaOf(el){
+    var c = el.getAttribute('data-cta');
+    if (c) return c;
+    var h = el.getAttribute('href') || '';
+    if (/^tel:/i.test(h)) return 'tel';
+    if (/^mailto:/i.test(h)) return 'mailto';
+    return h.slice(0, 80);
+  }
   document.addEventListener('click', function(e){
-    var el = e.target.closest('[data-cta], a[href]');
+    var t = e.target;
+    var el = t && t.closest && t.closest('[data-cta], a[href]');
     if (!el) return;
-    var cta = el.getAttribute('data-cta') || (el.getAttribute('href') || '').slice(0, 80);
+    var cta = ctaOf(el);
     window.dataLayer.push({ event: 'cta_click', lp_variant: variant, lp_source: source, cta: cta });
     cl('event', 'cta_click');
     if (el.hasAttribute('data-cta')) cl('event', 'cta_' + el.getAttribute('data-cta'));
+  }, true);
+  // form 送信（Enter キー送信・data-cta の無い form も拾う）。action のクエリ（token 等）は送らない
+  document.addEventListener('submit', function(e){
+    var f = e.target;
+    if (!f || !f.getAttribute) return;
+    var cta = f.getAttribute('data-cta') || (f.getAttribute('id') ? 'form-' + f.getAttribute('id') : '') ||
+              (f.getAttribute('action') || '').split('?')[0].split('#')[0].slice(0, 80) || 'form';
+    window.dataLayer.push({ event: 'form_submit', lp_variant: variant, lp_source: source, cta: cta });
+    cl('event', 'form_submit');
   }, true);
 })();
 </script>

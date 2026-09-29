@@ -7,6 +7,7 @@
   python3 bin/web_tracking_check.py ./index.html                          # 公開前のファイル
 
 見るもの（★どれか1つでも ✗ なら終了コード1＝送信・公開してはいけない）
+★HTML コメントの中のタグは数えない。タグ・cta_click は <script> の中に在ることを条件にする
   1. SalesBreaker 1行タグ   どの会社が来たか
   2. GTM コンテナ           GA4 の受け皿
   3. Microsoft Clarity      録画・ヒートマップ・クリック
@@ -39,17 +40,29 @@ def fetch(url):
         return 0, str(e)
 
 
+def strip_comments(html):
+    """HTML コメント（条件付きコメント含む）を除く。★コメントの中のタグは実行されない"""
+    return re.sub(r"<!--.*?-->", "", html, flags=re.S)
+
+
+def script_text(html):
+    """<script …>…</script> を連結する。★本文（<p> 等）に文字列があるだけでは計測が入っているとは言えない"""
+    return "\n".join(m.group(0) for m in re.finditer(r"<script\b[^>]*>.*?</script>", html, flags=re.S | re.I))
+
+
 def check_html(html):
     rows = []
-    sb = re.search(r"salesbreaker\.jp/v1/sb-track\.js\?id=([0-9a-f-]{36})", html)
+    html = strip_comments(html)
+    sc = script_text(html)
+    sb = re.search(r"salesbreaker\.jp/v1/sb-track\.js\?id=([0-9a-f-]{36})", sc)
     rows.append(("SalesBreaker 1行タグ", bool(sb), sb.group(1) if sb else "無い"))
-    gtm = re.findall(r"GTM-[A-Z0-9]{6,}", html)
+    gtm = re.findall(r"GTM-[A-Z0-9]{6,}", sc)
     rows.append(("GTM コンテナ", bool(gtm), ",".join(sorted(set(gtm))) or "無い"))
-    cl = re.search(r'clarity\.ms/tag/"\s*\+\s*i.*?"clarity"\s*,\s*"script"\s*,\s*"([a-z0-9]+)"', html, re.S) \
-        or re.search(r"clarity\.ms/tag/([a-z0-9]{8,})", html)
+    cl = re.search(r'clarity\.ms/tag/"\s*\+\s*i.*?"clarity"\s*,\s*"script"\s*,\s*"([a-z0-9]+)"', sc, re.S) \
+        or re.search(r"clarity\.ms/tag/([a-z0-9]{8,})", sc)
     rows.append(("Microsoft Clarity", bool(cl), cl.group(1) if cl else "無い"))
-    logger = "cta_click" in html
-    rows.append(("クリックログ（cta_click）", logger, "あり" if logger else "snippet.html の部品が無い"))
+    logger = "cta_click" in sc
+    rows.append(("クリックログ（cta_click）", logger, "あり" if logger else "snippet.html の部品が無い（<script> の中に必要）"))
     ctas = re.findall(r'data-cta="([^"]+)"', html)
     rows.append(("data-cta の付いたボタン", None if not ctas else True,
                  f"{len(ctas)}個 " + ",".join(ctas[:6]) if ctas else "0個（押された場所が区別できない）"))
