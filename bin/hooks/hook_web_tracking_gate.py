@@ -86,7 +86,7 @@ URL_RE = re.compile(r"https?://[A-Za-z0-9._~:/?#\[\]@!$&()*+,;=%-]+")
 VERCEL_READ = {"ls", "list", "inspect", "logs", "env", "whoami", "login", "logout", "link", "project",
                "projects", "domains", "alias", "firewall", "pull", "dns", "certs", "teams", "switch",
                "help", "rm", "remove", "promote", "rollback", "redeploy", "bisect", "build", "dev",
-               "init", "git", "integration", "secrets", "target", "blob", "cache"}
+               "init", "git", "integration", "secrets", "target", "blob", "cache", "curl", "open", "telemetry"}
 VERCEL_READ_FLAGS = {"--help", "-h", "--version", "-v"}
 # ★値を1つ取るオプション。値を「サブコマンド」と読み違えない（vercel --scope team ls）
 VERCEL_VALUE_OPTS = {"--scope", "-S", "--token", "-t", "--cwd", "-A", "--local-config", "--global-config",
@@ -99,8 +99,12 @@ RUNNERS = {"npx", "pnpm", "bunx", "yarn", "dlx", "exec", "--yes", "-y", "sudo", 
 SHELLS = {"bash", "sh", "zsh"}
 ASSIGN = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
 NUMERIC = re.compile(r"^\d+(\.\d+)?[smhd]?$")
-SKIP_DIRS = {"node_modules", ".git", ".vercel", ".next", "_backup", "archive", "review",
-             "partials", "components", "includes"}
+# ★2周目（ステラ条件C）：archive/review/components/includes は除外しない（全ページ検査のはずが素通りしていた）。
+#   除外は生成物・履歴の置き場だけ。<html を含まない断片は別途除外し、枚数と理由を出力に出す
+SKIP_DIRS = {"node_modules", ".git", ".vercel", ".next", "_backup"}
+OWN_EXTRA = ["vercel.app"]  # ★自社の Vercel エイリアス（例 gamemarkelp.vercel.app）も自社扱い
+SSH_VALUE_OPTS = {"-p", "-i", "-l", "-o", "-F", "-J", "-L", "-R", "-D", "-b", "-c", "-E", "-e", "-I", "-m", "-O",
+                  "-Q", "-S", "-W", "-w"}
 MAX_FILES = 300
 PUNCT = ";&|\n()`"
 
@@ -173,6 +177,14 @@ def commands(cmd, depth=0):
             if inner is not None:
                 res.extend(commands(inner, depth + 1))
                 continue
+        if os.path.basename(toks[0]) == "ssh" and depth < 3:  # ssh [opts] host 'cmd' → cmd の中身も読む
+            rest, k = toks[1:], 0
+            while k < len(rest) and rest[k].startswith("-"):
+                k += 2 if rest[k] in SSH_VALUE_OPTS else 1
+            remote = rest[k + 1:]
+            if remote:
+                res.extend(commands(" ".join(remote), depth + 1))
+                continue
         res.append(toks)
     return res
 
@@ -195,10 +207,12 @@ def find_publish(cmd):
     vercel：ls 等の閲覧・--help は公開ではない。サブコマンドが 無い／deploy／パス＝公開
     ★promote/rollback/redeploy は既にある版を出し直すだけで、中身を検査できないので対象外"""
     for toks in commands(cmd):
-        if os.path.basename(toks[0]) in SHELLS and len(toks) > 1:
-            toks = toks[1:]  # bash ./redeploy.sh の形
+        if (os.path.basename(toks[0]) in SHELLS or toks[0] in ("source", ".")) and len(toks) > 1:
+            toks = toks[1:]  # bash ./redeploy.sh ／ source ./redeploy.sh ／ . ./redeploy.sh の形
         name = os.path.basename(toks[0])
-        if name == "vercel":
+        if name.startswith(("vercel@", "vc@")):  # npx vercel@32 ／ pnpm dlx vercel@latest
+            name = name.split("@")[0]
+        if name in ("vercel", "vc"):
             if any(t in VERCEL_READ_FLAGS for t in toks[1:]):
                 continue
             words = vercel_words(toks)
@@ -208,30 +222,55 @@ def find_publish(cmd):
         if name == "redeploy.sh":
             return "redeploy", toks
         if name in OTHER_PUBLISH and (OTHER_PUBLISH[name] is None or OTHER_PUBLISH[name] in toks):
+            if any(t in ("--help", "-h") for t in toks[1:]):
+                continue  # 使い方の表示は公開ではない
             return "other", toks
     return None
 
 
+def _unesc(p):
+    """cd の引数：引用符を外し、\\ エスケープ（My\\ Folder）を戻す"""
+    return re.sub(r"\\(.)", r"\1", p.strip().strip("'\""))
+
+
+def _opt_values(toks, names):
+    """--opt X ／ --opt=X の値を順に返す（shlex 済みなので空白入りパスも1つの値）"""
+    vals = []
+    for i, t in enumerate(toks):
+        for n in names:
+            if t == n and i + 1 < len(toks):
+                vals.append(toks[i + 1])
+            elif t.startswith(n + "=") and n.startswith("--"):
+                vals.append(t[len(n) + 1:])
+    return vals
+
+
 def deploy_dir(cmd, cwd, found):
     """公開する場所を推定する。★推定であることをログに残す"""
-    m = re.search(r"--cwd[= ]+(\S+)", cmd)
-    if m:
-        return os.path.expanduser(m.group(1).strip("'\""))
+    kind, toks = found
     base = cwd
     for m in re.finditer(r"(?<![\w/.-])(?:cd|pushd)\s+([^;&|()]+?)\s*(?:&&|;|\)|$)", cmd):
-        p = os.path.expanduser(m.group(1).strip().strip("'\""))
+        p = os.path.expanduser(_unesc(m.group(1)))
         base = p if os.path.isabs(p) else os.path.join(base, p)
-    kind, toks = found
+
+    def at(t):
+        t = os.path.expanduser(t)
+        return t if os.path.isabs(t) else os.path.join(base, t)
+
+    c = _opt_values(toks, ("--cwd",))
+    if c:
+        return at(c[0])  # ★相対パスは cd 後の場所からの相対
     if kind == "vercel":
         words = vercel_words(toks)
         cands = words[1:] if words and words[0] == "deploy" else words  # vercel <dir> --prod
     elif "deploy" in toks:
-        cands = [t for t in toks[toks.index("deploy") + 1:] if not t.startswith("-")]
+        cands = _opt_values(toks, ("--dir", "--publish", "-d"))  # netlify
+        cands += [t for t in toks[toks.index("deploy") + 1:] if not t.startswith("-")]
     else:
         cands = []
     for t in cands:
-        if os.path.isdir(os.path.join(base, os.path.expanduser(t))):
-            return os.path.join(base, os.path.expanduser(t))
+        if os.path.isdir(at(t)):
+            return at(t)
     return base
 
 
@@ -293,18 +332,23 @@ def is_document(path):
 
 
 def html_files(root):
-    """戻り値 (検査するファイル, 未検査の枚数, 除外した断片の枚数)。
+    """戻り値 (検査するファイル, 未検査の枚数, 除外した断片の枚数, {"dirs": 除外フォルダ名, "bak": .bak/.dc.html の枚数})。
     ★範囲が広すぎる（ホーム直下・/tmp 等）ときは None を返して検査しない＝警告で通す"""
     if os.path.realpath(root) in {os.path.realpath(os.path.expanduser("~")), "/", "/tmp", "/private/tmp"}:
         return None
     found, seen, unchecked, frags = [], 0, 0, 0
+    info = {"dirs": set(), "bak": 0}
     for d, dirs, files in os.walk(root):
         seen += 1
         if seen > 3000:
             return None
+        info["dirs"].update(x for x in dirs if x in SKIP_DIRS or x.startswith("."))
         dirs[:] = sorted(x for x in dirs if x not in SKIP_DIRS and not x.startswith("."))
         for f in sorted(files):
-            if not f.lower().endswith((".html", ".htm")) or ".bak" in f or f.endswith(".dc.html"):
+            if not f.lower().endswith((".html", ".htm")):
+                continue
+            if ".bak" in f or f.endswith(".dc.html"):
+                info["bak"] += 1
                 continue
             p = os.path.join(d, f)
             if len(found) >= MAX_FILES:
@@ -313,7 +357,20 @@ def html_files(root):
                 found.append(p)
             else:
                 frags += 1
-    return found, unchecked, frags
+    info["dirs"] = sorted(info["dirs"])
+    return found, unchecked, frags, info
+
+
+def excl_note(frags, info):
+    """★除外したものは黙らず出す（枚数と理由）"""
+    parts = []
+    if frags:
+        parts.append(f"断片{frags}枚（<html を含まない）")
+    if info.get("bak"):
+        parts.append(f".bak／.dc.html {info['bak']}枚（控え・書き出し前）")
+    if info.get("dirs"):
+        parts.append("除外フォルダ " + ",".join(info["dirs"]) + "（ビルド生成物・履歴）")
+    return ("\n除外：" + "／".join(parts)) if parts else ""
 
 
 def failures(html):
@@ -327,19 +384,20 @@ def gate_publish(cmd, cwd, found):
     if reason:
         log(f"通した（対象外） {root} ／ {reason}")
         out(context=f"計測の検問：{root} は対象外として登録済み（{reason}）。")
-    r = html_files(root) if os.path.isdir(root) else ([], 0, 0)
+    r = html_files(root) if os.path.isdir(root) else ([], 0, 0, {})
     if r is None:
         log(f"通した（範囲が広すぎ・警告） {root}")
         out(context=f"★計測の検問：公開する場所 {root} が広すぎて検査できなかった。"
                     "--cwd で公開フォルダを明示するか、公開後に web_tracking_check.py <URL> を通すこと。")
-    files, unchecked, frags = r
+    files, unchecked, frags, info = r
+    xn = excl_note(frags, info)
     if not files:
         log(f"通した（HTML無し・警告） {root} 断片{frags}枚 未検査{unchecked}枚")
         out(context=f"★計測の検問：{root} に検査できる HTML（<html を持つ完全なページ）が見つからず静的に検査できなかった"
-                    f"（断片として除外 {frags}枚）。公開後に python3 ~/vivid-ai-hq/bin/web_tracking_check.py <URL> を必ず通すこと。")
-    more_note = ""
+                    f"（断片として除外 {frags}枚）。公開後に python3 ~/vivid-ai-hq/bin/web_tracking_check.py <URL> を必ず通すこと。" + xn)
+    more_note = xn
     if unchecked:
-        more_note = (f"\n★未検査{unchecked}枚（1回の検査は{MAX_FILES}枚まで）。残りは公開後に "
+        more_note += (f"\n★未検査{unchecked}枚（1回の検査は{MAX_FILES}枚まで）。残りは公開後に "
                      "python3 ~/vivid-ai-hq/bin/web_tracking_check.py <URL> --paths … で検査すること。")
     bad = {}
     for f in files:
@@ -361,14 +419,37 @@ def gate_publish(cmd, cwd, found):
         "\n社内画面など計測が不要な場所なら、理由を書いて ~/vivid-ai-hq/bin/web_tracking/exempt.json へ載せる（有璽氏の了解が要る）。")
 
 
+class _Redirect(urllib.request.HTTPRedirectHandler):
+    """★307/308 も追う（/usr/bin/python3 3.9 の urllib は 308 を追わず、転送先が計測入りでも deny していた）。最大5回"""
+    max_redirections = 5
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return super().redirect_request(req, fp, 307 if code == 308 else code, msg, headers, newurl)
+
+    http_error_308 = urllib.request.HTTPRedirectHandler.http_error_302
+
+
+def is_own_host(host, own):
+    """自社のホストか。★末尾一致は「.」区切り（evil-vivid-global.com は一致しない）。
+    own が空なら全部検査（安全側）。vercel.app（自社の Vercel エイリアス）は常に自社扱い"""
+    if not own:
+        return True
+    host = (host or "").lower()
+    return bool(host) and any(host == d or host.endswith("." + d) for d in own + OWN_EXTRA)
+
+
 def _check_one(u, per):
     """着地先を1本検査する。戻り値 ("ok"|"ng"|"timeout", [✗の一覧])"""
     try:
         req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0 (fukuchi gate)"})
-        with urllib.request.urlopen(req, timeout=per) as r:
+        with urllib.request.build_opener(_Redirect()).open(req, timeout=per) as r:
             return "ok", failures(r.read(2000000).decode("utf-8", "replace"))
     except (socket.timeout, TimeoutError):
         return "timeout", []
+    except urllib.error.HTTPError as e:
+        if e.code == 403:  # bot 検問など。「計測なし」とは断定できない＝検査できなかった扱い（警告で通す）
+            return "blocked", []
+        return "ng", [f"開けない（{str(e)[:60]}）"]
     except urllib.error.URLError as e:
         if isinstance(e.reason, (socket.timeout, TimeoutError)):
             return "timeout", []
@@ -414,7 +495,7 @@ def gate_sb_send(cmd, cwd):
     mine, others, skipped = [], [], 0
     for u in urls:
         host = (urllib.parse.urlparse(u).hostname or "").lower()
-        if own and not any(host == d or host.endswith("." + d) for d in own):
+        if not is_own_host(host, [d for d in own]):
             others.append(u)
         elif exempt_reason(u):
             skipped += 1
@@ -425,7 +506,7 @@ def gate_sb_send(cmd, cwd):
         note = f"／自社以外のURL {len(others)}本は検査していない（{', '.join(others[:3])}）"
     res = check_landings(mine, SB_BUDGET, SB_URL_TIMEOUT) if mine else {}
     bad = [f"・{u}：{' ／ '.join(v[1])}" for u, v in res.items() if v[1]]
-    late = [u for u in mine if u not in res or res[u][0] == "timeout"]
+    late = [u for u in mine if u not in res or res[u][0] in ("timeout", "blocked")]
     if bad:
         log(f"止めた（SB文面） ✗{len(bad)} 時間切れ{len(late)}")
         out("deny", "★文面の着地先に計測セットが無いので保存を止めた。\n" + "\n".join(bad) +
@@ -433,7 +514,7 @@ def gate_sb_send(cmd, cwd):
             "\n着地先へ Skill web-tracking-setup の計測セットを入れてから保存すること。")
     if late:
         log(f"通した（SB文面・検査できなかった{len(late)}本・警告） {late}")
-        out(context=f"★計測の検問：着地先 {len(late)} 本を時間内（全体{SB_BUDGET:g}秒）に検査できなかった。止めずに通したが、"
+        out(context=f"★計測の検問：着地先 {len(late)} 本を検査できなかった（時間切れ・403 など。全体{SB_BUDGET:g}秒）。止めずに通したが、"
                     "保存前に python3 ~/vivid-ai-hq/bin/web_tracking_check.py <URL> を必ず手で通すこと。"
                     f"（{', '.join(late[:3])}）{note}")
     log(f"通した（SB文面 ✓{len(mine)}・対象外{skipped}・自社以外{len(others)}）")

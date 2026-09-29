@@ -15,14 +15,16 @@ LPに限らない。**外へ出すページは全部これを通す。** 送っ�
         Webページの公開コマンド（vercel・netlify・wrangler・firebase・surge・redeploy.sh）と
         SalesBreaker の文面保存（curl で templates/save）の直前に自動で検査し、✗なら★機械が止める
         両機へは setup_hooks.sh が15分以内に自動配布。毎朝の hook_selfcheck で生死を点検
-        直したら必ず bin/web_tracking/test_gate.py（110件・ネットに出ない・JS は node で実行）を全件通す
-        公開の検査：<html を持つ完全なページだけ数える（partials/components/includes と断片は除外・.htm も見る）。
+        直したら必ず bin/web_tracking/test_gate.py（160件・ネットに出ない・JS は node で実行）を全件通す
+        公開の検査：<html を持つ完全なページを全部見る（archive/review/components/includes も対象・.htm も見る）。
+                    除外は node_modules・.git・.vercel・.next・_backup と、<html を含まない断片だけ。★除外した枚数と理由は出力に出る。
                     300枚を超えたら黙らず「未検査N枚」を出す。タグは <script> の中に在ることが条件（コメント・本文の文字列は数えない）
-        SB の検査：着地先は並列で取得・全体20秒の上限。★上限までに検査できなかった分は止めずに警告で通す
+        SB の検査：着地先は並列で取得・全体20秒の上限。307/308 の転送は5回まで追う。★上限切れ・403（bot 検問など）は「検査できなかった」＝止めずに警告で通す
                     （検査不能で止めると、SB 障害・ネット断のたびに全送信が止まる。計測が無いと分かったものは deny のまま）
 対象外  ~/vivid-ai-hq/bin/web_tracking/exempt.json    社内画面・スタッフ確認用・解析しないと決めたサイト。★理由必須・有璽氏の了解
         paths：ディレクトリは完全一致かパス区切り単位の配下／URL は★ホスト完全一致（host.evil.example は通らない）
-        own_domains：★SB の文面で着地先として検査する自社ドメイン（いまは vivid-global.com）。
+        own_domains：★SB の文面で着地先として検査する自社ドメイン（いまは vivid-global.com／orange-works.co／i-life-fukushi.com／fuku-chi.com）。
+                     ★*.vercel.app（自社の Vercel エイリアス）は常に自社扱い。末尾一致は「.」区切り（evil-vivid-global.com は別物）
                      文面のカレンダー予約リンク等の他社URLは検査せず注記のみ。★自社で新しいドメインを持ったらここへ足す
 ```
 **★スキルを読み忘れても、公開の瞬間に検問が止める。止められたら、この手順どおりに入れてから出し直す。**
@@ -32,7 +34,7 @@ LPに限らない。**外へ出すページは全部これを通す。** 送っ�
 - 文面を変数・ファイルの中身で組み立てて送る場合のうち、コマンド文字列にも @file にも URL が現れないもの（例：`$(cat …)` や別スクリプトが作ったファイルを標準入力で渡す）
 - `sudo -u root vercel` のように、包む語の値つきオプションの値が先頭語に見える形
 - Next.js 等の HTML を持たないサイト（警告だけ出して通す→公開後に URL で検査する）
-★拾える包み方：`url=$(…)`／timeout・nohup・nice・xargs・sudo・env の後ろ／`bash -c '…'`／`if …; then`／`pushd X && …`／`(cd X && …)`／`vercel <dir> --prod`。
+★拾える包み方：`url=$(…)`／timeout・nohup・nice・xargs・sudo・env の後ろ／`vc`・`vercel@版`／`source ./redeploy.sh`／`ssh host 'cmd'`（中身を読む）／`bash -c '…'`／`if …; then`／`pushd X && …`／`(cd X && …)`／`vercel <dir> --prod`。
 ★閲覧は止めない：`vercel --scope team ls`・`--help`・`-h`（値を取るオプションの値をサブコマンドと読み違えない）。
 
 ## 何が取れるか（4つは役割が重ならない。全部要る）

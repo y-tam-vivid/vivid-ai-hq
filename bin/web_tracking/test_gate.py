@@ -32,6 +32,19 @@ class H(http.server.BaseHTTPRequestHandler):
         if self.path.startswith("/hang"):
             time.sleep(60)
             return
+        if self.path.startswith("/r30"):  # /r307 /r308 → /untracked へ転送
+            self.send_response(int(self.path[2:5])); self.send_header("Location", "/ok" if self.path.endswith("ok") else "/untracked")
+            self.send_header("Content-Length", "0"); self.end_headers()
+            return
+        if self.path.startswith("/chain"):  # /chain4 → /chain3 → … → /untracked（308 を連鎖）
+            n = int(self.path[6:])
+            self.send_response(308); self.send_header("Location", "/chain%d" % (n - 1) if n > 0 else "/untracked")
+            self.send_header("Content-Length", "0"); self.end_headers()
+            return
+        if self.path.startswith("/forbidden") or self.path.startswith("/missing"):
+            code = 403 if self.path.startswith("/forbidden") else 404
+            self.send_response(code); self.send_header("Content-Length", "0"); self.end_headers()
+            return
         if self.path.startswith("/slow"):
             time.sleep(2)  # 遅いが応答はする（並列なら3本で約2秒・直列なら約6秒）
         body = (OK_HTML if self.path.startswith("/ok") else BARE_HTML).encode()
@@ -138,15 +151,67 @@ for i in range(305):
 CASES.append(("305枚 → 未検査5枚を出す", "vercel --prod", many, "note", {"has": "未検査5枚"}))
 # ── 項目7：断片・partials・.htm
 tree = os.path.join(tmp, "tree")
-for d in ("partials", "components", "includes", "sub"):
+for d in ("partials", "components", "includes", "sub", "archive", "review", "node_modules"):
     os.makedirs(os.path.join(tree, d))
 open(os.path.join(tree, "a.html"), "w").write(BARE_HTML)
 open(os.path.join(tree, "b.htm"), "w").write(BARE_HTML)
 open(os.path.join(tree, "sub", "c.html"), "w").write(BARE_HTML)
 open(os.path.join(tree, "frag.html"), "w").write("<div class='x'>断片</div>")
-for d in ("partials", "components", "includes"):
+for d in ("partials", "components", "includes", "archive", "review"):
     open(os.path.join(tree, d, "p.html"), "w").write(BARE_HTML)
-CASES.append(("partials/断片は対象外・.htm は対象（計測無し3枚で止まる）", "vercel --prod", tree, "deny", {"has": "3/3枚"}))
+open(os.path.join(tree, "components", "frag2.html"), "w").write("<header>断片</header>")
+open(os.path.join(tree, "node_modules", "n.html"), "w").write(BARE_HTML)
+CASES.append(("C：archive/review/components/includes も検査（8枚とも計測無し）", "vercel --prod", tree, "deny", {"has": "8/8枚"}))
+CASES.append(("C：除外した断片の枚数が出る", "vercel --prod", tree, "deny", {"has": "断片2枚"}))
+CASES.append(("C：除外フォルダ名が出る", "vercel --prod", tree, "deny", {"has": "node_modules"}))
+okt = os.path.join(tmp, "okt")
+os.makedirs(os.path.join(okt, "archive")); os.makedirs(os.path.join(okt, ".vercel"))
+open(os.path.join(okt, "archive", "a.html"), "w").write(OK_HTML)
+open(os.path.join(okt, "frag.html"), "w").write("<div>x</div>")
+CASES.append(("C：計測入り（archive も検査）でも断片1枚を出す", "vercel --prod", okt, "note", {"has": "断片1枚"}))
+
+# ═══ 2周目：条件B（307/308 を追う・403 は断定しない）と小さな取りこぼし
+CASES += [
+    ("B：308 転送先が計測無し → deny", "curl -X POST %s -d '{\"b\":\"%s/r308\"}'" % (SB, U), "/tmp", "deny", {"env": ENV_SB}),
+    ("B：308 転送先が計測入り → 通る（誤って deny しない）", "curl -X POST %s -d '{\"b\":\"%s/r308ok\"}'" % (SB, U), "/tmp", "note", {"env": ENV_SB, "has": "計測セットあり"}),
+    ("B：307 転送先が計測入り → 通る", "curl -X POST %s -d '{\"b\":\"%s/r307ok\"}'" % (SB, U), "/tmp", "note", {"env": ENV_SB, "has": "計測セットあり"}),
+    ("B：307 転送先が計測無し → deny", "curl -X POST %s -d '{\"b\":\"%s/r307\"}'" % (SB, U), "/tmp", "deny", {"env": ENV_SB}),
+    ("B：308 が4回連鎖 → deny", "curl -X POST %s -d '{\"b\":\"%s/chain4\"}'" % (SB, U), "/tmp", "deny", {"env": ENV_SB}),
+    ("B：403 → 警告で通す（断定しない）", "curl -X POST %s -d '{\"b\":\"%s/forbidden\"}'" % (SB, U), "/tmp", "note", {"env": ENV_SB, "has": "検査できなかった"}),
+    ("B：404 は従来どおり deny", "curl -X POST %s -d '{\"b\":\"%s/missing\"}'" % (SB, U), "/tmp", "deny", {"env": ENV_SB}),
+]
+sp = os.path.join(tmp, "sp ace")
+os.makedirs(sp)
+open(os.path.join(sp, "index.html"), "w").write(BARE_HTML)
+SPESC = sp.replace(" ", "\\ ")
+CASES += [
+    ("vc（別名）", "vc --prod", F, "deny", {}),
+    ("vc ls（閲覧）", "vc ls", F, "none", {}),
+    ("npx vercel@32.0.0", "npx vercel@32.0.0 --prod", F, "deny", {}),
+    ("pnpm dlx vercel@latest", "pnpm dlx vercel@latest --prod", F, "deny", {}),
+    ("source ./redeploy.sh", "cd %s && source ./redeploy.sh" % F, "/", "deny", {}),
+    (". ./redeploy.sh", "cd %s && . ./redeploy.sh" % F, "/", "deny", {}),
+    ("ssh host 'cmd'（中身を読む）", "ssh host 'cd %s && vercel --prod'" % F, "/", "deny", {}),
+    ("ssh -p 22 -i key host cmd", "ssh -p 22 -i key host vercel --prod", F, "deny", {}),
+    ("ssh host ls（閲覧）", "ssh host ls", F, "none", {}),
+    ("netlify --dir=X（空白\\エスケープ）", "netlify deploy --dir=%s --prod" % SPESC, "/", "deny", {}),
+    ("netlify --publish X", "netlify deploy --publish '%s' --prod" % sp, "/", "deny", {}),
+    ("netlify -d X", "netlify deploy -d '%s'" % sp, "/", "deny", {}),
+    ("--cwd 相対パス", "vercel --cwd selfcheck_fixture --prod", os.path.dirname(F), "deny", {}),
+    ("--cwd=相対パス", "vercel --cwd=selfcheck_fixture --prod", os.path.dirname(F), "deny", {}),
+    ("--cwd 空白入りパス", "vercel --cwd '%s' --prod" % sp, "/", "deny", {}),
+    ("cd の \\ エスケープ", "cd %s && vercel --prod" % SPESC, "/", "deny", {}),
+    ("cd の引用符つき空白パス", "cd '%s' && vercel --prod" % sp, "/", "deny", {}),
+    ("vercel open（閲覧）", "vercel open", F, "none", {}),
+    ("vercel telemetry status（閲覧）", "vercel telemetry status", F, "none", {}),
+    ("vercel curl（閲覧）", "vercel curl /api/x", F, "none", {}),
+    ("firebase deploy --help（閲覧）", "firebase deploy --help", F, "none", {}),
+    ("netlify deploy --help（閲覧）", "netlify deploy --help", F, "none", {}),
+    ("netlify deploy -h（閲覧）", "netlify deploy -h", F, "none", {}),
+    ("kodomo-station-demo 本体（対象外）", "vercel deploy --prod", HOME + "/kodomo-station-demo", "note", {}),
+    ("kodomo-station-demo-v9/x（対象外）", "vercel deploy --prod", HOME + "/kodomo-station-demo-v9/x", "note", {}),
+]
+
 
 
 def run(payload, env=None):
@@ -217,11 +282,23 @@ gate.EXEMPT_FILE = os.path.join(BINDIR, "web_tracking/exempt.json")
 check("実 exempt.json：jfbi 一致", bool(gate.exempt_reason("https://jfbi.vivid-global.com/")))
 check("実 exempt.json：jfbi に似た別ホストは非一致", not gate.exempt_reason("https://jfbi.vivid-global.com.evil.example/"))
 
+# ── 単体：条件A（*.vercel.app も自社扱い・末尾一致は「.」区切り）
+own4 = ["vivid-global.com", "orange-works.co", "i-life-fukushi.com", "fuku-chi.com"]
+real_own = gate.load_exempt().get("own_domains", [])
+check("実 exempt.json：own_domains 4つが残っている", set(own4) <= set(real_own), real_own)
+for h in ("gamemarkelp.vercel.app", "a.b.vercel.app", "vercel.app", "x.vivid-global.com", "vivid-global.com", "www.fuku-chi.com"):
+    check("自社扱い: " + h, gate.is_own_host(h, real_own), h)
+for h in ("evil-vivid-global.com", "vivid-global.com.evil.example", "xvercel.app", "vercel.app.evil.example", "calendar.app.google", ""):
+    check("自社扱いでない: " + h, not gate.is_own_host(h, real_own), h)
+check("own_domains が空なら全部検査（安全側）", gate.is_own_host("anything.example", []))
+
 # ── 単体：html_files（項目7）
 r = gate.html_files(tree)
 names = sorted(os.path.relpath(x, tree) for x in r[0]) if r else None
-check("html_files：a.html・b.htm・sub/c.html のみ", names == ["a.html", "b.htm", os.path.join("sub", "c.html")], names)
-check("html_files：断片を1枚除外と数える", bool(r) and r[2] == 1, r and r[2])
+want = sorted(["a.html", "b.htm", os.path.join("sub", "c.html")] + [os.path.join(d, "p.html") for d in ("partials", "components", "includes", "archive", "review")])
+check("html_files：archive/review/components/includes も入り、node_modules と断片だけ除く", names == want, names)
+check("html_files：断片を2枚除外と数える", bool(r) and r[2] == 2, r and r[2])
+check("html_files：除外フォルダ名を返す", bool(r) and "node_modules" in r[3].get("dirs", []), r and r[3])
 r2 = gate.html_files(many)
 check("html_files：300枚で切り、未検査5枚", bool(r2) and len(r2[0]) == 300 and r2[1] == 5, r2 and (len(r2[0]), r2[1]))
 

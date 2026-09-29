@@ -7,7 +7,7 @@
     "i-life-fukushi.com",
     "fuku-chi.com"
   ],
-  "_paths": "path はディレクトリ（完全一致かパス区切り単位の配下。* は1階層内だけ）か URL（https://ホスト/ ★ホスト完全一致）。",
+  "_paths": "path はディレクトリ（完全一致かパス区切り単位の配下。* は1階層内だけ）か URL（https://ホスト/ ★ホスト完全一致）。*.vercel.app は own_domains の照合で常に自社扱い（コード側の固定）。",
   "paths": [
     {
       "path": "~/vivid-ai-hq/web/kadoban",
@@ -25,7 +25,12 @@
       "added": "2026-09-29"
     },
     {
-      "path": "~/kodomo-station-demo*",
+      "path": "~/kodomo-station-demo",
+      "reason": "先方（南河内こどもステーション）確認用のデモ。本番公開時に外す",
+      "added": "2026-09-29"
+    },
+    {
+      "path": "~/kodomo-station-demo-v*",
       "reason": "先方（南河内こどもステーション）確認用のデモ。本番公開時に外す",
       "added": "2026-09-29"
     },
