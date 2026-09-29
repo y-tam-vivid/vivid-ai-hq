@@ -40,6 +40,10 @@ metadata:
   差し替え済み＝photo-festival←2025第36回 DSC_1116（フリマ会場）／photo-kodomo-ichi←DSC_1274（お菓子の店）。計17か所
   ★顔が正面で大きく写らない写真を選んだ（掲載同意は未確認のまま）。★こどもマルシェ2件はtaneの行事なので未使用
   ★デプロイ直後数秒は旧版が返る＝照合は少し置いてから
+- **✅9/29 構築3（背景の質感を修正）で公開**。公開元＝`~/kodomo-station-demo-v5/`。
+  ★有璽氏「差し替えた写真はそのまま維持」＝build_site.py の PHOTO_OVERRIDES を新版にも当て直す運用で確定
+  ★構築3からデザインシステム一式（styles.css・tokens・components等）が同梱されたが、ページが読むのは
+  assets/ と support.js だけ（実測）＝公開には含めない
 - 要差替12項目は README「未確定・要差替 一覧」が正本
 
 関連：[[reference_vercel_free_plan_protection]]
