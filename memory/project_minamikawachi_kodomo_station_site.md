@@ -48,6 +48,12 @@ metadata:
   `~/Downloads/こどもステーション_ClaudeDesign用_写真_20260929/`（同じものをDrive制作フォルダにも）
   中身＝写真2枚・00_一覧.jpg・01_指示文.txt（生成不要・配置だけ）。★渡すのは有璽氏（チャットに添付）
   ★Claude Design側が差し替えを終えたら、build_site.py の PHOTO_OVERRIDES は外してよい（二重管理を解消）
+- **✅9/29 構築4で公開（15ページ）**。公開元＝`~/kodomo-station-demo-v6/`。写真2枚は当て直し済み
+  追加ページ＝outline(団体概要)・contact・festival(こどもまつり)・festival-lp(★どこからもリンク無し)・
+  sitemap・privacy・404(Vercelが自動で使う)・sp-check(SP確認シート・スタイルガイドからリンク)
+  ★build_site.py を直した：①対応表に無い.dc.htmlは警告 ②assets のサブフォルダも写す（matsuri/ が抜けていた）
+  ★参照チェックは src/url( だけでなくスクリプト内の文字列 `assets/...` も数える（2経路で一致を確認）
+  ★お問い合わせフォームは見た目だけ（送信先なし・【要差替】）
 - 要差替12項目は README「未確定・要差替 一覧」が正本
 
 関連：[[reference_vercel_free_plan_protection]]
