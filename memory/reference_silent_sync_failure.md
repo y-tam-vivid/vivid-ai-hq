@@ -513,3 +513,11 @@ git diff --name-only HEAD origin/main -- memory/     ★向こうで既に書か
 - SYNC_STATUS は「未取込22件・未コミットあり」と出すだけで、**真因（ロック）を名指ししない**
 - 直し方：`pgrep -x git` が空であることを確かめてからロックを退避（`~/.vivid-relay/_backups/index.lock.stale_20260925`）
 - ★`vivid-sync.sh` にロックの年齢検査を足す余地あり（未実装）
+
+## ★2026-09-29 つる：mini の枝分かれ（ahead4/behind17）の衝突元は skills/synced の manifest.json だけだった
+
+- 衝突は `.claude/skills/synced/<id>/manifest.json` の **`lastUpdated` 1行のみ**（中身の差0）。
+  両機が同じファイルへ機械的に時刻を書くので、**同期のたびに衝突の種が生まれる**。
+- 対処：新しい方（origin/main）を採って merge（汚れていた2ファイルは取り込み側と重ならないことを確認してから）。
+  実測 → merge 後 behind=0／ahead=5。push は次の vivid-sync に任せた。
+- **★再発する。**`skills/synced/` を git 管理から外すか（.gitignore）、同期側で時刻を書かせないかは設計の分岐＝人の判断待ち。
