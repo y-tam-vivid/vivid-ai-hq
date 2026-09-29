@@ -49,4 +49,5 @@
 - [GameBull×SalesBreaker](project_gamebull_form_sales.md) — 第1波13,709件済→★訴求Aで確定。第2波3,121件(フォーム有)は送信待ち／LPに1行タグ設置済
 - [受付確認をSlack返信で受ける](project_intake_slack_reply.md) — 氏名/IDで解決。★返信経路は8/26 16:20実測OK。**書き先はZ列直書き（Y列分離は廃止）／修正後のボタン押下は0件＝未検証**／**🔴9/6 止まる理由は2種類ある。人の○が来ても「想定している商材」欄が空だとB/C判定できず機械が停止する。同型で34/38/39/40も以前から未処理＝誰も数えていなかった。判断待ちは機械側と人側を分けて数える**／**🔴9/3発見＝「ボタンの中身が読めませんでした」が33回。valueが裸UUIDで我々のコードは出していない（送信元未特定・押した人には毎回失敗が返っている）**
 - [LPの計測タグ](reference_lp_tracking_tags.md) — gamemarke に SB/GTM/GA4/Clarity の4本。★ログイン不要で発火を確定させる3手
-- [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
+- [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★→Skill web-tracking-setup(全Web対象)。検査 bin/web_tracking_check.py
+- [119番 SB営業の再開](project_f119_sb_restart_202609.md) — 大阪5種別・児童/就労×A/B/C。LP未公開・必須修正7件・宛先consul_vi@

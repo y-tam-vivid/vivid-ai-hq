@@ -103,7 +103,7 @@
 - [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — 文面と画像まで1セット／★施設IGに業界の話は不可
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — **✅9/15★3回目は先手で正解。★依頼文に「うちの作りを疑って」を入れる**
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
-- [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★全案件必須。タグ4本+パス/UTMで経路分離+.md封鎖。送信後は取り返せない
+- [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★→Skill web-tracking-setup(全Web対象)。検査 bin/web_tracking_check.py
 - [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
 - [Web制作ルールを資産に](project_web_build_rules_asset.md) — ★9/13 レスポンシブ専任チョッパー新設(14体目)。★Cの台帳はprintを捨てているだけ
 - [オートレイアウトが要る](project_web_build_rules_asset.md) — ★9/13 ★marginの94.7%がPC値のままスマホへ。直すのは値でなく幅ごとの比率(⑤に前例)
