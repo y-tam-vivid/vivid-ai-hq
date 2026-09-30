@@ -206,3 +206,9 @@ metadata:
   （根拠：デスクトップ由来の承認 mcp__ccd_directory が9/24にask_hubへ来ている＝フック・設定が効いている）
   claude.ai（チャット・スマホ）＝ローカルのファイルを読めない＝ルールは届かない。Notionコネクタで個人DBに🔥次で直接作れば同期でCurrent_Focusへ降りる
   claude.ai/code（クラウド）＝vivid-ai-hqだけをcloneするのでCore_Brainは届かない
+
+**2026-09-30 有璽氏「claude.aiのプロジェクト指示の文面を準備して」→ 作成**
+- `Core_Brain/00_System/claude.ai用_プロジェクト指示_有璽氏待ちタスク.md`（貼る範囲を「ここから〜ここまで」で囲った）
+- ★Notion→Current_Focus へ降りるのは状態「🔥 次」だけ（notion_focus_sync.py:980 を確認）＝文面で🔥次を必須にした
+- 出どころ＝「claude.ai」（選択肢は未作成・初回登録で増える）。貼るのは有璽氏（Current_Focusにタスク行あり）
+- 有璽氏の質問「ブラウザ版とデスクトップ版のClaude Codeの違い」＝見る画面ではなく★動く場所（自分のMacかクラウドか）で分かれる、と説明
