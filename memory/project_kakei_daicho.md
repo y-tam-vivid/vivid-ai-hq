@@ -1,0 +1,24 @@
+---
+name: project_kakei_daicho
+description: 家計台帳（FP向け・Next.js＋Supabase）の実装。いまM2まで有璽氏の確認済み、M3（ヒアリング編集）は着手指示待ち
+metadata:
+  type: project
+---
+
+家計台帳（株式会社ビビッド・FPが担当世帯の家計を入力し、顧客は閲覧のみ）を Next.js で実装している。
+置き場は `~/Downloads/kakei-daicho`（git 管理外）。作業指示の正本は同フォルダの `CLAUDE.md`。
+
+**現在地（2026-09-30）**
+- M1（基盤・ログイン・二段階認証・役割振り分け）… 有璽氏が管理者で確認済み
+- M2（世帯一覧・世帯詳細5タブ・予定・閲覧記録）… 有璽氏が実データ【テスト】3世帯で確認「問題ない」
+- M3（ヒアリング編集）… **未着手。CLAUDE.md の決まりで、マイルストーンごとに有璽氏の「進んで」を待つ**
+
+**踏んだこと・決めたこと**
+- **Node 22 に固定**（`.nvmrc`・engines）。最新の supabase-js は Node 22 以上が必要で、Node 20 ではサーバー用クライアントを作る時点で落ちる（WebSocket が無い）。Mac の既定 Node は 20 のまま＝作業前に `nvm use`
+- **ESLint は 9 系**。eslint-plugin-react / import / jsx-a11y が 10 未対応
+- 雛形コマンド（create-next-app）と Supabase の型生成は、AI 側からは権限で止まる。型は有璽氏が `npx supabase login` → `npm run gen:types` で生成した
+- Next.js 16 では middleware が `proxy.ts` に改名されている
+- AI は二段階認証を通れないので実データの画面は確認できない。代わりに試作品 `docs/prototype-v0.2.html` の世帯データを部品へ流して描画し、試作品自身の計算と突き合わせた（計算13項目・期日8件一致）
+
+**Why:** マイルストーンごとの停止は CLAUDE.md の明文の決まり。Node の版は次のセッションが再び踏む。
+**How to apply:** 再開時は `CLAUDE.md` を読み、`nvm use` してから。M3 は有璽氏の指示を受けてから着手する。
