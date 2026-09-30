@@ -1,6 +1,6 @@
 ---
 name: project_kakei_daicho
-description: 家計台帳（FP向け・Next.js＋Supabase）の実装。M2まで有璽氏の確認済み・M4まで確認済み・M5着手。マイルストーンごとにcommit
+description: 家計台帳（FP向け・Next.js＋Supabase）の実装。M2まで有璽氏の確認済み・M5実装済み・確認待ち。マイルストーンごとにcommit
 metadata:
   type: project
 ---
@@ -13,7 +13,7 @@ metadata:
 - M2（世帯一覧・世帯詳細5タブ・予定・閲覧記録）… 有璽氏が実データ【テスト】3世帯で確認「問題ない」
 - M3（ヒアリング編集）… 有璽氏が管理者で実データ確認済み（確定・一覧/推移への反映・破棄）。commit 済み
 - M4（顧客画面と招待）… 有璽氏が実メールで確認済み（招待→パスワード設定→閲覧のみ）。commit 済み
-- M5（管理者機能と仕上げ）… **着手（2026-09-30 有璽氏の指示）**。始める前に型を再生成
+- M5（管理者機能と仕上げ）… **実装済み・有璽氏の実データ確認待ち（未コミット）**。型は再生成済み（差分は set_client_display_name の追加のみ）
 - **顧客名の編集の方針（2026-09-30 有璽氏決定）**
   - 招待時：『お名前』欄 → `inviteUserByEmail` の `options.data = { display_name }`。DBのアカウント作成の仕組みが profiles.display_name へ入れる＝**アプリから profiles を更新しない**
   - 招待後の修正：RPC `set_client_display_name(p_user_id, p_display_name)`。管理者と、その顧客が閲覧する世帯の担当FP（主・副）だけ。対象は顧客のみ・前後空白を除き1〜50文字。権限なし 42501／入力不正 22023。世帯詳細『顧客の閲覧』の各行に『名前を編集』
