@@ -40,3 +40,10 @@ Claude Code 側で動いているもので"私待ち"になっているものも
 - ①＝Core_Brain `00_System/00_Secretary_Core.md` に「## ✅ 4. 有璽氏の次の一手は必ずタスク行で出す」を追記（全AIが毎ターン読む）。控え `~/.vivid-relay/_backups/00_Secretary_Core_20260930_before_taskrule.md`
 - ②＝ピタゴラスに `~/.vivid-relay/ask_hub_to_notion.py`（判断ハブ→Notion個人DBへ映し、回答で完了）を発注。★ask_hub本体は変えない・dry-runまで・登録はビビが検査後
 - 整理＝ロビンの一覧 `~/.vivid-relay/yuji_waiting_list.md`（A16・B4）→ Slack #d09492 で「13件をタスクに入れるか／幽霊5件を閉じるか」判断待ち
+
+**2026-09-30 18:08 有璽氏 #d09492「13件とも入れる＋5件を閉じる」→ 実施**
+- Current_Focus「## 今週」に13件を型どおりに追加（期日は無し＝推測しない）。控え `_backups/02_Current_Focus_20260930_before_13tasks.md`
+- 幽霊5件（端末の承認 #65dabe #67e766 #a396d7 #1d016d #82e90e）を close_without_answer で closed（理由に #d09492 を明記）。台帳の控え mini `_backups/ask_hub_queue_20260930_before_close5.json`
+- 判断ハブの open は #4394bc（Vercel無料プラン・財務）1件のみ＝②が動けば自動でタスク化（手では足さない＝二重防止）
+- ②ask_hub_to_notion.py：dry-run 通過。「出どころ」に ask_id を入れると選択肢が増え続ける欠陥→固定「Slack判断」＋旧IDへ修正を再発注（18:15）。
+  次＝ステラ（コード）とドーベルマン（自動処理）の検査→ビビが初回 --run→launchd 登録
