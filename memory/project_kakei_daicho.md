@@ -1,6 +1,6 @@
 ---
 name: project_kakei_daicho
-description: 家計台帳（FP向け・Next.js＋Supabase）の実装。いまM2まで有璽氏の確認済み、M3（ヒアリング編集）は着手指示待ち
+description: 家計台帳（FP向け・Next.js＋Supabase）の実装。M2まで有璽氏の確認済み・M3（ヒアリング編集）着手。マイルストーンごとにcommit
 metadata:
   type: project
 ---
