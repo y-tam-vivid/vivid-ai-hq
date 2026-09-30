@@ -117,3 +117,9 @@ metadata:
 - **9/30 有璽氏「一区切り。先方の確認を依頼中」**＝Current_Focus に「デモの先方確認待ち @10/1 #待機」を置きNotion個人DBへ同期済み
 - **9/30 有璽氏「トップページだけ、画像がスライド・切り替わる形にできないか。切り替え方のパターンをいくつか知りたい」**
   → 見本ページ（切り替え方を並べて比べる）を作って見せる。★トップ以外は変えない
+  **✅9/30 公開** https://minamikawachi-kodomo-demo.vercel.app/hero-patterns.html （v20・どこからもリンクしない）
+  A ふわっと入れ替わる／B ＋ゆっくりズーム／C ぼかしながら／D 横にスライド／E 並べて流し続ける。5秒ごと・6枚
+  原本 `~/kodomo-photo-work/extras/hero-patterns.html`（build_site.py が extras/*.html を出力へ複製）
+  ★初版はA〜Cが1枚目から動かなかった（imgs.reverse() で「表示中」を外す相手を取り違え）。
+  ★headless のスクショは起動直後しか写らない＝動きの確認に使えない。`--virtual-time-budget` ＋ `--dump-dom` で時刻ごとの表示中を数えた
+  → 次＝有璽氏がA〜Eから選ぶ（Current_Focus に #次 で登録）→ index.html のトップへ入れる
