@@ -34,4 +34,4 @@
 - [お薬手帳の画像](reference_okusuri_techo_images.md) — 人名_01.png・人ごと連番・医療機微はローカル完結
 - [平文の認証情報の扱い](reference_plaintext_credentials_handling.md) — 中身は読まず削除はパス指定1件のみ・破棄ごとに横断調査必須
 - [有璽氏の特性分析](project_trait_analysis_20260919.md) — ★本人限定。Notion個人スペース1ページ・他の担当の判断材料に引用しない
-- [家計台帳（FP向け）](project_kakei_daicho.md) — ~/Downloads/kakei-daicho(独立git)・M6絞り込み確認済／M6にパスワード再設定と認証アプリの登録削除（管理者）を追加中／スタッフ兼顧客は設計担当待ち・★節目ごとにcommit・.env.local除外・Node22
+- [家計台帳（FP向け）](project_kakei_daicho.md) — ~/Downloads/kakei-daicho(独立git)・M6実装済・未commit（再設定はテンプレ設定待ち）／スタッフ兼顧客は設計担当待ち／スタッフ兼顧客は設計担当待ち・★節目ごとにcommit・.env.local除外・Node22
