@@ -34,4 +34,4 @@
 - [お薬手帳の画像](reference_okusuri_techo_images.md) — 人名_01.png・人ごと連番・医療機微はローカル完結
 - [平文の認証情報の扱い](reference_plaintext_credentials_handling.md) — 中身は読まず削除はパス指定1件のみ・破棄ごとに横断調査必須
 - [有璽氏の特性分析](project_trait_analysis_20260919.md) — ★本人限定。Notion個人スペース1ページ・他の担当の判断材料に引用しない
-- [家計台帳（FP向け）](project_kakei_daicho.md) — M8(操作ログ・公開準備)実装済み未commit／★10/1 Supabase開発用(orqmjadhyavzbpyxcile)と本番を分離・手元は開発用・本番値は~/.vivid-relay/kakei_prod.env
+- [家計台帳（FP向け）](project_kakei_daicho.md) — M8まで完了・commit済(10/1)／手元は開発用Supabase・本番値は~/.vivid-relay/kakei_prod.env(秘密鍵なし)／残=Vercel(顧客情報を入れる段階)
