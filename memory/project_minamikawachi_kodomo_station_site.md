@@ -89,6 +89,15 @@ metadata:
   → build_site.py の USE_PHOTO_OVERRIDES=False（二重管理を解消・デザイン側の写真が正）。加工を変えたいときはデザイン側へ渡し直す
   ★地図（白黒）の差し込みは引き続き build_site.py 側（デザインの仮置きがまだ残っている）
   ★Vercel の初回デプロイが "error" で2回目に通る、が4回目。1回で諦めない
+- **✅9/30 協力企業ロゴ（有璽氏）＝PR TIMES・オレンジワークス**。公開元 `~/kodomo-station-demo-v15/`
+  ★PR TIMES 非営利サポートの募集要項に「団体HP等にPR TIMESのロゴを掲載すること」＝掲載は条件
+  PR TIMES ロゴ＝NPOフォルダ `南河内こどもステーション_PRTIMES/PRTIMES_logo_fix_CMYK.ai`（中身PDF）を透過PNG化・正式RGB(41,76,122)
+    ★同フォルダの「PRTIMESロゴ.png/バナー.png」はNPO自身のロゴとバナー（PR TIMESのロゴではない）
+  リンク先＝NPOのPR TIMESページ https://prtimes.jp/main/html/searchrlp/company_id/184772（題名で本人確認済み）
+  オレンジワークス＝公式サイトの OW_logo.svg、リンク https://orange-works.co/
+  置き場所＝トップのフッター「後援・協力団体」（★この欄はトップにしか無い）と join の「ご支援いただいている企業・団体」の先頭2枠
+  build_site.py の PARTNERS で毎回差し込む。素材は ~/kodomo-photo-work/partners/
+  ★撮影時は data-reveal のふわっと表示で薄く写る→確認用コピーだけ動きを止めて撮る（公開版は触らない）
 - 要差替12項目は README「未確定・要差替 一覧」が正本
 
 関連：[[reference_vercel_free_plan_protection]]
