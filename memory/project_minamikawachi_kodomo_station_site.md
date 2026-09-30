@@ -113,3 +113,5 @@ metadata:
 - 要差替12項目は README「未確定・要差替 一覧」が正本
 
 関連：[[reference_vercel_free_plan_protection]]
+
+- **9/30 有璽氏「一区切り。先方の確認を依頼中」**＝Current_Focus に「デモの先方確認待ち @10/1 #待機」を置きNotion個人DBへ同期済み
