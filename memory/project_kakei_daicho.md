@@ -19,7 +19,9 @@ metadata:
 - **`.env.local` は必ず除外**（`.gitignore` の `.env*`。コミット前に秘密鍵の値が入っていないか `git grep --cached` で確かめる）
 
 **踏んだこと・決めたこと**
-- 招待の戻り先 `/auth/accept` は Supabase の Authentication → URL Configuration → Redirect URLs に登録が要る（無いと Site URL へ飛ぶ）
+- 招待の戻り先 `/auth/accept` は Redirect URLs に登録済み（2026-09-30 有璽氏）
+- **Resend の SMTP と日本語の招待テンプレートは設定済み**（2026-09-30 有璽氏）。リンクは `{{ .SiteURL }}/auth/accept?token_hash={{ .TokenHash }}&type=invite`＝アプリの redirectTo ではなく **Site URL** が行き先を決める（ローカル確認時は Site URL が localhost か要注意）
+- **accepted_at はDBのトリガーが本人確認の時点で自動記録する。アプリから更新しない**（顧客に書き込み手段を持たせない原則とも一致）
 - 招待リンクの形は3通り受ける（#access_token／?token_hash&type／?code）。ブラウザ出力に `inviteUserByEmail` の文字が1件あるのは supabase-js 本体のコード（秘密鍵なしでは使えない）で、自前の招待処理はサーバー側だけ
 - **Node 22 に固定**（`.nvmrc`・engines）。最新の supabase-js は Node 22 以上が必要で、Node 20 ではサーバー用クライアントを作る時点で落ちる（WebSocket が無い）。Mac の既定 Node は 20 のまま＝作業前に `nvm use`
 - **ESLint は 9 系**。eslint-plugin-react / import / jsx-a11y が 10 未対応
