@@ -98,6 +98,12 @@ metadata:
   置き場所＝トップのフッター「後援・協力団体」（★この欄はトップにしか無い）と join の「ご支援いただいている企業・団体」の先頭2枠
   build_site.py の PARTNERS で毎回差し込む。素材は ~/kodomo-photo-work/partners/
   ★撮影時は data-reveal のふわっと表示で薄く写る→確認用コピーだけ動きを止めて撮る（公開版は触らない）
+- **✅9/30 ILIFE追加（有璽氏「ILIFEのロゴが望ましい」）**＝公式サイト i-life-fukushi.com のヘッダーと同一の logo-ilife.png。
+  トップのフッター3枠が埋まった（PR TIMES・オレンジワークス・ILIFE）／join は6枠中3
+- **✅9/30 フッターのSNSボタンを各サービスの色に（有璽氏「通常通りの色で一度。派手なら変更」）**。公開元 `~/kodomo-station-demo-v17/`
+  LINE=#06C755／Instagram=公式グラデーション／ブログ=サイト主色コーラル#EF856D（サービス未確定のため）。文字は白。
+  SNS欄があるのは13ページ（404・festival-lp・sitemap・sp-check・styleguide には無い）。build_site.py の SNS_COLORS
+  ★「派手なら変更」＝有璽氏の確認待ち。候補：淡くする／枠線だけ色／アイコンだけ色
 - 要差替12項目は README「未確定・要差替 一覧」が正本
 
 関連：[[reference_vercel_free_plan_protection]]
