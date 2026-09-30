@@ -107,3 +107,10 @@ office_realtime_push / dashboard_realtime_push）。どれも既知=False＝誰�
 - **★2026-09-27 つる自己監査：まだ止まっている（8日目）。**4本とも🔴失敗・既知=False のまま。
   editor_apply.err は「HTTP Error 403: Forbidden」を5分おきに出し続け、cron_alive も
   「editor_apply.py 58時間 更新なし」と出している。**検知は3経路とも鳴っている。持ち主だけが居ない。**
+
+- **★2026-10-01 つる自己監査：まだ止まっている（16日目・有璽氏の回答#4ec39bから12日）。**
+  レジスタ🔴4件とも既知=False のまま。office_realtime_push / dashboard_realtime_push は
+  「This store has been suspended」、editor_apply / office_answer_apply は 403。
+  ★vivid-kadoban-cron.log が5日で62MBへ再肥大 → `…upto20261001.gz` へ退避（ハッシュ一致確認）。
+  editor_apply.err も同様に退避。**★ログを畳むのは対症。持ち主（案を作る担当）を決めない限り毎週繰り返す。**
+  ★30日の自動復帰なら 10/15 前後。それまでに「Blobを使わない案」を出すか、復帰を待つかを決める担当が要る。
