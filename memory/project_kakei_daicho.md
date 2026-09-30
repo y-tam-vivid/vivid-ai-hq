@@ -28,7 +28,12 @@ metadata:
   - **操作ログ（設計担当の回答）**：audit_logs は管理者全件・FPは担当世帯分（顧客不可）。**画面は管理者のみ**。action は insert／update（値が変わらない更新は記録しない）／delete／view（table_name=households, record_id=世帯ID）／confirm（table_name=hearings, after に change_count と totals）の5種。下書き保存は記録しない。**actor_id が空＝「システム」**。profiles の行は household_id が空。年数万件・保持5年（自動削除済み）。**ページ送りは created_at と id のカーソル方式**。**before/after は生JSONを出さず、変わった項目だけ日本語の項目名で「前 → 後」**。id・household_id・created_at・updated_at・sort_order は非表示
   - **再送日時**：household_clients.last_invited_at（timestamptz）を追加済み。**招待・再送の直後に mark_invitation_sent(p_household_id, p_user_id)**（管理者・担当FPのみ・戻り値は記録日時）。型を再生成してから実装。読み仮名は見送り
   - **公開**：本番アドレス **kakei.vivid-global.com**。Site URL・Redirect URLs は有璽氏が管理画面で操作（値は設計担当が渡す）。計測タグは**入れない**（確定）。Supabase の開発用／本番用の分離は有璽氏の判断待ち。検証用データは実データ移行の直前に設計担当が削除
-  - 次の依頼：操作ログの閲覧画面、Vercel のプロジェクト作成・環境変数・Node 22：招待の制限解除＋登録済みなら accepted_at、スタッフに「わたしの家計」（/home 等へ入れる・顧客画面の予定は /home/schedule）、管理を「世帯／スタッフ／顧客アカウント」に分割、＋スタッフを招待（新規は招待→役割変更、既存の顧客は役割だけ変更）
+  - 次の依頼：操作ログの閲覧画面、Vercel のプロジェクト作成・環境変数・Node 22
+  - **実装済み・未commit（有璽氏の確認待ち）**：/admin/logs（管理者タブ「操作ログ」・カーソル式・世帯/操作/期間で絞り込み・変わった項目だけ日本語で前→後）／招待・再送の直後に mark_invitation_sent・顧客欄に「最後の送信」／engines 22.x・vercel.json(hnd1)・安全ヘッダー5本(noindex含む)・.vercelignore・docs/公開の手順.md
+  - **★Vercel の MCP はこの環境で権限拒否（読むことも不可）。**プロジェクト作成・環境変数は docs/公開の手順.md で有璽氏へ。CLI での回り込みはしていない
+  - ★Supabase の SQL 直接実行も権限拒否。audit_logs の実データは見ておらず、列名は型定義から対応表を作った（定義外の列は英名のまま出る＝落とさない）
+  - ★地雷：`eslint .` が `.next-verify` を読んで7476件出た → ignore に追加済み
+  - ★地雷：Site URL を本番へ切り替えた瞬間、手元で出す招待メールも本番アドレスを指す（テンプレートが {{ .SiteURL }}）：招待の制限解除＋登録済みなら accepted_at、スタッフに「わたしの家計」（/home 等へ入れる・顧客画面の予定は /home/schedule）、管理を「世帯／スタッフ／顧客アカウント」に分割、＋スタッフを招待（新規は招待→役割変更、既存の顧客は役割だけ変更）
 - M6（顧客一覧・予定の絞り込み＋パスワード再設定＋認証アプリの登録削除・利用停止）… 有璽氏が全部確認済み（Reset Password テンプレートも設定済み・顧客と管理者で再設定を実物で確認）。commit 済み。★「名前順」は読み仮名の列が無く五十音順にならない→「世帯名の順」と表示（予定を顧客画面から分離・区分/世帯構成/次回ヒアリング/担当で絞る・並べ替え・条件はURLに持つ）
 - ★有璽氏の要望（2026-09-30）：**顧客（とスタッフ）がパスワードを忘れた時のやり方を決めておく**。実測：再設定の仕組みは**未実装**（resetPasswordForEmail・type=recovery の受け口・ログイン画面の導線が0件）。案を提示中
   - **決定（同日 有璽氏）**：①パスワード再設定は案どおり（ログイン画面「忘れた方」→メール→/auth/accept を流用して再設定。登録の有無で文言を変えない）で **M6 に入れる**。Supabase の Reset Password テンプレートは有璽氏が設定 ②**認証アプリの登録は管理者が画面から消せるようにする**（スタッフが辞めた時にも使う）＝秘密鍵を招待以外にも使うことを有璽氏が了承 ③M6 の絞り込みは有璽氏が確認済み
