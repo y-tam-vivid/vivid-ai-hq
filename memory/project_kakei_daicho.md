@@ -1,6 +1,6 @@
 ---
 name: project_kakei_daicho
-description: 家計台帳（FP向け・Next.js＋Supabase）の実装。M2まで有璽氏の確認済み・M3まで確認済み・M4着手（Resend未設定）。マイルストーンごとにcommit
+description: 家計台帳（FP向け・Next.js＋Supabase）の実装。M2まで有璽氏の確認済み・M4実装済み・確認待ち（Resend未設定）。マイルストーンごとにcommit
 metadata:
   type: project
 ---
@@ -12,13 +12,15 @@ metadata:
 - M1（基盤・ログイン・二段階認証・役割振り分け）… 有璽氏が管理者で確認済み
 - M2（世帯一覧・世帯詳細5タブ・予定・閲覧記録）… 有璽氏が実データ【テスト】3世帯で確認「問題ない」
 - M3（ヒアリング編集）… 有璽氏が管理者で実データ確認済み（確定・一覧/推移への反映・破棄）。commit 済み
-- M4（顧客画面と招待）… **着手（2026-09-30 有璽氏の指示）**。招待を受けた人のパスワード設定画面（/auth/accept）も作る。★Resend（招待メール送信）は未設定＝メール到達の確認は後回し（それまで Supabase 組織のメンバー宛てにしか届かない）。★「〇〇さんが編集中です」は他アカウントの下書きが無く未確認
+- M4（顧客画面と招待）… **実装済み・有璽氏の実データ確認待ち（未コミット）**。招待を受けた人のパスワード設定画面（/auth/accept）も作る。★Resend（招待メール送信）は未設定＝メール到達の確認は後回し（それまで Supabase 組織のメンバー宛てにしか届かない）。★「〇〇さんが編集中です」は他アカウントの下書きが無く未確認
 
 **有璽氏の決まり（2026-09-30）**
 - **マイルストーンごとにコミットする。** 最初のコミット `8beae5e` = M2完了時点／M3完了も commit 済み
 - **`.env.local` は必ず除外**（`.gitignore` の `.env*`。コミット前に秘密鍵の値が入っていないか `git grep --cached` で確かめる）
 
 **踏んだこと・決めたこと**
+- 招待の戻り先 `/auth/accept` は Supabase の Authentication → URL Configuration → Redirect URLs に登録が要る（無いと Site URL へ飛ぶ）
+- 招待リンクの形は3通り受ける（#access_token／?token_hash&type／?code）。ブラウザ出力に `inviteUserByEmail` の文字が1件あるのは supabase-js 本体のコード（秘密鍵なしでは使えない）で、自前の招待処理はサーバー側だけ
 - **Node 22 に固定**（`.nvmrc`・engines）。最新の supabase-js は Node 22 以上が必要で、Node 20 ではサーバー用クライアントを作る時点で落ちる（WebSocket が無い）。Mac の既定 Node は 20 のまま＝作業前に `nvm use`
 - **ESLint は 9 系**。eslint-plugin-react / import / jsx-a11y が 10 未対応
 - 雛形コマンド（create-next-app）と Supabase の型生成は、AI 側からは権限で止まる。型は有璽氏が `npx supabase login` → `npm run gen:types` で生成した
