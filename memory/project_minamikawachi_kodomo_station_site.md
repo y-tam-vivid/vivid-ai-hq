@@ -104,6 +104,11 @@ metadata:
   LINE=#06C755／Instagram=公式グラデーション／ブログ=サイト主色コーラル#EF856D（サービス未確定のため）。文字は白。
   SNS欄があるのは13ページ（404・festival-lp・sitemap・sp-check・styleguide には無い）。build_site.py の SNS_COLORS
   ★「派手なら変更」＝有璽氏の確認待ち。候補：淡くする／枠線だけ色／アイコンだけ色
+- **✅9/30 有璽氏の調整**（公開元 `~/kodomo-station-demo-v18/`）
+  ①ILIFEロゴ「サイズを8割ぐらいに」＝PARTNERS の4つ目の値 0.8（枠内の最大幅・高さ80%）
+  ②SNS「目立つ。インスタとLINEを抑えて」→ LINE=#6FBA2C（★アクセス欄のLINEボタンと同じ若葉色を指定された）
+    Instagram=#C98A68→#B9657F→#86699E（公式の並びのまま彩度を落とす「インスタと分かる程度」）／ブログのコーラルは据え置き
+  ★有璽氏の好み：サイト内で既に使っている色に寄せる・派手な公式色はそのまま使わない
 - 要差替12項目は README「未確定・要差替 一覧」が正本
 
 関連：[[reference_vercel_free_plan_protection]]
