@@ -60,3 +60,11 @@ metadata:
 
 **Why:** マイルストーンごとの停止は CLAUDE.md の明文の決まり。Node の版は次のセッションが再び踏む。
 **How to apply:** 再開時は `CLAUDE.md` を読み、`nvm use` してから。M3 は有璽氏の指示を受けてから着手する。
+
+- **★2026-10-01 Supabase を開発用と本番用に分けた（設計担当）**
+  - 開発用＝ブランチ develop・参照ID **orqmjadhyavzbpyxcile**（構成は本番と同一・データは空・架空データは設計担当が入れる）
+  - 本番＝参照ID jjetbqrxlstvjziijtne。**手元の .env.local は開発用を指す。本番の値は ~/.vivid-relay/kakei_prod.env（600・git外）に控え＝Vercel 登録用**
+  - 型の生成は開発用から（gen:types 差し替え済み）
+  - DB の変更は設計担当が開発用で検証→本番へ反映
+  - 本番公開（kakei.vivid-global.com・Vercel を Pro 化）は**実際の顧客情報を入れる段階**。それまでは操作ログ画面と公開準備を進める
+  - ★開発用の認証設定（Site URL・Redirect URLs・日本語テンプレート・SMTP・期限24h・二段階認証）が本番と同じかは未確認。開発用には管理者アカウントも無い
