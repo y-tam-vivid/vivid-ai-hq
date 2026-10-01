@@ -11,7 +11,7 @@
 - [SIGTERMでは後始末が走らない](project_lifestandup_website_wordpress.md) — ★try/finally・atexitはSIGTERMで飛ぶ。signal.signalで捕まえる／Chromeの--dump-domは返らないことがある。--screenshotへ寄せる
 - [Downloads→Drive本棚](project_downloads_archive_system.md) — 受け皿17分類。sort_downloads.pyが週次(要フルディスクアクセス)
 - [カレンダー テンプレ挿入](project_calendar_template_autofill.md) — GASで自動挿入。タイトル【種別】で振り分け＝命名ルールが前提
-- [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入。触ったファイルを名指し・件数を数える／**★9/24 resetで外しても★別系統からpushされ同期を1日止めた。衝突は待つ前に★中身をハッシュ突合する／★synced/毎朝変化＝検問が毎日拾う(未対処)**
+- [git add -A は飲み込む](reference_git_add_all_swallows_others.md) — 他体の書きかけが混入。触ったファイルを名指し・件数を数える／**★9/24 resetで外しても★別系統からpushされ同期を1日止めた。衝突は待つ前に★中身をハッシュ突合する／★synced/毎朝変化＝検問が毎日拾う(未対処)→9/30差し戻し12/12件がsynced**
 - [同期は作業中だけ黙って止まる](reference_silent_sync_failure.md) — cronから`git pull --ff-only`を直呼びしない／★枝分かれはff-onlyでは永久に解けない（自動merge＋衝突ならabort）／**🔴9/5 2回目＝機械は設計どおり止まったが誰も解かなかった。真因は🔴の説明文が「未コミット」決め打ちで、未コミット0だと打つ手が無いように読めること。🔴を見たらまず`git status --porcelain|wc -l`と rev-list を叩き、0件なら自分で`git merge origin/main`**
 - [対話か claude -p かの見分け方](reference_detect_noninteractive_session.md) — ★`CLAUDE_CODE_ENTRYPOINT` の1本だけ（cli=対話／sdk-cli=非対話）。agent_id・isatty・CHILD_SESSIONは全部使えないと実測。transcriptにも同じ欄があり誤検知率を事前に測れる／**★9/7 対話セッションでもAskUserQuestionがツール一覧に無い構成がある。拒否より手前でToolSearchが0件**
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — ★自動配布にした結果、逆に`~/.vivid-relay/`を直すと15分後に黙って巻き戻る。触る前に`bin/hooks/`に同名が無いか見る
@@ -55,6 +55,7 @@
 - [リレーは積み上がる](reference_relay_piles_up_and_blames_the_user.md) — 周期より長い処理はロック必須。「読んだ」の確定は実行の前
 - [bash3.2は全角直後で落ちる](reference_bash32_multibyte_unbound_var.md) — `${var}`で必ず区切る。新規シェルスクリプトは毎回grepで検査
 - [コマンド置換内のexitは効かない](reference_bash_subshell_exit_pitfall.md) — `OUT="$(func)"`内のexitはサブシェルだけ終わりrc=0で完走する。詰まり対策は戻り値+グローバル変数で。★隔離テストはPATH優先順位に注意(/usr/local/binが$HOME/.npm-global/binより先)
+- [デフォルト引数は隔離を破る](reference_default_arg_leaks_test_isolation.md) — import時に固定。★隔離は本物の置き場の前後不変で確認
 - [Slack通知の作法](reference_slack_notification_rules.md) — 宛先/手段/条件/書式を1枚に集約(9/3新設・従来3箇所に散在)。**★経路は2つ＝報告tell()／判断ask()。ask()は1回1件・tell()は「返信不要」を自動付与**／DM`D0AT4NQ6X7D`固定・チャンネル禁止／**★9/4 ask()はask_hub委譲＝ボタンで出る（記述式は廃止）**／検査は`VIVID_NOTIFY_OFF=1`必須。**関数のモックで代用しない＝委譲で出口が2つになり9/4に本番へ2回飛んだ**(過去にも8件誤送信)／有璽氏はコピー不可なのでlink=で渡す／**🔴金額はSlackに書かずNotionリンクへ＝当方の導出で承認未取得。確認はビビが実施・結果待ち**／**🔴9/5実測 ssh越しに`VIVID_NOTIFY_OFF=1`は渡らない(手元exportは無効=ミュートしたつもりで本物のDMへ飛ぶ)。sshに渡すコマンド文字列の中に書く**／**🔴9/9 tell()/ask()に「確認用の空撃ち」は無い。戻り値を見たくて2回目を呼ぶとそれも本番投稿になる＝実際に2通届いた。確認はSlack APIで実物を読む。重複はchat.deleteで消せる**
 - [Slackから動かす経路](reference_slack_tokens_and_socket_mode.md) — ★8/25からSocket Mode常駐(launchd)。人の承認3件が台帳へ通った／**形式外value(UUID)は9日目・累計31回(8/25=1 8/26=13 8/27=3 8/28=7 8/29=0 8/30=0 8/31=1 9/1=6)。押した人にエラーが返り続けている＝別アプリのボタン。★0が2日続いたのは直ったからでなく誰も押さなかっただけ。★8/29に書いた「次に読んだ人がapi_app_idをログへ出す」は grep実測0件＝入っていない。担当を名指しした＝ピタゴラス／検査ステラ**／貼った鍵のlog平文は未revoke／**★scopeは「足してSave」では効かない。再インストールまでが1セット。実測は auth.test の x-oauth-scopes ヘッダ(本文には出ない)**
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — ★2026-09-03 稼働・実地2件通過。`ask_hub.ask()`で有璽氏のDMへボタン投稿→slack_socket.pyのinteractiveで受ける／「その他」はSlackのモーダル（新スコープ・購読不要）／**★発行は必ずminiから＝台帳`ask_hub_queue.json`が受信側にしか無い。MacBookから投げると「受付番号が見つかりません」になる**／**★notify.pyのslack_pending.jsonとは別物。こちらは誰も止めない**／宛先は`ROUTES`1か所・営業以外はDM・チャンネル分割は基準未決で保留／cron未登録・ステラ検査未了
