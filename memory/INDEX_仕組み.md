@@ -2,7 +2,7 @@
 
 **cron・同期・監視・GAS・シェル・議事録の自動処理**
 
-- [一部サイトだけ開かない＝IPv4だけ迷子](reference_office_network_ipv4_down.md) — 10/1解決。真因は有線がNTT直結なのに古いDHCP住所のまま→DHCPリース更新で復旧。★回線・ONUは無実。TP-LinkのWAN未接続(Wi-Fi側)は残
+- [一部サイトだけ開かない＝IPv4だけ迷子](reference_office_network_ipv4_down.md) — 10/1解決。真因は有線がNTT直結なのに古いDHCP住所のまま→DHCPリース更新で復旧。★回線・ONUは無実。Wi-Fi側(TP-Link WAN)もケーブル挿し直しで復旧
 
 > この分野の作業に着手したら読む。正本は各ファイルの本文。ここは索引。
 > **上限は無い。** 毎ターン届く `MEMORY.md` と違い、必要なときだけ読まれる。
