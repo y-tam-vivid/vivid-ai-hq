@@ -106,3 +106,8 @@ metadata:
   - ★再起動で scratchpad（/private/tmp）が消え、検証用の harness（テスト用データ・テスト一式）も消えた。テストを残すならリポジトリ内に置く必要がある（提案）
 - **10/1 設計担当**：順番4は無い（追加4機能を順番1〜3にまとめた）＝**M9 完了**。社内向けの値をDBで閉じる件は**不要で確定**（投資額・商品は顧客本人の情報。画面で出し分ける方針。他世帯の値や取扱い残高の集計はもともと顧客から読めない）。次＝①テストをリポジトリに置く ②CLAUDE.md を最新化（M6〜M9・Supabase の main/develop・DB変更は設計担当・010以降の項目と表示名・計算方法の必須条件・将来試算のルール・過去は保存済み totals／今は今日基準・計測タグなし・本番アドレス・公開は顧客情報を入れる段階）→ 済んだら報告
   - **10/1 テストをリポジトリへ・CLAUDE.md 最新化（commit ef05360）**：`npm test`＝vitest 84件（tests/・データベースには触らない・Next/Supabase は tests/stubs で置換）。わざと返済回数を壊すと2件落ちることを確認。CLAUDE.md に M6〜M9・main/develop・DB変更は設計担当・010以降の列と表示名・社内向けの出し分け・必須条件・将来試算・totals の扱い・計測タグなし・本番アドレス・公開時期を反映（25項目を grep で確認）。★以後、計算や表示の決まりを変えたらテストも同じ変更で直す
+- **M10（10/2 設計担当・011_household_coverage_level／012_notes_with_visibility 適用済み＝開発用・本番とも）**
+  - ①把握の範囲 households.coverage_level：transactions_only（取引のみ・新規の初期値）／partial（一部）／full（家計全体・既存の検証用世帯）。担当FP・管理者が世帯情報から直接更新（顧客不可）。FP一覧に区分の表示と絞り込み。出し分け（FP・顧客とも）：transactions_only＝資産・負債の一覧だけ（純資産・横棒・毎月の収支・将来試算を出さない）＋「当社とのお取引の範囲で記録しています」／partial＝全部出し、純資産・毎月の収支・将来試算の近くに「把握している範囲での合計です」／full＝今のまま
+  - ②メモ public.notes：household_id・target_table（households/members/incomes/expenses/policies/coverages/assets/liabilities）・target_id（世帯全体は空）・visibility（internal 社内のみ／client 顧客にも表示）・body（1〜2000字）・created_by（自動）。権限はDB：管理者・担当FPは全件の閲覧・登録・編集・削除、顧客は client の閲覧のみ。FP：世帯の概要と各明細の詳細シートから追加・編集・削除、社内のみは目印と色。顧客：client のメモを対象の近くに「担当からのお知らせ」。**下書きとは別にその場で保存**。対象の行が消えたメモは概要に「対象が削除されたメモ」
+  - ③assets.terms_note＝契約上の条件として顧客画面にも出す。社内向けの補足は notes の internal
+  - テストに：把握の範囲3通りの表示、メモの出し分け（社内のみが顧客画面に出ない）
