@@ -196,6 +196,11 @@ metadata:
   ✅10/3 v29 公開＝計測入り（Clarity yrpyrl79ny＝団体用・有璽氏作成／GTM-PQX3L4TQ／SB）。21/22ページ（hero-patterns.html は見本のため無し）
      実測：手元と公開の md5 一致（index/festival）／実ブラウザで clarity・gtm.js・sb-track・GA4 collect の4通信を確認
      ★DNS 切替前の記録は vercel.app の住所分だけ。本格的に溜まるのは ko-station.org 切替後
+  ✅10/3 ★ko-station.org 本番公開。有璽氏がさくらで MX→www1094（11:2x・送受信テストOK）→ 14時台 A 216.150.1.1/216.150.16.1・AAAA削除
+     www は CNAME→ko-station.org のまま（Aに追従するので触らずに済んだ・さくらの画面に www 行は出ない）
+     ★Aを変えても https がすぐ通らなかった（証明書未発行で接続失敗）→ `vercel certs issue ko-station.org www.ko-station.org` で即発行
+     実測：2住所×2IPとも 200・証明書検証OK／index・festival の md5 が v29 と一致／ko-station.org に検索よけヘッダ無し・vercel.app は noindex のまま
+     戻し方：A を 219.94.129.104 1本・AAAA 2403:3a00:101:a:219:94:129:104 を戻す（MX は www1094 のままでよい）
   ✅10/3 トップ「注目の取り組み」2枚に写真リンク＋「くわしく見る」ボタン（食堂→activities.html#taberu／まつり→festival.html）
   ★リリースへの引き継ぎ（文言・注記の差し替え・写真6枚）→ `scratchpad/kodomomatsuri_release_photo_handoff_20261003.md`
   ★2018第29回の写真には同日の「たかわしエキフェス」（市制60周年の幕）が混じる＝まつり会場のものだけ使う
