@@ -201,6 +201,7 @@ metadata:
      ★Aを変えても https がすぐ通らなかった（証明書未発行で接続失敗）→ `vercel certs issue ko-station.org www.ko-station.org` で即発行
      実測：2住所×2IPとも 200・証明書検証OK／index・festival の md5 が v29 と一致／ko-station.org に検索よけヘッダ無し・vercel.app は noindex のまま
      戻し方：A を 219.94.129.104 1本・AAAA 2403:3a00:101:a:219:94:129:104 を戻す（MX は www1094 のままでよい）
+  ✅10/3 v30 トップのお知らせ「10月18日 第37回こどもまつり 開催」のリンク先を news.html#news-1 → festival.html（有璽氏）。index.html だけ差分・本番md5一致
   ✅10/3 トップ「注目の取り組み」2枚に写真リンク＋「くわしく見る」ボタン（食堂→activities.html#taberu／まつり→festival.html）
   ★リリースへの引き継ぎ（文言・注記の差し替え・写真6枚）→ `scratchpad/kodomomatsuri_release_photo_handoff_20261003.md`
   ★2018第29回の写真には同日の「たかわしエキフェス」（市制60周年の幕）が混じる＝まつり会場のものだけ使う
