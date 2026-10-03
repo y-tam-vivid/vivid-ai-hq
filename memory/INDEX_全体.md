@@ -99,7 +99,7 @@
 - [本番WPは読むだけで測れる](project_lifestandup_website_wordpress.md) — **★9/9 公開APIとHTMLのcurlだけで移行の未確定8→4件。★top(14)/blog(16)確定・/trial・★Emanon BusinessはProの子テーマ（Proも要る）。★人へ聞く前に公開URLから数える**
 - [IGをサイトへ出す](project_lifestandup_website_wordpress.md) — **✅9/9 IG側は完了。★ショートコード=`[instagram-feed feed=1]`（保存済）。★動くのは本番WPだけ・デモは静的で展開されない。残＝テーマへdo_shortcode+フォールバックを仕込む／余計な4プラグイン停止。★同日4件が同じ根＝実物を見ずに人の画面を指示した**
 - [ページ登録は2か所](reference_fix_where_git_reaches.md) — ★9/15 create_pages.php(ローカル)とinc/page-setup.php(本番)の両方に足す
-- [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
+- [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。**⛔10/3「OpenAIの鍵は無い」は古い。★Canvaへ直接つないで作れた（人が貼る往復は不要）。絵はCanva・★文字は生成側に書かせず必ず書き出して見る**
 - [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — 文面と画像まで1セット／★施設IGに業界の話は不可
 - [外の知を先に見る](feedback_look_outside_before_reinventing.md) — **★10/1 4回目＝デザインは言葉のルールだけで頼むと型が1つになる→先に実例を集めて添える**
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須

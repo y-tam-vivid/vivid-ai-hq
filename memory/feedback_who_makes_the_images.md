@@ -70,3 +70,23 @@ OpenAI    ★APIキーは無い（MCP登録なし・~/.config になし・環境
 
 **★エラー文は「その機能が使えない理由」しか語らない。アカウント全体の能力を語らない。**
 → [[feedback_one_route_is_not_verification]] ／ 能力を書き溜めない話は [[reference_tool_access_map]]
+
+## ⛔ 2026-10-03 訂正 ── 上の「OpenAI ★APIキーは無い」は古い
+
+**実物はある。** `~/.vivid-relay/config.env` の `OPENAI_API_KEY`（実測1件）／
+`~/vivid-ai-hq/bin/gen_images_openai.py`（2026-09-08・10,796バイト）。
+**かわちばなしの画像18枠を実際にこれで作った**（$2〜5・[[project_kawachibanashi_portal]]）。
+★8/25-26 の時点では無かっただけ。**鍵の有無は memory でなく `config.env` を見て判断する。**
+
+## ✅ 2026-10-03 有璽氏「APIへ直接こちらから依頼できますか？」── できる。経路は3つ
+
+```
+Canva MCP     ★デザイン物として成立する本命。generate-design は候補4案を返すだけ＝★可逆
+              保存は create-design-from-candidate を呼んだ時だけ。写真は upload-asset-from-url で持ち込む
+              ★そのままでは使えない。1案選んで edit-design で直す工程が要る（8/26 実測）
+OpenAI 画像API 鍵あり。★写真の加工・背景・飾り向き。★日本語の文字は崩れる＝文字入りバナーには単体で使わない
+こちらで組む   文字が1文字も崩れない。ただし「読める」止まりで、アカウントの顔にはならない（上の節）
+```
+
+**★現実的な分担**：**絵はCanvaかAPI、文字はこちら**。文字を生成側に書かせない。
+**★人が画面へ貼る往復は不要になった。** ただし「投げて終わり」にもならない（選ぶ・直す工程は残る）。
