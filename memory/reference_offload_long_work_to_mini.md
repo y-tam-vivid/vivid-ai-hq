@@ -1221,10 +1221,14 @@ Stop hook が聞いているのは   「書き戻しは終わったか」
 
 ```
 ✗ 効かない   ssh mini 'nohup $R/run_agent.sh <名前> <指示文> $HOME > /dev/null 2>&1 < /dev/null &'
-             ★戻り値は返る（PIDも出る）が、★run_agent_launch.log に1行も残らない
+✗ 効かない   ssh mini '$R/run_agent.sh <名前> <指示文> $HOME > /dev/null 2>&1 &'
+             ★どちらも戻り値は返る（PIDも出る）が、★run_agent_launch.log に1行も残らない
              ★ログファイルも作られない ＝ ★起動していない
-✓ 効く       ssh mini '$R/run_agent.sh <名前> <指示文> $HOME &  sleep 55'
-             ★前面で呼ぶ。run_agent.sh 自身が中で切り離す（trap ''HUP + disown）
+✓ 効く       ssh mini 'cd ~ && $R/run_agent.sh <名前> <指示文> $HOME 2>&1 | head -6'
+             ★そのまま前面で呼ぶ。★`&` も `nohup` も `> /dev/null` も付けない
+             ★run_agent.sh 自身が中で切り離す（trap ''HUP + disown）ので、
+               呼んだ側は数秒で「起動しました。PID=…」を返して戻る
+             ★実測2回（corpowner_apply 10:09 ／ kodama_apply 10:34）とも成功
 ```
 
 - **★run_agent.sh は既に切り離しを持っている。**外側で `nohup &` を重ねると二重になって落ちる

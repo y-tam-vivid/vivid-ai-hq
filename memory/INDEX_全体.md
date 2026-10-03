@@ -52,7 +52,7 @@
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — 🔴9/14★同じ日に4回。手順書に落とした当日に自分が関所2(ver上げ)を飛ばした。★機械で時刻を比べて止める(未実装)
 - [担当が増えたら3か所](reference_new_agent_needs_three_places.md) — ★9/13 チョッパー追加で席が出なかった。名鑑を正本へ寄せた
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
-- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — **✅10/3 9/13の「原因未特定」が判明＝★`nohup … &`で包むと起動しない。run_agent.sh自身が切り離す設計で二重になり落ちる。★前面で呼ぶ。PIDは起動の証拠にならない＝launch.logの行かログの実在で判定。timeoutはminiに無い**／ssh断はPIDで生死を見る
+- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — **✅10/3 9/13の「原因未特定」が判明＝★`&`／`nohup`／`> /dev/null` を付けると起動しない（自身が切り離す設計で二重になり落ちる）。★`ssh mini 'cd ~ && run_agent.sh … 2>&1 | head -6'` とそのまま呼ぶ（実測2回）。PIDは起動の証拠にならない＝launch.logの行かログの実在で判定。timeoutはminiに無い**／ssh断はPIDで生死を見る
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ★承認は記録と同じターンで投げる。★報告に未着手と「人の手は要るか」の2行
 - [手順書が読まれない理由](reference_why_manuals_are_not_read.md) — ★一度間違えると二度と読まれない。○×を求めると信頼が下がる
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — **★定説は無い＝輸入でなく自前で実測。作る前に数える・「無いから作る」禁止**
