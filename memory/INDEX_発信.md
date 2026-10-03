@@ -54,7 +54,7 @@
 - [南河内こどもステーション](project_minamikawachi_kodomo_station_site.md) — ★9/30 構築5版(18ページ)で公開・写真はデザイン側に取り込み済み(当て直し停止)・地図(白黒)と協力企業ロゴ(PR TIMES・オレンジワークス・ILIFE)・SNSボタンの色(抑えめ・9/30確定)はこちらで差し込み・Claude Design用一式v2あり https://minamikawachi-kodomo-demo.vercel.app ／作り直しは ~/kodomo-photo-work/build_site.py・★日本語ファイル名はVercelで404
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★**公開 https://kawachibanashi.vercel.app**／**★イベント情報の器（スプレッドシート23列）を新設＝AIが書ける正本**。詳細の見せ方3案は保留
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
-- [Claude Designへの渡し方](reference_claude_design_local_edit_not_reflected.md) — **✅画像はチャット添付＋「生成不要・配置だけ」を1行目に。★9/9 Driveリンクは開けない(本文で渡す)／ロゴPNGから絵の切出し不可／生成は向こうの財布(Gamma)＝絵はこちらで作る**
+- [Claude Designへの渡し方](reference_claude_design_local_edit_not_reflected.md) — **✅画像はチャット添付＋「生成不要・配置だけ」を1行目に。★9/9 Driveリンクは開けない(本文で渡す)／ロゴPNGから絵の切出し不可／生成は向こうの財布(Gamma)＝絵はこちらで作る**／**★10/3 有璽氏＝正本が向こうでも★こちらが先に作ってよい。有璽氏が「こう直した」と伝えて取り込む。写真の差し替えは既にこの形で回っている。「次の書き出しで消える」を止まる理由にしない**
 - [OpenAI APIの費用とCodex](reference_openai_api_cost_and_codex.md) — ★APIは画像生成にだけ使用(会話は0件)。18枚 high=$2.39/mini=$0.09で27分の1。★Codexは画像生成できずPlusにAPIクレジットも付かない
 - [LSU「対策済み」はメディアクエリの境界まで見る](project_lifestandup_website_wordpress.md) — ★9/8 en-bubble重なり4ページ再発。真因は9/7のtop調整がタブレット帯(541-980px)専用ブロックのみで540px以下に無かった漏れ。**コードがある≠その幅で効いている**。PHPコメント内に`/*``*/`という文字列を書くと構文エラーになる罠も踏んだ
 - [LSU 縦テープ⇄バッジ間隔 9/8夕修正](project_lifestandup_website_wordpress.md) — tape-verticalの画面端直値配置→コンテナ基準calc式へ（1440/1920で一致を実測）。bc-gap-badgeは17→32px（3回「揃える」対応のみで初めて広げた）
