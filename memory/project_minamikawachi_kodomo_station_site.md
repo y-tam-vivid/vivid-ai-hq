@@ -193,6 +193,9 @@ metadata:
     （画面に出るものだけを全22ページ描画して抽出・ヘッダーのロゴ札13件は1件に）A公開直後27／B早めに105／C順次15／社内用5
     ★A＝押しても動かない・誤情報になるもの（お問い合わせの送信先未設定・寄付の振込先が枠だけ・LINE/SNSのURL仮・会計XX円 等）
   ✅計測：build_site.py の add_tracking() に用意済み。★TRACK_CLARITY に団体用の ID が入るまで差し込まない（SB/GTMは会社共通）
+  ✅10/3 v29 公開＝計測入り（Clarity yrpyrl79ny＝団体用・有璽氏作成／GTM-PQX3L4TQ／SB）。21/22ページ（hero-patterns.html は見本のため無し）
+     実測：手元と公開の md5 一致（index/festival）／実ブラウザで clarity・gtm.js・sb-track・GA4 collect の4通信を確認
+     ★DNS 切替前の記録は vercel.app の住所分だけ。本格的に溜まるのは ko-station.org 切替後
   ✅10/3 トップ「注目の取り組み」2枚に写真リンク＋「くわしく見る」ボタン（食堂→activities.html#taberu／まつり→festival.html）
   ★リリースへの引き継ぎ（文言・注記の差し替え・写真6枚）→ `scratchpad/kodomomatsuri_release_photo_handoff_20261003.md`
   ★2018第29回の写真には同日の「たかわしエキフェス」（市制60周年の幕）が混じる＝まつり会場のものだけ使う
