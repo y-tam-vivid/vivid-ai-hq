@@ -38,6 +38,11 @@
       "path": "https://jfbi.vivid-global.com/",
       "reason": "有璽氏の決定（2026-09-12）『アクセス解析は入れない』",
       "added": "2026-09-29"
+    },
+    {
+      "path": "~/kodomomatsuri-press-preview",
+      "reason": "こどもまつりリリースの★団体確認用プレビュー（noindex＋robots.txt Disallow・配信後に廃棄）。閲覧するのは団体の方のみで、その行動を記録する必要がない",
+      "added": "2026-10-04"
     }
   ],
   "_own_domains_note": "2026-09-29 有璽氏：オレンジワークス・LIFE STAND UP 本番・ふくち。サイトも含める"
