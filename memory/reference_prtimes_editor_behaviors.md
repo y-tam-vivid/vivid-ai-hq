@@ -33,3 +33,34 @@ navigateは通るのに screenshot / get_page_text だけタイムアウトす�
   → 権限側は ~/.claude/settings.json の allow に mcp__claude-in-chrome__* が要る
      → [[reference_permissions_are_part_of_the_environment]]
 ```
+
+## 🔴 2026-10-05 ★5回目を踏んだ。しかも★この節を読まずに誤った原因を報告した
+
+有璽氏「実際にプレスリリース、PRタイムズの方に掲載するところ、下書きまで作成してください」
+
+**症状は上の節とまったく同じだった。**
+
+```
+navigate ✅通る（タブも作れる・URLも移る）
+screenshot / read_page / get_page_text 🔴落ちる
+  文言は3種に揺れた  「Script injection timed out after 5000ms」
+                     「Page script returned empty result」
+                     「Page still loading (waited 45000ms for document_idle)」
+  ★example.com でも同じ＝サイト固有ではない（2経路で確認済み）
+```
+
+**🔴こちらの誤り。**この節に答え（★拡張が claude.ai にサインインしていない）が書いてあるのに、
+**読まずに「Chrome拡張が壊れている・Chromeの再起動が要る」と報告した。**
+有璽氏は別のブラウザを立ち上げてくださった ── **こちらの誤報のために1手を無駄にさせた。**
+
+```
+★先に memory を探す。この案件は「PR TIMES」で grep すれば1本で出た
+   ls memory | grep -i prtimes  →  reference_prtimes_editor_behaviors.md
+★「ブラウザが壊れている」は原因ではなく症状。層を切り分けてから言う
+   ①拡張のサインイン ②サイト権限 ③settings.json の permissions ④OS層
+   ★①は接続一覧では分からない（list_connected_browsers は inUse:true を返す）
+★新しいブラウザを立ち上げても、接続一覧の deviceId・connectedAt が変わらなければ
+   ★拡張につながっていない（＝別ブラウザを足しても解決しない）
+```
+
+→ [[feedback_check_the_archive_first]]（まず保管庫を見る）／[[feedback_verify_before_declining]]
