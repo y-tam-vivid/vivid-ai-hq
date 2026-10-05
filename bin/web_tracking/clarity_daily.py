@@ -129,8 +129,8 @@ def main():
     stamp = now.isoformat(timespec='seconds')
     all_rows, report = [], []
     for s in sites():
-        tok = tokens.get(s['clarity'])
-        if not tok:
+        tok = tokens.get(s['clarity'], '')
+        if len(tok) < 40:            # 未記入（「ここに…を貼る」のまま）も鍵なし扱い
             report.append('%s  鍵なし（飛ばした）' % s['name'])
             continue
         try:
