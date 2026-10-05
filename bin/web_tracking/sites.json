@@ -1,6 +1,6 @@
 {
   "_説明": "公開中サイトの台帳（★正本）。SEO標準装備＝Clarity（サイトごと別ID）＋Search Console＋サイトマップ＋月次レビュー。site_audit.py がこれを読んで実測する。サイトを公開・廃止したらここを直す。",
-  "_更新": "2026-10-05 リリス（ILIFE 設置済）",
+  "_更新": "2026-10-05 リリス（ILIFE・ふくち。設置済）",
   "sites": [
     {
       "name": "株式会社ビビッド",
@@ -24,8 +24,8 @@
       "url": "https://fuku-chi.com/",
       "cms": "STUDIO",
       "clarity": "ysq8l03g9y",
-      "install_route": "STUDIO デザインエディタ → プロジェクト設定 → カスタムコード（head）→ 公開（★連携Appsに Clarity は無い・ダッシュボードの「カスタムヘッダー」はHTTPヘッダーで別物）",
-      "status": "未設置（エディタでの設定と公開が要る）"
+      "install_route": "STUDIO デザインエディタ → 右パネル「サイト」→ カスタムコード <head> 内の末尾（名前 Microsoft Clarity）→ 公開「更新」",
+      "status": "設置済（10/5）・本番3ページでID確認・実ブラウザで tag→clarity.js→collect を確認"
     },
     {
       "name": "オレンジワークス藤井寺",
@@ -33,7 +33,7 @@
       "cms": "WordPress＋Elementor・さくら 210.224.185.82",
       "clarity": "ysq8wingsx",
       "gtm": "GTM-PL37X5BK",
-      "install_route": "AIOSEO →一般設定→ウェブマスターツール→Microsoft Clarity にIDを入れて保存（★さくらWAFがREST保存を403で遮断＝WAFを一時オフにしてから）。公式プラグインの導入も同じ理由で失敗",
+      "install_route": "AIOSEO →一般設定→ウェブマスターツール→Microsoft Clarity にIDを入れて保存（★さくらWAFがREST保存を403で遮断＝WAFを一時オフにしてから）。公式プラグインの導入も同じ理由で失敗。WAFの場所＝さくら(vivid)コントロールパネル → セキュリティ → WAF設定ドメイン → orange-works.co「設定」→「利用する」のチェック",
       "status": "未設置（10/5 さくらWAFが保存を403で遮断）"
     },
     {
