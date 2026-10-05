@@ -95,4 +95,4 @@
 - [既存物をそのまま正にしない](feedback_check_the_archive_first.md) — ★探す→**出来を評価する**→基準にするか決める。②が抜けると弱い基準が全媒体へ広がる
 - [かわちばなし・参考=祭りどころ](project_kawachibanashi_portal.md) — ★10/5 Next.js+Supabase・1993件。★機能は可・論点は件数と土台
 - [かわちばなし・橋は既に在った](project_kawachibanashi_portal.md) — ⛔10/5 9/13から稼働・公開版に実2件。★残=トップの見本
-- [かわちばなし・トップが出ない理由](project_kawachibanashi_portal.md) — ✅10/5 目玉カードと見出しが★HTML直書き。案C=Bで今日塞ぎAを依頼
+- [かわちばなし・トップもシート](project_kawachibanashi_portal.md) — ✅10/5 kb_live.sh実装。形が無ければ止める。★本番未反映・v3はDrive
