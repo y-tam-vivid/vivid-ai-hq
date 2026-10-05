@@ -51,6 +51,8 @@ Web    空ページ（0バイト）
 - Vercel へ乗せ替える順番：①MX を www1094.sakura.ne.jp. へ → 受信を確認 → ②A を Vercel・AAAA 削除 → ③www を CNAME
 - ✅10/3 切替済み：MX→www1094.sakura.ne.jp.／A 216.150.1.1・216.150.16.1（Vercel）／AAAA削除／www はCNAMEのまま
 - ✅10/5 TXT に google-site-verification を追加（Search Console ドメインプロパティ用・★消すと所有確認が外れる）。SPF の行と別行
+- ★10/5 Resend（お問い合わせの送信）用に4つ：TXT resend._domainkey／CNAME rsend・send（末尾に「.」）／TXT _dmarc（p=none）
+  ★さくらの新しい画面の「@ (ko-station.org)」の欄は★ドメインそのものの設定。別の名前（send 等）は★新しいエントリーとして作る。@ に足すと CNAME が A とぶつかる
 - **戻し方は上の値へ戻すだけ**（A・AAAA・www の3つ）。MX は www1094 のままでも動く
 
 ## どこに置くかの判断（2026-08-22）
