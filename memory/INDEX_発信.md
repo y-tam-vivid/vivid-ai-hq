@@ -96,5 +96,5 @@
 - [かわちばなし・参考=祭りどころ](project_kawachibanashi_portal.md) — ★10/5 Next.js+Supabase・1993件。★機能は可・論点は件数と土台
 - [かわちばなし・橋は既に在った](project_kawachibanashi_portal.md) — ⛔10/5 9/13から稼働・公開版に実2件。★残=トップの見本
 - [かわちばなし・参考との差は土台](project_kawachibanashi_portal.md) — 🔴10/5 JSON-LD/canonical/OGP/sitemapが全部0。先方はEvent型＋sitemap1279件
-- [かわちばなし・4市のRSS](project_kawachibanashi_portal.md) — ✅10/5 4市とも口あり計60件。★柏原はlg.jpへ移転・藤井寺/羽曳野はRDF形式
+- [かわちばなし・4市のRSS](project_kawachibanashi_portal.md) — ✅10/5 ★器へ47件入った(下書き・11月22件)。読めるのは58件(60は誤り)
 - [かわちばなし・トップもシート](project_kawachibanashi_portal.md) — ✅10/5 本番反映済(2経路一致)。🔴11/1に0件→更新が止まる。v3はDrive
