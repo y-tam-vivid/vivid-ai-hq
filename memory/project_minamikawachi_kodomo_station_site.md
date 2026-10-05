@@ -247,6 +247,8 @@ metadata:
      制作用・印刷用・重複9ページは noindex（404/festival-lp/schedule/qr/sitemap.html/sns-templates/sp-check/styleguide/hero-patterns）
      sitemap.xml（13URL）＋robots.txt に Sitemap 行／★www → ko-station.org へ308（重複を1本に。"/" は別に書かないと転送されなかった）
      ★郵便番号は 583-0856（本文の値）。推測で入れかけた 0864 は誤り
-     残＝有璽氏：Search Console（ドメインプロパティ＝さくらにTXT 1行）→サイトマップ送信／Googleビジネスプロフィール
+     ✅10/5 Search Console 登録（ドメインプロパティ・TXT確認済み）→ サイトマップ送信済み
+     ★ドメインプロパティのサイトマップ欄は★URL全文（https://ko-station.org/sitemap.xml）。「sitemap.xml」だけだと『アドレスが無効』
+     残＝Googleビジネスプロフィール（団体側の本人確認が要る）／数日後に Search Console のカバレッジを見る
      ★WordPress は活動レポート等の更新物だけ先に（有璽氏 10/5）。★ko-station.org の下の階層（/report/ 等）に置く方針を提示
 
