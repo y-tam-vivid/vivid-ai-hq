@@ -57,3 +57,9 @@ Mac mini を「Claude Code の主作業機」にし、MacBook から遠隔操作
 - 有璽氏「ネットはつながっているはず」＝回線とWi-Fiは正しい。壊れているのは有線LANの設定だけ
 - 直し方（★システム設定なので有璽氏の手で）：システム設定→ネットワーク→Ethernet→詳細→TCP/IP→「手入力」IP 192.168.1.200／サブネット 255.255.255.0／ルーター 192.168.1.1（または「DHCPサーバを使用」）
 - 確かめ方：`ssh mini 'route -n get 8.8.8.8; curl -s -o /dev/null -w "%{http_code}" https://github.com/'`
+
+## ✅ 2026-10-05 夕 解消（mini 上のAIが直した）
+- 有璽氏が手で直そうとしたが「DHCP（ルーター手入力）」のまま・IP 192.168.**2**.200・マスク/32・ルーター空欄で残っていた
+- ★**画面で直してもらうより、AIが mini 上で `networksetup -setmanual "Ethernet" 192.168.1.200 255.255.255.0 192.168.1.1` を叩く方が速く確実**（管理者パスワード不要・rc=0で通った）。★次からは有璽氏に画面操作を渡す前にこれを試す
+- 実測：経路1 = 既定経路 interface en0・gateway 192.168.1.1 ／ 経路2 = `curl --interface en0 https://github.com` 200 → 一致。ルーターへの ping 0%損失
+- 戻し方：`networksetup -setdhcp "Ethernet"`
