@@ -1394,3 +1394,36 @@ TP-Link をAPモードにした後、`curl tplinkwifi.net` が 200 だったの�
 寄付ページの振込先だけ直して「反映した」と報告し、参加ページにある★別の振込先の欄が空欄のまま残った（有璽氏が発見）。
 **★値を1つ入れたら、サイト全体を「空欄の印（＿・XX）」と「同じ項目名（口座・銀行名）」の両方で数えてから報告する。**
 
+
+## 🔴2026-10-05 ★このMacの `whois` は IANA にしか聞いていない
+
+かわちばなしの独自ドメインの空きを調べたとき、`whois kawachibanashi.jp` の出力に
+「No match」が含まれたので**9件すべてに「空いている見込み」と判定した。これは無効だった。**
+
+```
+実際の出力
+  % IANA WHOIS server
+  refer:        whois.jprs.jp      ← ★「本当のレジストリはこっちだ」と言っているだけ
+  domain:       JP                 ← ★TLD（.jp）そのものの情報。ドメインの情報ではない
+```
+
+★`whois` が**レジストリへ行かずに IANA で止まっている。** TLD の情報を返しているので、
+「No match」も「status: ACTIVE」も**そのドメインの状態ではない**。
+（実際 `.info` だけ「登録済み」と出たのは、IANA の出力に TLD の `status: ACTIVE` が
+含まれていたからで、ドメインが登録されているかとは無関係だった）
+
+**★正しい測り方 ── レジストリを明示する**
+```
+.jp          whois -h whois.jprs.jp <domain>
+.com / .net  whois -h whois.verisign-grs.com <domain>
+.org         whois -h whois.publicinterestregistry.org <domain>
+.info        whois -h whois.afilias.net <domain>
+```
+
+★RDAP を2経路目にするなら、**そのTLDのレジストリのエンドポイントを使う**。
+`https://rdap.verisign.com/com/v1/domain/<.jpのドメイン>` は常に404を返す（.com用なので当然）。
+★**404 を「未登録」の証拠にする前に、そのエンドポイントがそのTLDを扱うかを見る。**
+
+★型：**「No match」が出たら、その応答を返したのが誰かを見る。**
+問い合わせ先が正しくなければ、どんな答えも証拠にならない。
+報告の直前に生出力を見て気づいた。見ていなければ9件とも誤報だった。
