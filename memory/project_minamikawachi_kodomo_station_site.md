@@ -264,6 +264,6 @@ metadata:
      ✅10/5 有璽氏：npostation.or.jp は★昔のURL・ドメイン契約は終了済み。いまの団体ドメインは ko-station.org（メールはさくら www1094）
      ★影響：Google for Nonprofits／Workspace の連絡先が @npostation.or.jp だと Google からの通知（審査結果・停止警告）が★届かない
        → Nonprofits の「設定」「管理者」で連絡先を生きているアドレスへ。★Workspace を ko-station.org へ移すのはメールの置き場を変える大きな分岐＝今はやらない
-     ✅10/5 実画面：Nonprofits の管理者は2名とも★Gmail（届く）＝管理者経由の通知は問題なし。残るは「設定」タブの団体連絡先だけ
+     ✅10/5 実画面：Nonprofits の管理者は2名とも★Gmail（届く）＝管理者経由の通知は問題なし。「設定」タブはメールの種類の選択だけで連絡先欄は無い（10/5 実画面）＝★アカウントまわりの準備は完了
      ★計測：いまのGA4/GTMは会社共通（G-4D1C77WR0P）。広告の成果を測るなら★団体専用のGA4を作る案
 
