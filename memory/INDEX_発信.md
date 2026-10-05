@@ -94,4 +94,4 @@
 - [並ぶカードで同じ写真を使わない](feedback_no_duplicate_photo_in_one_view.md) — ★10/4 第37回と第36回のカードが同じ写真（有璽氏が発見）。カードを足したら一覧の img を数えてから出す
 - [既存物をそのまま正にしない](feedback_check_the_archive_first.md) — ★探す→**出来を評価する**→基準にするか決める。②が抜けると弱い基準が全媒体へ広がる
 - [かわちばなし・参考=祭りどころ](project_kawachibanashi_portal.md) — ★10/5 Next.js+Supabase・1993件。★機能は可・論点は件数と土台
-- [かわちばなし・案Bへ着手](project_kawachibanashi_portal.md) — ✅10/5 器は★38列3件(記録は古い)。緯度経度を追加。残=変換の経路
+- [かわちばなし・橋は既に在った](project_kawachibanashi_portal.md) — ⛔10/5 9/13から稼働・公開版に実2件。★残=トップの見本
