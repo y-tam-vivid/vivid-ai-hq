@@ -68,3 +68,5 @@ metadata:
 - ✅10/5 16:2x 有璽氏が GCP で Search Console API・Gmail API を有効化 → mini の google_token_seo.json で5プロパティ読める（sc-domain:vivid-global.com／sc-domain:fuku-chi.com／orange-works.co／i-life-fukushi.com／sc-domain:ko-station.org・全て siteOwner）。★119番は sc-domain:vivid-global.com の中＝ページURLで切り分ける
 - ✅Clarity 鍵6本（有璽氏）→ mini ~/.vivid-relay/clarity_tokens.json。全サイト取得OK。シート「SEO計測_Clarity日次」 https://docs.google.com/spreadsheets/d/1xDHeqC4mkhK5HLvUwHUpaEyyHCb-AipXsztVH89_Law （初日10/4分 1,644行）
 - 🐛直した：内訳（Browser/Device/OS/Country/PageTitle/ReferrerUrl）の名前が落ちていた→URL列へ・範囲「内訳」。★mini に他セッションの書きかけがあると vivid-sync が取り込みを見送る＝修正が届かないまま古い版で動く（10/5 1回踏んだ）
+- ✅10/5 16:33 SEO週次メールの試し送り成功（weekly_seo_report.py・Gmail id 1a10afb2eff5094d・受信箱で確認）。6サイト一覧＋サイト別＋タグ点検。★Clarityのページ別URLの項目名は "Url"（10/4分のシートはURL空・10/5取得分から入る）／ko-station の GSC は10/5登録のため0
+- 未：cron 登録（Clarity 毎日0:30／週次 月曜7:00）はドーベルマン点検の後・有璽氏が試し送りを見てから。Slack 2行は未実装。mini の ~/vivid-ai-hq は他セッションの書きかけで取り込み保留中→/tmp/wt から試運転した
