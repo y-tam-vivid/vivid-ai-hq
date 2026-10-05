@@ -95,7 +95,7 @@
 - [既存物をそのまま正にしない](feedback_check_the_archive_first.md) — ★探す→**出来を評価する**→基準にするか決める。②が抜けると弱い基準が全媒体へ広がる
 - [かわちばなし・参考=祭りどころ](project_kawachibanashi_portal.md) — ★10/5 Next.js+Supabase・1993件。★機能は可・論点は件数と土台
 - [かわちばなし・橋は既に在った](project_kawachibanashi_portal.md) — ⛔10/5 9/13から稼働・公開版に実2件。★残=トップの見本
-- [かわちばなし・ドメイン確定](project_kawachibanashi_portal.md) — ✅10/6 ★kawachibanashi.osaka.jp（さくら3982円/年・取得は有璽氏）。kawachiは広域すぎて採らない
-- [かわちばなし・検索の土台](project_kawachibanashi_portal.md) — ✅10/5 head8枚＋sitemap10件。🔴LINEで題名が出ない→案B推奨。URLはKB_SITE_URL
+- [かわちばなし・ドメイン確定](project_kawachibanashi_portal.md) — ✅10/6 kawachibanashi.osaka.jp（さくら3982円/年・★取得は有璽氏）
+- [かわちばなし・検索の土台](project_kawachibanashi_portal.md) — ✅10/6 案B済＝event-<ID>.htmlを静的生成(画素差0)。URLはKB_SITE_URL1か所
 - [かわちばなし・4市のRSS](project_kawachibanashi_portal.md) — ✅10/5 ★器へ47件入った(下書き・11月22件)。読めるのは58件(60は誤り)
 - [かわちばなし・トップもシート](project_kawachibanashi_portal.md) — ✅10/5 本番反映済(2経路一致)。🔴11/1に0件→更新が止まる。v3はDrive
