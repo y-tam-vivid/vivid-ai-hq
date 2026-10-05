@@ -4586,7 +4586,7 @@ CF7フォームID   本番HTMLに★2系統出た（/trial=f13-p710 ／ /contact
 ## ★有璽氏へ渡したもの（2026-09-14）
 
 ```
-zip      （★10/6移送）共有ドライブ/…/03_デザイン制作プロジェクト/05_株式会社ILIFE/01_ILIFE WEBサイト/LIFE_STAND_UP_本番テーマ_20260914/lifestandup-theme_20260914-122527.zip
+zip      （★10/6移送・改名）共有ドライブ/…/03_デザイン制作プロジェクト/02_株式会社ILIFE/01_ILIFE WEBサイト/2026-09-14【WordPressテーマ】LIFE STAND UP_本番テーマ/lifestandup-theme_20260914-122527.zip
          ★Finderを開いて渡した（mini の中に置いたままにしない）
 手順書   https://claude.ai/code/artifact/16e66708-dd96-430a-9b41-722c142c3655
          5手・各手に「押す場所／戻し方／所要時間」・チェックで進捗が残る
