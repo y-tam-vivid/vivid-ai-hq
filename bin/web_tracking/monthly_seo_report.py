@@ -28,6 +28,8 @@ from ai_analysis import analyze
 JST, RELAY = w.JST, w.RELAY
 OUT_HTML = os.path.join(RELAY, 'monthly_seo_report.html')
 HEARTBEAT = os.path.join(RELAY, 'monthly_seo_report.last')
+PROC_NAME = 'SEO月次レポート（monthly_seo_report.py）'   # ★⚙️自動処理レジスタの「処理名」と完全一致
+DONE_FILE = os.path.join(RELAY, 'monthly_seo_report.done')   # 本番を出した月（再実行で Notion・Slack を二重に出さない）
 PARENT_PAGE = '2e77b1568b57809db199f2061d17de79'      # Notion「[12-100]広報部_PR・プレスリリース」
 
 
@@ -183,6 +185,10 @@ def main():
         print('dry-run：%s（%dサイト・アクション案%d件・送っていない）' % (OUT_HTML, len(data), len(ai.get('actions', []))))
         return
     test = '--to' in sys.argv
+    tag = '%d-%02d' % ym
+    if not test and '--force' not in sys.argv and os.path.exists(DONE_FILE) and tag in open(DONE_FILE).read().split():
+        print('この月（%s）は本番を出し済み。出し直すなら --force' % tag)
+        return
     to = sys.argv[sys.argv.index('--to') + 1] if test else w.TO_DEFAULT
     r = w.send(to, subject, body)
     msg = 'OK 送信 %s id=%s' % (to, r.get('id'))
@@ -192,7 +198,7 @@ def main():
             url = save_notion(ym, re.sub(r'<[^>]+>', '\n', body).replace('&nbsp;', ' '))
             msg += ' Notion=%s' % url
         except Exception as ex:
-            msg += ' Notion保存失敗(%s)' % str(ex)[:60]
+            msg += ' ／一部失敗：Notion保存(%s)' % str(ex)[:60]
         try:
             import ask_hub
             for i, a in enumerate(ai.get('actions', []), 1):
@@ -202,8 +208,16 @@ def main():
                             detail='なぜ：%s\nやり方：%s\n手間：%s' % (a.get('why', ''), a.get('how', ''), a.get('effort', '')),
                             asked_by='SEO月次レポート（AI）', kind='広報')
         except Exception as ex:
-            msg += ' Slack失敗(%s)' % str(ex)[:60]
-    open(HEARTBEAT, 'w').write('%s %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), msg))
+            msg += ' ／一部失敗：Slack(%s)' % str(ex)[:60]
+        if ai.get('error'):
+            msg += ' ／一部失敗：AI分析'
+        open(DONE_FILE, 'a').write(tag + '\n')
+        open(HEARTBEAT, 'w').write('%s %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), msg))
+        try:
+            from heartbeat import beat
+            beat(PROC_NAME, '警告' if '一部失敗' in msg else '成功', msg)
+        except Exception as ex:
+            sys.stderr.write('心拍を送れず：%s\n' % ex)
     print(msg)
 
 
@@ -211,5 +225,11 @@ if __name__ == '__main__':
     try:
         main()
     except Exception as ex:
-        open(HEARTBEAT, 'w').write('%s NG %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), str(ex)[:200]))
+        if '--dry-run' not in sys.argv and '--to' not in sys.argv:
+            open(HEARTBEAT, 'w').write('%s NG %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), str(ex)[:200]))
+            try:
+                from heartbeat import beat
+                beat(PROC_NAME, '失敗', 'NG %s' % str(ex)[:200])
+            except Exception:
+                pass
         raise

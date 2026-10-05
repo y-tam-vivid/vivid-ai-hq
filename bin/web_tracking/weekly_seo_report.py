@@ -31,6 +31,8 @@ JST = dt.timezone(dt.timedelta(hours=9))
 TO_DEFAULT = 'y_tam@vivid-global.com'
 OUT_HTML = os.path.join(RELAY, 'weekly_seo_report.html')
 HEARTBEAT = os.path.join(RELAY, 'weekly_seo_report.last')
+PROC_NAME = 'SEO週次レポート（weekly_seo_report.py）'   # ★⚙️自動処理レジスタの「処理名」と完全一致
+PROBLEMS = []   # 部分失敗（AI・Notion・Slack・シート）を集めて心拍のメッセージに載せる
 LOG_HTML = ''
 AI_HTML = ''
 
@@ -182,6 +184,7 @@ def add_candidates(cands, week_start, existing):
                         detail=text, asked_by='SEO週次レポート（AI）', kind='広報')
         except Exception as ex:
             sys.stderr.write('Slackへの採否依頼に失敗：%s\n' % ex)
+            PROBLEMS.append('Slack採否')
     return made
 
 
@@ -362,6 +365,18 @@ def render_ai(ai):
     return '\n'.join(h)
 
 
+def beat_once(ok, msg):
+    """本番だけ心拍（.last＋レジスタ）。★--dry-run・--to（試し送り）では打たない"""
+    if '--dry-run' in sys.argv or '--to' in sys.argv:
+        return
+    open(HEARTBEAT, 'w').write('%s %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), msg))
+    try:
+        from heartbeat import beat
+        beat(PROC_NAME, '成功' if ok and not PROBLEMS else ('警告' if ok else '失敗'), msg)
+    except Exception as ex:
+        sys.stderr.write('心拍を送れず：%s\n' % ex)
+
+
 def send(to, subject, body_html):
     msg = MIMEText(body_html, 'html', 'utf-8')
     msg['To'], msg['Subject'] = to, subject
@@ -431,6 +446,8 @@ def main():
         except Exception:
             pass
         ai = analyze(payload, 'weekly')
+        if ai.get('error'):
+            PROBLEMS.append('AI分析')
     AI_HTML = render_ai(ai)
     db_url = 'https://app.notion.com/p/afbfa222ea2848598c384e6c4d983d97'
     try:
@@ -445,6 +462,7 @@ def main():
                             ('<br>　→ 効果：' + html.escape(r['effect'])) if r['effect'] else '') for r in act) +
                     '<a href="%s">改善ログを開く（候補を採用・見送りに変える）</a>' % db_url)
     except Exception as ex:
+        PROBLEMS.append('Notion改善ログ')
         LOG_HTML = ('<span style="color:#b3261e">改善ログを読めませんでした（%s）。'
                     'Notionの接続設定を確認してください。</span><br><a href="%s">改善ログを開く</a>' % (html.escape(str(ex)[:80]), db_url))
     body = build(data, cur, prev, got_cdays, tags)
@@ -454,6 +472,7 @@ def main():
             print('週次サマリーを記録：%d行' % record_summary(data, cur, got_cdays, tags))
         except Exception as ex:
             sys.stderr.write('週次サマリーの記録に失敗：%s\n' % ex)
+            PROBLEMS.append('週次サマリー記録')
     open(OUT_HTML, 'w', encoding='utf-8').write(body)
     subject = 'ふくち。グループ SEO週次レポート（%s〜%s）' % (cur[0][5:].replace('-', '/'), cur[1][5:].replace('-', '/'))
     if '--dry-run' in sys.argv:
@@ -462,7 +481,9 @@ def main():
     to = sys.argv[sys.argv.index('--to') + 1] if '--to' in sys.argv else TO_DEFAULT
     r = send(to, subject, body)
     msg = 'OK 送信 %s id=%s %dサイト' % (to, r.get('id'), len(data))
-    open(HEARTBEAT, 'w').write('%s %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), msg))
+    if PROBLEMS:
+        msg += ' ／一部失敗：' + '・'.join(PROBLEMS)
+    beat_once(True, msg)
     print(msg)
 
 
@@ -470,5 +491,5 @@ if __name__ == '__main__':
     try:
         main()
     except Exception as ex:
-        open(HEARTBEAT, 'w').write('%s NG %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), str(ex)[:200]))
+        beat_once(False, 'NG %s' % str(ex)[:200])
         raise
