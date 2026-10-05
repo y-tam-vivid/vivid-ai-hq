@@ -1,0 +1,71 @@
+{
+  "_説明": "公開中サイトの台帳（★正本）。SEO標準装備＝Clarity（サイトごと別ID）＋Search Console＋サイトマップ＋月次レビュー。site_audit.py がこれを読んで実測する。サイトを公開・廃止したらここを直す。",
+  "_更新": "2026-10-05 リリス（Clarity 5件を作成）",
+  "sites": [
+    {
+      "name": "株式会社ビビッド",
+      "url": "https://www.vivid-global.com/",
+      "cms": "WordPress（テーマ vivid）・さくら 210.224.185.82",
+      "clarity": "ysq7i6pp71",
+      "gtm": "GTM-PQX3L4TQ",
+      "install_route": "WordPress の head（★GTM-PQX3L4TQ は ko-station・gamemarke と共用なので、GTMで入れるならトリガーを Page Hostname = www.vivid-global.com に絞る）",
+      "status": "Clarity 作成済・未設置（管理画面ログイン待ち）"
+    },
+    {
+      "name": "株式会社ILIFE / LIFE STAND UP",
+      "url": "https://i-life-fukushi.com/",
+      "cms": "WordPress（テーマ lifestandup＝当方製）・162.43.117.28",
+      "clarity": "ysq88yt7d8",
+      "install_route": "WordPress 管理画面 → プラグイン「Microsoft Clarity」（公式）か、テーマの head",
+      "status": "Clarity 作成済・未設置（管理画面ログイン待ち）"
+    },
+    {
+      "name": "株式会社ふくち。",
+      "url": "https://fuku-chi.com/",
+      "cms": "STUDIO",
+      "clarity": "ysq8l03g9y",
+      "install_route": "STUDIO → サイト設定 → カスタムコード → head（★プランで使えるか未確認）",
+      "status": "Clarity 作成済・未設置（STUDIOログイン待ち）"
+    },
+    {
+      "name": "オレンジワークス藤井寺",
+      "url": "https://orange-works.co/",
+      "cms": "WordPress＋Elementor・さくら 210.224.185.82",
+      "clarity": "ysq8wingsx",
+      "gtm": "GTM-PL37X5BK",
+      "install_route": "GTM-PL37X5BK（このサイト専用）にClarityタグ、または WordPress の head。★管理画面は許可IP限定・社外の管理者 setu 氏あり",
+      "status": "Clarity 作成済・未設置（管理画面ログイン待ち）"
+    },
+    {
+      "name": "福祉施設の119番",
+      "url": "https://fukushi119.vivid-global.com/",
+      "cms": "静的HTML（nginx）・さくら 210.224.185.82",
+      "clarity": "ysq969p6oj",
+      "install_route": "HTMLの <head> 直後へ snippet.html（★FTP・さくらのファイルマネージャ）",
+      "status": "Clarity 作成済・未設置（サーバの認証情報待ち）"
+    },
+    {
+      "name": "NPO法人 南河内こどもステーション",
+      "url": "https://ko-station.org/",
+      "cms": "静的HTML（Vercel）",
+      "clarity": "yrpyrl79ny",
+      "gtm": "GTM-PQX3L4TQ",
+      "install_route": "~/kodomo-photo-work/build_site.py の add_tracking()",
+      "status": "設置済（10/3）・Search Console 登録済（10/5）"
+    },
+    {
+      "name": "ゲームマーケ",
+      "url": "https://gamemarke.vivid-global.com/",
+      "cms": "Vercel",
+      "clarity": "y999sy395z",
+      "gtm": "GTM-PQX3L4TQ",
+      "noindex_expected": true,
+      "status": "設置済（noindex のLP）"
+    }
+  ],
+  "excluded": [
+    {"url": "https://jfbi.vivid-global.com/", "reason": "有璽氏の決定（2026-09-12）『アクセス解析は入れない』"},
+    {"url": "https://orange-works.org/", "reason": "旧サイトの疑い・使わない（2026-09-03 有璽氏：正は .co）"},
+    {"url": "https://minamikawachi-kodomostation.jimdosite.com/", "reason": "旧サイト（ko-station.org へ移行済）"}
+  ]
+}
