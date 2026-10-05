@@ -313,6 +313,6 @@ metadata:
      ★新しい版を作るときは api/ フォルダも前の版から写すこと（vercel.json 等と同じ）
      残＝有璽氏：Resend 登録→ドメイン ko-station.org 追加→さくらにDNS 3行→鍵を Vercel へ→こちらで1通試す
   ✅10/5 Resend 開通：有璽氏がDNS 4つ（resend._domainkey・rsend・send・_dmarc）と Vercel の RESEND_API_KEY（Production・Secret）を設定
-     当方が公開し直して本番の受け口からテスト1通 → Resend が受理（200・ok）。★2つの受信箱に実際に届いたかは有璽氏の確認待ち
+     当方が公開し直して本番の受け口からテスト1通 → Resend が受理（200・ok）。✅有璽氏：2つの受信箱とも届いた（10/5）＝お問い合わせ完成
      ★Vercel の環境変数は「Settings→Environments→Production」の中（Environments の一覧ページには入力欄が無い）。鍵を足したら★公開し直さないと関数に入らない
 
