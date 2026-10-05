@@ -304,4 +304,6 @@ metadata:
      団体の法人番号 8120105005321（miniの国税庁データ）。★旧サイト npostation.org も検索に出る（いまは応答なし）
      🔴残＝①お問い合わせの送信（aix@ko-station.org と minamikawachikodomo@gmail.com の両方へ）＝送信の仕組みが要る
        ②後援・協力の欄に「〇〇財団」等の仮の枠が残る ③団体確認中＝振込先・LINE・Instagram・会員数等・写真（今のまま申請へ）
+  ✅10/5 v41 内閣府NPOポータルの団体ページ https://www.npo-homepage.go.jp/npoportal/detail/027001882 （有璽氏が特定）へリンクを差し替え（団体概要の2か所）
+     ★公開コマンドを他のフォルダへの cd と同じ行に書くと、計測の検問が別フォルダを調べて止める→公開は単独の行で
 
