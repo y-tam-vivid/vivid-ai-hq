@@ -306,4 +306,10 @@ metadata:
        ②後援・協力の欄に「〇〇財団」等の仮の枠が残る ③団体確認中＝振込先・LINE・Instagram・会員数等・写真（今のまま申請へ）
   ✅10/5 v41 内閣府NPOポータルの団体ページ https://www.npo-homepage.go.jp/npoportal/detail/027001882 （有璽氏が特定）へリンクを差し替え（団体概要の2か所）
      ★公開コマンドを他のフォルダへの cd と同じ行に書くと、計測の検問が別フォルダを調べて止める→公開は単独の行で
+  ✅10/5 v42 お問い合わせの送信を作った（有璽氏「A＝送信専用のメールサービス(Resend)」）
+     受け口 /api/contact（Vercel の関数・正本 ~/kodomo-photo-work/api_src/contact.js）→ aix@ko-station.org と minamikawachikodomo@gmail.com へ。送った人へ受付の控え。迷惑送信よけ付き
+     フォーム側は contact_fixes.py（oct3_fixes から呼ぶ）。★書き出しのままでは「送信済み」が出るだけでどこにも送られていなかった
+     ★鍵 RESEND_API_KEY は Vercel の環境変数にだけ置く（有璽氏が入れる・当方は見ない）。鍵が無い間は電話を案内する文を返す（本番で503を実測）
+     ★新しい版を作るときは api/ フォルダも前の版から写すこと（vercel.json 等と同じ）
+     残＝有璽氏：Resend 登録→ドメイン ko-station.org 追加→さくらにDNS 3行→鍵を Vercel へ→こちらで1通試す
 
