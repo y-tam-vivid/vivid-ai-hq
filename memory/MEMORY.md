@@ -36,7 +36,7 @@
 - [公開中サイトのSEO標準装備](feedback_seo_standard_kit.md) — 10/5〜 Clarity＋Search Console＋サイトマップ＋月次レビュー。★Clarity設置済＝ILIFE・ふくち。・オレンジ・119番・こどもS／ビビッドのみ保留(WPログインURL不明)。台帳 bin/web_tracking/sites.json。★10/6〜 mini cron：Clarity毎日0:30・週次 月曜7:00・月次 毎月1日9:00（旧クラウド月次は11/1停止予定）
 - [家計台帳⇄統合型営業管理の連携](project_kakei_daicho.md) — **いま：設計担当と全面合意（10/3）・M11は作らない。人軸・顧客を作れるのは統合側だけ・実績は家計→統合の一方向2本。残＝見込み客69件の切り分けと送り方（miniのPython）の返答**
 - [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ 03_デザイン制作プロジェクト/01_ふくち。・02_ILIFE・03_ビビッド・06_かわちばなし（10/6番号振り直し・★旧パスへ書かない）。★別置き場を残すなら片方を正本・他方はショートカット／★移すときは命名規約でリネーム
-- [渡し物はDrive案件フォルダ・番号を振る](reference_backups_in_volatile_places.md) — 10/5。★入れる前にDrive側を数える(16世代が既に在った)
+- [渡し物はDrive案件フォルダ](reference_backups_in_volatile_places.md) — ★かわちばなしは10/6に06_へ改名(ID 1NEM…は不変)。パスでなくIDで持つ
 - [素材は広報の設計図でない](feedback_source_material_is_not_the_pr_plan.md) — ★チラシに無い＝書かぬは誤り／配布物を画像欄に載せない
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番(v45)。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/7に確認)。立ち上げ手順とCSVは05/02_Google広告に用意済み
 - [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — v22。★配信10/6(火)10:00／★入稿素材は一式そろった(Drive 06_…/04_入稿素材・本文は全体2,501字)／★PR TIMESの下書きは未作成
