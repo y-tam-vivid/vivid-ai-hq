@@ -1,6 +1,6 @@
 {
   "_説明": "公開中サイトの台帳（★正本）。SEO標準装備＝Clarity（サイトごと別ID）＋Search Console＋サイトマップ＋月次レビュー。site_audit.py がこれを読んで実測する。サイトを公開・廃止したらここを直す。",
-  "_更新": "2026-10-05 リリス（ILIFE・ふくち。・オレンジワークス設置済）",
+  "_更新": "2026-10-05 リリス（5サイト設置済・ビビッドのみ保留）",
   "sites": [
     {
       "name": "株式会社ビビッド",
@@ -9,7 +9,7 @@
       "clarity": "ysq7i6pp71",
       "gtm": "GTM-PQX3L4TQ",
       "install_route": "WordPress の head（★GTM-PQX3L4TQ は ko-station・gamemarke と共用なので、GTMで入れるならトリガーを Page Hostname = www.vivid-global.com に絞る）",
-      "status": "Clarity 作成済・未設置（管理画面ログイン待ち）"
+      "status": "Clarity 作成済・未設置（★WPログインURLが不明・有璽氏「直ぐには分からない」10/5＝保留）"
     },
     {
       "name": "株式会社ILIFE / LIFE STAND UP",
@@ -41,8 +41,8 @@
       "url": "https://fukushi119.vivid-global.com/",
       "cms": "静的HTML（nginx）・さくら 210.224.185.82",
       "clarity": "ysq969p6oj",
-      "install_route": "HTMLの <head> 直後へ snippet.html（★FTP・さくらのファイルマネージャ）",
-      "status": "Clarity 作成済・未設置（サーバの認証情報待ち）"
+      "install_route": "さくら(vivid)ファイルマネージャー /home/vivid/www/fukushi119/index.html の <head> 直後（★編集画面は値をJSで変えただけだと保存されない→実キー入力を1回入れてから「保存」）",
+      "status": "Clarity 作成済・未設置（★WPログインURLが不明・有璽氏「直ぐには分からない」10/5＝保留）"
     },
     {
       "name": "NPO法人 南河内こどもステーション",
@@ -60,7 +60,7 @@
       "clarity": "y999sy395z",
       "gtm": "GTM-PQX3L4TQ",
       "noindex_expected": true,
-      "status": "設置済（noindex のLP）"
+      "status": "Clarity 作成済・未設置（★WPログインURLが不明・有璽氏「直ぐには分からない」10/5＝保留）"
     }
   ],
   "excluded": [
