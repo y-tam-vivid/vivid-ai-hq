@@ -345,7 +345,7 @@ def main():
     try:
         log = improvement_log()
         cands = [(d['log_label'], a, t) for d in data for a, t in d['findings']]
-        made = 0 if '--dry-run' in sys.argv else add_candidates(cands, cur[0], log)
+        made = 0 if ('--dry-run' in sys.argv or '--to' in sys.argv) else add_candidates(cands, cur[0], log)   # ★試し送り（--to）では起票しない
         act = [r for r in log if r['state'] in ('採用', '実施中')]
         LOG_HTML = ('進行中の打ち手 %d件／候補 %d件（今回の自動起票 %d件）<br>' %
                     (len(act), len([r for r in log if r['state'] == '候補']), made) +
