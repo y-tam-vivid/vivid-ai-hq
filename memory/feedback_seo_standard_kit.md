@@ -34,3 +34,9 @@ metadata:
 - ✅10/5 119番：さくらファイルマネージャー（右クリック→指定の名前で複製で控え→編集）で <head> 直後へタグ。★編集欄の値をJSで書き換えただけでは保存されない（1回目は未反映）→実キー入力を1回入れてから「保存」。差分はタグ2行のみ・3通信を確認
 - ★ファイルマネージャーのボタンは target=_blank で別窓に開き操作不能 → form.target='_self' にして同じタブで開く
 - ★10/5 有璽氏「LPでヒートマップを設定した覚え（ツエルサープ？）」→ 記録上LPのヒートマップは★Microsoft Clarity（gamemarke・y999sy395z）だけ＝今回の5サイトと同じ仕組み。他のヒートマップ製品の記録は memory に0件（1経路で確認）
+
+**⛔訂正（10/5）既存の定期レビューは在った**
+- 「定期レビューの仕組みは無い」と報告したのは誤り。★リポジトリと両機の cron/launchd しか見ていなかった。**クラウドのルーティン**に在る：
+  - `trig_01Y9rJkmzHmUFmsYJ9tVAuhj`「SEO巡回エージェント（月次・Search Console自動分析）」毎月1日 9:00 JST・10/1 成功。Search Console→Artifact→Slack #03_広報部＋メール。対象4サイト（オレンジ・LIFE STAND UP・ビビッド・ふくち。）＝★ko-station・119番が入っていない／Clarityも入っていない
+  - `trig_019a1vGFx5c5K3wKu7W6ZnBZ`「MEO月次チェック」毎月1日・Slackへチェックリスト
+- ★定期処理を「無い」と言う前に、①リポジトリ ②両機 cron/launchd ③クラウドのルーティン（RemoteTrigger list）④Notion 自動処理レジスタ の4か所を見る
