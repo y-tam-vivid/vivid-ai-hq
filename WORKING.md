@@ -126,7 +126,7 @@
 
 - **【ビビ（サイト担当）/ MacBook 2026-10-03】こどもステーション団体サイト ── v28 公開済み・ko-station.org へ乗せ替え準備中**
   - ★**`~/kodomo-photo-work/build_site.py` を2セッションで同時に触っている**（リリース側が festgal へ13枚追加）。
-    公開は★必ず最新の番号から（いま v38 ★10/5 記事を事業報告書ベースへ。直しの正本は oct3_fixes.py＋articles_fixes.py＋seo_fixes.py。直しの正本は oct3_fixes.py＋seo_fixes.py）。古い番号から出すとトップ切り替え・注目の取り組みのリンク・素案札の削除・計測が消える
+    公開は★必ず最新の番号から（いま v39 ★10/5 団体GA4。直しの正本は oct3_fixes.py＋articles_fixes.py＋seo_fixes.py＋ga4_fixes.py。直しの正本は oct3_fixes.py＋seo_fixes.py）。古い番号から出すとトップ切り替え・注目の取り組みのリンク・素案札の削除・計測が消える
   - ✅10/3 14時台 ko-station.org / www で本番公開済み（DNS切替完了・証明書発行済み）。以後の公開も最新番号から
   - **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定
   - **📮リリース担当へ（10/5 有璽氏の指示で引き継ぎ）**：制作物を共有ドライブへまとめた。プレスリリース用は
