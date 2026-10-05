@@ -125,14 +125,21 @@
   ✅10/5 19:34 **本番反映済み**（有璽氏 #8a851c=出す）。★2経路で検算して一致（本番とデプロイ実体は同一ハッシュ／見本6種とも0件／下書き0件）
   ✅#a30f02=外す → `~/kawachibanashi_site/.vercel` を `_vercel_外した_20261005` へ改名（消していない）
   **★同じ対象に手をつけないでください**: `kb_live.sh` の案B印の3か所（164-217/259-325/381-382行）／`~/kb_build`／`~/kb_live`
-  🔴**判断待ち #512b06 終わったイベントの扱い**（#ec85f9 は「材料をもう少し」で返ってきたので材料を足して再掲）。
-  ★材料＝器は公開2件だけ。落とすと **11/1 に0件** になり、いまの作りでは**サイト全体の更新が止まる**
+  ✅#512b06=「落とす＋0件は節ごと隠す」（21:01）→ リリスが実装完了（★本番未反映・控え `_backups/kb_live.sh.bak_20261005_expired`）
+  ✅**案件フォルダを番号で組み直した**（Drive `03_かわちばなし_…/` 00〜06・2.9G）。★02の16世代は移さずリネーム。稼働実体は入れず00の地図に在処だけ書いた
+  ✅**v3 をデザイン側へ渡した**（有璽氏 10/5）
+  ✅**4市のイベントRSSを実測＝計60件**（柏原10/藤井寺18/羽曳野12/松原20）。★柏原は `lg.jp` へ移転・藤井寺と羽曳野はRDF形式
+  ▶**収集をピタゴラスへ投げた**（mini・`~/.vivid-relay/pita_kawachi_collect.txt`）。出口 `kawachi_collect_result.md`／スクリプト `kb_collect.py`。
+    ★下書きで入れる（「公開」「確認済み」は空のまま）・ID は kb-0004 から・既存3行は触らない
+  🔴**計測が0だった**（Clarity/GA4/GTMとも）。台帳 `bin/web_tracking/sites.json` へ8件目として登録し、`site_audit.py` の表に出るようにした（いま ✗ 401）。
+    ★公開の順番＝①Clarity ②独自ドメイン ③Search Console ④合言葉を外す
+  **★同じ対象に手をつけないでください（追加）**: `~/.vivid-relay/kb_collect.py` ／ シート `1mRp6Cx…` の「イベント」タブ ／ `bin/web_tracking/sites.json` のかわちばなしの行
   ▶Aの依頼文は Drive の案件フォルダへ `かわちばなし_修正依頼_20261005_v3.txt`（★渡すのはこれ1本・v1のPDFとv2は旧版）。渡すのは有璽氏の手
 
 - **【リリス / MacBook 2026-10-05】公開中サイトへ Clarity＋SEO標準装備** ── 対象 www.vivid-global.com／i-life-fukushi.com／fuku-chi.com／orange-works.co（★ko-station.org は済・触らない）。
   書く先＝Skill web-tracking-setup（台帳節を追加）・Clarity 管理画面・各CMSの head。**★同じ対象に手をつけないでください**: 上4サイトの head／GTM-PQX3L4TQ
   ✅Clarity 設置＝ILIFE・ふくち。・オレンジワークス・119番（10/5・実ブラウザで3通信確認）／★ビビッドのみ保留（WPログインURL不明）／SKILL.md 追記は承認待ち
-  ▶SEO週次メール（自前・有璽氏決定 #dd191c）：試し送り済み（10/5 16:33）。★残＝有璽氏の確認→ドーベルマン点検→cron（clarity_daily 毎日0:30／weekly_seo_report 月曜7:00）。**★同じ対象に手をつけないでください**: bin/web_tracking/{clarity_daily,weekly_seo_report}.py／mini ~/.vivid-relay/{google_token_seo,clarity_tokens}.json
+  ▶SEO週次・月次（自前・有璽氏決定）：週次v3（AI深掘り・打ち手→Slack採否）／月次（実測＋深掘り＋アクション案→有璽氏が指示）とも試し送り済み（10/5）。✅ドーベルマン点検＋必須修正済み（10/5 22時）。★残＝Slack #9a434c・#ab4ddd の回答→レジスタ3行→cron 3本（週次・月次は mini の取り込み保留が解けてから）→旧クラウド月次 trig_01Y9 は11/1確認後に停止。**★同じ対象に手をつけないでください**: bin/web_tracking/{clarity_daily,weekly_seo_report,monthly_seo_report,ai_analysis}.py／Notion「🔧 サイト改善ログ」
 
 - **【ビビ（サイト担当）/ MacBook 2026-10-03】こどもステーション団体サイト ── v28 公開済み・ko-station.org へ乗せ替え準備中**
   - ★**`~/kodomo-photo-work/build_site.py` を2セッションで同時に触っている**（リリース側が festgal へ13枚追加）。

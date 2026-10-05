@@ -31,7 +31,10 @@ JST = dt.timezone(dt.timedelta(hours=9))
 TO_DEFAULT = 'y_tam@vivid-global.com'
 OUT_HTML = os.path.join(RELAY, 'weekly_seo_report.html')
 HEARTBEAT = os.path.join(RELAY, 'weekly_seo_report.last')
+PROC_NAME = 'SEO週次レポート（weekly_seo_report.py）'   # ★⚙️自動処理レジスタの「処理名」と完全一致
+PROBLEMS = []   # 部分失敗（AI・Notion・Slack・シート）を集めて心拍のメッセージに載せる
 LOG_HTML = ''
+AI_HTML = ''
 
 
 def creds():
@@ -157,11 +160,13 @@ def improvement_log():
 
 
 def add_candidates(cands, week_start, existing):
-    """気づきを「候補」として起票する。★同じサイト×同じ打ち手が既にあれば足さない"""
+    """AI の打ち手を「候補」として起票し、Slack のボタンで採否を聞く。★同じサイト×同じ打ち手が既にあれば足さない"""
     have = {(r['site'], r['title']) for r in existing}
     made = 0
-    for site, area, text in cands:
-        title = '［要検討］' + text
+    for site, area, title, a in cands:
+        text = '%s／やり方：%s（担当：%s・手間：%s）' % (a.get('why', ''), a.get('how', ''), a.get('who', ''), a.get('effort', ''))
+        if not title:
+            continue
         if (site, title) in have:
             continue
         notion('POST', '/pages', {'parent': {'data_source_id': NOTION_DS}, 'properties': {
@@ -169,8 +174,17 @@ def add_candidates(cands, week_start, existing):
             'サイト': {'select': {'name': site}}, '領域': {'multi_select': [{'name': area}]},
             '状態': {'select': {'name': '候補'}}, '起票': {'select': {'name': '週次レポート（自動）'}},
             '気づいた週': {'date': {'start': week_start}},
-            '気づき': {'rich_text': [{'text': {'content': text[:1900]}}]}}})
+            '気づき': {'rich_text': [{'text': {'content': text[:1900]}}]},
+            '担当': {'rich_text': [{'text': {'content': 'AI' if a.get('who') == 'AI' else '人（有璽氏が指示）'}}]}}})
         made += 1
+        try:
+            import ask_hub
+            ask_hub.ask('【SEO週次】打ち手の採否：%s' % title[:60], '%s ── %s' % (site, title),
+                        [('AIに任せる（実施）' if a.get('who') == 'AI' else '進める', 'primary'), ('見送り', None)],
+                        detail=text, asked_by='SEO週次レポート（AI）', kind='広報')
+        except Exception as ex:
+            sys.stderr.write('Slackへの採否依頼に失敗：%s\n' % ex)
+            PROBLEMS.append('Slack採否')
     return made
 
 
@@ -206,9 +220,9 @@ def clarity_site(rows, site_name, days):
 
 
 # ── 表示 ─────────────────────────────────────────────────────
-def pct(cur, prev):
+def pct(cur, prev, unit='先週'):
     if not prev:
-        return '<span style="color:#888">（先週0）</span>' if cur else ''
+        return '<span style="color:#888">（%s0）</span>' % unit if cur else ''
     d = (cur - prev) / prev * 100
     col = '#1e7a4c' if d > 0 else ('#b3261e' if d < 0 else '#888')
     return '<span style="color:%s">%+.0f%%</span>' % (col, d)
@@ -251,7 +265,9 @@ def build(data, cur, prev, cdays, tags):
              'デッド＝押しても反応しない所を押した訪問の割合／怒り＝同じ所を連打した割合／すぐ戻る＝開いてすぐ戻った割合。'
              '読了の深さ＝ページの何%までスクロールしたか（平均）。指名検索＝施設名・社名を含む検索（AIEOの代わりの指標）。'
              'AI経由＝ChatGPT・Copilot・Perplexity等から来た訪問（Clarityの参照元）</div>')
-    h.append('<h3 style="margin:24px 0 6px">② 今週の気づき（自動）</h3><div style="font-size:13px">')
+    h.append('<h3 style="margin:24px 0 6px">② AIの深掘りと今週の打ち手</h3>')
+    h.append(AI_HTML or '<div style="font-size:12px;color:#7a6a5c">（AIの分析なし）</div>')
+    h.append('<h4 style="margin:16px 0 4px;font-size:13px">機械が拾った変化（参考）</h4><div style="font-size:13px">')
     anyf = False
     for d in data:
         for area, text in d.get('findings', []):
@@ -260,7 +276,7 @@ def build(data, cur, prev, cdays, tags):
     if not anyf:
         h.append('大きな変化なし')
     h.append('</div>')
-    h.append('<h3 style="margin:24px 0 6px">③ 改善ログ（Notion）</h3><div style="font-size:13px">')
+    h.append('<h3 style="margin:24px 0 6px">③ 改善ログ（AIの作業記録・Notion）</h3><div style="font-size:13px">')
     h.append(LOG_HTML)
     h.append('</div>')
     h.append('<h3 style="margin:24px 0 6px">④ サイト別</h3>')
@@ -288,6 +304,77 @@ def build(data, cur, prev, cdays, tags):
     h.append('</div><div style="font-size:11px;color:#7a6a5c;margin-top:20px">'
              'Mac mini の weekly_seo_report.py が自動で作成。数字は Search Console と Clarity の値のみ（推測で埋めていない）。</div></div>')
     return '\n'.join(h)
+
+
+SUMMARY_TAB = 'weekly_summary'
+SUMMARY_HEADER = ['週の初日', '週の末日', 'サイト', 'ドメイン', '検索の表示', '検索のクリック', 'CTR(%)', '平均順位',
+                  '先週の表示', '先週のクリック', 'Clarity訪問', 'デッド(%)', '怒り(%)', 'すぐ戻る(%)', '読了の深さ(%)',
+                  '指名検索クリック', 'AI経由の訪問', 'Clarityの日数', 'タグ点検', '記録時刻']
+
+
+def record_summary(data, cur, cdays, tags):
+    """①の一覧を「1週×1サイト＝1行」でシートに積む（週で見比べるための記録）。同じ週の行が既にあれば積まない"""
+    from sheets_client import Sheets
+    sh = Sheets()
+    sid = open(os.path.join(RELAY, 'clarity_sheet_id.txt')).read().strip()
+    titles = [s['properties']['title'] for s in sh.svc.spreadsheets().get(spreadsheetId=sid).execute()['sheets']]
+    if SUMMARY_TAB not in titles:
+        sh.svc.spreadsheets().batchUpdate(spreadsheetId=sid, body={'requests': [
+            {'addSheet': {'properties': {'title': SUMMARY_TAB}}}]}).execute()
+        sh.svc.spreadsheets().values().update(spreadsheetId=sid, range=SUMMARY_TAB + '!A1',
+                                              valueInputOption='RAW', body={'values': [SUMMARY_HEADER]}).execute()
+    have = {(r[0], r[2]) for r in (sh.read(sid, SUMMARY_TAB) or [])[1:] if len(r) > 2}
+    tagd = dict(tags)
+    now = dt.datetime.now(JST).isoformat(timespec='seconds')
+    rows = []
+    for d in data:
+        if (cur[0], d['name']) in have:
+            continue
+        g, c, b, ai = d.get('gsc') or {}, d.get('clarity') or {}, d.get('brand'), d.get('ai')
+        gc, gp = g.get('cur', {}), g.get('prev', {})
+        rnd = lambda v, n=1: '' if v is None else round(v, n)
+        rows.append([cur[0], cur[1], d['name'], d['domain'],
+                     gc.get('impressions', ''), gc.get('clicks', ''), rnd(gc.get('ctr')), rnd(gc.get('position')),
+                     gp.get('impressions', ''), gp.get('clicks', ''),
+                     c.get('sessions', ''), rnd(c.get('dead')), rnd(c.get('rage')), rnd(c.get('quickback')),
+                     rnd(c.get('scroll')), b['clicks'] if b else '', ai[0] if ai else '', len(cdays),
+                     tagd.get(d['name'], ''), now])
+    if rows:
+        sh.svc.spreadsheets().values().append(spreadsheetId=sid, range=SUMMARY_TAB + '!A1', valueInputOption='RAW',
+                                              insertDataOption='INSERT_ROWS', body={'values': rows}).execute()
+    return len(rows)
+
+
+def render_ai(ai):
+    e = html.escape
+    if not ai:
+        return ''
+    if ai.get('error'):
+        return '<div style="font-size:12px;color:#b3261e">AIの分析を作れませんでした（%s）</div>' % e(ai['error'][:120])
+    h = ['<div style="font-size:13px;background:#fffaf3;border-left:4px solid #e8740c;padding:8px 12px">%s</div>'
+         % e(ai.get('summary', '')).replace('\n', '<br>')]
+    for x in ai.get('sites', []):
+        h.append('<div style="font-size:13px;margin:8px 0"><b>%s</b><br>何が起きた：%s<br>なぜ：%s<br>次に：%s</div>'
+                 % tuple(e(x.get(k, '')) for k in ('site', 'what', 'why', 'next')))
+    if ai.get('actions'):
+        h.append('<div style="font-size:13px;margin-top:8px"><b>今週の打ち手（Slackで採否をお聞きします）</b></div>')
+        for a in ai['actions']:
+            h.append('<div style="font-size:13px;margin:4px 0 4px 8px">・［%s／%s］<b>%s</b>（担当：%s・手間：%s）<br>'
+                     '<span style="color:#7a6a5c">なぜ：%s／やり方：%s</span></div>'
+                     % tuple(e(a.get(k, '')) for k in ('site', 'area', 'title', 'who', 'effort', 'why', 'how')))
+    return '\n'.join(h)
+
+
+def beat_once(ok, msg):
+    """本番だけ心拍（.last＋レジスタ）。★--dry-run・--to（試し送り）では打たない"""
+    if '--dry-run' in sys.argv or '--to' in sys.argv:
+        return
+    open(HEARTBEAT, 'w').write('%s %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), msg))
+    try:
+        from heartbeat import beat
+        beat(PROC_NAME, '成功' if ok and not PROBLEMS else ('警告' if ok else '失敗'), msg)
+    except Exception as ex:
+        sys.stderr.write('心拍を送れず：%s\n' % ex)
 
 
 def send(to, subject, body_html):
@@ -321,7 +408,7 @@ def main():
         if cid.isalnum():
             d['clarity_id'] = cid
             d['clarity'] = clarity_site(crows, s['name'], cdays)
-        if s.get('gsc'):
+        if s.get('gsc') and s['gsc'].get('property', '').startswith(('sc-domain:', 'http')):   # ★未登録（「★未登録…」等）は取りにいかない
             try:
                 d['gsc'] = gsc_site(sc, s['gsc'], cur, prev)
             except Exception as ex:
@@ -340,12 +427,34 @@ def main():
             tags.append((s['name'], a.get('clarity', '—')))
         except Exception as ex:
             tags.append((s['name'], '✗ 点検失敗 %s' % str(ex)[:60]))
-    global LOG_HTML
+    global LOG_HTML, AI_HTML
+    ai = {}
+    if '--no-ai' not in sys.argv:
+        from ai_analysis import analyze
+        payload = {'period': {'this_week': cur, 'last_week': prev}, 'clarity_days': len(got_cdays), 'sites': [{
+            'site': d['name'], 'domain': d['domain'],
+            'search': ({k: d['gsc'].get(k) for k in ('cur', 'prev')} if d.get('gsc') and 'cur' in d['gsc'] else None),
+            'top_queries': ([{'q': r['keys'][0], 'clicks': r.get('clicks'), 'impr': r.get('impressions'),
+                              'pos': round(r.get('position', 0), 1)} for r in d['gsc'].get('queries', [])[:15]]
+                            if d.get('gsc') and 'queries' in d['gsc'] else None),
+            'clarity': ({k: v for k, v in d['clarity'].items() if k != 'days'} if d.get('clarity') else None),
+            'brand_search': d.get('brand'), 'ai_referrals': (d['ai'][0] if d.get('ai') else None),
+            'signals': [t for _, t in d.get('findings', [])], 'tag': dict(tags).get(d['name'])} for d in data]}
+        try:
+            payload['improvement_log'] = [{'site': r['site'], 'title': r['title'], 'state': r['state'],
+                                           'effect': r['effect']} for r in improvement_log()]
+        except Exception:
+            pass
+        ai = analyze(payload, 'weekly')
+        if ai.get('error'):
+            PROBLEMS.append('AI分析')
+    AI_HTML = render_ai(ai)
     db_url = 'https://app.notion.com/p/afbfa222ea2848598c384e6c4d983d97'
     try:
         log = improvement_log()
-        cands = [(d['log_label'], a, t) for d in data for a, t in d['findings']]
-        made = 0 if '--dry-run' in sys.argv else add_candidates(cands, cur[0], log)
+        label = {d['name']: d.get('log_label', '全サイト') for d in data}
+        cands = [(label.get(a.get('site'), '全サイト'), a.get('area', 'SEO'), a.get('title', ''), a) for a in ai.get('actions', [])]
+        made = 0 if ('--dry-run' in sys.argv or '--to' in sys.argv) else add_candidates(cands, cur[0], log)   # ★試し送り（--to）では起票しない
         act = [r for r in log if r['state'] in ('採用', '実施中')]
         LOG_HTML = ('進行中の打ち手 %d件／候補 %d件（今回の自動起票 %d件）<br>' %
                     (len(act), len([r for r in log if r['state'] == '候補']), made) +
@@ -353,9 +462,17 @@ def main():
                             ('<br>　→ 効果：' + html.escape(r['effect'])) if r['effect'] else '') for r in act) +
                     '<a href="%s">改善ログを開く（候補を採用・見送りに変える）</a>' % db_url)
     except Exception as ex:
+        PROBLEMS.append('Notion改善ログ')
         LOG_HTML = ('<span style="color:#b3261e">改善ログを読めませんでした（%s）。'
                     'Notionの接続設定を確認してください。</span><br><a href="%s">改善ログを開く</a>' % (html.escape(str(ex)[:80]), db_url))
     body = build(data, cur, prev, got_cdays, tags)
+    # ①を週次サマリーとしてシートに積む（本番送信時。--record を付ければ試し・dry-run でも積む）
+    if '--record' in sys.argv or ('--dry-run' not in sys.argv and '--to' not in sys.argv):
+        try:
+            print('週次サマリーを記録：%d行' % record_summary(data, cur, got_cdays, tags))
+        except Exception as ex:
+            sys.stderr.write('週次サマリーの記録に失敗：%s\n' % ex)
+            PROBLEMS.append('週次サマリー記録')
     open(OUT_HTML, 'w', encoding='utf-8').write(body)
     subject = 'ふくち。グループ SEO週次レポート（%s〜%s）' % (cur[0][5:].replace('-', '/'), cur[1][5:].replace('-', '/'))
     if '--dry-run' in sys.argv:
@@ -364,7 +481,9 @@ def main():
     to = sys.argv[sys.argv.index('--to') + 1] if '--to' in sys.argv else TO_DEFAULT
     r = send(to, subject, body)
     msg = 'OK 送信 %s id=%s %dサイト' % (to, r.get('id'), len(data))
-    open(HEARTBEAT, 'w').write('%s %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), msg))
+    if PROBLEMS:
+        msg += ' ／一部失敗：' + '・'.join(PROBLEMS)
+    beat_once(True, msg)
     print(msg)
 
 
@@ -372,5 +491,5 @@ if __name__ == '__main__':
     try:
         main()
     except Exception as ex:
-        open(HEARTBEAT, 'w').write('%s NG %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), str(ex)[:200]))
+        beat_once(False, 'NG %s' % str(ex)[:200])
         raise

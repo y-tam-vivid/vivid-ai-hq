@@ -30,6 +30,7 @@ SITES_JSON = os.path.join(HERE, 'sites.json')
 TOKENS = os.path.join(RELAY, 'clarity_tokens.json')
 SHEET_ID_FILE = os.path.join(RELAY, 'clarity_sheet_id.txt')
 HEARTBEAT = os.path.join(RELAY, 'clarity_daily.last')
+PROC_NAME = 'Clarity日次の取得（clarity_daily.py）'   # ★⚙️自動処理レジスタの「処理名」と完全一致させる
 API = 'https://www.clarity.ms/export-data/api/v1/project-live-insights'
 TAB = 'clarity_daily'
 HEADER = ['日付', 'サイト', 'ドメイン', '範囲', 'URL', '指標', '項目', '値', '取得時刻']
@@ -37,8 +38,17 @@ JST = dt.timezone(dt.timedelta(hours=9))
 
 
 def heartbeat(msg):
+    """本番だけ心拍を打つ（.last とレジスタ）。★--dry-run では打たない（試しの OK が本番の沈黙を隠すため）"""
+    if '--dry-run' in sys.argv:
+        return
     with open(HEARTBEAT, 'w') as f:
         f.write('%s %s\n' % (dt.datetime.now(JST).isoformat(timespec='seconds'), msg))
+    try:
+        sys.path.insert(0, RELAY)
+        from heartbeat import beat
+        beat(PROC_NAME, '失敗' if msg.startswith('NG') else '成功', msg)
+    except Exception as ex:
+        sys.stderr.write('心拍を送れず：%s\n' % ex)
 
 
 def sites():
@@ -153,8 +163,15 @@ def main():
         return
     if all_rows:
         sid = open(SHEET_ID_FILE).read().strip()
+        # ★同じ日付×サイトが既にあれば積まない（手で再実行しても二重にならない）
+        have = {(r[0], r[1]) for r in (sheets().read(sid, TAB) or [])[1:] if len(r) > 1}
+        dup = {(r[0], r[1]) for r in all_rows} & have
+        if dup:
+            report.append('既に記録済みの日付×サイト %d組は積まなかった' % len(dup))
+            all_rows = [r for r in all_rows if (r[0], r[1]) not in have]
+    if all_rows:
         sheets().svc.spreadsheets().values().append(
-            spreadsheetId=sid, range=TAB + '!A1', valueInputOption='RAW',
+            spreadsheetId=open(SHEET_ID_FILE).read().strip(), range=TAB + '!A1', valueInputOption='RAW',
             insertDataOption='INSERT_ROWS', body={'values': all_rows}).execute()
     bad = [r for r in report if '✗' in r]
     heartbeat(('NG ' if bad else 'OK ') + '%d行 ' % len(all_rows) + ' / '.join(report))
