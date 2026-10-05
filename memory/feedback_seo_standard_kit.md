@@ -57,3 +57,7 @@ metadata:
 - ⛔訂正（10/5）「SEO巡回エージェント 10/1 成功」は誤り。状態表示は SUCCEEDED だが★Slack・メール配信は自動判定（Real-World Transactions）で拒否＝届いていない。レポートページ（Artifact 42uQ6hU8zvsT99j1C1Pc9U）だけ公開。9/23 の手動テストも2回目は External System Writes で拒否。★ルーティンの成否は status でなく get_run_log の中身で見る
 - 10/1 時点：ルーティンのGoogleアカウントは4サイトとも Search Console を読める（9/23 はビビッド・ふくち。が insufficient permission だった）。🔴 LIFE STAND UP のクリックが 8月351→9月87（−75%・表示はほぼ横ばい）
 - ★claude.ai 側の Claude Code の会話は、セッション番号（cse_… / session_…）が分かれば RemoteTrigger get_run_log で読める。一覧を出す手段は無い（定期タスクの実行分だけ list_runs で辿れる）
+- ✅**Looker Studio 採用の経緯が判明（10/5）**：claude.ai の Claude Code セッション session_011brzwhL5sbxEf6LPrnAmaU（9/19〜9/25・SEO/MEO戦略）。設計書＝ lifestandup-wp 枝 `claude/web-strategy-proposal-continued-cozz30` の `proposal/web-strategy/22_KPI自動収集の実装_LookerStudioとClaude巡回エージェント.md`（9/20作成）
+  - 「二段構え」：第1段 Looker Studio＝★今すぐ・認証の受け渡し不要で数値を見える化（有璽氏が手で約10分接続）／第2段 Claude巡回エージェント＝取得＋分析コメント＋通知まで自動。「両者は補完。まずLookerで土台、エージェントで分析まで自動化していく」
+  - 当時 Search Console に在ったのが orange-works.co と i-life-fukushi.com の2つだけ＝★Lookerが2サイトなのはこのため（ビビッド・ふくち。は後から sc-domain で追加）
+  - ★週次の「自前メール」案は、この設計の第2段を完成させる方向と一致する
