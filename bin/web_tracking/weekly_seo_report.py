@@ -32,6 +32,7 @@ TO_DEFAULT = 'y_tam@vivid-global.com'
 OUT_HTML = os.path.join(RELAY, 'weekly_seo_report.html')
 HEARTBEAT = os.path.join(RELAY, 'weekly_seo_report.last')
 LOG_HTML = ''
+AI_HTML = ''
 
 
 def creds():
@@ -157,11 +158,13 @@ def improvement_log():
 
 
 def add_candidates(cands, week_start, existing):
-    """気づきを「候補」として起票する。★同じサイト×同じ打ち手が既にあれば足さない"""
+    """AI の打ち手を「候補」として起票し、Slack のボタンで採否を聞く。★同じサイト×同じ打ち手が既にあれば足さない"""
     have = {(r['site'], r['title']) for r in existing}
     made = 0
-    for site, area, text in cands:
-        title = '［要検討］' + text
+    for site, area, title, a in cands:
+        text = '%s／やり方：%s（担当：%s・手間：%s）' % (a.get('why', ''), a.get('how', ''), a.get('who', ''), a.get('effort', ''))
+        if not title:
+            continue
         if (site, title) in have:
             continue
         notion('POST', '/pages', {'parent': {'data_source_id': NOTION_DS}, 'properties': {
@@ -169,8 +172,16 @@ def add_candidates(cands, week_start, existing):
             'サイト': {'select': {'name': site}}, '領域': {'multi_select': [{'name': area}]},
             '状態': {'select': {'name': '候補'}}, '起票': {'select': {'name': '週次レポート（自動）'}},
             '気づいた週': {'date': {'start': week_start}},
-            '気づき': {'rich_text': [{'text': {'content': text[:1900]}}]}}})
+            '気づき': {'rich_text': [{'text': {'content': text[:1900]}}]},
+            '担当': {'rich_text': [{'text': {'content': 'AI' if a.get('who') == 'AI' else '人（有璽氏が指示）'}}]}}})
         made += 1
+        try:
+            import ask_hub
+            ask_hub.ask('【SEO週次】打ち手の採否：%s' % title[:60], '%s ── %s' % (site, title),
+                        [('AIに任せる（実施）' if a.get('who') == 'AI' else '進める', 'primary'), ('見送り', None)],
+                        detail=text, asked_by='SEO週次レポート（AI）', kind='広報')
+        except Exception as ex:
+            sys.stderr.write('Slackへの採否依頼に失敗：%s\n' % ex)
     return made
 
 
@@ -251,7 +262,9 @@ def build(data, cur, prev, cdays, tags):
              'デッド＝押しても反応しない所を押した訪問の割合／怒り＝同じ所を連打した割合／すぐ戻る＝開いてすぐ戻った割合。'
              '読了の深さ＝ページの何%までスクロールしたか（平均）。指名検索＝施設名・社名を含む検索（AIEOの代わりの指標）。'
              'AI経由＝ChatGPT・Copilot・Perplexity等から来た訪問（Clarityの参照元）</div>')
-    h.append('<h3 style="margin:24px 0 6px">② 今週の気づき（自動）</h3><div style="font-size:13px">')
+    h.append('<h3 style="margin:24px 0 6px">② AIの深掘りと今週の打ち手</h3>')
+    h.append(AI_HTML or '<div style="font-size:12px;color:#7a6a5c">（AIの分析なし）</div>')
+    h.append('<h4 style="margin:16px 0 4px;font-size:13px">機械が拾った変化（参考）</h4><div style="font-size:13px">')
     anyf = False
     for d in data:
         for area, text in d.get('findings', []):
@@ -260,7 +273,7 @@ def build(data, cur, prev, cdays, tags):
     if not anyf:
         h.append('大きな変化なし')
     h.append('</div>')
-    h.append('<h3 style="margin:24px 0 6px">③ 改善ログ（Notion）</h3><div style="font-size:13px">')
+    h.append('<h3 style="margin:24px 0 6px">③ 改善ログ（AIの作業記録・Notion）</h3><div style="font-size:13px">')
     h.append(LOG_HTML)
     h.append('</div>')
     h.append('<h3 style="margin:24px 0 6px">④ サイト別</h3>')
@@ -329,6 +342,26 @@ def record_summary(data, cur, cdays, tags):
     return len(rows)
 
 
+def render_ai(ai):
+    e = html.escape
+    if not ai:
+        return ''
+    if ai.get('error'):
+        return '<div style="font-size:12px;color:#b3261e">AIの分析を作れませんでした（%s）</div>' % e(ai['error'][:120])
+    h = ['<div style="font-size:13px;background:#fffaf3;border-left:4px solid #e8740c;padding:8px 12px">%s</div>'
+         % e(ai.get('summary', '')).replace('\n', '<br>')]
+    for x in ai.get('sites', []):
+        h.append('<div style="font-size:13px;margin:8px 0"><b>%s</b><br>何が起きた：%s<br>なぜ：%s<br>次に：%s</div>'
+                 % tuple(e(x.get(k, '')) for k in ('site', 'what', 'why', 'next')))
+    if ai.get('actions'):
+        h.append('<div style="font-size:13px;margin-top:8px"><b>今週の打ち手（Slackで採否をお聞きします）</b></div>')
+        for a in ai['actions']:
+            h.append('<div style="font-size:13px;margin:4px 0 4px 8px">・［%s／%s］<b>%s</b>（担当：%s・手間：%s）<br>'
+                     '<span style="color:#7a6a5c">なぜ：%s／やり方：%s</span></div>'
+                     % tuple(e(a.get(k, '')) for k in ('site', 'area', 'title', 'who', 'effort', 'why', 'how')))
+    return '\n'.join(h)
+
+
 def send(to, subject, body_html):
     msg = MIMEText(body_html, 'html', 'utf-8')
     msg['To'], msg['Subject'] = to, subject
@@ -379,11 +412,31 @@ def main():
             tags.append((s['name'], a.get('clarity', '—')))
         except Exception as ex:
             tags.append((s['name'], '✗ 点検失敗 %s' % str(ex)[:60]))
-    global LOG_HTML
+    global LOG_HTML, AI_HTML
+    ai = {}
+    if '--no-ai' not in sys.argv:
+        from ai_analysis import analyze
+        payload = {'period': {'this_week': cur, 'last_week': prev}, 'clarity_days': len(got_cdays), 'sites': [{
+            'site': d['name'], 'domain': d['domain'],
+            'search': ({k: d['gsc'].get(k) for k in ('cur', 'prev')} if d.get('gsc') and 'cur' in d['gsc'] else None),
+            'top_queries': ([{'q': r['keys'][0], 'clicks': r.get('clicks'), 'impr': r.get('impressions'),
+                              'pos': round(r.get('position', 0), 1)} for r in d['gsc'].get('queries', [])[:15]]
+                            if d.get('gsc') and 'queries' in d['gsc'] else None),
+            'clarity': ({k: v for k, v in d['clarity'].items() if k != 'days'} if d.get('clarity') else None),
+            'brand_search': d.get('brand'), 'ai_referrals': (d['ai'][0] if d.get('ai') else None),
+            'signals': [t for _, t in d.get('findings', [])], 'tag': dict(tags).get(d['name'])} for d in data]}
+        try:
+            payload['improvement_log'] = [{'site': r['site'], 'title': r['title'], 'state': r['state'],
+                                           'effect': r['effect']} for r in improvement_log()]
+        except Exception:
+            pass
+        ai = analyze(payload, 'weekly')
+    AI_HTML = render_ai(ai)
     db_url = 'https://app.notion.com/p/afbfa222ea2848598c384e6c4d983d97'
     try:
         log = improvement_log()
-        cands = [(d['log_label'], a, t) for d in data for a, t in d['findings']]
+        label = {d['name']: d.get('log_label', '全サイト') for d in data}
+        cands = [(label.get(a.get('site'), '全サイト'), a.get('area', 'SEO'), a.get('title', ''), a) for a in ai.get('actions', [])]
         made = 0 if ('--dry-run' in sys.argv or '--to' in sys.argv) else add_candidates(cands, cur[0], log)   # ★試し送り（--to）では起票しない
         act = [r for r in log if r['state'] in ('採用', '実施中')]
         LOG_HTML = ('進行中の打ち手 %d件／候補 %d件（今回の自動起票 %d件）<br>' %
