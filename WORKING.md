@@ -120,6 +120,13 @@
 
 ### 進行中（MacBookセッション記入）
 
+- **【ビビ / MacBook 2026-10-05】かわちばなし ── ★案B（スプレッドシート→サイト自動生成）へ着手**
+  - 有璽氏の決定（10/5）：参考=祭りどころ（Next.js+Supabase・1993件）。**★案B で進める**
+  - ★書く対象：器のスプレッドシート `1mRp6CxNBGtgZ4jpQDTZzHMi074mcEmB0uH0sRFopWtI`（列の追加のみ・バックアップ後）／
+    新規の変換スクリプト（mini の `~/.vivid-relay/`）
+  - ★触らない：公開中の kawachibanashi.vercel.app ／ Drive の「地域イベントポータルサイト設計 16」
+  - **★同じ対象に手をつけないでください**: 上の器 ／ `memory/project_kawachibanashi_portal.md`
+
 - **【リリス / MacBook 2026-10-05】公開中サイトへ Clarity＋SEO標準装備** ── 対象 www.vivid-global.com／i-life-fukushi.com／fuku-chi.com／orange-works.co（★ko-station.org は済・触らない）。
   書く先＝Skill web-tracking-setup（台帳節を追加）・Clarity 管理画面・各CMSの head。**★同じ対象に手をつけないでください**: 上4サイトの head／GTM-PQX3L4TQ
   ✅Clarity 設置＝ILIFE・ふくち。・オレンジワークス・119番（10/5・実ブラウザで3通信確認）／★ビビッドのみ保留（WPログインURL不明）／SKILL.md 追記は承認待ち
