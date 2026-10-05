@@ -9,7 +9,11 @@
       "clarity": "ysq7i6pp71",
       "gtm": "GTM-PQX3L4TQ",
       "install_route": "WordPress の head（★GTM-PQX3L4TQ は ko-station・gamemarke と共用なので、GTMで入れるならトリガーを Page Hostname = www.vivid-global.com に絞る）",
-      "status": "Clarity 作成済・未設置（★WPログインURLが不明・有璽氏「直ぐには分からない」10/5＝保留）"
+      "status": "Clarity 作成済・未設置（★WPログインURLが不明・有璽氏「直ぐには分からない」10/5＝保留）",
+      "gsc": {
+        "property": "sc-domain:vivid-global.com",
+        "page_contains": "://www.vivid-global.com"
+      }
     },
     {
       "name": "株式会社ILIFE / LIFE STAND UP",
@@ -17,7 +21,10 @@
       "cms": "WordPress（テーマ lifestandup＝当方製）・162.43.117.28",
       "clarity": "ysq88yt7d8",
       "install_route": "Microsoft Clarity 公式プラグイン（0.10.35）。プロジェクトIDは admin-ajax edit_clarity_project_id で保存",
-      "status": "設置済（10/5）・実ブラウザで tag→clarity.js→collect の3通信を確認"
+      "status": "設置済（10/5）・実ブラウザで tag→clarity.js→collect の3通信を確認",
+      "gsc": {
+        "property": "https://i-life-fukushi.com/"
+      }
     },
     {
       "name": "株式会社ふくち。",
@@ -25,7 +32,10 @@
       "cms": "STUDIO",
       "clarity": "ysq8l03g9y",
       "install_route": "STUDIO デザインエディタ → 右パネル「サイト」→ カスタムコード <head> 内の末尾（名前 Microsoft Clarity）→ 公開「更新」",
-      "status": "設置済（10/5）・本番3ページでID確認・実ブラウザで tag→clarity.js→collect を確認"
+      "status": "設置済（10/5）・本番3ページでID確認・実ブラウザで tag→clarity.js→collect を確認",
+      "gsc": {
+        "property": "sc-domain:fuku-chi.com"
+      }
     },
     {
       "name": "オレンジワークス藤井寺",
@@ -34,7 +44,10 @@
       "clarity": "ysq8wingsx",
       "gtm": "GTM-PL37X5BK",
       "install_route": "AIOSEO →一般設定→ウェブマスターツール→Microsoft Clarity にIDを入れて保存（★さくらWAFがREST保存を403で遮断＝WAFを一時オフにしてから）。公式プラグインの導入も同じ理由で失敗。WAFの場所＝さくら(vivid)コントロールパネル → セキュリティ → WAF設定ドメイン → orange-works.co「設定」→「利用する」のチェック",
-      "status": "設置済（10/5・AIOSEOのClarity欄・WAFを一時オフにして保存）。本番3ページ＋実ブラウザ3通信を確認。★WAFは有璽氏が戻す"
+      "status": "設置済（10/5・AIOSEOのClarity欄・WAFを一時オフにして保存）。本番3ページ＋実ブラウザ3通信を確認。★WAFは有璽氏が戻す",
+      "gsc": {
+        "property": "https://orange-works.co/"
+      }
     },
     {
       "name": "福祉施設の119番",
@@ -42,7 +55,11 @@
       "cms": "静的HTML（nginx）・さくら 210.224.185.82",
       "clarity": "ysq969p6oj",
       "install_route": "さくら(vivid)ファイルマネージャー /home/vivid/www/fukushi119/index.html の <head> 直後（★編集画面は値をJSで変えただけだと保存されない→実キー入力を1回入れてから「保存」）",
-      "status": "Clarity 作成済・未設置（★WPログインURLが不明・有璽氏「直ぐには分からない」10/5＝保留）"
+      "status": "Clarity 作成済・未設置（★WPログインURLが不明・有璽氏「直ぐには分からない」10/5＝保留）",
+      "gsc": {
+        "property": "sc-domain:vivid-global.com",
+        "page_contains": "://fukushi119.vivid-global.com"
+      }
     },
     {
       "name": "NPO法人 南河内こどもステーション",
@@ -51,7 +68,10 @@
       "clarity": "yrpyrl79ny",
       "gtm": "GTM-PQX3L4TQ",
       "install_route": "~/kodomo-photo-work/build_site.py の add_tracking()",
-      "status": "設置済（10/3）・Search Console 登録済（10/5）"
+      "status": "設置済（10/3）・Search Console 登録済（10/5）",
+      "gsc": {
+        "property": "sc-domain:ko-station.org"
+      }
     },
     {
       "name": "ゲームマーケ",
@@ -76,5 +96,6 @@
       "url": "https://minamikawachi-kodomostation.jimdosite.com/",
       "reason": "旧サイト（ko-station.org へ移行済）"
     }
-  ]
+  ],
+  "_gsc": "gsc.property＝Search Console のプロパティ（sc-domain:＝ドメイン全体）。page_contains＝同じプロパティ内でページURLに含む文字で切り分ける（119番・ビビッドは vivid-global.com の中）"
 }

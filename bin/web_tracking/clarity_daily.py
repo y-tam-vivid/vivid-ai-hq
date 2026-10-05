@@ -76,13 +76,11 @@ def flatten(resp, site, day, now, dimension=None):
     for m in resp if isinstance(resp, list) else []:
         metric = m.get('metricName', '')
         for info in m.get('information') or []:
-            if dimension:
-                url = str(info.get(dimension, ''))
-            else:
-                # 内訳（Browser/Device/OS/Country/PageTitle/ReferrerUrl 等）は名前を URL 列に入れる。
-                # ★入れないと「sessionsCount 6」「sessionsCount 1」…と何の数字か分からない行になる（10/5 実測）
-                labels = [str(v) for k, v in info.items() if num(v) is None and v not in (None, '')]
-                url = labels[0] if labels else ''
+            # 内訳（Browser/Device/OS/Country/PageTitle/ReferrerUrl 等）やページ別のURLは、名前を URL 列に入れる。
+            # ★項目名（"URL" "Url" "name"…）は応答ごとに違うので名前で引かず「数字でない値」を拾う
+            #   （10/5 実測：dimension1=URL でも info['URL'] は空だった／内訳は名前が落ちていた）
+            labels = [str(v) for k, v in info.items() if num(v) is None and v not in (None, '')]
+            url = labels[0] if labels else ''
             for k, v in info.items():
                 if dimension and k == dimension:
                     continue
