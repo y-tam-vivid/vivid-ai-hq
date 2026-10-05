@@ -19,7 +19,7 @@
 - [取り込めない日はorigin/mainを直接読む](reference_silent_sync_failure.md) — ★9/7 miniはbehind34＋書きかけ5本でmergeできず。`git show origin/main:<path>`と`git grep origin/main`で重複を回避。**手元に無い＝未記録の証拠にならない**／**🔴9/16 毎朝の棚卸しの材料（memory_sweep.py:54）が★HEADしか見ず、前日68件中20件しか渡していなかった＝★向こうは既にmemory19本を書いていた。棚卸しの一手目は`git fetch -q`＋`git log ... HEAD origin/main`**
 - [汚れ1件の中身を見る](reference_silent_sync_failure.md) — **✅9/14 構造を直した＝DIRTY_TRACKED新設（判定は`--untracked-files=no`・人へ見せるDIRTYは従来どおり）。隔離環境で再現し「直す前=試さない／直した後=ff-only成功・未追跡は無事」を実測。★9/12に同じ真因（未追跡の生成物1件でゲートが1回もmergeを試さない）を特定しながら★手順（人が見たらmerge）だけ書いて構造を直さず、2日間 毎日ほぼ24時間 受信が止まり続けた＝記録は再発を止めない**
 - [巡回はSYNC_STATUSの色も数える](reference_silent_sync_failure.md) — **🔴9/11 13分おきの巡回を10回まわし、走行中0件だけ見て🔴(未取込12件)を素通り。★走行中0件＝異常なしではない。★クリーンなのに取り込めない＝汚れでなく枝分かれ(ahead10/behind12)＝mergeが要る**
-- [🔴には2種類ある](reference_silent_sync_failure.md) — **★9/11「未取込N件」＝自分でmergeして解く／「リモートに繋がっていない」＝通信断で打つ手なし。★後者は`git ls-remote origin HEAD`が返れば一過性。色は入口であって結論ではない**
+- [🔴には2種類ある](reference_silent_sync_failure.md) — **★9/11「未取込N件」＝自分でmergeして解く／「リモートに繋がっていない」＝通信断で打つ手なし。★後者は`git ls-remote origin HEAD`が返れば一過性。**🔴10/5 返らず既定経路も無し＝10/1から4日継続・ahead7未送信**
 - [色より先にmtimeを見る](reference_silent_sync_failure.md) — **🔴9/11 一過性と判定したが★SYNC_STATUSが67分止まっていた(cron 4回未発火)。真因はMacBookのスリープ(pmset実測16:09-16:36)。★30分以上古い🔴は状態でなく機械停止の証拠。手当ては`bash bin/vivid-sync.sh`1手**
 - [🔴は書かれた時刻の判定](reference_silent_sync_failure.md) — ★9/13 5型目。色を見たら自分でfetchし直す。3経路が同SHAなら未取込0
 - [mtimeが新しくても中身は古い](reference_silent_sync_failure.md) — **🔴9/12 ★バックグラウンドへ投げたsyncが3時間19分ハングし、★11:30の判定で14:45の🟢を上書きした。★mtimeは6分前＝30分ルールをすり抜ける。★中身の「◯◯時点」も読む／★巡回のsyncは前面で走らせる**

@@ -240,6 +240,21 @@ ahead/behind  10 / 12 ＝ ★枝分かれ。--ff-only では原理的に解け�
 - ★同型 → [[reference_offload_long_work_to_mini]]「ssh は断続的にタイムアウトする。
   1回で落ちたと判定しない＝再試行3回＋別経路」。**相手が mini でも github でも同じ。**
 
+### 🔴2026-10-05 棚卸し（ロビン）── ★「繋がっていない」が一過性でなく4日続いている
+
+```
+実測  経路1 git ls-remote origin HEAD   → ssh: connect … Undefined error: 0（失敗）
+      経路2 route -n get default          → not in table（★既定の経路そのものが無い）
+      SYNC_STATUS.md の mtime 10/05 08:30（★機械は動いている＝古い🔴ではない）
+      未送信 ahead 7件・最古 10/02（★mini の記録が MacBook へ届いていない）
+始まり 10/01 13:55（Current_Focus の行より・ログからは未確認＝1経路）
+```
+
+- **★上の「ls-remote が返れば一過性」の逆＝返らず・既定経路も無いなら一過性ではない。**
+  こちらに直す手は無い（ルーター／有線LAN＝人の手）。**待つ間に積み上がるのは ahead。**
+- **★この間 mini で書いた memory・WORKING は MacBook 側から見えない。**
+  MacBook 側は「書かれていない」と誤判定しうる → [[reference_two_sessions_built_the_same_thing]]
+
 ## 🔴★色だけ見て mtime を見なかった ── 機械が止まると🔴は「古い🔴」のまま固まる（2026-09-11 16:37）
 
 **15:48 の巡回で「🔴＝通信断・一過性」と判定して手を打たなかった。判定が足りなかった。**
