@@ -122,7 +122,8 @@
 
 - **【リリス / MacBook 2026-10-05】公開中サイトへ Clarity＋SEO標準装備** ── 対象 www.vivid-global.com／i-life-fukushi.com／fuku-chi.com／orange-works.co（★ko-station.org は済・触らない）。
   書く先＝Skill web-tracking-setup（台帳節を追加）・Clarity 管理画面・各CMSの head。**★同じ対象に手をつけないでください**: 上4サイトの head／GTM-PQX3L4TQ
-  ✅Clarity 5件作成（ID は bin/web_tracking/sites.json）／✅点検 site_audit.py 作成・1回実行。★設置は全サイト管理画面ログイン待ち／SKILL.md 追記は権限で止まり承認待ち
+  ✅Clarity 設置＝ILIFE・ふくち。・オレンジワークス・119番（10/5・実ブラウザで3通信確認）／★ビビッドのみ保留（WPログインURL不明）／SKILL.md 追記は承認待ち
+  ▶SEO一体化（案A）：clarity_daily.py 作成・未実行。★待ち＝Clarityトークン6本（有璽氏）／mini通信復旧／Looker Studio の編集経路（拡張の権限 or 有璽氏）。**★同じ対象に手をつけないでください**: Looker Studio「ふくち。グループSearch Console」／ルーティン trig_01Y9rJkmzHmUFmsYJ9tVAuhj
 
 - **【ビビ（サイト担当）/ MacBook 2026-10-03】こどもステーション団体サイト ── v28 公開済み・ko-station.org へ乗せ替え準備中**
   - ★**`~/kodomo-photo-work/build_site.py` を2セッションで同時に触っている**（リリース側が festgal へ13枚追加）。
