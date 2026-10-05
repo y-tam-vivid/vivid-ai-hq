@@ -120,9 +120,12 @@
 
 ### 進行中（MacBookセッション記入）
 
+- **【リリス / MacBook 2026-10-05】公開中サイトへ Clarity＋SEO標準装備** ── 対象 www.vivid-global.com／i-life-fukushi.com／fuku-chi.com／orange-works.co（★ko-station.org は済・触らない）。
+  書く先＝Skill web-tracking-setup（台帳節を追加）・Clarity 管理画面・各CMSの head。**★同じ対象に手をつけないでください**: 上4サイトの head／GTM-PQX3L4TQ
+
 - **【ビビ（サイト担当）/ MacBook 2026-10-03】こどもステーション団体サイト ── v28 公開済み・ko-station.org へ乗せ替え準備中**
   - ★**`~/kodomo-photo-work/build_site.py` を2セッションで同時に触っている**（リリース側が festgal へ13枚追加）。
-    公開は★必ず最新の番号から（いま v37 ★10/5 SEO・www転送・マップ連携。直しの正本は oct3_fixes.py＋seo_fixes.py）。古い番号から出すとトップ切り替え・注目の取り組みのリンク・素案札の削除・計測が消える
+    公開は★必ず最新の番号から（いま v38 ★10/5 記事を事業報告書ベースへ。直しの正本は oct3_fixes.py＋articles_fixes.py＋seo_fixes.py。直しの正本は oct3_fixes.py＋seo_fixes.py）。古い番号から出すとトップ切り替え・注目の取り組みのリンク・素案札の削除・計測が消える
   - ✅10/3 14時台 ko-station.org / www で本番公開済み（DNS切替完了・証明書発行済み）。以後の公開も最新番号から
   - **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定
 - **【ビビ（リリース担当）/ MacBook 2026-10-03】第37回こどもまつり（10/18）── 原稿 Version 9・★PR TIMES未入稿**
