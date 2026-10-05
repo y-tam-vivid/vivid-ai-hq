@@ -13,7 +13,12 @@
       "gsc": {
         "property": "sc-domain:vivid-global.com",
         "page_contains": "://www.vivid-global.com"
-      }
+      },
+      "brand": [
+        "ビビッド",
+        "vivid"
+      ],
+      "log_label": "ビビッド"
     },
     {
       "name": "株式会社ILIFE / LIFE STAND UP",
@@ -24,7 +29,15 @@
       "status": "設置済（10/5）・実ブラウザで tag→clarity.js→collect の3通信を確認",
       "gsc": {
         "property": "https://i-life-fukushi.com/"
-      }
+      },
+      "brand": [
+        "ilife",
+        "アイライフ",
+        "stand up",
+        "スタンドアップ",
+        "ライフスタンドアップ"
+      ],
+      "log_label": "ILIFE"
     },
     {
       "name": "株式会社ふくち。",
@@ -35,7 +48,12 @@
       "status": "設置済（10/5）・本番3ページでID確認・実ブラウザで tag→clarity.js→collect を確認",
       "gsc": {
         "property": "sc-domain:fuku-chi.com"
-      }
+      },
+      "brand": [
+        "ふくち",
+        "福地"
+      ],
+      "log_label": "ふくち。"
     },
     {
       "name": "オレンジワークス藤井寺",
@@ -47,7 +65,12 @@
       "status": "設置済（10/5・AIOSEOのClarity欄・WAFを一時オフにして保存）。本番3ページ＋実ブラウザ3通信を確認。★WAFは有璽氏が戻す",
       "gsc": {
         "property": "https://orange-works.co/"
-      }
+      },
+      "brand": [
+        "オレンジワーク",
+        "orange work"
+      ],
+      "log_label": "オレンジワークス"
     },
     {
       "name": "福祉施設の119番",
@@ -59,7 +82,12 @@
       "gsc": {
         "property": "sc-domain:vivid-global.com",
         "page_contains": "://fukushi119.vivid-global.com"
-      }
+      },
+      "brand": [
+        "119番",
+        "福祉施設の119"
+      ],
+      "log_label": "119番"
     },
     {
       "name": "NPO法人 南河内こどもステーション",
@@ -71,7 +99,14 @@
       "status": "設置済（10/3）・Search Console 登録済（10/5）",
       "gsc": {
         "property": "sc-domain:ko-station.org"
-      }
+      },
+      "brand": [
+        "こどもステーション",
+        "子どもステーション",
+        "こどもまつり",
+        "ko-station"
+      ],
+      "log_label": "こどもステーション"
     },
     {
       "name": "ゲームマーケ",
@@ -97,5 +132,6 @@
       "reason": "旧サイト（ko-station.org へ移行済）"
     }
   ],
-  "_gsc": "gsc.property＝Search Console のプロパティ（sc-domain:＝ドメイン全体）。page_contains＝同じプロパティ内でページURLに含む文字で切り分ける（119番・ビビッドは vivid-global.com の中）"
+  "_gsc": "gsc.property＝Search Console のプロパティ（sc-domain:＝ドメイン全体）。page_contains＝同じプロパティ内でページURLに含む文字で切り分ける（119番・ビビッドは vivid-global.com の中）",
+  "_brand": "brand＝指名検索の判定語（小文字で部分一致）。log_label＝Notion「サイト改善ログ」のサイト選択肢"
 }

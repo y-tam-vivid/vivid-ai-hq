@@ -31,6 +31,7 @@ JST = dt.timezone(dt.timedelta(hours=9))
 TO_DEFAULT = 'y_tam@vivid-global.com'
 OUT_HTML = os.path.join(RELAY, 'weekly_seo_report.html')
 HEARTBEAT = os.path.join(RELAY, 'weekly_seo_report.last')
+LOG_HTML = ''
 
 
 def creds():
@@ -73,7 +74,104 @@ def gsc_site(sc, g, cur, prev):
     out['chance'] = sorted([r for r in q if r.get('position', 0) > 8 and r.get('impressions', 0) >= 3],
                            key=lambda r: -r['impressions'])[:5]
     out['top'] = sorted(q, key=lambda r: -r.get('clicks', 0))[:5]
+    out['queries'] = q
     return out
+
+
+def brand_share(q, words):
+    """指名検索（施設名・社名を含む検索語）のクリック・表示。AIEO の代わりの指標（9/20 設計書 doc21）"""
+    if not words:
+        return None
+    hit = [r for r in q if any(w.lower() in r['keys'][0].lower() for w in words)]
+    return {'clicks': sum(r.get('clicks', 0) for r in hit), 'impressions': sum(r.get('impressions', 0) for r in hit)}
+
+
+AI_REFERRERS = ('chatgpt', 'openai', 'perplexity', 'copilot', 'gemini', 'claude.ai', 'bing.com/chat', 'you.com')
+
+
+def ai_referrals(rows, site_name, days):
+    """Clarity の参照元（ReferrerUrl の内訳）から AI 経由の訪問を数える"""
+    n, srcs = 0, {}
+    for r in rows:
+        if r[1] == site_name and r[3] == '内訳' and r[5] == 'ReferrerUrl' and r[0] in days \
+                and r[6] == 'sessionsCount' and any(a in r[4].lower() for a in AI_REFERRERS):
+            n += float(r[7])
+            srcs[r[4]] = srcs.get(r[4], 0) + float(r[7])
+    return n, srcs
+
+
+# ── 気づき（自動で拾う規則。★しきい値は仮・運用しながら直す） ─────────
+def findings(d):
+    out, g, c = [], d.get('gsc') or {}, d.get('clarity') or {}
+    if 'cur' in g:
+        for k, label in (('clicks', 'クリック'), ('impressions', '表示')):
+            cu, pr = g['cur'][k], g['prev'][k]
+            if pr >= 20 and cu <= pr * 0.7:
+                out.append(('SEO', '検索の%sが減った（%d→%d・先週比%+.0f%%）' % (label, pr, cu, (cu - pr) / pr * 100)))
+        if g.get('chance'):
+            r = g['chance'][0]
+            out.append(('SEO', '表示はあるが順位が低い検索語「%s」（表示%d・%.0f位）' % (r['keys'][0], r['impressions'], r['position'])))
+    if c and c.get('sessions', 0) >= 5:
+        for k, label in (('dead', '反応しない所を押す'), ('rage', '連打'), ('quickback', 'すぐ戻る')):
+            v = c.get(k)
+            if v is not None and v >= 20:
+                out.append(('使いやすさ（Clarity）', '「%s」訪問が%.0f%%（訪問%d）' % (label, v, c['sessions'])))
+    return out
+
+
+# ── Notion「サイト改善ログ」 ─────────────────────────────────
+NOTION_DS = '720d4be9-d3e3-48f9-8e0b-67c0a8aec537'
+
+
+def notion(method, path, body=None):
+    import urllib.request
+    tok = ''
+    for line in open(os.path.join(RELAY, 'config.env')):
+        if line.startswith('NOTION_TOKEN='):
+            tok = line.split('=', 1)[1].strip().strip('"\'')
+    req = urllib.request.Request('https://api.notion.com/v1' + path, method=method,
+                                 data=json.dumps(body).encode() if body is not None else None,
+                                 headers={'Authorization': 'Bearer ' + tok, 'Notion-Version': '2025-09-03',
+                                          'Content-Type': 'application/json'})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.loads(r.read().decode())
+
+
+def plain(p):
+    t = p.get('title') or p.get('rich_text') or []
+    if t:
+        return ''.join(x.get('plain_text', '') for x in t)
+    if p.get('select'):
+        return p['select']['name']
+    return ''
+
+
+def improvement_log():
+    rows = []
+    res = notion('POST', '/data_sources/%s/query' % NOTION_DS, {'page_size': 100})
+    for pg in res.get('results', []):
+        pr = pg['properties']
+        rows.append({'title': plain(pr['打ち手']), 'site': plain(pr['サイト']), 'state': plain(pr['状態']),
+                     'effect': plain(pr['効果確認']), 'url': pg.get('url', '')})
+    return rows
+
+
+def add_candidates(cands, week_start, existing):
+    """気づきを「候補」として起票する。★同じサイト×同じ打ち手が既にあれば足さない"""
+    have = {(r['site'], r['title']) for r in existing}
+    made = 0
+    for site, area, text in cands:
+        title = '［要検討］' + text
+        if (site, title) in have:
+            continue
+        notion('POST', '/pages', {'parent': {'data_source_id': NOTION_DS}, 'properties': {
+            '打ち手': {'title': [{'text': {'content': title[:180]}}]},
+            'サイト': {'select': {'name': site}}, '領域': {'multi_select': [{'name': area}]},
+            '状態': {'select': {'name': '候補'}}, '起票': {'select': {'name': '週次レポート（自動）'}},
+            '気づいた週': {'date': {'start': week_start}},
+            '気づき': {'rich_text': [{'text': {'content': text[:1900]}}]}}})
+        made += 1
+    return made
 
 
 # ── Clarity（日次シートから） ─────────────────────────────────
@@ -131,11 +229,12 @@ def build(data, cur, prev, cdays, tags):
          '<div style="font-size:12px;color:#7a6a5c">検索（Search Console）%s〜%s（先週 %s〜%s）／'
          'Clarity 直近%d日（%s）</div>' % (cur[0], cur[1], prev[0], prev[1], 7,
                                          '貯まっているのは %d日分' % len(cdays) if len(cdays) < 7 else '7日分そろい'),
-         '<h3 style="margin:20px 0 6px">① 全サイト一覧</h3>',
+         '<h3 style="margin:20px 0 6px">① 記録：全サイト一覧</h3>',
          '<table style="border-collapse:collapse;width:100%%"><tr>'
          '<th %s>サイト</th><th %s>検索の表示</th><th %s>クリック</th><th %s>順位</th>'
-         '<th %s>訪問（Clarity）</th><th %s>デッド／怒り／すぐ戻る</th><th %s>読了の深さ</th></tr>'
-         % ((th,) * 7)]
+         '<th %s>訪問（Clarity）</th><th %s>デッド／怒り／すぐ戻る</th><th %s>読了の深さ</th>'
+         '<th %s>指名検索クリック</th><th %s>AI経由の訪問</th></tr>'
+         % ((th,) * 9)]
     for d in data:
         g, c = d.get('gsc'), d.get('clarity')
         gs = ('%s %s' % (f(g['cur']['impressions']), pct(g['cur']['impressions'], g['prev']['impressions'])),
@@ -144,12 +243,27 @@ def build(data, cur, prev, cdays, tags):
         cs = (f(c['sessions']),
               '%s／%s／%s' % (f(c['dead'], '{:.0f}%'), f(c['rage'], '{:.0f}%'), f(c['quickback'], '{:.0f}%')),
               f(c['scroll'], '{:.0f}%')) if c and c['sessions'] else ('—', '—', '—')
+        b, ai = d.get('brand'), d.get('ai')
+        cs = cs + ((f(b['clicks']) if b else '—'), (f(ai[0]) if ai else '—'))
         h.append('<tr><td %s><b>%s</b><br><span style="font-size:11px;color:#7a6a5c">%s</span></td>'
                  % (td, e(d['name']), e(d['domain'])) + ''.join('<td %s>%s</td>' % (td, x) for x in gs + cs) + '</tr>')
     h.append('</table><div style="font-size:11px;color:#7a6a5c;margin-top:4px">'
              'デッド＝押しても反応しない所を押した訪問の割合／怒り＝同じ所を連打した割合／すぐ戻る＝開いてすぐ戻った割合。'
-             '読了の深さ＝ページの何%までスクロールしたか（平均）</div>')
-    h.append('<h3 style="margin:24px 0 6px">② サイト別</h3>')
+             '読了の深さ＝ページの何%までスクロールしたか（平均）。指名検索＝施設名・社名を含む検索（AIEOの代わりの指標）。'
+             'AI経由＝ChatGPT・Copilot・Perplexity等から来た訪問（Clarityの参照元）</div>')
+    h.append('<h3 style="margin:24px 0 6px">② 今週の気づき（自動）</h3><div style="font-size:13px">')
+    anyf = False
+    for d in data:
+        for area, text in d.get('findings', []):
+            anyf = True
+            h.append('・<b>%s</b>［%s］%s<br>' % (e(d['name']), e(area), e(text)))
+    if not anyf:
+        h.append('大きな変化なし')
+    h.append('</div>')
+    h.append('<h3 style="margin:24px 0 6px">③ 改善ログ（Notion）</h3><div style="font-size:13px">')
+    h.append(LOG_HTML)
+    h.append('</div>')
+    h.append('<h3 style="margin:24px 0 6px">④ サイト別</h3>')
     for d in data:
         g, c = d.get('gsc'), d.get('clarity')
         h.append('<div style="border:1px solid #f0e1cf;border-radius:8px;padding:10px 12px;margin:10px 0">'
@@ -168,7 +282,7 @@ def build(data, cur, prev, cdays, tags):
                      'ヒートマップを開く</a>　<a href="https://clarity.microsoft.com/projects/view/%s/recordings">録画を開く</a></div>'
                      % (d['clarity_id'], d['clarity_id']))
         h.append('</div>')
-    h.append('<h3 style="margin:24px 0 6px">③ 計測タグの点検</h3><div style="font-size:13px">')
+    h.append('<h3 style="margin:24px 0 6px">⑤ 計測タグの点検</h3><div style="font-size:13px">')
     for name, st in tags:
         h.append('%s　%s<br>' % (e(st), e(name)))
     h.append('</div><div style="font-size:11px;color:#7a6a5c;margin-top:20px">'
@@ -214,12 +328,33 @@ def main():
                 d['gsc'] = {'error': str(ex)[:160]}
         if s.get('noindex_expected'):
             continue        # 検索対象外のLPは一覧に載せない
+        if d.get('gsc') and 'queries' in d['gsc']:
+            d['brand'] = brand_share(d['gsc']['queries'], s.get('brand'))
+        if d.get('clarity_id'):
+            d['ai'] = ai_referrals(crows, s['name'], cdays)
+        d['findings'] = findings(d)
+        d['log_label'] = s.get('log_label', '全サイト')
         data.append(d)
         try:
             a = site_audit.audit(s)
             tags.append((s['name'], a.get('clarity', '—')))
         except Exception as ex:
             tags.append((s['name'], '✗ 点検失敗 %s' % str(ex)[:60]))
+    global LOG_HTML
+    db_url = 'https://app.notion.com/p/afbfa222ea2848598c384e6c4d983d97'
+    try:
+        log = improvement_log()
+        cands = [(d['log_label'], a, t) for d in data for a, t in d['findings']]
+        made = 0 if '--dry-run' in sys.argv else add_candidates(cands, cur[0], log)
+        act = [r for r in log if r['state'] in ('採用', '実施中')]
+        LOG_HTML = ('進行中の打ち手 %d件／候補 %d件（今回の自動起票 %d件）<br>' %
+                    (len(act), len([r for r in log if r['state'] == '候補']), made) +
+                    ''.join('・［%s］%s（%s）%s<br>' % (html.escape(r['site']), html.escape(r['title']), html.escape(r['state']),
+                            ('<br>　→ 効果：' + html.escape(r['effect'])) if r['effect'] else '') for r in act) +
+                    '<a href="%s">改善ログを開く（候補を採用・見送りに変える）</a>' % db_url)
+    except Exception as ex:
+        LOG_HTML = ('<span style="color:#b3261e">改善ログを読めませんでした（%s）。'
+                    'Notionの接続設定を確認してください。</span><br><a href="%s">改善ログを開く</a>' % (html.escape(str(ex)[:80]), db_url))
     body = build(data, cur, prev, got_cdays, tags)
     open(OUT_HTML, 'w', encoding='utf-8').write(body)
     subject = 'ふくち。グループ SEO週次レポート（%s〜%s）' % (cur[0][5:].replace('-', '/'), cur[1][5:].replace('-', '/'))
