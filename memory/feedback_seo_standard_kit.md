@@ -51,3 +51,4 @@ metadata:
 - 🔴 mini は既定経路なし（10/5 実測：clarity.ms・slack・github が 000／Googleの一部だけ届く）＝日次取得をまだ載せられない。git pull も不可
 - 🔴 Chrome拡張は lookerstudio.google.com の読み取り権限が無い（Permission denied）＝Looker の編集はこちらから不可
 - 未：Clarity APIトークン6本（有璽氏）／clarity_daily.py は未実行（--init も未）
+- 10/5 有璽氏「Looker Studioはそちらで作成できない？」＝★こちらで組む前提。Looker Studio には作成・編集のAPIが無い（画面操作のみ）→ Chrome拡張に lookerstudio.google.com のサイト権限が要る。許可が出たら：GSC 4サイト追加・Clarityシートをデータソース化・一覧ページとサイト別ページを作る
