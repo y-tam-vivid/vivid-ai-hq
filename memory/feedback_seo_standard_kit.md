@@ -40,3 +40,8 @@ metadata:
   - `trig_01Y9rJkmzHmUFmsYJ9tVAuhj`「SEO巡回エージェント（月次・Search Console自動分析）」毎月1日 9:00 JST・10/1 成功。Search Console→Artifact→Slack #03_広報部＋メール。対象4サイト（オレンジ・LIFE STAND UP・ビビッド・ふくち。）＝★ko-station・119番が入っていない／Clarityも入っていない
   - `trig_019a1vGFx5c5K3wKu7W6ZnBZ`「MEO月次チェック」毎月1日・Slackへチェックリスト
 - ★定期処理を「無い」と言う前に、①リポジトリ ②両機 cron/launchd ③クラウドのルーティン（RemoteTrigger list）④Notion 自動処理レジスタ の4か所を見る
+
+**週次メール（10/5 有璽氏が示した事実）**
+- 「ふくち。グループSearch Console - <日付>」＝ **Looker Studio（data-studio-noreply）のスケジュール配信**・毎週月曜 7:00頃 JST・PDF添付。★表示されているのはオレンジワークスとILIFEの2サイトだけ（有璽氏）
+- 有璽氏の要望（10/5）：①案A（Clarityの数字まで載せる）で進める ②全サイトのSearch Consoleを一体で見られる設計 ③そのメールにClarity（ヒートマップ系の指標）も出す
+- ★これも10/5の最初の棚卸しで見落とした定期処理（4か所に加えて⑤Gmailのスケジュール配信）
