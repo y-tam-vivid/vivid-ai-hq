@@ -65,3 +65,6 @@ metadata:
 - 自前週次の形（案）：mini の cron（月曜朝）＝ Search Console 6サイト（API）＋ Clarity 日次シートの直近7日 → HTMLメール（Gmail API）＋Slack 2行。★クラウドのルーティンは送信が自動判定で止まるため使わない。要るもの＝Googleの許可1回（webmasters.readonly＋gmail.send・既存のシート用の鍵とは別ファイル）／Clarity鍵6本
 - 10/5 Google許可（SEO用）：mini に `~/.vivid-relay/oauth_seo.py`（webmasters.readonly＋gmail.send・保存先 google_token_seo.json＝シート用 google_token.json とは別）。★MacBookにgoogle_auth_oauthlibが無いので、mini で port 8765 の受け口→MacBook から `ssh -L 8765:localhost:8765 mini` で転送してブラウザで許可する形
 - ✅10/5 16:18 Google許可完了（google_token_seo.json・webmasters.readonly＋gmail.send）。🔴ただし GCPプロジェクト 472246617753（mini のOAuthクライアント）で Search Console API が未有効＝403 accessNotConfigured。Gmail API も要確認。有効化は有璽氏（Cloud Console の「有効にする」）
+- ✅10/5 16:2x 有璽氏が GCP で Search Console API・Gmail API を有効化 → mini の google_token_seo.json で5プロパティ読める（sc-domain:vivid-global.com／sc-domain:fuku-chi.com／orange-works.co／i-life-fukushi.com／sc-domain:ko-station.org・全て siteOwner）。★119番は sc-domain:vivid-global.com の中＝ページURLで切り分ける
+- ✅Clarity 鍵6本（有璽氏）→ mini ~/.vivid-relay/clarity_tokens.json。全サイト取得OK。シート「SEO計測_Clarity日次」 https://docs.google.com/spreadsheets/d/1xDHeqC4mkhK5HLvUwHUpaEyyHCb-AipXsztVH89_Law （初日10/4分 1,644行）
+- 🐛直した：内訳（Browser/Device/OS/Country/PageTitle/ReferrerUrl）の名前が落ちていた→URL列へ・範囲「内訳」。★mini に他セッションの書きかけがあると vivid-sync が取り込みを見送る＝修正が届かないまま古い版で動く（10/5 1回踏んだ）
