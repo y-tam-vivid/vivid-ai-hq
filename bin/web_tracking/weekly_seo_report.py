@@ -321,7 +321,7 @@ def main():
         if cid.isalnum():
             d['clarity_id'] = cid
             d['clarity'] = clarity_site(crows, s['name'], cdays)
-        if s.get('gsc'):
+        if s.get('gsc') and s['gsc'].get('property', '').startswith(('sc-domain:', 'http')):   # ★未登録（「★未登録…」等）は取りにいかない
             try:
                 d['gsc'] = gsc_site(sc, s['gsc'], cur, prev)
             except Exception as ex:
