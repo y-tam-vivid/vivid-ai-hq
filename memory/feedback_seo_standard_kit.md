@@ -45,3 +45,9 @@ metadata:
 - 「ふくち。グループSearch Console - <日付>」＝ **Looker Studio（data-studio-noreply）のスケジュール配信**・毎週月曜 7:00頃 JST・PDF添付。★表示されているのはオレンジワークスとILIFEの2サイトだけ（有璽氏）
 - 有璽氏の要望（10/5）：①案A（Clarityの数字まで載せる）で進める ②全サイトのSearch Consoleを一体で見られる設計 ③そのメールにClarity（ヒートマップ系の指標）も出す
 - ★これも10/5の最初の棚卸しで見落とした定期処理（4か所に加えて⑤Gmailのスケジュール配信）
+
+**10/5 一体化の設計（案A・有璽氏承認）と詰まり**
+- 形：毎日 mini の `bin/web_tracking/clarity_daily.py` → スプレッドシート「SEO計測_Clarity日次」（縦持ち）→ Looker Studio「ふくち。グループSearch Console」にデータソースとして追加 → 既存の月曜7時の配信がそのまま届ける。GSCは Looker の標準コネクタで6サイト分を追加。月次の巡回エージェントは6サイト化＋Clarity月合計
+- 🔴 mini は既定経路なし（10/5 実測：clarity.ms・slack・github が 000／Googleの一部だけ届く）＝日次取得をまだ載せられない。git pull も不可
+- 🔴 Chrome拡張は lookerstudio.google.com の読み取り権限が無い（Permission denied）＝Looker の編集はこちらから不可
+- 未：Clarity APIトークン6本（有璽氏）／clarity_daily.py は未実行（--init も未）
