@@ -57,6 +57,9 @@ Mac mini を「Claude Code の主作業機」にし、MacBook から遠隔操作
 - 有璽氏「ネットはつながっているはず」＝回線とWi-Fiは正しい。壊れているのは有線LANの設定だけ
 - 直し方（★システム設定なので有璽氏の手で）：システム設定→ネットワーク→Ethernet→詳細→TCP/IP→「手入力」IP 192.168.1.200／サブネット 255.255.255.0／ルーター 192.168.1.1（または「DHCPサーバを使用」）
 - 確かめ方：`ssh mini 'route -n get 8.8.8.8; curl -s -o /dev/null -w "%{http_code}" https://github.com/'`
+- ✅10/5 15:2x 有璽氏が修正 → ★外へ出られるようになった（github/clarity 200・ping OK）。ただし★経路は Wi-Fi(en1)。有線は IP 192.168.2.200（1→2の打ち間違い疑い）・マスク /32・ルーター空欄・方式「DHCP（ルーター手入力）」のまま＝★Wi-Fiが切れると再び止まる。有線の直しは未
+- ✅10/5 mini の git 枝分かれ（ahead 8／behind 201・10/1〜通信断の間）を解消：止めていたのは claude.ai同期スキル google-workspace の未追跡9本（origin と同一を確認して _backups/untracked_google-workspace_20261005 へ退避）＋状態ファイル2本の衝突（origin を採用）。控え枝 backup/mini-before-merge-20261005。両機 🟢
+- ★10/1〜10/5 の通信断の間、mini 発の自動処理（Slack通知・ask_hub・daily_jobs 等）は外へ出られていない＝ドーベルマンで取りこぼしを点検する
 
 ## ✅ 2026-10-05 夕 解消（mini 上のAIが直した）
 - 有璽氏が手で直そうとしたが「DHCP（ルーター手入力）」のまま・IP 192.168.**2**.200・マスク/32・ルーター空欄で残っていた

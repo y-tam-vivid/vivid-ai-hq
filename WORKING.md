@@ -123,11 +123,11 @@
 - **【リリス / MacBook 2026-10-05】公開中サイトへ Clarity＋SEO標準装備** ── 対象 www.vivid-global.com／i-life-fukushi.com／fuku-chi.com／orange-works.co（★ko-station.org は済・触らない）。
   書く先＝Skill web-tracking-setup（台帳節を追加）・Clarity 管理画面・各CMSの head。**★同じ対象に手をつけないでください**: 上4サイトの head／GTM-PQX3L4TQ
   ✅Clarity 設置＝ILIFE・ふくち。・オレンジワークス・119番（10/5・実ブラウザで3通信確認）／★ビビッドのみ保留（WPログインURL不明）／SKILL.md 追記は承認待ち
-  ▶SEO一体化（案A）：clarity_daily.py 作成・未実行。★待ち＝Clarityトークン6本（有璽氏）／mini通信復旧／Looker Studio の編集経路（拡張の権限 or 有璽氏）。**★同じ対象に手をつけないでください**: Looker Studio「ふくち。グループSearch Console」／ルーティン trig_01Y9rJkmzHmUFmsYJ9tVAuhj
+  ▶SEO週次メール（自前・有璽氏決定 #dd191c）：試し送り済み（10/5 16:33）。★残＝有璽氏の確認→ドーベルマン点検→cron（clarity_daily 毎日0:30／weekly_seo_report 月曜7:00）。**★同じ対象に手をつけないでください**: bin/web_tracking/{clarity_daily,weekly_seo_report}.py／mini ~/.vivid-relay/{google_token_seo,clarity_tokens}.json
 
 - **【ビビ（サイト担当）/ MacBook 2026-10-03】こどもステーション団体サイト ── v28 公開済み・ko-station.org へ乗せ替え準備中**
   - ★**`~/kodomo-photo-work/build_site.py` を2セッションで同時に触っている**（リリース側が festgal へ13枚追加）。
-    公開は★必ず最新の番号から（いま v43 ★10/5 後援・協力（api/ も前の版から写す）。直しの正本は oct3_fixes.py＋articles/sheet_answers/seo/ga4_fixes.py。直しの正本は oct3_fixes.py＋seo_fixes.py）。古い番号から出すとトップ切り替え・注目の取り組みのリンク・素案札の削除・計測が消える
+    公開は★必ず最新の番号から（いま v44 ★10/5 振込先・Instagram（api/ も前の版から写す）。直しの正本は oct3_fixes.py＋articles/sheet_answers/seo/ga4_fixes.py。直しの正本は oct3_fixes.py＋seo_fixes.py）。古い番号から出すとトップ切り替え・注目の取り組みのリンク・素案札の削除・計測が消える
   - ✅10/3 14時台 ko-station.org / www で本番公開済み（DNS切替完了・証明書発行済み）。以後の公開も最新番号から
   - **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定
   - **📮リリース担当へ（10/5 有璽氏の指示で引き継ぎ）**：制作物を共有ドライブへまとめた。プレスリリース用は

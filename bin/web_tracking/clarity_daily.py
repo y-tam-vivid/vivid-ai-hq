@@ -76,15 +76,20 @@ def flatten(resp, site, day, now, dimension=None):
     for m in resp if isinstance(resp, list) else []:
         metric = m.get('metricName', '')
         for info in m.get('information') or []:
-            url = str(info.get(dimension, '')) if dimension else ''
+            # 内訳（Browser/Device/OS/Country/PageTitle/ReferrerUrl 等）やページ別のURLは、名前を URL 列に入れる。
+            # ★項目名（"URL" "Url" "name"…）は応答ごとに違うので名前で引かず「数字でない値」を拾う
+            #   （10/5 実測：dimension1=URL でも info['URL'] は空だった／内訳は名前が落ちていた）
+            labels = [str(v) for k, v in info.items() if num(v) is None and v not in (None, '')]
+            url = labels[0] if labels else ''
             for k, v in info.items():
                 if dimension and k == dimension:
                     continue
                 n = num(v)
                 if n is None:
-                    continue       # 文字列（ページ名など）は値にしない
+                    continue       # 文字列（ページ名など）は値にしない（URL 列へ入れた）
                 rows.append([day, site['name'], site['domain'],
-                             'URL別' if dimension else '全体', url, metric, k, n, now])
+                             'URL別' if dimension else ('内訳' if url else '全体'),
+                             url, metric, k, n, now])
     return rows
 
 

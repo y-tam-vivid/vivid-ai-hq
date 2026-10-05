@@ -51,3 +51,24 @@ metadata:
 - 🔴 mini は既定経路なし（10/5 実測：clarity.ms・slack・github が 000／Googleの一部だけ届く）＝日次取得をまだ載せられない。git pull も不可
 - 🔴 Chrome拡張は lookerstudio.google.com の読み取り権限が無い（Permission denied）＝Looker の編集はこちらから不可
 - 未：Clarity APIトークン6本（有璽氏）／clarity_daily.py は未実行（--init も未）
+- 10/5 有璽氏「Looker Studioはそちらで作成できない？」＝★こちらで組む前提。Looker Studio には作成・編集のAPIが無い（画面操作のみ）→ Chrome拡張に lookerstudio.google.com のサイト権限が要る。許可が出たら：GSC 4サイト追加・Clarityシートをデータソース化・一覧ページとサイト別ページを作る
+- 🔴10/5 Claude in Chrome は lookerstudio.google.com で★読み取り・スクショとも「Permission denied」（Chrome側は全サイト許可・拡張のパネルに許可確認もブロック一覧も出ない＝3回再現）。★こちらからLooker Studioを操作する経路は無い前提で設計する
+- **Looker Studio 導入の経緯（10/5 調査・決定の発言そのものは未発見）**：9/14 オレンジGSC登録 → 9/19 ILIFE/オレンジのインデックス確認リマインダー → 9/22 SEO巡回エージェント（月次）作成 → 9/22「ILIFE・オレンジのGSC設定」完了 → 9/23「SEO月次レポートダッシュボード・自動化（オレンジ・ILIFE）」完了（2件とも出どころ Chatwork・同じ投稿）→ 9/28 Looker の週次メール初回。ルーティンは全部 claude.ai 側の会話から作成（created_via=meta_mcp）。★ターミナル版（両機）の会話記録にLookerの話は0件＝claude.ai の会話で決めた可能性が高く、こちらからは読めない
+- ⛔訂正（10/5）「SEO巡回エージェント 10/1 成功」は誤り。状態表示は SUCCEEDED だが★Slack・メール配信は自動判定（Real-World Transactions）で拒否＝届いていない。レポートページ（Artifact 42uQ6hU8zvsT99j1C1Pc9U）だけ公開。9/23 の手動テストも2回目は External System Writes で拒否。★ルーティンの成否は status でなく get_run_log の中身で見る
+- 10/1 時点：ルーティンのGoogleアカウントは4サイトとも Search Console を読める（9/23 はビビッド・ふくち。が insufficient permission だった）。🔴 LIFE STAND UP のクリックが 8月351→9月87（−75%・表示はほぼ横ばい）
+- ★claude.ai 側の Claude Code の会話は、セッション番号（cse_… / session_…）が分かれば RemoteTrigger get_run_log で読める。一覧を出す手段は無い（定期タスクの実行分だけ list_runs で辿れる）
+- ✅**Looker Studio 採用の経緯が判明（10/5）**：claude.ai の Claude Code セッション session_011brzwhL5sbxEf6LPrnAmaU（9/19〜9/25・SEO/MEO戦略）。設計書＝ lifestandup-wp 枝 `claude/web-strategy-proposal-continued-cozz30` の `proposal/web-strategy/22_KPI自動収集の実装_LookerStudioとClaude巡回エージェント.md`（9/20作成）
+  - 「二段構え」：第1段 Looker Studio＝★今すぐ・認証の受け渡し不要で数値を見える化（有璽氏が手で約10分接続）／第2段 Claude巡回エージェント＝取得＋分析コメント＋通知まで自動。「両者は補完。まずLookerで土台、エージェントで分析まで自動化していく」
+  - 当時 Search Console に在ったのが orange-works.co と i-life-fukushi.com の2つだけ＝★Lookerが2サイトなのはこのため（ビビッド・ふくち。は後から sc-domain で追加）
+  - ★週次の「自前メール」案は、この設計の第2段を完成させる方向と一致する
+- ✅10/5 16:09 有璽氏が Slack #dd191c で「自前の週次メール（推奨）」を選択。★Slackに判断を出したら、次に話すときは先に ask_hub の台帳（mini ~/.vivid-relay/ask_hub_queue.json）で回答を見てから話す（10/5 確認せずに「どちらか押して」と待った）
+- 自前週次の形（案）：mini の cron（月曜朝）＝ Search Console 6サイト（API）＋ Clarity 日次シートの直近7日 → HTMLメール（Gmail API）＋Slack 2行。★クラウドのルーティンは送信が自動判定で止まるため使わない。要るもの＝Googleの許可1回（webmasters.readonly＋gmail.send・既存のシート用の鍵とは別ファイル）／Clarity鍵6本
+- 10/5 Google許可（SEO用）：mini に `~/.vivid-relay/oauth_seo.py`（webmasters.readonly＋gmail.send・保存先 google_token_seo.json＝シート用 google_token.json とは別）。★MacBookにgoogle_auth_oauthlibが無いので、mini で port 8765 の受け口→MacBook から `ssh -L 8765:localhost:8765 mini` で転送してブラウザで許可する形
+- ✅10/5 16:18 Google許可完了（google_token_seo.json・webmasters.readonly＋gmail.send）。🔴ただし GCPプロジェクト 472246617753（mini のOAuthクライアント）で Search Console API が未有効＝403 accessNotConfigured。Gmail API も要確認。有効化は有璽氏（Cloud Console の「有効にする」）
+- ✅10/5 16:2x 有璽氏が GCP で Search Console API・Gmail API を有効化 → mini の google_token_seo.json で5プロパティ読める（sc-domain:vivid-global.com／sc-domain:fuku-chi.com／orange-works.co／i-life-fukushi.com／sc-domain:ko-station.org・全て siteOwner）。★119番は sc-domain:vivid-global.com の中＝ページURLで切り分ける
+- ✅Clarity 鍵6本（有璽氏）→ mini ~/.vivid-relay/clarity_tokens.json。全サイト取得OK。シート「SEO計測_Clarity日次」 https://docs.google.com/spreadsheets/d/1xDHeqC4mkhK5HLvUwHUpaEyyHCb-AipXsztVH89_Law （初日10/4分 1,644行）
+- 🐛直した：内訳（Browser/Device/OS/Country/PageTitle/ReferrerUrl）の名前が落ちていた→URL列へ・範囲「内訳」。★mini に他セッションの書きかけがあると vivid-sync が取り込みを見送る＝修正が届かないまま古い版で動く（10/5 1回踏んだ）
+- ✅10/5 16:33 SEO週次メールの試し送り成功（weekly_seo_report.py・Gmail id 1a10afb2eff5094d・受信箱で確認）。6サイト一覧＋サイト別＋タグ点検。★Clarityのページ別URLの項目名は "Url"（10/4分のシートはURL空・10/5取得分から入る）／ko-station の GSC は10/5登録のため0
+- 未：cron 登録（Clarity 毎日0:30／週次 月曜7:00）はドーベルマン点検の後・有璽氏が試し送りを見てから。Slack 2行は未実装。mini の ~/vivid-ai-hq は他セッションの書きかけで取り込み保留中→/tmp/wt から試運転した
+- ★10/5 有璽氏：週次メールの目的は「要約の共有」ではなく★「分析としてログを残し、それに対して改善をやっていくサイクルを作る」こと。MEO・AIEO（AI検索での見え方）も入れたい
+  → 設計：毎週の数字と気づき・打ち手・効果確認を1か所に積む（正本を1つ決める）。メールはその入口。「録画を開く」＝Clarityの訪問者ごとの画面操作の再生
