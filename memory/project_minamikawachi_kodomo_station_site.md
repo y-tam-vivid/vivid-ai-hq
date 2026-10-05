@@ -259,6 +259,7 @@ metadata:
      ②サイト：https 全体・中身が実在すること（★枠だけ・仮の数字は審査で落ちうる）③コンバージョン計測＋月1件以上
      ④スマート入札／地域指定／広告グループ2以上・広告2以上／サイトリンク2以上／品質スコア1・2と1語キーワード禁止
      ⑤アカウント全体のクリック率5%（2か月続けて割ると停止）⑥年1回のアンケート
-     ★未確認：Google for Nonprofits の承認状態・Ad Grants の有効化が済んでいるか（有璽氏の「済んでいると思う」）
+     ✅10/5 実画面：Google for Nonprofits は★承認済み（団体名 Minami-kawachi Kodomo Station）。Ad Grants は★未有効化（「使ってみる」ボタンのまま）
+     🔴Workspace のドメインが★npostation.or.jp。dig で NS・A・MX とも★空（10/5・1経路）＝ドメインが生きていない疑い。ko-station.org とは別
      ★計測：いまのGA4/GTMは会社共通（G-4D1C77WR0P）。広告の成果を測るなら★団体専用のGA4を作る案
 
