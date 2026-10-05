@@ -290,6 +290,45 @@ def build(data, cur, prev, cdays, tags):
     return '\n'.join(h)
 
 
+SUMMARY_TAB = 'weekly_summary'
+SUMMARY_HEADER = ['週の初日', '週の末日', 'サイト', 'ドメイン', '検索の表示', '検索のクリック', 'CTR(%)', '平均順位',
+                  '先週の表示', '先週のクリック', 'Clarity訪問', 'デッド(%)', '怒り(%)', 'すぐ戻る(%)', '読了の深さ(%)',
+                  '指名検索クリック', 'AI経由の訪問', 'Clarityの日数', 'タグ点検', '記録時刻']
+
+
+def record_summary(data, cur, cdays, tags):
+    """①の一覧を「1週×1サイト＝1行」でシートに積む（週で見比べるための記録）。同じ週の行が既にあれば積まない"""
+    from sheets_client import Sheets
+    sh = Sheets()
+    sid = open(os.path.join(RELAY, 'clarity_sheet_id.txt')).read().strip()
+    titles = [s['properties']['title'] for s in sh.svc.spreadsheets().get(spreadsheetId=sid).execute()['sheets']]
+    if SUMMARY_TAB not in titles:
+        sh.svc.spreadsheets().batchUpdate(spreadsheetId=sid, body={'requests': [
+            {'addSheet': {'properties': {'title': SUMMARY_TAB}}}]}).execute()
+        sh.svc.spreadsheets().values().update(spreadsheetId=sid, range=SUMMARY_TAB + '!A1',
+                                              valueInputOption='RAW', body={'values': [SUMMARY_HEADER]}).execute()
+    have = {(r[0], r[2]) for r in (sh.read(sid, SUMMARY_TAB) or [])[1:] if len(r) > 2}
+    tagd = dict(tags)
+    now = dt.datetime.now(JST).isoformat(timespec='seconds')
+    rows = []
+    for d in data:
+        if (cur[0], d['name']) in have:
+            continue
+        g, c, b, ai = d.get('gsc') or {}, d.get('clarity') or {}, d.get('brand'), d.get('ai')
+        gc, gp = g.get('cur', {}), g.get('prev', {})
+        rnd = lambda v, n=1: '' if v is None else round(v, n)
+        rows.append([cur[0], cur[1], d['name'], d['domain'],
+                     gc.get('impressions', ''), gc.get('clicks', ''), rnd(gc.get('ctr')), rnd(gc.get('position')),
+                     gp.get('impressions', ''), gp.get('clicks', ''),
+                     c.get('sessions', ''), rnd(c.get('dead')), rnd(c.get('rage')), rnd(c.get('quickback')),
+                     rnd(c.get('scroll')), b['clicks'] if b else '', ai[0] if ai else '', len(cdays),
+                     tagd.get(d['name'], ''), now])
+    if rows:
+        sh.svc.spreadsheets().values().append(spreadsheetId=sid, range=SUMMARY_TAB + '!A1', valueInputOption='RAW',
+                                              insertDataOption='INSERT_ROWS', body={'values': rows}).execute()
+    return len(rows)
+
+
 def send(to, subject, body_html):
     msg = MIMEText(body_html, 'html', 'utf-8')
     msg['To'], msg['Subject'] = to, subject
@@ -356,6 +395,12 @@ def main():
         LOG_HTML = ('<span style="color:#b3261e">改善ログを読めませんでした（%s）。'
                     'Notionの接続設定を確認してください。</span><br><a href="%s">改善ログを開く</a>' % (html.escape(str(ex)[:80]), db_url))
     body = build(data, cur, prev, got_cdays, tags)
+    # ①を週次サマリーとしてシートに積む（本番送信時。--record を付ければ試し・dry-run でも積む）
+    if '--record' in sys.argv or ('--dry-run' not in sys.argv and '--to' not in sys.argv):
+        try:
+            print('週次サマリーを記録：%d行' % record_summary(data, cur, got_cdays, tags))
+        except Exception as ex:
+            sys.stderr.write('週次サマリーの記録に失敗：%s\n' % ex)
     open(OUT_HTML, 'w', encoding='utf-8').write(body)
     subject = 'ふくち。グループ SEO週次レポート（%s〜%s）' % (cur[0][5:].replace('-', '/'), cur[1][5:].replace('-', '/'))
     if '--dry-run' in sys.argv:
