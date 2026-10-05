@@ -61,3 +61,5 @@ metadata:
   - 「二段構え」：第1段 Looker Studio＝★今すぐ・認証の受け渡し不要で数値を見える化（有璽氏が手で約10分接続）／第2段 Claude巡回エージェント＝取得＋分析コメント＋通知まで自動。「両者は補完。まずLookerで土台、エージェントで分析まで自動化していく」
   - 当時 Search Console に在ったのが orange-works.co と i-life-fukushi.com の2つだけ＝★Lookerが2サイトなのはこのため（ビビッド・ふくち。は後から sc-domain で追加）
   - ★週次の「自前メール」案は、この設計の第2段を完成させる方向と一致する
+- ✅10/5 16:09 有璽氏が Slack #dd191c で「自前の週次メール（推奨）」を選択。★Slackに判断を出したら、次に話すときは先に ask_hub の台帳（mini ~/.vivid-relay/ask_hub_queue.json）で回答を見てから話す（10/5 確認せずに「どちらか押して」と待った）
+- 自前週次の形（案）：mini の cron（月曜朝）＝ Search Console 6サイト（API）＋ Clarity 日次シートの直近7日 → HTMLメール（Gmail API）＋Slack 2行。★クラウドのルーティンは送信が自動判定で止まるため使わない。要るもの＝Googleの許可1回（webmasters.readonly＋gmail.send・既存のシート用の鍵とは別ファイル）／Clarity鍵6本
