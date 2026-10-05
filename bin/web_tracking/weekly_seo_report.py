@@ -217,9 +217,9 @@ def clarity_site(rows, site_name, days):
 
 
 # ── 表示 ─────────────────────────────────────────────────────
-def pct(cur, prev):
+def pct(cur, prev, unit='先週'):
     if not prev:
-        return '<span style="color:#888">（先週0）</span>' if cur else ''
+        return '<span style="color:#888">（%s0）</span>' % unit if cur else ''
     d = (cur - prev) / prev * 100
     col = '#1e7a4c' if d > 0 else ('#b3261e' if d < 0 else '#888')
     return '<span style="color:%s">%+.0f%%</span>' % (col, d)
