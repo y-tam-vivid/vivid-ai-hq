@@ -249,6 +249,8 @@ metadata:
      ★郵便番号は 583-0856（本文の値）。推測で入れかけた 0864 は誤り
      ✅10/5 Search Console 登録（ドメインプロパティ・TXT確認済み）→ サイトマップ送信済み
      ★ドメインプロパティのサイトマップ欄は★URL全文（https://ko-station.org/sitemap.xml）。「sitemap.xml」だけだと『アドレスが無効』
-     残＝Googleビジネスプロフィール（団体側の本人確認が要る）／数日後に Search Console のカバレッジを見る
+     ✅★Googleビジネスプロフィールは★以前から登録済み（有璽氏 10/5）。マップ cid=8965961718032052072（0x7c6d7eadc90d2f68）
+       → v37 でトップの団体情報（構造化データ）に hasMap として結んだ
+     残＝プロフィールのウェブサイト欄が https://ko-station.org/ か・住所/電話/営業時間がサイトと同じかを有璽氏が確認／10/7頃 Search Console を見る
      ★WordPress は活動レポート等の更新物だけ先に（有璽氏 10/5）。★ko-station.org の下の階層（/report/ 等）に置く方針を提示
 
