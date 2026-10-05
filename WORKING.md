@@ -119,6 +119,11 @@
 `memory/project_toc_customer_ledger.md` ／ 営業ワークブックの `02_個人マスタ`
 
 ### 進行中（MacBookセッション記入）
+- **【ビビ / MacBook 2026-10-05】かわちばなし ── 案B実装済み・★有璽氏の判断待ち3件（Slackのボタン）**
+  対象 `~/.vivid-relay/kb_live.sh`（トップの「今月のイベント」の差し込み・追加125行/削除0行・控え `_backups/kb_live.sh.bak_20261005_top`）。
+  ★本番へは未反映（kb_live.sh を実行していない）。**★同じ対象に手をつけないでください**: `kb_live.sh` の案B印の3か所（164-217/259-325/381-382行）／`~/kb_build`
+  判断待ち #8a851c トップを本番へ出すか ／ #ec85f9 終わったイベントを落とすか ／ #a30f02 `~/kawachibanashi_site` の .vercel を外すか
+  ▶Aの依頼文は Drive の案件フォルダへ `かわちばなし_修正依頼_20261005_v3.txt`（★渡すのはこれ1本・v1のPDFとv2は旧版）。渡すのは有璽氏の手
 
 - **【リリス / MacBook 2026-10-05】公開中サイトへ Clarity＋SEO標準装備** ── 対象 www.vivid-global.com／i-life-fukushi.com／fuku-chi.com／orange-works.co（★ko-station.org は済・触らない）。
   書く先＝Skill web-tracking-setup（台帳節を追加）・Clarity 管理画面・各CMSの head。**★同じ対象に手をつけないでください**: 上4サイトの head／GTM-PQX3L4TQ
