@@ -18,6 +18,7 @@
 ## 毎ターン届けるもの（最小限）
 
 - [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — `ssh mini`で操作する主作業機。10/5 通信は復旧（★Wi-Fi経由）。有線LANはまだ壊れたまま（IP 192.168.2.200・/32・ルーター空欄）＝Wi-Fiが切れると止まる
+- [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — `ssh mini`で操作する主作業機。✅10/5夕 有線LAN復旧（手入力 192.168.1.200/24・ルーター .1・既定経路=有線を実測）。★設定はminiのAIが networksetup で直せる＝画面操作を人に渡さない
 - [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語
 - [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／**★制作物も既存物も自動で正としない(3回目)**
 - [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨する

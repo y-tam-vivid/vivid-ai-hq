@@ -60,3 +60,9 @@ Mac mini を「Claude Code の主作業機」にし、MacBook から遠隔操作
 - ✅10/5 15:2x 有璽氏が修正 → ★外へ出られるようになった（github/clarity 200・ping OK）。ただし★経路は Wi-Fi(en1)。有線は IP 192.168.2.200（1→2の打ち間違い疑い）・マスク /32・ルーター空欄・方式「DHCP（ルーター手入力）」のまま＝★Wi-Fiが切れると再び止まる。有線の直しは未
 - ✅10/5 mini の git 枝分かれ（ahead 8／behind 201・10/1〜通信断の間）を解消：止めていたのは claude.ai同期スキル google-workspace の未追跡9本（origin と同一を確認して _backups/untracked_google-workspace_20261005 へ退避）＋状態ファイル2本の衝突（origin を採用）。控え枝 backup/mini-before-merge-20261005。両機 🟢
 - ★10/1〜10/5 の通信断の間、mini 発の自動処理（Slack通知・ask_hub・daily_jobs 等）は外へ出られていない＝ドーベルマンで取りこぼしを点検する
+
+## ✅ 2026-10-05 夕 解消（mini 上のAIが直した）
+- 有璽氏が手で直そうとしたが「DHCP（ルーター手入力）」のまま・IP 192.168.**2**.200・マスク/32・ルーター空欄で残っていた
+- ★**画面で直してもらうより、AIが mini 上で `networksetup -setmanual "Ethernet" 192.168.1.200 255.255.255.0 192.168.1.1` を叩く方が速く確実**（管理者パスワード不要・rc=0で通った）。★次からは有璽氏に画面操作を渡す前にこれを試す
+- 実測：経路1 = 既定経路 interface en0・gateway 192.168.1.1 ／ 経路2 = `curl --interface en0 https://github.com` 200 → 一致。ルーターへの ping 0%損失
+- 戻し方：`networksetup -setdhcp "Ethernet"`
