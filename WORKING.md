@@ -132,8 +132,12 @@
   ✅**4市のイベントRSSを実測＝計60件**（柏原10/藤井寺18/羽曳野12/松原20）。★柏原は `lg.jp` へ移転・藤井寺と羽曳野はRDF形式
   ▶**収集をピタゴラスへ投げた**（mini・`~/.vivid-relay/pita_kawachi_collect.txt`）。出口 `kawachi_collect_result.md`／スクリプト `kb_collect.py`。
     ★下書きで入れる（「公開」「確認済み」は空のまま）・ID は kb-0004 から・既存3行は触らない
-  🔴**計測が0だった**（Clarity/GA4/GTMとも）。台帳 `bin/web_tracking/sites.json` へ8件目として登録し、`site_audit.py` の表に出るようにした（いま ✗ 401）。
-    ★公開の順番＝①Clarity ②独自ドメイン ③Search Console ④合言葉を外す
+  🔴**計測が0だった**（Clarity/GA4/GTMとも）。台帳 `bin/web_tracking/sites.json` へ8件目として登録し、`site_audit.py` の表に出るようにした（いま ✗ 401）
+  ✅10/5夜 **検索と共有の土台**（title/canonical/OGP/JSON-LD・sitemap・robots）／10/6朝 **案B＝イベント1件ごとの静的ページ**（★見た目は画素比較で差分0）
+  ✅10/6 **ドメイン確定 `kawachibanashi.osaka.jp`**（有璽氏）。★取得は有璽氏の手。手順は Drive `05_公開と計測/02_…`。★`KB_SITE_URL` を1か所変えれば全部ついてくる
+  ✅10/6 **11月の選別案**（22件→○9/△4/×9）を Drive `05_公開と計測/03_…` へ。★決めるのは有璽氏
+  ▶**残＝①ドメイン取得（有璽氏）→ ②Vercel＋DNS → ③KB_SITE_URL → ④Clarity → ⑤Search Console → ⑥合言葉を外す**
+  **★同じ対象に手をつけないでください（追加）**: `~/.vivid-relay/kb_collect.py` ／ シート `1mRp6Cx…` の「イベント」タブ ／ `bin/web_tracking/sites.json` のかわちばなしの行 ／ `kb_live.sh` のSEO・静的ページの印
   **★同じ対象に手をつけないでください（追加）**: `~/.vivid-relay/kb_collect.py` ／ シート `1mRp6Cx…` の「イベント」タブ ／ `bin/web_tracking/sites.json` のかわちばなしの行
   ▶Aの依頼文は Drive の案件フォルダへ `かわちばなし_修正依頼_20261005_v3.txt`（★渡すのはこれ1本・v1のPDFとv2は旧版）。渡すのは有璽氏の手
 
