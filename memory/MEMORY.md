@@ -26,6 +26,7 @@
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 10/5 有璽氏。★以降の進捗はnotify.tell()。会話に書いても届かない
 - [判断はSlackのボタン](project_ask_hub_push_decisions.md) — ★ターン終了前にopenを数える。1週間超は前提を測り直す(10/5 前提が消えていた)
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — 10/6 ★入れると確定は別番号。押した後に何が変わるかを書く
+- [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — 10/6 ★レコード設定はNSを01-04.dnsv.jpへ変えて初めて効く。権威がどこかを先に見る
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 🔴★応答を返したのが誰かを見る(10/5 whoisがIANAで止まり9件誤判定寸前)
 - [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync除外・リンク4本(両機済)／★MacBookは9/27まで@importが空振り→Core_Brainリンクで解消
 - [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — launchd 15分ごと稼働中(9/29〜)。★9/30 同じ目印の2行で完了⇄未完了が往復→行を複製する時は目印を消す。同期側の重複ガードは未実装
@@ -34,7 +35,7 @@
 - [★実データが入ったら早く公開](feedback_seo_standard_kit.md) — 10/5有璽氏。検索に載るまで時間がかかる。計測は★sites.jsonに載せて予約
 - [公開中サイトのSEO標準装備](feedback_seo_standard_kit.md) — 10/5〜 Clarity＋Search Console＋サイトマップ＋月次レビュー。★Clarity設置済＝ILIFE・ふくち。・オレンジ・119番・こどもS／ビビッドのみ保留(WPログインURL不明)。台帳 bin/web_tracking/sites.json。★10/6〜 mini cron：Clarity毎日0:30・週次 月曜7:00・月次 毎月1日9:00（旧クラウド月次は11/1停止予定）
 - [家計台帳⇄統合型営業管理の連携](project_kakei_daicho.md) — **いま：設計担当と全面合意（10/3）・M11は作らない。人軸・顧客を作れるのは統合側だけ・実績は家計→統合の一方向2本。残＝見込み客69件の切り分けと送り方（miniのPython）の返答**
-- [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ 03_デザイン制作プロジェクト/05_株式会社ILIFE・06_ふくち。グループ＋03_株式会社ビビッド（10/5新設）。★別置き場を残すなら片方を正本・他方はショートカット／★移すときは命名規約でリネーム
+- [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ 03_デザイン制作プロジェクト/01_ふくち。・02_ILIFE・03_ビビッド・06_かわちばなし（10/6番号振り直し・★旧パスへ書かない）。★別置き場を残すなら片方を正本・他方はショートカット／★移すときは命名規約でリネーム
 - [渡し物はDrive案件フォルダ・番号を振る](reference_backups_in_volatile_places.md) — 10/5。★入れる前にDrive側を数える(16世代が既に在った)
 - [素材は広報の設計図でない](feedback_source_material_is_not_the_pr_plan.md) — ★チラシに無い＝書かぬは誤り／配布物を画像欄に載せない
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番(v45)。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/7に確認)。立ち上げ手順とCSVは05/02_Google広告に用意済み
