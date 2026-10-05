@@ -52,3 +52,4 @@ metadata:
 - 🔴 Chrome拡張は lookerstudio.google.com の読み取り権限が無い（Permission denied）＝Looker の編集はこちらから不可
 - 未：Clarity APIトークン6本（有璽氏）／clarity_daily.py は未実行（--init も未）
 - 10/5 有璽氏「Looker Studioはそちらで作成できない？」＝★こちらで組む前提。Looker Studio には作成・編集のAPIが無い（画面操作のみ）→ Chrome拡張に lookerstudio.google.com のサイト権限が要る。許可が出たら：GSC 4サイト追加・Clarityシートをデータソース化・一覧ページとサイト別ページを作る
+- 🔴10/5 Claude in Chrome は lookerstudio.google.com で★読み取り・スクショとも「Permission denied」（Chrome側は全サイト許可・拡張のパネルに許可確認もブロック一覧も出ない＝3回再現）。★こちらからLooker Studioを操作する経路は無い前提で設計する
