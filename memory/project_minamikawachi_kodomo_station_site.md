@@ -261,5 +261,8 @@ metadata:
      ⑤アカウント全体のクリック率5%（2か月続けて割ると停止）⑥年1回のアンケート
      ✅10/5 実画面：Google for Nonprofits は★承認済み（団体名 Minami-kawachi Kodomo Station）。Ad Grants は★未有効化（「使ってみる」ボタンのまま）
      🔴Workspace のドメインが★npostation.or.jp。dig で NS・A・MX とも★空（10/5・1経路）＝ドメインが生きていない疑い。ko-station.org とは別
+     ✅10/5 有璽氏：npostation.or.jp は★昔のURL・ドメイン契約は終了済み。いまの団体ドメインは ko-station.org（メールはさくら www1094）
+     ★影響：Google for Nonprofits／Workspace の連絡先が @npostation.or.jp だと Google からの通知（審査結果・停止警告）が★届かない
+       → Nonprofits の「設定」「管理者」で連絡先を生きているアドレスへ。★Workspace を ko-station.org へ移すのはメールの置き場を変える大きな分岐＝今はやらない
      ★計測：いまのGA4/GTMは会社共通（G-4D1C77WR0P）。広告の成果を測るなら★団体専用のGA4を作る案
 
