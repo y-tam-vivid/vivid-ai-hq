@@ -31,5 +31,6 @@
 - [公開中サイトのSEO標準装備](feedback_seo_standard_kit.md) — 10/5〜 Clarity＋Search Console＋サイトマップ＋月次レビューを1セット。★公開済みサイトは検問を通らない→台帳で追う
 - [家計台帳⇄統合型営業管理の連携](project_kakei_daicho.md) — **いま：設計担当と全面合意（10/3）・M11は作らない。人軸・顧客を作れるのは統合側だけ・実績は家計→統合の一方向2本。残＝見込み客69件の切り分けと送り方（miniのPython）の返答**
 - [素材は広報の設計図でない](feedback_source_material_is_not_the_pr_plan.md) — ★チラシに無い＝書かぬは誤り／配布物を画像欄に載せない
+- [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番(v43)。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/8ごろ結果)
 - [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — v13。★配信10/6(火)10:00／団体確認 kodomomatsuri-press.vercel.app／要差替は0件
 - [次の一手はタスク行で出す](feedback_emit_next_actions_as_tasks.md) — 区切りごとに Current_Focus「## 今週」へ1行（型はCore_Brain秘書コア§4）→Notionへ自動同期
