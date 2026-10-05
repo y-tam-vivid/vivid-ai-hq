@@ -19,12 +19,18 @@
 
 - [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — `ssh mini`で操作する主作業機。~/.claude資産は移植済／残=mini側ログイン認証
 - [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語
-- [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／対外は「代表」・グループ名が先／**★制作物の実物を自動で正としない(2回目)**
+- [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／**★制作物も既存物も自動で正としない(3回目)**
 - [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨する
-- [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★真因は速さのために確かさを落とすこと。数える部品を1か所へ集約し読むだけにする。件数は数え方を添える
+- [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★速さのために確かさを落とさない。件数は数え方を添える／担当へ渡す数字も測ってから／出典URLは検索結果をそのまま貼る
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本。★出した側が台帳を閉じる。詳細は本文**
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/12★2回。足りない→待つで止めるな。器を縮める／依頼文を作る**
 - [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync除外・リンク4本(両機済)／★MacBookは9/27まで@importが空振り→Core_Brainリンクで解消
-- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — ★9/29 自動連携稼働(launchd 15分・mini)。完了行は翌日以降90_Archiveへ自動で移る(9/29 初回18件・実物確認済み)。MacBookから代走しない
+- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — launchd 15分ごと稼働中(9/29〜)。★9/30 同じ目印の2行で完了⇄未完了が往復→行を複製する時は目印を消す。同期側の重複ガードは未実装
 - [ツールの使い分けと導入状況](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚・git=完成品。★施設側はClaude未導入・Notionは有璽氏個人＋一部／日々のメモは3か所に分散(Macメモ帳・Chatwork・iPhoneメモ)→Obsidian 01_Inbox のデイリーノートへ集約開始(9/27・振り分けは未)
 - [Web公開前の計測は標準](reference_salesbreaker_campaign_setup.md) — 9/29〜全Web必須。Skill web-tracking-setup・公開直前に検問が止める
+- [公開中サイトのSEO標準装備](feedback_seo_standard_kit.md) — 10/5〜 Clarity＋Search Console＋サイトマップ＋月次レビュー。★Clarity設置済＝ILIFE・ふくち。・オレンジ・119番・こどもS／ビビッドのみ保留(WPログインURL不明)。台帳 bin/web_tracking/sites.json。★月次レビューの本体はクラウドのルーティン「SEO巡回エージェント」(trig_01Y9…)
+- [家計台帳⇄統合型営業管理の連携](project_kakei_daicho.md) — **いま：設計担当と全面合意（10/3）・M11は作らない。人軸・顧客を作れるのは統合側だけ・実績は家計→統合の一方向2本。残＝見込み客69件の切り分けと送り方（miniのPython）の返答**
+- [素材は広報の設計図でない](feedback_source_material_is_not_the_pr_plan.md) — ★チラシに無い＝書かぬは誤り／配布物を画像欄に載せない
+- [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番(v43)。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/7に確認)。立ち上げ手順とCSVは05/02_Google広告に用意済み
+- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — v13。★配信10/6(火)10:00／団体確認 kodomomatsuri-press.vercel.app／要差替は0件
+- [次の一手はタスク行で出す](feedback_emit_next_actions_as_tasks.md) — 区切りごとに Current_Focus「## 今週」へ1行（型はCore_Brain秘書コア§4）→Notionへ自動同期

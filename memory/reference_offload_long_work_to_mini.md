@@ -1216,3 +1216,26 @@ Stop hook が聞いているのは   「書き戻しは終わったか」
 **★こちらは index を1行上書きして別セッションの記録を消しかけた（git diff で気づき復元）。**
 同じ見出しで始まる行が複数あるとき、`startswith` で最初の1本を掴むと**別人の行を潰す**。
 → ★索引を機械で書き換えるときは、置換前に `grep -n` で**何行マッチするか数える**。
+
+## 🔴2026-10-03 `run_agent.sh` を `nohup … &` で包むと★起動しない
+
+```
+✗ 効かない   ssh mini 'nohup $R/run_agent.sh <名前> <指示文> $HOME > /dev/null 2>&1 < /dev/null &'
+✗ 効かない   ssh mini '$R/run_agent.sh <名前> <指示文> $HOME > /dev/null 2>&1 &'
+             ★どちらも戻り値は返る（PIDも出る）が、★run_agent_launch.log に1行も残らない
+             ★ログファイルも作られない ＝ ★起動していない
+✓ 効く       ssh mini 'cd ~ && $R/run_agent.sh <名前> <指示文> $HOME 2>&1 | head -6'
+             ★そのまま前面で呼ぶ。★`&` も `nohup` も `> /dev/null` も付けない
+             ★run_agent.sh 自身が中で切り離す（trap ''HUP + disown）ので、
+               呼んだ側は数秒で「起動しました。PID=…」を返して戻る
+             ★実測2回（corpowner_apply 10:09 ／ kodama_apply 10:34）とも成功
+```
+
+- **★run_agent.sh は既に切り離しを持っている。**外側で `nohup &` を重ねると二重になって落ちる
+- **★「PIDが返った」は起動の証拠にならない**（9/8 と同じ型）。
+  ★判定は `run_agent_launch.log` に行が増えたか ／ `<名前>_<日付>.log` が実在するか
+- ★`timeout` は mini に無い（GNU coreutils 未導入）。待つなら `sleep`
+- ★2026-09-30 以降 run_agent.sh が使われておらず、この型に3日間気づかなかった
+
+**★これは 2026-09-13 の「run_agent.sh経由だと起動直後に落ちる・直接叩くと走る・原因未特定」と
+同じ現象。★20日間ぶん、同じ罠を踏み続けていた。**差は `nohup … &` で包んだかどうかの1点。

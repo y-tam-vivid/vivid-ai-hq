@@ -51,10 +51,10 @@
 - [LSU 法定開示に年度・更新頻度を明記](project_lifestandup_website_wordpress.md) — ★9/7 自己評価=毎年度／支援プログラム=改定時、と混ぜていた共通注記を分離。年度は`meta`1箇所・来年はそことPDF差替のみでよい。5帯とも横あふれ0
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない／**★9/8 miniにmasked/が無くぼかしガードが機能しない。対象5番号を扱う前に必ずself_test()で確認**
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
-- [南河内こどもステーション](project_minamikawachi_kodomo_station_site.md) — ★9/29夜 構築4版・写真13枠を実写真に・祭り以外の11枚は明るさ中間＋シャープ・トップにGoogleマップ（白黒で確定）埋め込み済みで公開・Claude Design用一式v2あり https://minamikawachi-kodomo-demo.vercel.app ／作り直しは ~/kodomo-photo-work/build_site.py・★日本語ファイル名はVercelで404
+- [南河内こどもステーション](project_minamikawachi_kodomo_station_site.md) — ★9/30 構築5版(18ページ)で公開・写真はデザイン側に取り込み済み(当て直し停止)・地図(白黒)と協力企業ロゴ(PR TIMES・オレンジワークス・ILIFE)・SNSボタンの色(抑えめ・9/30確定)はこちらで差し込み・Claude Design用一式v2あり https://minamikawachi-kodomo-demo.vercel.app ／作り直しは ~/kodomo-photo-work/build_site.py・★日本語ファイル名はVercelで404
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★**公開 https://kawachibanashi.vercel.app**／**★イベント情報の器（スプレッドシート23列）を新設＝AIが書ける正本**。詳細の見せ方3案は保留
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
-- [Claude Designへの渡し方](reference_claude_design_local_edit_not_reflected.md) — **✅画像はチャット添付＋「生成不要・配置だけ」を1行目に。★9/9 Driveリンクは開けない(本文で渡す)／ロゴPNGから絵の切出し不可／生成は向こうの財布(Gamma)＝絵はこちらで作る**
+- [Claude Designへの渡し方](reference_claude_design_local_edit_not_reflected.md) — **✅画像はチャット添付＋「生成不要・配置だけ」を1行目に。★9/9 Driveリンクは開けない(本文で渡す)／ロゴPNGから絵の切出し不可／生成は向こうの財布(Gamma)＝絵はこちらで作る**／**★10/3 有璽氏＝正本が向こうでも★こちらが先に作ってよい。有璽氏が「こう直した」と伝えて取り込む。写真の差し替えは既にこの形で回っている。「次の書き出しで消える」を止まる理由にしない**
 - [OpenAI APIの費用とCodex](reference_openai_api_cost_and_codex.md) — ★APIは画像生成にだけ使用(会話は0件)。18枚 high=$2.39/mini=$0.09で27分の1。★Codexは画像生成できずPlusにAPIクレジットも付かない
 - [LSU「対策済み」はメディアクエリの境界まで見る](project_lifestandup_website_wordpress.md) — ★9/8 en-bubble重なり4ページ再発。真因は9/7のtop調整がタブレット帯(541-980px)専用ブロックのみで540px以下に無かった漏れ。**コードがある≠その幅で効いている**。PHPコメント内に`/*``*/`という文字列を書くと構文エラーになる罠も踏んだ
 - [LSU 縦テープ⇄バッジ間隔 9/8夕修正](project_lifestandup_website_wordpress.md) — tape-verticalの画面端直値配置→コンテナ基準calc式へ（1440/1920で一致を実測）。bc-gap-badgeは17→32px（3回「揃える」対応のみで初めて広げた）
@@ -89,5 +89,7 @@
 - [かわちばなし・16版で3件済](project_kawachibanashi_portal.md) — ✅9/16 書き手/募集/読者像/並びは実装済。★残=OC外す・幅掃き
 - [渡し物はDriveの案件フォルダへ](reference_backups_in_volatile_places.md) — ★9/16恒久 DL/Desktopは不可(1塊200MB)。★制作物と同じ所へ置く
 - [JFBI調査研究サイト](project_jfbi_research_site.md) — ★9/24 協力団体★2件（a’s岡崎／リライフ訪問看護ステーション柏原）。写真の枠は3:4の1種類へ統一。**★a’sへの確認は有璽氏が実施中**
-- [もらった素材は開いて数える](reference_supplied_material_needs_screening.md) — ★9/24 仕入れ単価の写り込み等4枚を外した／**★同日 追記：「サイトに載っている」は「配ってよい」ではない。Exifは空＝出どころは聞くしかない**
+- [もらった素材は開いて数える](reference_supplied_material_needs_screening.md) — ★9/24 仕入れ単価の写り込み等4枚を外した／**★同日 追記：「サイトに載っている」は「配ってよい」ではない。Exifは空＝出どころは聞くしかない**／**★10/3 3例目：縮小一覧は候補を絞るためのもの。載せ可否は原寸で決める（組んだ後に顔が判別できる2枚を落とした）**
 - [1件だと枠が全幅へ伸びる](reference_grid_collapses_when_only_one.md) — ★9/24 CSSのauto-fitは1件のとき列を畳んでカードを全幅へ伸ばす→auto-fillへ。★枠を先に出すときは0/1/2/3件の絵を実際に描いて隣のブロックと揃える
+- [並ぶカードで同じ写真を使わない](feedback_no_duplicate_photo_in_one_view.md) — ★10/4 第37回と第36回のカードが同じ写真（有璽氏が発見）。カードを足したら一覧の img を数えてから出す
+- [既存物をそのまま正にしない](feedback_check_the_archive_first.md) — ★探す→**出来を評価する**→基準にするか決める。②が抜けると弱い基準が全媒体へ広がる

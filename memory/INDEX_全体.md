@@ -47,12 +47,12 @@
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本。★出した側が台帳を閉じる。詳細は本文**
 - [自分に見えた≠相手に見える](reference_private_pages_404_for_the_viewer.md) — ★9/14 非公開WPはログイン中の自分にだけ見えた。リンクを渡す前に未ログインで開く
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/12★2回。足りない→待つで止めるな。器を縮める／依頼文を作る**
-- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★9/16 4型目＝相手が有璽氏本人（別の道具で先に完了）。★宣言では止まらない＝渡す直前に実物を数える
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★宣言では止まらない。渡す直前に実物を数える／**★10/3 境界は「案件」でなく★成果物。相手の作業は代わりにやらず材料で渡す**
 - [日本語名は判定を外す](reference_nonascii_filename_breaks_the_check.md) — ✅9/16直り本番で発火・9/17 behind0。★直った証拠は翌朝の数字／★詰まりが流れた先の器を測る
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — 🔴9/14★同じ日に4回。手順書に落とした当日に自分が関所2(ver上げ)を飛ばした。★機械で時刻を比べて止める(未実装)
 - [担当が増えたら3か所](reference_new_agent_needs_three_places.md) — ★9/13 チョッパー追加で席が出なかった。名鑑を正本へ寄せた
 - [分けるのはセッションでなく担当](feedback_one_session_split_by_owner.md) — **🔴9/9 体不足でなく★割り当ての偏り（ビビが全部リリスへ投げていた）。増やす前に割り当てを直す。報告は1本に**
-- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — ★9/13 run_agent.sh経由だと起動直後に落ちた(台帳に完了なし･成果物0)。直接叩くと走る＝差はこの1点。原因未特定･bash -xで追う／ssh断はPIDで生死を見る
+- [制作は原則miniへ](reference_offload_long_work_to_mini.md) — **✅10/3 9/13の「原因未特定」が判明＝★`&`／`nohup`／`> /dev/null` を付けると起動しない（自身が切り離す設計で二重になり落ちる）。★`ssh mini 'cd ~ && run_agent.sh … 2>&1 | head -6'` とそのまま呼ぶ（実測2回）。PIDは起動の証拠にならない＝launch.logの行かログの実在で判定。timeoutはminiに無い**／ssh断はPIDで生死を見る
 - [一人で抱えるな](feedback_use_the_team_not_alone.md) — ★承認は記録と同じターンで投げる。★報告に未着手と「人の手は要るか」の2行
 - [手順書が読まれない理由](reference_why_manuals_are_not_read.md) — ★一度間違えると二度と読まれない。○×を求めると信頼が下がる
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — **★定説は無い＝輸入でなく自前で実測。作る前に数える・「無いから作る」禁止**
@@ -99,9 +99,9 @@
 - [本番WPは読むだけで測れる](project_lifestandup_website_wordpress.md) — **★9/9 公開APIとHTMLのcurlだけで移行の未確定8→4件。★top(14)/blog(16)確定・/trial・★Emanon BusinessはProの子テーマ（Proも要る）。★人へ聞く前に公開URLから数える**
 - [IGをサイトへ出す](project_lifestandup_website_wordpress.md) — **✅9/9 IG側は完了。★ショートコード=`[instagram-feed feed=1]`（保存済）。★動くのは本番WPだけ・デモは静的で展開されない。残＝テーマへdo_shortcode+フォールバックを仕込む／余計な4プラグイン停止。★同日4件が同じ根＝実物を見ずに人の画面を指示した**
 - [ページ登録は2か所](reference_fix_where_git_reaches.md) — ★9/15 create_pages.php(ローカル)とinc/page-setup.php(本番)の両方に足す
-- [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。★Canvaで生成できる(要手直し)
+- [SNS画像は誰が作るか](feedback_who_makes_the_images.md) — デザイン物は外／写真の切出しはこちら。**⛔10/3「OpenAIの鍵は無い」は古い。★Canvaへ直接つないで作れた（人が貼る往復は不要）。絵はCanva・★文字は生成側に書かせず必ず書き出して見る**
 - [リリースは配信で終わりでない](feedback_press_release_is_not_done_at_distribution.md) — 文面と画像まで1セット／★施設IGに業界の話は不可
-- [外の知を先に見る](feedback_look_outside_before_reinventing.md) — **✅9/15★3回目は先手で正解。★依頼文に「うちの作りを疑って」を入れる**
+- [外の知を先に見る](feedback_look_outside_before_reinventing.md) — **★10/1 4回目＝デザインは言葉のルールだけで頼むと型が1つになる→先に実例を集めて添える**
 - [網羅は出典より件数](feedback_coverage_over_citation_when_asked_to_enumerate.md) — ★9/8「網羅的に」出典なし・推測でも項目は落とさない。数値だけ出典必須
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★→Skill web-tracking-setup(全Web対象)。検査 bin/web_tracking_check.py
 - [恒久ルール⑥60pxちょうど配置](project_lifestandup_website_wordpress.md) — ⛔誤読訂正。★タブレット崩れはpx修正でなく構造修正へ転換(9/10)
@@ -114,3 +114,4 @@
 - [芽育ラボ](project_orangeworks_portfolio_site.md) — ★9/15 公開75件・一覧75件(イラストA+B 8件含む)／110分割と要確認4件は判断待ち
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
 - [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 9/24方針。★00_Systemは.md.md二重拡張子・@importは未切替
+- [判断は対象を名前で並べて聞く](feedback_name_the_targets_when_asking.md) — 「今回登録した分」等の指示語だけで聞かない（10/3）
