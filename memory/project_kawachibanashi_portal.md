@@ -3215,3 +3215,43 @@ mini 側で `stat` して 9/9・9/10 と分かり、リネームで直した。
 9/29 から「外へ出すWebページには計測を必ず入れる」と決めているが、**かわちばなしだけ抜けている。**
 いまは合言葉つきなので実害は出ていない。★**一般公開の前に入れる。**
 → 05_公開と計測 に書いた。`feedback_seo_standard_kit` の対象に加える必要がある。
+
+### ✅2026-10-05 夜 4市すべてに「機械で読める口」があった（実測）
+
+有璽氏「★実際の情報を入れたら早く公開していかないと、Google検索にも上がってこない」。
+中身を増やす経路を探して、4市の公式サイトを実測した。**4市とも RSS がある。**
+
+| 市 | 口 | 件数 | 形式 |
+|---|---|---|---|
+| 柏原市 | `https://www.city.kashiwara.lg.jp/category/bunya/machinomidokoro/event/index.rss` | 10件 | RSS |
+| 藤井寺市 | `https://www.city.fujiidera.lg.jp/cgi-bin/feed.php?type=rss_2.0&eventFlag=1` | 18件 | ★RDF(RSS1.0) |
+| 羽曳野市 | `https://www.city.habikino.lg.jp/cgi-bin/feed.php?type=rss_2.0&eventFlag=1` | 12件 | ★RDF(RSS1.0) |
+| 松原市 | `https://www.city.matsubara.lg.jp/news/event/rss.xml` | 20件 | RSS2.0 |
+
+**合計60件が今この瞬間に読める。** 器にはいま3件（公開2件）。
+
+**🔴踏んだ3つ**
+
+```
+① 検索が★千葉県柏市（kashiwa）を返した
+   「柏原市」で検索すると city.kashiwa.lg.jp（千葉県柏市）が混ざる。
+   ★大阪府柏原市は kashiwara。市名で検索せず★ドメインを先に確かめる
+
+② ★柏原市のドメインが変わっていた
+   www.city.kashiwara.osaka.jp → ★www.city.kashiwara.lg.jp
+   旧は 443 が閉じていて 80 だけ開いている（301で新へ飛ぶ）。
+   ★https が 000 で返るのを「ネットワークの不調」と決めつけない。
+   ★80 を叩いて redirect_url を見れば30秒で分かる
+
+③ RSS の形式が2通り混ざる
+   藤井寺・羽曳野は ★RDF（RSS1.0）で <item rdf:about=...>。
+   `<item>` で数えると★0件に見える。`<item` で数える
+```
+
+**★羽曳野市の口は、トップのHTMLからは見つからない。** 藤井寺と同じ
+`/cgi-bin/feed.php?type=rss_2.0&eventFlag=1` を叩いて 200 が返った（同じCMS）。
+★リンクが張られていないだけで、口が無いとは限らない。**定番のパスを叩いて確かめる。**
+
+**★RSSに無いもの** ── 開始日・終了日・会場・住所・料金・申込。
+RSSは「題名・URL・日付（更新日）」まで。**器の38列を埋めるには各ページを読む必要がある。**
+→ 集めるのは2段：①RSSで題名とURLを取る ②各ページを読んで日付・会場・料金を取る
