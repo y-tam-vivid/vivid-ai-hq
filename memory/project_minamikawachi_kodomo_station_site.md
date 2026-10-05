@@ -241,4 +241,12 @@ metadata:
      （URL・実数・写真・LINE公式アカウントURL・登記情報と照合 など／13ページ）。有璽氏が本番画面で発見
   ✅10/5 v35 黄色い付箋を★色（#FFF100）で拾って全部外した。残すのはお知らせの「重要」（本物の目印）と styleguide だけ
      実測：本番22ページの中身が v35 と一致／本番を描画してトップ・参加・団体概要・団体紹介の黄色が0
+  ✅10/5 v36 SEO（有璽氏「Search Console 登録やそれ以外の施策も」）。★書き出しには<title>も説明文も無かった（全22ページ・描画後も無し）
+     正本 ~/kodomo-photo-work/seo_fixes.py（oct3_fixes.patch_oct3 の最後から呼ぶ・何度かけても同じ）
+     公開13ページ：title／description／canonical／OGP／lang=ja。トップ＝NGO、まつり＝Event の構造化データ
+     制作用・印刷用・重複9ページは noindex（404/festival-lp/schedule/qr/sitemap.html/sns-templates/sp-check/styleguide/hero-patterns）
+     sitemap.xml（13URL）＋robots.txt に Sitemap 行／★www → ko-station.org へ308（重複を1本に。"/" は別に書かないと転送されなかった）
+     ★郵便番号は 583-0856（本文の値）。推測で入れかけた 0864 は誤り
+     残＝有璽氏：Search Console（ドメインプロパティ＝さくらにTXT 1行）→サイトマップ送信／Googleビジネスプロフィール
+     ★WordPress は活動レポート等の更新物だけ先に（有璽氏 10/5）。★ko-station.org の下の階層（/report/ 等）に置く方針を提示
 
