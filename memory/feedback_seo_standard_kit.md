@@ -53,3 +53,4 @@ metadata:
 - 未：Clarity APIトークン6本（有璽氏）／clarity_daily.py は未実行（--init も未）
 - 10/5 有璽氏「Looker Studioはそちらで作成できない？」＝★こちらで組む前提。Looker Studio には作成・編集のAPIが無い（画面操作のみ）→ Chrome拡張に lookerstudio.google.com のサイト権限が要る。許可が出たら：GSC 4サイト追加・Clarityシートをデータソース化・一覧ページとサイト別ページを作る
 - 🔴10/5 Claude in Chrome は lookerstudio.google.com で★読み取り・スクショとも「Permission denied」（Chrome側は全サイト許可・拡張のパネルに許可確認もブロック一覧も出ない＝3回再現）。★こちらからLooker Studioを操作する経路は無い前提で設計する
+- **Looker Studio 導入の経緯（10/5 調査・決定の発言そのものは未発見）**：9/14 オレンジGSC登録 → 9/19 ILIFE/オレンジのインデックス確認リマインダー → 9/22 SEO巡回エージェント（月次）作成 → 9/22「ILIFE・オレンジのGSC設定」完了 → 9/23「SEO月次レポートダッシュボード・自動化（オレンジ・ILIFE）」完了（2件とも出どころ Chatwork・同じ投稿）→ 9/28 Looker の週次メール初回。ルーティンは全部 claude.ai 側の会話から作成（created_via=meta_mcp）。★ターミナル版（両機）の会話記録にLookerの話は0件＝claude.ai の会話で決めた可能性が高く、こちらからは読めない
