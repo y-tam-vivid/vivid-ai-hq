@@ -64,3 +64,4 @@ metadata:
 - ✅10/5 16:09 有璽氏が Slack #dd191c で「自前の週次メール（推奨）」を選択。★Slackに判断を出したら、次に話すときは先に ask_hub の台帳（mini ~/.vivid-relay/ask_hub_queue.json）で回答を見てから話す（10/5 確認せずに「どちらか押して」と待った）
 - 自前週次の形（案）：mini の cron（月曜朝）＝ Search Console 6サイト（API）＋ Clarity 日次シートの直近7日 → HTMLメール（Gmail API）＋Slack 2行。★クラウドのルーティンは送信が自動判定で止まるため使わない。要るもの＝Googleの許可1回（webmasters.readonly＋gmail.send・既存のシート用の鍵とは別ファイル）／Clarity鍵6本
 - 10/5 Google許可（SEO用）：mini に `~/.vivid-relay/oauth_seo.py`（webmasters.readonly＋gmail.send・保存先 google_token_seo.json＝シート用 google_token.json とは別）。★MacBookにgoogle_auth_oauthlibが無いので、mini で port 8765 の受け口→MacBook から `ssh -L 8765:localhost:8765 mini` で転送してブラウザで許可する形
+- ✅10/5 16:18 Google許可完了（google_token_seo.json・webmasters.readonly＋gmail.send）。🔴ただし GCPプロジェクト 472246617753（mini のOAuthクライアント）で Search Console API が未有効＝403 accessNotConfigured。Gmail API も要確認。有効化は有璽氏（Cloud Console の「有効にする」）
