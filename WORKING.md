@@ -57,6 +57,7 @@
 
 ## Mac mini セッション
 
+
 ### 【ピタゴラス / mini 2026-09-29】notion_focus_sync.pyへ完了行の片付け機能を追加 ── ✅完了。次回自動実行を1回確認すること
 
 有璽氏の決定（2026-09-29・詳細は `memory/project_notion_focus_sync.md`）を実装。

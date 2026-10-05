@@ -36,6 +36,9 @@
 - [渡し物はDrive案件フォルダ・番号を振る](reference_backups_in_volatile_places.md) — 10/5。★入れる前にDrive側を数える(16世代が既に在った)
 - [素材は広報の設計図でない](feedback_source_material_is_not_the_pr_plan.md) — ★チラシに無い＝書かぬは誤り／配布物を画像欄に載せない
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番(v45)。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/7に確認)。立ち上げ手順とCSVは05/02_Google広告に用意済み
+- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — v22。★配信10/6(火)10:00／★入稿素材は一式そろった(Drive 06_…/04_入稿素材・本文は全体2,501字)／★PR TIMESの下書きは未作成
+- [PR TIMES入稿の罠と切り分け](reference_prtimes_editor_behaviors.md) — ★入稿前に必ず読む。**★報道素材に入れても記事本文に写真は載らない(別物・10/5に指摘を受けた)／必ずプレビューで見る**／行頭の「1.」で全体がリスト化(解除不可)／画面が読めない時は拡張のサインインを見る
+- [かわちばなし地域ポータル](project_kawachibanashi_portal.md) — **シート→サイトは9/13から kb_live.sh で稼働中（10/5 3経路一致で実測）＝新しく作らない**。★10/5夜 器に下書き47件（kb-0004〜0050・公開は人が付ける。収集は ~/.vivid-relay/kb_collect.py）。★~/kawachibanashi_site は9/10の残骸（同じVercelに紐づく・ここから出さない）
 - [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — ★PR TIMES下書き作成中(release_id=6)・配信10/6(火)10:00は動かさない(有璽氏10/5)。写真は2枚並べで足せるだけ。★配信10/6(火)10:00／★入稿素材は一式そろった(Drive 06_…/04_入稿素材・本文は全体2,501字)／★PR TIMESの下書きは未作成
 - [PR TIMES入稿の罠と切り分け](reference_prtimes_editor_behaviors.md) — ★入稿前に必ず読む。**★報道素材に入れても記事本文に写真は載らない(別物)／**★写真は多めが既定(上限30枚)・勝手に絞らない(10/5に2回指摘)／作る前によそのリリースを1本見て形を決める**／必ずプレビューで見る**／行頭の「1.」で全体がリスト化(解除不可)／画面が読めない時は拡張のサインインを見る
 - [かわちばなし地域ポータル](project_kawachibanashi_portal.md) — **シート→サイトは9/13から kb_live.sh で稼働中（10/5 3経路一致で実測）＝新しく作らない**。★穴＝トップの見本6件。★~/kawachibanashi_site は9/10の残骸（同じVercelに紐づく・ここから出さない）
