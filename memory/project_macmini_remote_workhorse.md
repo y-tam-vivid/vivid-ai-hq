@@ -50,3 +50,10 @@ Mac mini を「Claude Code の主作業機」にし、MacBook から遠隔操作
 - settings.local.json(権限allowlist)は機体固有のため未移植。miniでは権限プロンプトが初期は多め
 
 関連: [[reference_ai_org_chart]] [[project_secretary_agent]]
+
+## 🔴 2026-10-05 通信不通の真因（実測）
+- **有線LAN（Ethernet・優先順1位）の設定が壊れている**：「DHCP（ルーターは手入力）」で IP 192.168.1.200／★サブネットマスク 255.255.255.255／★ルーター空欄（DHCP INFORM の返答は旧ルーター 192.168.0.254）
+- macOS は優先1位の有線を主経路にするため、★既定経路が無くなり外へ出られない（ping 8.8.8.8 NG・clarity/github/slack 000）。★Wi-Fi（192.168.1.9・ルーター 192.168.1.1）を明示すれば 200＝回線は生きている
+- 有璽氏「ネットはつながっているはず」＝回線とWi-Fiは正しい。壊れているのは有線LANの設定だけ
+- 直し方（★システム設定なので有璽氏の手で）：システム設定→ネットワーク→Ethernet→詳細→TCP/IP→「手入力」IP 192.168.1.200／サブネット 255.255.255.0／ルーター 192.168.1.1（または「DHCPサーバを使用」）
+- 確かめ方：`ssh mini 'route -n get 8.8.8.8; curl -s -o /dev/null -w "%{http_code}" https://github.com/'`
