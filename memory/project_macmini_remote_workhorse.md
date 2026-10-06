@@ -66,3 +66,30 @@ Mac mini を「Claude Code の主作業機」にし、MacBook から遠隔操作
 - ★**画面で直してもらうより、AIが mini 上で `networksetup -setmanual "Ethernet" 192.168.1.200 255.255.255.0 192.168.1.1` を叩く方が速く確実**（管理者パスワード不要・rc=0で通った）。★次からは有璽氏に画面操作を渡す前にこれを試す
 - 実測：経路1 = 既定経路 interface en0・gateway 192.168.1.1 ／ 経路2 = `curl --interface en0 https://github.com` 200 → 一致。ルーターへの ping 0%損失
 - 戻し方：`networksetup -setdhcp "Ethernet"`
+
+## 🔴2026-10-06 17:37 ★ssh が切れたら、miniの障害と決めつけず★自分のIPを見る
+
+**症状**：それまで通っていた `ssh mini` が `Could not resolve hostname tamurayuujinoMac-mini.local` で落ちた。
+
+**真因＝miniではなく★こちら（MacBook）が別のネットワークへ移っていた。**
+
+```
+実測  MacBookのIP     10.3.14.246   ゲートウェイ 10.2.0.126   SSID 00_MCD-FREE-WIFI（外出先）
+      miniのIP        192.168.1.200（自宅/事務所の網）
+      ping            192.168.1.200 ／ 192.168.2.200 とも★100%ロス
+      外への通信       github へ 200 ＝★回線自体は生きている
+→ ★別セグメントにいる。mDNS（.local）も網をまたげないので名前解決から落ちる
+```
+
+**★切り分けの順（この順で2経路見る）**
+```
+① 自分のIPとゲートウェイ    route -n get default ／ ipconfig getifaddr en0
+② miniのIPへ直接 ping       192.168.1.200
+③ 外への通信                curl -o /dev/null -w "%{http_code}" https://github.com
+①が 192.168.1.x でなければ★miniは無関係。網へ戻るまで待つ（miniを疑わない）
+```
+
+- **★mini へ投げた仕事は、ssh が切れても走り続ける。** `run_agent.sh` は内部でバックグラウンドへ
+  切り離すため、こちらの回線が落ちても止まらない。**結果は mini の出口ファイルに残る。**
+- **How to apply:** 外出先（フリーWi-Fi・テザリング）では mini へ届かない。
+  長い処理を投げたら、**同じ網へ戻ってから出口を読む**。届かないことを「失敗」と報告しない。
