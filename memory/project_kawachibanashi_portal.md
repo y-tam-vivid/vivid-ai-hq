@@ -3825,3 +3825,36 @@ sitemap   27 → 26件
      オプションを変数にまとめない（展開の有無で静かに失敗する）
      ★「全部0件」は成功ではなく、まず★取得の失敗を疑う
 ```
+
+### 📌2026-10-06 合言葉を外す手順（★実測。外すのは有璽氏の判断を得てから）
+
+```
+実体  ~/kb_build/middleware.js（444B・9/12作成）★~/kb_live へそのまま写される
+      export const config = { matcher: '/((?!_next/static|favicon.ico).*)' };
+      export default function middleware(req) { … u==='kawachi' && p==='hikae44ec16' … }
+      合わなければ 401「準備中です」
+vercel.json  { "framework": null }  ← ★こちらは触らない
+```
+
+**★外し方は2通り**
+```
+A  middleware.js を消す          ★いちばん確実。戻すときは控えから書き戻す
+B  中身を「素通り」に書き換える    戻すのが楽だが、消し忘れが起きにくい分だけ A が明快
+```
+★どちらでも `kb_live.sh` を実行し直す必要がある（`~/kb_live` は毎回作り直されるため、
+`~/kb_build` 側を直す）。
+
+**★外したあとに必ず数えるもの**
+```
+① 合言葉なしで 200 が返ること（★osaka.jp と vercel.app の両方）
+② ★noindex が入っていないこと（入っていたら検索に出ない）
+③ robots.txt が Allow であること
+④ Search Console の所有確認が ✓ になること（site_audit.py）
+⑤ サイトマップを送信して「成功」になること（★外すまでは Google が読めない）
+⑥ Clarity に本物の訪問が載ること（★手元テストの 127.0.0.1 分と区別する）
+```
+
+**★Search Console は合言葉を外す前に登録できる**（所有確認はDNSのTXTなので中身を読まない）。
+→ 手順は Drive `05_公開と計測/06_20261006_SearchConsoleに登録する.md`。
+★既存サイトに合わせて **`sc-domain:kawachibanashi.osaka.jp`**（ドメイン全体）で登録する。
+★**サイトマップの送信だけは外したあと**（かかったままだと「取得できませんでした」になる）。
