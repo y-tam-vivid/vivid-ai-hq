@@ -86,6 +86,13 @@
 
 **★同じ対象に手をつけないでください**: なし（作業完了・次回自動実行の確認待ち）
 
+### 【リリス / mini 2026-10-06】かわちばなし：イベントごとの静的ページ ── ✅実装済み・★本番未反映（ステラの検査→有璽氏のデプロイ判断待ち）
+対象 `~/.vivid-relay/kb_live.sh`（635→682行・控え `_backups/kb_live.sh.bak_20261006_eventpages`）。結果 `~/.vivid-relay/kawachi_eventpages_result.md`。印「イベント静的ページ」1〜3か所目＝294-303/585-596/614-626
+**★同じ対象に手をつけないでください**: `kb_live.sh`
+✅10/6 10:02 **17版＋案B撤去＋osaka.jp を本番反映済み**（確認8点○・本番2ドメインで26ファイルが出力とバイト一致）。結果 `~/.vivid-relay/kawachi_v17_result.md`（④＝有璽氏に見てもらう変化）。トップは印「案A」1・2か所目
+✅10/6 14時台 **合言葉を外す前の片付け（見本の特集6本・スポット一覧を外す）を kb_live.sh へ実装済み・★本番未反映**（有璽氏のデプロイ判断待ち・ステラの検査は別途）。控え `_backups/kb_live.sh.bak_20261006_cleanup`／結果 `~/.vivid-relay/kawachi_cleanup_result.md`。印「片付け」1〜5か所目。★同じ対象に手をつけないでください: `kb_live.sh`
+✅10/6 14時台 **Clarity（ytbpus9k6u）を kb_live.sh の head 差し込みへ実装済み・★本番未反映**（全28枚に1行・見た目差分0・実ブラウザ3通信○。有璽氏のデプロイ判断待ち・ステラの検査は別途）。控え `_backups/kb_live.sh.bak_20261006_clarity`／結果 `~/.vivid-relay/kawachi_clarity_result.md`。印「Clarity」
+
 ## MacBook セッション
 
 ### 【ビビ / MacBook 2026-10-02〜03】家計台帳 ⇄ 統合型営業管理（営業台帳）の連携設計 ── ★有璽氏の回答待ち2点

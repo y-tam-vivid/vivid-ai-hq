@@ -3346,6 +3346,13 @@ RSS 4本58件 → ページ58本（失敗0・1.5秒間隔）→ 本文を読ん�
 
 道具：`~/.vivid-relay/kb_collect.py`（fetch/auto/check/write・★検査が通らないと書かない）
 
+## ✅2026-10-06 イベント詳細を1件ずつの静的ページにする（有璽氏の決定＝案B・リリス実装中）
+- 理由：LINE・X はスクリプトを動かさない＝`event.html?id=` では題名・写真が汎用のものになる。★かわちばなしの芯（公式LINEで週1配信→サイト）に当たる
+- `event.html`（?id= 版）は★消さない。canonical で静的ページを正にする
+- あわせて：特集A の canonical → 特集B／sitemap から `event.html`（idなし）を外す
+- ★独自ドメインは未定（`〜.osaka.jp` か `〜.大阪.jp`）。`KB_SITE_URL` 1か所で全部ついてくる形を崩さない
+- 結果 → `~/.vivid-relay/kawachi_eventpages_result.md`
+- ✅10/6 実装済み（★本番未反映）：直下 `event-<ID>.html`（サブフォルダは相対パスがずれるため）。静的2枚・sitemap 8件・画素差0（1200/390px×2件）・壊すと exit 1 を実測。★「ほかのイベント」のリンクは公開2件では描画に出ず未実測。★LINE実機は合言葉を外すまで確認不可
 ### ✅2026-10-05 22:07 検索と共有の土台を入れた（リリス）── ★本番未反映・判断3件
 
 `kb_live.sh` へ**追加193行・削除0行**。控え `_backups/kb_live.sh.bak_20261005_seo`
@@ -4069,3 +4076,18 @@ kb-0052  ミニこどもまつり       2027-03-20              羽曳野市役�
 ★型は `feedback_never_write_an_unmeasured_number` へ記録
 （年の無い日付を「次に来る◯月」と推測しない／曜日で検算する／決まらないなら入れない）。
 ★ピタゴラスは10/5に曜日で年を検算していた。**こちらは同じことをやらなかった。**
+## ✅2026-10-06 10:02 17版を本番へ・案Bを撤去・ドメインを osaka.jp へ（リリス）
+
+- **いまの形**：トップの「今月のイベント」は★17版の `get events()` 1か所。kb_live.sh は★その配列を差し替えるだけ（印「案A」1・2か所目）。並べ替え・終わったもの落とし・0件で節を隠す はここ
+- ★**案Bを外すだけだと見本の架空6件が出る**（17版の `get events()` に直書き）。差し替え失敗は `_TOPA_NG` で止める
+- `KB_SITE_URL` 既定＝**https://kawachibanashi.osaka.jp**。canonical・og:url・sitemap・robots は全部 osaka.jp。vercel.app も同じ中身で開く（転送なし）
+- 🔴**描画検査の穴**：16版＋いまのシート（スポーツ11件）で一覧が `renderVals()` 例外で真っ白なのに、旧検査（dc-root 2000B以上）は○で通していた。★`class="sc-logic-error"` が1つでもあれば不合格を追加（壊し試験で止まるのを確認）
+- ★uploads/ はそのまま公開される → 17版の `uploads/req.pdf`・`修正依頼_20260916.pdf` は取り込んでいない
+- 有璽氏に見てもらう変化（見出し 2026.09／目玉の日付が開始日だけ／書き手名 等）は `~/.vivid-relay/kawachi_v17_result.md` ④
+- 控え：`_backups/kb_build_20261006_v16/`・`kb_live.sh.bak_20261006_v17`・`kb_live_out_20261006_pre_v17/`
+
+## Clarity（2026-10-06 リリス）── ★kb_live.sh に実装済み・本番未反映
+- ID **ytbpus9k6u**（有璽氏 10/6 作成）。kb_live.sh の `KB_CLARITY_ID` 1か所。印「Clarity」1〜3か所目（3か所目＝最終検問：全html でタグ1回・head内・ID一致でなければ `_SEO_NG`）
+- 実測：28枚（固定7＋イベント静的21）に1行／`</head>` 以降は before と sha 一致／描画検査28枚○／実ブラウザで tag→clarity.js→collect(204)。結果 `~/.vivid-relay/kawachi_clarity_result.md`・控え `_backups/kb_live.sh.bak_20261006_clarity`
+- ★手元確認の通信（127.0.0.1:8899）が Clarity プロジェクトへ数件入っている
+- ★kb_live.sh は自動実行に載っていない（10/6 crontab・LaunchAgents とも0件）＝編集しただけでは本番へ出ない
