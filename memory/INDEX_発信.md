@@ -96,6 +96,7 @@
 - [かわちばなし・参考=祭りどころ](project_kawachibanashi_portal.md) — ★10/5 Next.js+Supabase・1993件。★機能は可・論点は件数と土台
 - [かわちばなし・橋は既に在った](project_kawachibanashi_portal.md) — ⛔10/5 9/13から稼働・公開版に実2件。★残=トップの見本
 - [かわちばなし・17版で案Aが来た](project_kawachibanashi_portal.md) — ✅10/6 トップがget events()に一本化＋カテゴリ2つ。★案Bを消せる
+- [かわちばなし・公開前に止める2点](project_kawachibanashi_portal.md) — 🔴10/6 特集に実在しない書き手6本／スポットは{{ }}のまま
 - [かわちばなし・出典の生死](project_kawachibanashi_portal.md) — ✅10/6 公開22件は実在。🔴kb-0002の出典が404／全角半角で照合が外れた
 - [かわちばなし・紹介文20件](project_kawachibanashi_portal.md) — ✅10/6 1文目は★70字以内(目玉カードが切る)。🔴写真URLが20件とも空
 - [かわちばなし・区分を2つ足した](project_kawachibanashi_portal.md) — ✅10/6 福祉とスポーツ。その他33→8件。★デザイン側の依頼は22番
