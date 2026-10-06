@@ -1,6 +1,6 @@
 {
  "_説明": "公開中サイトの台帳（★正本）。SEO標準装備＝Clarity（サイトごと別ID）＋Search Console＋サイトマップ＋月次レビュー。site_audit.py がこれを読んで実測する。サイトを公開・廃止したらここを直す。",
- "_更新": "2026-10-06 ビビ（かわちばなしの Clarity ID とドメインを記録）",
+ "_更新": "2026-10-06 ビビ（かわちばなしの Search Console 所有確認が通った）",
  "sites": [
   {
    "name": "株式会社ビビッド",
@@ -123,9 +123,9 @@
    "cms": "Claude Design の書き出し＋dc-runtime・Vercel（プロジェクト名 kawachibanashi）",
    "clarity": "ytbpus9k6u",
    "install_route": "kb_live.sh の head 差し込み（SEOのタグと同じ仕組み・8ページ＋イベント静的ページ全部へ入る）。★Claude Design の .dc.html は触らない（次の書き出しで消えるため）",
-   "status": "★2026-10-06 Clarity ID 発行（有璽氏）。設置はこれから。いまBasic認証つき（kawachi / hikae44ec16）＝一般公開前",
+   "status": "★2026-10-06 Clarity 設置済（ytbpus9k6u・本番7ページで tag=1 を実測）／Search Console の所有確認 ✓（DNSのTXT・3経路で一致を実測）／★サイトマップの送信は合言葉を外したあと／いまBasic認証つき（kawachi / hikae44ec16）＝一般公開前",
    "gsc": {
-    "property": "★未登録（kawachibanashi.osaka.jp・合言葉を外す前に登録する）"
+    "property": "sc-domain:kawachibanashi.osaka.jp"
    },
    "brand": [
     "かわちばなし",
