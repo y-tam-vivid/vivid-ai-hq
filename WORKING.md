@@ -124,6 +124,8 @@
 `memory/project_toc_customer_ledger.md` ／ 営業ワークブックの `02_個人マスタ`
 
 ### 進行中（MacBookセッション記入）
+- **【フランキー / MacBook 2026-10-06】✅デザイン制作物の集約・改名 完了**（記録 mini ~/.vivid-relay/design_consolidation_log_20261006.jsonl）
+  ★全セッションへ：Drive の番号が変わった（10/6 有璽氏）。**かわちばなしは `06_かわちばなし_イベントポータルサイト案件/`**（03_ は旧名・書かない）／ふくち。=01・ILIFE=02・ビビッド=03
 - **【ビビ / MacBook 2026-10-05】かわちばなし ── 案B実装済み・★有璽氏の判断待ち3件（Slackのボタン）**
   対象 `~/.vivid-relay/kb_live.sh`（トップの「今月のイベント」の差し込み・追加125行/削除0行・控え `_backups/kb_live.sh.bak_20261005_top`）。
   ✅10/5 19:34 **本番反映済み**（有璽氏 #8a851c=出す）。★2経路で検算して一致（本番とデプロイ実体は同一ハッシュ／見本6種とも0件／下書き0件）
@@ -135,15 +137,19 @@
   ✅**4市のイベントRSSを実測＝計60件**（柏原10/藤井寺18/羽曳野12/松原20）。★柏原は `lg.jp` へ移転・藤井寺と羽曳野はRDF形式
   ▶**収集をピタゴラスへ投げた**（mini・`~/.vivid-relay/pita_kawachi_collect.txt`）。出口 `kawachi_collect_result.md`／スクリプト `kb_collect.py`。
     ★下書きで入れる（「公開」「確認済み」は空のまま）・ID は kb-0004 から・既存3行は触らない
-  🔴**計測が0だった**（Clarity/GA4/GTMとも）。台帳 `bin/web_tracking/sites.json` へ8件目として登録し、`site_audit.py` の表に出るようにした（いま ✗ 401）。
-    ★公開の順番＝①Clarity ②独自ドメイン ③Search Console ④合言葉を外す
+  🔴**計測が0だった**（Clarity/GA4/GTMとも）。台帳 `bin/web_tracking/sites.json` へ8件目として登録し、`site_audit.py` の表に出るようにした（いま ✗ 401）
+  ✅10/5夜 **検索と共有の土台**（title/canonical/OGP/JSON-LD・sitemap・robots）／10/6朝 **案B＝イベント1件ごとの静的ページ**（★見た目は画素比較で差分0）
+  ✅10/6 **ドメイン確定 `kawachibanashi.osaka.jp`**（有璽氏）。★取得は有璽氏の手。手順は Drive `05_公開と計測/02_…`。★`KB_SITE_URL` を1か所変えれば全部ついてくる
+  ✅10/6 **11月の選別案**（22件→○9/△4/×9）を Drive `05_公開と計測/03_…` へ。★決めるのは有璽氏
+  ▶**残＝①ドメイン取得（有璽氏）→ ②Vercel＋DNS → ③KB_SITE_URL → ④Clarity → ⑤Search Console → ⑥合言葉を外す**
+  **★同じ対象に手をつけないでください（追加）**: `~/.vivid-relay/kb_collect.py` ／ シート `1mRp6Cx…` の「イベント」タブ ／ `bin/web_tracking/sites.json` のかわちばなしの行 ／ `kb_live.sh` のSEO・静的ページの印
   **★同じ対象に手をつけないでください（追加）**: `~/.vivid-relay/kb_collect.py` ／ シート `1mRp6Cx…` の「イベント」タブ ／ `bin/web_tracking/sites.json` のかわちばなしの行
   ▶Aの依頼文は Drive の案件フォルダへ `かわちばなし_修正依頼_20261005_v3.txt`（★渡すのはこれ1本・v1のPDFとv2は旧版）。渡すのは有璽氏の手
 
 - **【リリス / MacBook 2026-10-05】公開中サイトへ Clarity＋SEO標準装備** ── 対象 www.vivid-global.com／i-life-fukushi.com／fuku-chi.com／orange-works.co（★ko-station.org は済・触らない）。
   書く先＝Skill web-tracking-setup（台帳節を追加）・Clarity 管理画面・各CMSの head。**★同じ対象に手をつけないでください**: 上4サイトの head／GTM-PQX3L4TQ
   ✅Clarity 設置＝ILIFE・ふくち。・オレンジワークス・119番（10/5・実ブラウザで3通信確認）／★ビビッドのみ保留（WPログインURL不明）／SKILL.md 追記は承認待ち
-  ▶SEO週次・月次（自前・有璽氏決定）：週次v3（AI深掘り・打ち手→Slack採否）／月次（実測＋深掘り＋アクション案→有璽氏が指示）とも試し送り済み（10/5）。✅ドーベルマン点検＋必須修正済み（10/5 22時）。★残＝Slack #9a434c・#ab4ddd の回答→レジスタ3行→cron 3本（週次・月次は mini の取り込み保留が解けてから）→旧クラウド月次 trig_01Y9 は11/1確認後に停止。**★同じ対象に手をつけないでください**: bin/web_tracking/{clarity_daily,weekly_seo_report,monthly_seo_report,ai_analysis}.py／Notion「🔧 サイト改善ログ」
+  ▶SEO週次・月次：✅10/6 本番化（レジスタ3行・mini cron 3行）。★残＝10/7朝 Clarity初回を確認→レジスタ「有効」／10/12 週次初回／11/1 月次初回→旧クラウド月次 trig_01Y9 停止。**★同じ対象に手をつけないでください**: bin/web_tracking/{clarity_daily,weekly_seo_report,monthly_seo_report,ai_analysis}.py／mini crontab の SEO 3行
 
 - **【ビビ（サイト担当）/ MacBook 2026-10-03】こどもステーション団体サイト ── v28 公開済み・ko-station.org へ乗せ替え準備中**
   - ★**`~/kodomo-photo-work/build_site.py` を2セッションで同時に触っている**（リリース側が festgal へ13枚追加）。
@@ -156,8 +162,18 @@
     要点＝①特設ページは https://ko-station.org/festival.html ②サイトの記事は事業報告書ベースに作り直し済み ③第36回は10/19で確定
     ④Downloads の告知ビジュアル2フォルダはコピー元（今後はドライブ側を正に）⑤記録にある「プレスリリース案_20261004.pdf」が手元に無い
     ⑥★版の控え：新しい版を公開したら `06_…/03_原稿の版/` へ `種類_v版番号_年月日-時分.html` で保存し、`0_版の記録.md` に1行足す（有璽氏 10/5）
-- **【ビビ（リリース担当）/ MacBook 2026-10-03】第37回こどもまつり（10/18）── 原稿 Version 9・★PR TIMES未入稿**
+- **【ビビ（リリース担当）/ MacBook 2026-10-03〜06】第37回こどもまつり（10/18）── ✅PR TIMES 予約配信済み（10/6 10:00）**
   - NPO法人 南河内こどもステーション名義。**★来場者募集が主**
+  - ✅**10/6 朝 有璽氏がご自身で予約配信（10:00）＋微修正あり**。一覧で「予約配信／配信予定 2026.10.06 10:00」を実測。
+    ★**こちらはもう触らない**（触れば壊す）。判断ボタン `#b39f12` は closed にした
+  - ✅**下書きの中身**（release_id=6）：タイトル51字／サブ70字／本文は原稿と1文字も違わない（機械照合）／
+    ★**写真22枚すべてを本文へ**／メイン画像＝キャップで作った看板／配信先＝ボランティア主要メディア169件／
+    素材DLは記者限定（こどもの顔が写るため）
+  - ▶**残り1つ：配信後にサイトの記事を戻す**。文面は有璽氏の承認済みで実装も完了（`build_site.py` の
+    `NEWS_PRESS` を4段落＋情報欄へ・日付2026.10.06・記事URL入り。`oct3_fixes.py` の除外は日付違いで自然に外れる）。
+    **★10:00を過ぎ、記事URLが200になったのを確かめてから公開する**（7:52時点では404）
+  - 🔴**この記事の作りの制約**：情報欄の値はテキストで出る＝**URLはクリックできない**。
+    ctaボタンの href は `join.html#contact` 固定。リンクにするなら Claude Design 側の修正が要る（有璽氏の判断待ち）
   - 原稿 https://claude.ai/artifact/7sY8VRT21QEf3HipWrccFy
   - ✅10/3 夜 **後援＝羽曳野市・羽曳野市教育委員会**（有璽氏）── リリースとサイトの両方へ。本番反映済み
   - ✅**写真の実体と説明文の正本は★サイト**（`~/kodomo-photo-work/festgal/`・媒体ごとに選び直さない）。

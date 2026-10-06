@@ -95,6 +95,10 @@
 - [既存物をそのまま正にしない](feedback_check_the_archive_first.md) — ★探す→**出来を評価する**→基準にするか決める。②が抜けると弱い基準が全媒体へ広がる
 - [かわちばなし・参考=祭りどころ](project_kawachibanashi_portal.md) — ★10/5 Next.js+Supabase・1993件。★機能は可・論点は件数と土台
 - [かわちばなし・橋は既に在った](project_kawachibanashi_portal.md) — ⛔10/5 9/13から稼働・公開版に実2件。★残=トップの見本
-- [かわちばなし・参考との差は土台](project_kawachibanashi_portal.md) — 🔴10/5 JSON-LD/canonical/OGP/sitemapが全部0。先方はEvent型＋sitemap1279件
+- [かわちばなし・紹介文20件](project_kawachibanashi_portal.md) — ✅10/6 1文目は★70字以内(目玉カードが切る)。🔴写真URLが20件とも空
+- [かわちばなし・区分を2つ足した](project_kawachibanashi_portal.md) — ✅10/6 福祉とスポーツ。その他33→8件。★デザイン側の依頼は22番
+- [かわちばなし・載せる軸](project_kawachibanashi_portal.md) — ⛔10/6訂正 ★軸は「市民が参加できるか」。体育大会は出す(条件は親ページ)
+- [かわちばなし・ドメイン確定](project_kawachibanashi_portal.md) — ✅10/6 kawachibanashi.osaka.jp（さくら3982円/年・★取得は有璽氏）
+- [かわちばなし・検索の土台](project_kawachibanashi_portal.md) — ✅10/6 案B済＝event-<ID>.htmlを静的生成(画素差0)。URLはKB_SITE_URL1か所
 - [かわちばなし・4市のRSS](project_kawachibanashi_portal.md) — ✅10/5 ★器へ47件入った(下書き・11月22件)。読めるのは58件(60は誤り)
 - [かわちばなし・トップもシート](project_kawachibanashi_portal.md) — ✅10/5 本番反映済(2経路一致)。🔴11/1に0件→更新が止まる。v3はDrive

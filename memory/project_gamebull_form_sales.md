@@ -197,6 +197,7 @@ Vercel        team fuku-chi-vivid ／ project gamemarke_lp ／ アカウント y
 公開URL      https://gamemarke.vivid-global.com    ← ★2026-08-23 公開完了（HTTPS 200 実測）
 予備URL      https://gamemarkelp.vercel.app        ← Vercelのエイリアス。生きている
 実体          ~/Downloads/gamemarke_lp/（★フォルダ名から商材名を外した。
+              ★10/6 Drive の控えは 共有ドライブ 03_デザイン制作プロジェクト/03_株式会社ビビッド/01_ビビッドWEBサイト/2026-08-23【LP】ゲームマーケ_gamemarke.vivid-global.com へ移送（元の場所にはショートカット）
               Vercelのプロジェクト名がフォルダ名になり、URLに出てしまうため）
 除外          .vercelignore で index_1file.html / build_singlefile.py / *.bak を配信しない
 noindex       vercel.json の X-Robots-Tag で全ページに付与（実測でヘッダ確認）
