@@ -38,7 +38,7 @@
 - [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ 03_デザイン制作プロジェクト/01_ふくち。・02_ILIFE・03_ビビッド・06_かわちばなし（10/6番号振り直し・★旧パスへ書かない）／★オレンジワークス藤井寺は単独フォルダ（運営法人が変遷）。★別置き場を残すなら片方を正本・他方はショートカット／★移すときは命名規約でリネーム
 - [渡し物はDrive案件フォルダ](reference_backups_in_volatile_places.md) — ★かわちばなしは10/6に06_へ改名(ID 1NEM…は不変)。パスでなくIDで持つ
 - [素材は広報の設計図でない](feedback_source_material_is_not_the_pr_plan.md) — ★チラシに無い＝書かぬは誤り／配布物を画像欄に載せない
-- [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番(v45)。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/7に確認)。立ち上げ手順とCSVは05/02_Google広告に用意済み
+- [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番(v46・10/6 プレスリリース記事を掲載)。★情報欄のURLをリンクにする修正をClaude Designへ依頼中。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/7に確認)。立ち上げ手順とCSVは05/02_Google広告に用意済み
 - [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — v22。★配信10/6(火)10:00／★入稿素材は一式そろった(Drive 06_…/04_入稿素材・本文は全体2,501字)／★PR TIMESの下書きは未作成
 - [PR TIMES入稿の罠と切り分け](reference_prtimes_editor_behaviors.md) — ★入稿前に必ず読む。**★報道素材に入れても記事本文に写真は載らない(別物・10/5に指摘を受けた)／必ずプレビューで見る**／行頭の「1.」で全体がリスト化(解除不可)／画面が読めない時は拡張のサインインを見る
 - [かわちばなし地域ポータル](project_kawachibanashi_portal.md) — **シート→サイトは9/13から kb_live.sh で稼働中（10/5 3経路一致で実測）＝新しく作らない**。★10/5夜 器に下書き47件（kb-0004〜0050・公開は人が付ける。収集は ~/.vivid-relay/kb_collect.py）。★~/kawachibanashi_site は9/10の残骸（同じVercelに紐づく・ここから出さない）
