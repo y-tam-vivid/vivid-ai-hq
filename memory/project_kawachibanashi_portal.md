@@ -3660,3 +3660,9 @@ kb-0016 モルック        申込 10/1〜11/3
 - ★uploads/ はそのまま公開される → 17版の `uploads/req.pdf`・`修正依頼_20260916.pdf` は取り込んでいない
 - 有璽氏に見てもらう変化（見出し 2026.09／目玉の日付が開始日だけ／書き手名 等）は `~/.vivid-relay/kawachi_v17_result.md` ④
 - 控え：`_backups/kb_build_20261006_v16/`・`kb_live.sh.bak_20261006_v17`・`kb_live_out_20261006_pre_v17/`
+
+## Clarity（2026-10-06 リリス）── ★kb_live.sh に実装済み・本番未反映
+- ID **ytbpus9k6u**（有璽氏 10/6 作成）。kb_live.sh の `KB_CLARITY_ID` 1か所。印「Clarity」1〜3か所目（3か所目＝最終検問：全html でタグ1回・head内・ID一致でなければ `_SEO_NG`）
+- 実測：28枚（固定7＋イベント静的21）に1行／`</head>` 以降は before と sha 一致／描画検査28枚○／実ブラウザで tag→clarity.js→collect(204)。結果 `~/.vivid-relay/kawachi_clarity_result.md`・控え `_backups/kb_live.sh.bak_20261006_clarity`
+- ★手元確認の通信（127.0.0.1:8899）が Clarity プロジェクトへ数件入っている
+- ★kb_live.sh は自動実行に載っていない（10/6 crontab・LaunchAgents とも0件）＝編集しただけでは本番へ出ない
