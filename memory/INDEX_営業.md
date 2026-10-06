@@ -51,3 +51,4 @@
 - [LPの計測タグ](reference_lp_tracking_tags.md) — gamemarke に SB/GTM/GA4/Clarity の4本。★ログイン不要で発火を確定させる3手
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★→Skill web-tracking-setup(全Web対象)。検査 bin/web_tracking_check.py
 - [119番 SB営業の再開](project_f119_sb_restart_202609.md) — 大阪5種別・児童/就労×A/B/C。LP未公開・必須修正7件・宛先consul_vi@
+- [★A1の列名は26列まで壊れる](project_kawachibanashi_portal.md) — 10/6 chr(ord(A)+n)はAA以降で[になる。38列の器で400。divmodで作る

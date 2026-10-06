@@ -1,6 +1,6 @@
 {
  "_説明": "公開中サイトの台帳（★正本）。SEO標準装備＝Clarity（サイトごと別ID）＋Search Console＋サイトマップ＋月次レビュー。site_audit.py がこれを読んで実測する。サイトを公開・廃止したらここを直す。",
- "_更新": "2026-10-05 ビビ（かわちばなしを追加＝計測0のまま台帳へ載せた。合言葉つきの公開も台帳に載せる）",
+ "_更新": "2026-10-06 ビビ（かわちばなしの Search Console 所有確認が通った）",
  "sites": [
   {
    "name": "株式会社ビビッド",
@@ -119,13 +119,13 @@
   },
   {
    "name": "かわちばなし（南河内4市のイベントポータル）",
-   "url": "https://kawachibanashi.vercel.app/",
+   "url": "https://kawachibanashi.osaka.jp/",
    "cms": "Claude Design の書き出し＋dc-runtime・Vercel（プロジェクト名 kawachibanashi）",
-   "clarity": "",
-   "install_route": "★未定。公開の元は mini の ~/kb_build。差し込みは ~/.vivid-relay/kb_live.sh（シート→サイト）。計測タグは★Claude Design 側の head へ入れるか、kb_live.sh の差し込みで入れるかを決める必要がある（.dc.html の正本はクラウド側なので、公開HTMLを直に触ると次の書き出しで消える）",
-   "status": "🔴計測0（2026-10-05 実測：Clarity 0／GA4 0／GTM 0／gtag 0）。★いまBasic認証つき（kawachi / hikae44ec16）＝一般公開前。★一般公開の日までに必ず入れる（有璽氏 10/5『実データを入れたら早く公開する』＝公開を待たずに計測を先に用意する）",
+   "clarity": "ytbpus9k6u",
+   "install_route": "kb_live.sh の head 差し込み（SEOのタグと同じ仕組み・8ページ＋イベント静的ページ全部へ入る）。★Claude Design の .dc.html は触らない（次の書き出しで消えるため）",
+   "status": "★2026-10-06 Clarity 設置済（ytbpus9k6u・本番7ページで tag=1 を実測）／Search Console の所有確認 ✓（DNSのTXT・3経路で一致を実測）／★サイトマップの送信は合言葉を外したあと／いまBasic認証つき（kawachi / hikae44ec16）＝一般公開前",
    "gsc": {
-    "property": "★未登録（独自ドメイン未取得・vercel.app のままではサイト所有確認ができない）"
+    "property": "sc-domain:kawachibanashi.osaka.jp"
    },
    "brand": [
     "かわちばなし",
