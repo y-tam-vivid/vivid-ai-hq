@@ -120,7 +120,7 @@
 `memory/project_toc_customer_ledger.md` ／ 営業ワークブックの `02_個人マスタ`
 
 ### 進行中（MacBookセッション記入）
-- **【フランキー / MacBook 2026-10-06】✅デザイン制作物の集約・改名 完了**（記録 mini ~/.vivid-relay/design_consolidation_log_20261006.jsonl）
+- **【フランキー / MacBook 2026-10-06】デザイン制作物の集約 ── 3社＋3社以外 完了・★判断待ち5件（Slack #293543 #0ffa76 #355684 #dc66d9 #3fadbd）** 記録 mini ~/.vivid-relay/design_consolidation_log_20261006.jsonl
   ★全セッションへ：Drive の番号が変わった（10/6 有璽氏）。**かわちばなしは `06_かわちばなし_イベントポータルサイト案件/`**（03_ は旧名・書かない）／ふくち。=01・ILIFE=02・ビビッド=03
 - **【ビビ / MacBook 2026-10-05】かわちばなし ── 案B実装済み・★有璽氏の判断待ち3件（Slackのボタン）**
   対象 `~/.vivid-relay/kb_live.sh`（トップの「今月のイベント」の差し込み・追加125行/削除0行・控え `_backups/kb_live.sh.bak_20261005_top`）。
