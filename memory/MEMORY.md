@@ -22,6 +22,7 @@
 - [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語
 - [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／**★制作物も既存物も自動で正としない(3回目)**
 - [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨する
+- [★正しさが母数より優先](project_kawachibanashi_portal.md) — 10/6 有璽氏「間違いのない情報を」。守る仕組みが先・集めるのは後
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★速さのために確かさを落とさない。件数は数え方を添える／担当へ渡す数字も測ってから／出典URLは検索結果をそのまま貼る
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 10/5 有璽氏。★以降の進捗はnotify.tell()。会話に書いても届かない
 - [判断はSlackのボタン](project_ask_hub_push_decisions.md) — ★ターン終了前にopenを数える。1週間超は前提を測り直す(10/5 前提が消えていた)
