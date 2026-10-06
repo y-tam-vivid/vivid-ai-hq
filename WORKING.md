@@ -137,7 +137,7 @@
   **★同じ対象に手をつけないでください**: mini `~/lifestandup-wp/{sweep_widths.py,tools/lsu_env.py}` ／
   `memory/{project_web_build_rules_asset,reference_web_build_kickoff_checklist}.md` ／ ポート8750
 - **【ビビ / MacBook 2026-10-06】Webサイト制作の案件フォルダを型にした** ── ✅完了（commit cc26806）。型＝00_地図＋01コンセプト〜06検査＋07/08（任意）。雛形は Drive `03_デザイン制作プロジェクト/_雛形_Webサイト案件/`（2本・ローカルとDrive APIの2経路で実在を確認）。**★こどもSは改名していない**（memoryに7か所の参照／サイト作業が進行中）＝揃えるかは有璽氏の判断（Current_Focusにタスク行1本）
-- **【フランキー / MacBook 2026-10-06】デザイン制作物の集約 ── ▶個人Gmailドライブからのコピーが MacBook で実行中**（~/.vivid-relay/design_copy_gmail_20261006.log）。**★同じ対象に手をつけないでください**: 03_デザイン制作プロジェクト 配下の「旧制作物（個人ドライブより）」各フォルダ
+- **【フランキー / MacBook 2026-10-06】✅デザイン制作物の集約・営業部門13-101統合 完了**（記録 mini ~/.vivid-relay/design_consolidation_log_20261006.jsonl）
   ★全セッションへ：Drive の番号が変わった（10/6 有璽氏）。**かわちばなしは `06_かわちばなし_イベントポータルサイト案件/`**（03_ は旧名・書かない）／ふくち。=01・ILIFE=02・ビビッド=03
 - **【ビビ / MacBook 2026-10-05】かわちばなし ── 案B実装済み・★有璽氏の判断待ち3件（Slackのボタン）**
   対象 `~/.vivid-relay/kb_live.sh`（トップの「今月のイベント」の差し込み・追加125行/削除0行・控え `_backups/kb_live.sh.bak_20261005_top`）。
