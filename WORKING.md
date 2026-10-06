@@ -127,6 +127,15 @@
 `memory/project_toc_customer_ledger.md` ／ 営業ワークブックの `02_個人マスタ`
 
 ### 進行中（MacBookセッション記入）
+- **【ビビ→チョッパー / MacBook+mini 2026-10-06】Web制作の出戻りを止める2本 ── ▶着手（有璽氏 10/6「こちら着手しましょう」）**
+  ①**幅を掃く仕組みを実用にする**（mini へ投げる）。真因は実測済み＝`tools/lsu_env.py` の `shoot()` が
+  ★1測定ごとに Chrome を起動し、固定 `sleep(2)`＋最大80秒ポーリングする。1幅で overflow/overlap の
+  ★2回呼ぶので 78幅×2＝**156回/ページ**（記録の「1ページ60〜90分」と整合）。
+  → Chrome を1回だけ起動し CDP で幅を変える形へ。**★旧経路と新経路で同じ幅を測って一致を数字で示すのが条件**
+  ②**恒久ルール①〜⑥を案件から出す**（こちら）。`project_web_build_rules_asset.md` は1,096行で人が使えない
+  → 「どの案件でも効く原則」と「LSU固有の値」に分け、原則は `reference_web_build_kickoff_checklist.md` へ
+  **★同じ対象に手をつけないでください**: mini `~/lifestandup-wp/{sweep_widths.py,tools/lsu_env.py}` ／
+  `memory/{project_web_build_rules_asset,reference_web_build_kickoff_checklist}.md` ／ ポート8750
 - **【ビビ / MacBook 2026-10-06】Webサイト制作の案件フォルダを型にした** ── ✅完了（commit cc26806）。型＝00_地図＋01コンセプト〜06検査＋07/08（任意）。雛形は Drive `03_デザイン制作プロジェクト/_雛形_Webサイト案件/`（2本・ローカルとDrive APIの2経路で実在を確認）。**★こどもSは改名していない**（memoryに7か所の参照／サイト作業が進行中）＝揃えるかは有璽氏の判断（Current_Focusにタスク行1本）
 - **【フランキー / MacBook 2026-10-06】デザイン制作物の集約 ── ▶個人Gmailドライブからのコピーが MacBook で実行中**（~/.vivid-relay/design_copy_gmail_20261006.log）。**★同じ対象に手をつけないでください**: 03_デザイン制作プロジェクト 配下の「旧制作物（個人ドライブより）」各フォルダ
   ★全セッションへ：Drive の番号が変わった（10/6 有璽氏）。**かわちばなしは `06_かわちばなし_イベントポータルサイト案件/`**（03_ は旧名・書かない）／ふくち。=01・ILIFE=02・ビビッド=03
