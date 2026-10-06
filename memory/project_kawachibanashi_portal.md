@@ -3917,3 +3917,25 @@ TXT（3経路とも一致を実測）
 
 ★型：**「公開した」で止めると、2週間で古いサイトになる。**
 公開の直後に「次の更新がいつ・誰（何）によって起きるか」を決める。
+
+### 🎉2026-10-06 15:28 ★合言葉を外した ＝ 正式公開（有璽氏の承認）
+
+```
+控え  ~/.vivid-relay/_backups/middleware.js.bak_20261006_basic_auth
+      ★消す前に sha256 を突合（76d30eac4c732805… が一致）。戻すのは書き戻して出し直すだけ
+```
+
+**★合言葉なしで数えた（6点）**
+```
+① 200で開く       osaka.jp／vercel.app／events／sitemap／robots／イベント静的ページ とも 200
+② noindex         ★0件（meta robots も無し）
+③ robots.txt      User-agent: * ／ Allow: / ／ Sitemap: …/sitemap.xml
+④ canonical       https://kawachibanashi.osaka.jp/
+⑤ Clarity         tag=1・id=1（ytbpus9k6u）
+⑥ 中身            イベント21件・特集1件・sitemap 26件
+```
+
+**公開URL  https://kawachibanashi.osaka.jp/**
+
+★9/08 のデザイン作り込みから約1か月。10/5 に「見本のまま」だったものが、
+10/6 に**4市の実在イベント21件・独自ドメイン・計測つき**で外に出た。
