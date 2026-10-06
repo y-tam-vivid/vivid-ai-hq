@@ -35,14 +35,14 @@
 - [★実データが入ったら早く公開](feedback_seo_standard_kit.md) — 10/5有璽氏。検索に載るまで時間がかかる。計測は★sites.jsonに載せて予約
 - [公開中サイトのSEO標準装備](feedback_seo_standard_kit.md) — 10/5〜 Clarity＋Search Console＋サイトマップ＋月次レビュー。★Clarity設置済＝ILIFE・ふくち。・オレンジ・119番・こどもS／ビビッドのみ保留(WPログインURL不明)。台帳 bin/web_tracking/sites.json。★10/6〜 mini cron：Clarity毎日0:30・週次 月曜7:00・月次 毎月1日9:00（旧クラウド月次は11/1停止予定）
 - [家計台帳⇄統合型営業管理の連携](project_kakei_daicho.md) — **いま：設計担当と全面合意（10/3）・M11は作らない。人軸・顧客を作れるのは統合側だけ・実績は家計→統合の一方向2本。残＝見込み客69件の切り分けと送り方（miniのPython）の返答**
-- [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ 03_デザイン制作プロジェクト/01_ふくち。・02_ILIFE・03_ビビッド・06_かわちばなし（10/6番号振り直し・★旧パスへ書かない）。★別置き場を残すなら片方を正本・他方はショートカット／★移すときは命名規約でリネーム
+- [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ 03_デザイン制作プロジェクト/01_ふくち。・02_ILIFE・03_ビビッド・06_かわちばなし（10/6番号振り直し・★旧パスへ書かない）／★オレンジワークス藤井寺は単独フォルダ（運営法人が変遷）。★別置き場を残すなら片方を正本・他方はショートカット／★移すときは命名規約でリネーム
 - [渡し物はDrive案件フォルダ](reference_backups_in_volatile_places.md) — ★かわちばなしは10/6に06_へ改名(ID 1NEM…は不変)。パスでなくIDで持つ
 - [素材は広報の設計図でない](feedback_source_material_is_not_the_pr_plan.md) — ★チラシに無い＝書かぬは誤り／配布物を画像欄に載せない
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番(v45)。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/7に確認)。立ち上げ手順とCSVは05/02_Google広告に用意済み
 - [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — v22。★配信10/6(火)10:00／★入稿素材は一式そろった(Drive 06_…/04_入稿素材・本文は全体2,501字)／★PR TIMESの下書きは未作成
 - [PR TIMES入稿の罠と切り分け](reference_prtimes_editor_behaviors.md) — ★入稿前に必ず読む。**★報道素材に入れても記事本文に写真は載らない(別物・10/5に指摘を受けた)／必ずプレビューで見る**／行頭の「1.」で全体がリスト化(解除不可)／画面が読めない時は拡張のサインインを見る
 - [かわちばなし地域ポータル](project_kawachibanashi_portal.md) — **シート→サイトは9/13から kb_live.sh で稼働中（10/5 3経路一致で実測）＝新しく作らない**。★10/5夜 器に下書き47件（kb-0004〜0050・公開は人が付ける。収集は ~/.vivid-relay/kb_collect.py）。★~/kawachibanashi_site は9/10の残骸（同じVercelに紐づく・ここから出さない）
-- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — **★10/6朝 有璽氏が自分で予約配信(10:00)＋微修正あり＝手元の版を正としない**。release_id=6／写真22枚★配信10/6(火)10:00／★入稿素材は一式そろった(Drive 06_…/04_入稿素材・本文は全体2,501字)／★PR TIMESの下書きは未作成
+- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — **✅10/6 10:00 配信済み**(記事 prtimes.jp/main/html/rd/p/000000006.000184772.html・200を実測)。★残＝団体サイトへ掲載★配信10/6(火)10:00／★入稿素材は一式そろった(Drive 06_…/04_入稿素材・本文は全体2,501字)／★PR TIMESの下書きは未作成
 - [PR TIMES入稿の罠と切り分け](reference_prtimes_editor_behaviors.md) — ★入稿前に必ず読む。**★報道素材に入れても記事本文に写真は載らない(別物)／**★写真は多めが既定(上限30枚)・勝手に絞らない(10/5に2回指摘)／作る前によそのリリースを1本見て形を決める**／必ずプレビューで見る**／行頭の「1.」で全体がリスト化(解除不可)／画面が読めない時は拡張のサインインを見る
 - [かわちばなし地域ポータル](project_kawachibanashi_portal.md) — **シート→サイトは9/13から kb_live.sh で稼働中（10/5 3経路一致で実測）＝新しく作らない**。★穴＝トップの見本6件。★~/kawachibanashi_site は9/10の残骸（同じVercelに紐づく・ここから出さない）
 - [次の一手はタスク行で出す](feedback_emit_next_actions_as_tasks.md) — 区切りごとに Current_Focus「## 今週」へ1行（型はCore_Brain秘書コア§4）→Notionへ自動同期
