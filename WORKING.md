@@ -93,6 +93,10 @@
 ✅10/6 14時台 **合言葉を外す前の片付け（見本の特集6本・スポット一覧を外す）を kb_live.sh へ実装済み・★本番未反映**（有璽氏のデプロイ判断待ち・ステラの検査は別途）。控え `_backups/kb_live.sh.bak_20261006_cleanup`／結果 `~/.vivid-relay/kawachi_cleanup_result.md`。印「片付け」1〜5か所目。★同じ対象に手をつけないでください: `kb_live.sh`
 ✅10/6 14時台 **Clarity（ytbpus9k6u）を kb_live.sh の head 差し込みへ実装済み・★本番未反映**（全28枚に1行・見た目差分0・実ブラウザ3通信○。有璽氏のデプロイ判断待ち・ステラの検査は別途）。控え `_backups/kb_live.sh.bak_20261006_clarity`／結果 `~/.vivid-relay/kawachi_clarity_result.md`。印「Clarity」
 
+### 【ピタゴラス / mini 2026-10-06】かわちばなし：掲載中イベントの週次見張り `kb_watch.py`（新規）── ✅手で実測済み・★cron前（レジスタ行の相談→ドーベルマン点検 待ち）
+読むだけ（器「イベント」タブ・各市の出典ページ）。器・kb_live.sh・Notion・Slack へは書いていない。結果 `~/.vivid-relay/kawachi_guard_result.md`
+**★同じ対象に手をつけないでください**: `~/.vivid-relay/kb_watch.py`
+
 ## MacBook セッション
 
 ### 【ビビ / MacBook 2026-10-02〜03】家計台帳 ⇄ 統合型営業管理（営業台帳）の連携設計 ── ★有璽氏の回答待ち2点
