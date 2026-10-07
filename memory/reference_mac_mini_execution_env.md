@@ -43,3 +43,24 @@ MacBook は閉じている時間がある前提で設計する。規範の本文
 「参照できていない場合はそう答えて」と条件を付けると、**実際は読めていても保守的に
 「参照できていない」と答える**（MacBook・mini 双方で発生し、一度誤判定した）。
 **肯定形で聞く** ―「その内容は含まれていますか。含まれていれば1行そのまま引用して」。
+
+## ✅2026-10-07 実測 ── ★cron も launchd も環境変数を持たせていない（スクリプトが自分で読む）
+
+```
+cron            40行。★export も source も無い。/usr/bin/python3 を直接呼ぶだけ
+launchd         3本（com.vivid.{slack-socket, notion-focus-sync, ai-usage-report}）
+                ★どれも EnvironmentVariables を持っていない（PlistBuddy で実測）
+→ ★では環境変数はどこから来るのか ＝ ★スクリプトが自分で ~/.vivid-relay/config.env を読んでいる
+   ★35本の .py がこの形。共通関数 load_config_env() が3本にある
+   （ask_hub_to_notion.py / import_chatwork_done.py / notion_focus_sync.py）
+```
+
+- **★「config.env に書けば読める」は不正確。** 正しくは**「読む側のコードが読むから読める」**。
+  新しいスクリプトを書くときは★自分で読む処理を入れる（入れ忘れると鍵が無いまま動く）
+- **🔴すでに常駐しているプロセスには届かない。** `com.vivid.slack-socket` は
+  ★PID 4613・★2026-09-26 から動き続けている＝**起動時に読んだ値しか持っていない**。
+  鍵を足した後に使わせるなら★再起動が要る：
+  `launchctl kickstart -k gui/$(id -u)/com.vivid.slack-socket`
+- ★`~/.vivid-relay` の権限は `drwxr-xr-x`（755）＝**ファイル名は他者に見える**。
+  ★中身を守っているのは★ファイル側の 600（`-rw-------`）。新しく作るときは `umask 077` か `chmod 600`
+- ★`~/.vivid-relay` は**git リポジトリではない**（実測）。`vivid-ai-hq` の外にあるので追跡対象にもならない
