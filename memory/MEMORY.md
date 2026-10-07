@@ -29,7 +29,7 @@
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — 10/6 ★入れると確定は別番号。押した後に何が変わるかを書く
 - [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — 10/6 ★レコード設定はNSを01-04.dnsv.jpへ変えて初めて効く。権威がどこかを先に見る
 - [他言語文字の混入は検問が拾う](reference_unicode_escape_kanji_swap.md) — 10/6 3例目。★カタカナ語の1字目が置き換わる。鳴ったら必ず直す
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 🔴★自分が出した警告を読む(10/6 置換0件を無視し承認なしでデプロイした)
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 🔴★自分が出した警告を読む(10/6 置換0件を無視し承認なしでデプロイした)／**★10/7 4例目＝自分が書いた「印」を他人が書いた「事実」の代わりに数えた。経路は出どころが違うものを2つ。数え直す前に自分が同じ対象について何を書いたかを読む**
 - [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync除外・リンク4本(両機済)／★MacBookは9/27まで@importが空振り→Core_Brainリンクで解消
 - [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — launchd 15分ごと稼働中(9/29〜)。★9/30 同じ目印の2行で完了⇄未完了が往復→行を複製する時は目印を消す。同期側の重複ガードは未実装
 - [ツールの使い分けと導入状況](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚・git=完成品。★施設側はClaude未導入・Notionは有璽氏個人＋一部／日々のメモは3か所に分散(Macメモ帳・Chatwork・iPhoneメモ)→Obsidian 01_Inbox のデイリーノートへ集約開始(9/27・振り分けは未)
@@ -52,3 +52,4 @@
 - [かわちばなし地域ポータル](project_kawachibanashi_portal.md) — **シート→サイトは9/13から kb_live.sh で稼働中（10/5 3経路一致で実測）＝新しく作らない**。★10/6 本番＝17版＋イベント静的ページ22枚＋**kawachibanashi.osaka.jp**（合言葉中）。トップは17版の get events() 1か所へ流すだけ（案B撤去）。★10/6 Clarity ytbpus9k6u を kb_live.sh へ実装済み・本番未反映（28枚・デプロイは有璽氏の判断待ち）。🔴描画検査はエラー表示も見る形に（旧検査は真っ白の一覧を○で通していた）。★~/kawachibanashi_site は9/10の残骸（同じVercelに紐づく・ここから出さない）。★10/6 掲載中の見張り kb_watch.py（読むだけ・照合はNFKC）を実測済み・cron未登録
 - [既存顧客の契約は元シートで数える](project_toc_customer_ledger.md) — 10/7 ★備考の語の有無で数えるな(自分が書いた語しか当たらず15件中4件と誤報告)。正＝Senet .xlsx「契約者情報 のコピー」。02備考10件へ実体を追記済み。★C-0018丸田＝有璽氏の資産(顧客に数えない・行は残す)・備考は直した。**✅10/7 総合ステータスは6種＋対象外へ畳んだ（選択肢の正本＝90のR列・検討時期＝V列/90のS列・プルダウンは警告のみ）。🔴intake_register.py が温度感をM列へ書く＝改修まで回さない**
 - [次の一手はタスク行で出す](feedback_emit_next_actions_as_tasks.md) — 区切りごとに Current_Focus「## 今週」へ1行（型はCore_Brain秘書コア§4）→Notionへ自動同期
+- [朝ブリーフィングはゴミ箱の中で動いている](project_secretary_agent.md) — ✅10/7 12時 有璽氏がゴミ箱から復元・10/7分を親ページへ手で写した（9/29〜10/7 は日次DBに残存・9/30だけ欠け）。★明朝8:14の自動更新で直ったかを確かめる。経緯＝9/29からゴミ箱でもroutineは毎朝SUCCEEDED／APIでは復元不可。★SUCCEEDEDは書き込み先が生きている証拠にならない
