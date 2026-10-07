@@ -106,4 +106,5 @@
 - [かわちばなし・検索の土台](project_kawachibanashi_portal.md) — ✅10/6 案B済＝event-<ID>.htmlを静的生成(画素差0)。URLはKB_SITE_URL1か所
 - [かわちばなし・4市のRSS](project_kawachibanashi_portal.md) — ✅10/5 ★器へ47件入った(下書き・11月22件)。読めるのは58件(60は誤り)
 - [かわちばなし・母数は自前から](project_kawachibanashi_portal.md) — ★10/6 こどもステーションを載せる。一次情報に当たれる所から増やす
+- [★一次情報は紙にある](project_kawachibanashi_portal.md) — 10/7 こどもステーションのチラシに10月の全予定。サイトは月だけ12件だった
 - [かわちばなし・トップもシート](project_kawachibanashi_portal.md) — ✅10/5 本番反映済(2経路一致)。🔴11/1に0件→更新が止まる。v3はDrive
