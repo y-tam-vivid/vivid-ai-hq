@@ -356,4 +356,9 @@ metadata:
      ★正体＝ko-station.org を★以前に別の人が使っていた跡（Wayback 実測：2016年 掲示板 /archive/index.php/thread-*／2018年 タイ語のブログ /?p=・タイ文字の記事URL／/?pid= など）
      いまの返事：/archive/… と タイ文字URL＝404 ／ /?p=1・/?pid=…＝★200（トップが表示される・canonical はトップ）／/wp-login.php＝403
      案＝古いURLは★410（もう無い）を返す仕組み＋Search Console の「削除」で古い入口をまとめて隠す。★実施は有璽氏の判断待ち
+  ✅10/7 v46 旧所有者時代の古いURLに★410を返す入口 middleware.js（正本 ~/kodomo-photo-work/api_src/middleware.js）
+     通す＝/・/*.html・/assets/・/data/・/api/・sitemap.xml・robots.txt・support.js。トップに p= pid= 等の問い合わせが付いたら410（utm_・gclid・fbclid・v は通す）
+     本番実測：/?p=1・/?pid=…・/archive/…・タイ文字URL・/wp-login.php＝410／今のページ・写真・受け口・サイトマップ＝従来どおり／全HTML md5一致
+     ★新しい版を作るときは middleware.js も前の版から写す（api/・vercel.json と同じ）。公開は1回目が認証エラーで失敗→2回目で通った（3回目）
+     並行＝有璽氏が Search Console の「削除」で古い入口をプレフィックス単位で隠す（★トップ https://ko-station.org/ そのものは入れない）
 
