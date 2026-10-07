@@ -73,3 +73,39 @@ metadata:
 - **★「自分以外が読めない」は `stat` で実測する。** 600（-rw-------）であること。
   ★ディレクトリ側の権限も見る（親が 755 なら中のファイル名は他者に見える）
 - 関連：[[reference_secrets_in_git_history]]（一度入ると履歴から消すのは重い）
+
+## ✅2026-10-07 ★鍵は macOS キーチェーンへ（ファイル方式から切り替え）
+
+> 有璽氏「鍵の値は私に聞かず、★ファイルにも書かないでください」
+> 「スクリプトを作って…1つずつ聞いてきて、私が貼り付けたら、★macOSのキーチェーンに保存」
+> 「★貼り付けた文字は画面に表示されないように」「★私が実行するコマンドを1行だけ」
+
+```
+置き場     macOS キーチェーン（login.keychain-db）
+  送る用    service = vivid-crm-dev-send
+  読み取り用 service = vivid-crm-dev-read
+道具（mini ~/.vivid-relay/）
+  crm_key_set.sh    ★2本を聞いて保存。read -rsp で画面に出さない。
+                    ★値は標準入力で security へ渡す（プロセス引数に載せない）
+  crm_key_check.sh  ★値を出さず、文字数とHTTPの状態だけ出す
+  crm_send.py       ★キーチェーンから読んで窓口を叩く。--dry/--first/--rest/--results
+旧版       _backups/crm_dev.env.旧ファイル方式_20261007（★鍵は入っていなかった。消していない）
+```
+
+### 🔴キーチェーンは★画面のセッションからしか触れない（実測）
+
+```
+SSH越し   security: ... ★User interaction is not allowed
+          → 書けない・読めない・ロック状態も取れない（3つとも実測）
+画面のターミナル（GUIセッション）  ○
+launchd の LaunchAgent            ○の見込み（GUIセッション内で動く。slack-socket が running の実例）
+cron                              ×の見込み（GUIセッション外）
+```
+
+- **★これは制約だが、同時に守りになっている。** AI（SSH越し）は★鍵を読めない＝値に触れられない
+- ★だから**送信は有璽氏が画面で実行**、または**LaunchAgent として登録して launchctl で起動**する形になる
+  （後者なら窓口はAIが起動できるが、★値は見えない）
+- ★`security add-generic-password -w`（値なし）は**2回聞く**ので、
+  `printf '%s\n%s\n' "$K" "$K" | security add-generic-password … -w` の形で渡す
+- ★`-w "$K"` と引数に書くと★`ps` に見える瞬間がある。使わない
+- ★Python の `keyring` は**入っていない**（実測）。`/usr/bin/security` を subprocess で呼ぶ
