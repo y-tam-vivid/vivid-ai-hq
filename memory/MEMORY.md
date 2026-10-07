@@ -29,7 +29,7 @@
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — 10/6 ★入れると確定は別番号。押した後に何が変わるかを書く
 - [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — 10/6 ★レコード設定はNSを01-04.dnsv.jpへ変えて初めて効く。権威がどこかを先に見る
 - [他言語文字の混入は検問が拾う](reference_unicode_escape_kanji_swap.md) — 10/6 3例目。★カタカナ語の1字目が置き換わる。鳴ったら必ず直す
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 🔴★自分が出した警告を読む(10/6 置換0件を無視し承認なしでデプロイした)
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 🔴★自分が出した警告を読む(10/6 置換0件を無視し承認なしでデプロイした)／**★10/7 4例目＝自分が書いた「印」を他人が書いた「事実」の代わりに数えた。経路は出どころが違うものを2つ。数え直す前に自分が同じ対象について何を書いたかを読む**
 - [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync除外・リンク4本(両機済)／★MacBookは9/27まで@importが空振り→Core_Brainリンクで解消
 - [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — launchd 15分ごと稼働中(9/29〜)。★9/30 同じ目印の2行で完了⇄未完了が往復→行を複製する時は目印を消す。同期側の重複ガードは未実装
 - [ツールの使い分けと導入状況](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚・git=完成品。★施設側はClaude未導入・Notionは有璽氏個人＋一部／日々のメモは3か所に分散(Macメモ帳・Chatwork・iPhoneメモ)→Obsidian 01_Inbox のデイリーノートへ集約開始(9/27・振り分けは未)
