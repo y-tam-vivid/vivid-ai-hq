@@ -20,6 +20,7 @@
 - [チェックボックス書式の侵食](reference_sheets_checkbox_format_creep.md) — 空行のfalseは後から行が入るとキーを壊す。CSVはキーの形を検査
 - [レコード統合の手順](reference_record_merge_protocol.md) — 全列突合→移送→集計列を空に→削除。廃止選択肢は上書きで始末
 - [ベタ書きの選択肢は腐る](reference_hardcoded_option_lists.md) — 書き込み系5本がマスタを巻き戻す／★手段の語彙は3箇所に散る(フォーム/90のK列/Notionチャネル)。90に連絡手段の列は無い
+- [プルダウンを付けるまで決めたことにならない](reference_dropdowns_prevent_value_sprawl.md) — ★10/7実測 02の総合ステータスが10種に増えた真因＝90に列が無い＋検証0行。**畳む作業と同じ回に検証を付ける**／rejectInputは★false（trueは外部スクリプトを弾く）／列は★末尾へ足す（挿入は列番号参照を壊す）
 - [\uエスケープで漢字が化ける](reference_unicode_escape_kanji_swap.md) — 日本語はliteralで書き、書いた後に1文字ずつ突合する
 - [営業×議事録の統合設計](project_sales_minutes_integration.md) — **2026-08-22 全論点に回答済。結合キー=社内顧客ID／全社昇格分だけ営業へ見せる**
 - [他種別テレアポリスト](project_telapo_list_other_services.md) — 13タブ作成。★活動FBに放デイ実績が混入=つる検査中／名寄せ81件未統合
