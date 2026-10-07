@@ -25,7 +25,7 @@
 - [★正しさと母数は両立する](project_kawachibanashi_portal.md) — ⛔10/6訂正 対立させたのは誤り。守る仕組みが先なだけで母数は諦めない
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★速さのために確かさを落とさない。件数は数え方を添える／担当へ渡す数字も測ってから／出典URLは検索結果をそのまま貼る
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 10/5 有璽氏。★以降の進捗はnotify.tell()。会話に書いても届かない
-- [判断はSlackのボタン](project_ask_hub_push_decisions.md) — ★ターン終了前にopenを数える。1週間超は前提を測り直す(10/5 前提が消えていた)／**★10/7 open だけでなく★answered も数える（有璽氏は数分で押す。投げた1分後に答えが出ていた例あり）。★answer.free_text まで読む＝「その他（記述）」は本体がそこにしかない**
+- [判断はSlackのボタン](project_ask_hub_push_decisions.md) — ★ターン終了前にopenを数える。1週間超は前提を測り直す(10/5 前提が消えていた)／**★10/7 open だけでなく★answered も数える（有璽氏は数分で押す。投げた1分後に答えが出ていた例あり）。★answer.free_text まで読む＝「その他（記述）」は本体がそこにしかない**／**🔴10/7 ★ラベルと説明文の数字を食い違わせた（165万ずつ／82.5万ずつ）＝押された結果がどちらの意味か決まらなくなる。金額・件数・期日を含む選択肢は両方を突き合わせてから投げる**
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — 10/6 ★入れると確定は別番号。押した後に何が変わるかを書く
 - [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — 10/6 ★レコード設定はNSを01-04.dnsv.jpへ変えて初めて効く。権威がどこかを先に見る
 - [他言語文字の混入は検問が拾う](reference_unicode_escape_kanji_swap.md) — 10/6 3例目。★カタカナ語の1字目が置き換わる。鳴ったら必ず直す／**★10/7 4例目＝台帳へ書く★値のリテラルに混入（これまでは出力だった）。偶然使わず助かった。★書く直前に非ASCIIの種類を数える**
