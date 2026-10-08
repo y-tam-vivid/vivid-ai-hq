@@ -65,3 +65,9 @@ SBタグ・クリックログは3サイトとも無し＝この3サイトをSB�
 - 一覧 `JapanGtmAgentWorkspace/saved-lists/osaka-fukushi119-iryo-202610-targets.json`
 - ★7月の率（届く約15%・届いた先のクリック1〜2%）だと、1,273件でクリックは合計数件＝★6通り（児童/就労×A/B/C）の比較は判定できない。有璽氏の判断待ち
 - SB履歴APIの期間指定は `{"period":{"days":180}}`（filters.period_days は効かない）。マイリスト検索は limit が100で頭打ち
+
+**LP組み立て（2026-10-08 リリス・commit 473cd90）** 置き場 `~/Documents/fukushi119_iryo_lp/`（★公開版の正本・git管理・未公開）
+- /kids|shuro × /a|b|c の6通りをパスで出し分け（vercel.json rewrites）。375/768/1440 × 6 で横あふれ0
+- 計測v2入り：SB・GTM・クリックログ・data-cta ✓／★Clarity ID が未発行で検査✗（有璽氏が作る）
+- 試算欄は index.html の `LP_SIM` 1か所（クローバーが要件を裏取り中）／写真は `LP_PHOTOS`（就労系は写真なし＝null）
+- 児童系B・Cのヒーローは field-staff.jpg の右側を切り出し（大人スタッフ1名の顔あり＝★掲載同意の確認待ち）。元画像は .vercelignore で非公開
