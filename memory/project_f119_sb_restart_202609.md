@@ -91,3 +91,8 @@ LPの差は「クリック後の予約率」でしか測れず、1本あたり�
 - 文面6本 `campaigns/fukushi119-iryo-202610/03_templates_6.json`。SBの templates/preview を全本通過（件名29〜35字・本文383〜414字・未解決タグ0・警告0）。URLは★仮（LP-DOMAIN）
 - ★SB templates/preview は `{"draft":{subject,body},"sample_target":{company,url}}` で渡す（`template` キーは無視されて空のプレビューになる）
 - 残り：Clarity ID／公開先ドメイン／写真の掲載同意 → LP公開 → 文面のURL確定 → 文面保存とリスト作成（★要承認）→ 送信（有璽氏）
+
+**2026-10-08 夜 有璽氏**
+- 「Claude Design 側で写真は全て差し替えている」＝★Drive の書き出し（9/29）は古い版。公開前に★新しい書き出しを受け取り、写真だけ取り込む（DesignSync はデザインシステム専用で通常案件は読めない）
+- 公開先ドメイン＝★iryo.vivid-global.com で進めてよい。「さくらのDNSに増やす作業もそちらで」＝★AIがDNS追加まで実装（有璽氏の承認済み）
+- 段取り：Vercelプロジェクト作成＋ドメイン追加（中身はまだ出さない）→ さくらDNSにCNAME → Clarity作成 → 新しい写真を取り込み → 公開
