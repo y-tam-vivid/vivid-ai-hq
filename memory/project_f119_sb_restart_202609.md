@@ -84,3 +84,10 @@ LPの差は「クリック後の予約率」でしか測れず、1本あたり�
 ★AIの一般論（8人上限）は、現場の前提（2名体制・総額と手残りの区別）で覆った＝fukuchi-core「AIの所見はドメイン知識で覆る」の実例。
 **比較のやり方＝①で確定（有璽氏 10/8）**：大阪で児童/就労×A/B/Cの6通りを第1波として送り、判定は地域を広げて積み上げる。
 理由＝★医療連携加算をすぐ提供できるのは大阪府のみ。大阪で実績を作り、他府県へ広げる。
+
+**送信準備（2026-10-08 ビビ）**
+- 6通りの割り振り `saved-lists/osaka-fukushi119-iryo-202610-arms.json`（児童/就労ごとに7月の結果別に乱数seed 20261008で3等分）
+  kids-a 230／kids-b 229／kids-c 228／shuro-a 196／shuro-b 196／shuro-c 194（複合3件は児童系へ）
+- 文面6本 `campaigns/fukushi119-iryo-202610/03_templates_6.json`。SBの templates/preview を全本通過（件名29〜35字・本文383〜414字・未解決タグ0・警告0）。URLは★仮（LP-DOMAIN）
+- ★SB templates/preview は `{"draft":{subject,body},"sample_target":{company,url}}` で渡す（`template` キーは無視されて空のプレビューになる）
+- 残り：Clarity ID／公開先ドメイン／写真の掲載同意 → LP公開 → 文面のURL確定 → 文面保存とリスト作成（★要承認）→ 送信（有璽氏）
