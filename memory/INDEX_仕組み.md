@@ -80,5 +80,5 @@
 ## MEMORY.md から移した現在地（2026-10-08 棚卸し）
 
 - [朝ブリーフィング](project_secretary_agent.md) — ✅10/8 復元後の自動更新を確認＝解決。SUCCEEDEDは書き込み先が生きている証拠でない
-- [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — NSを01-04.dnsv.jpへ変えて初めて効く。権威を先に見る
+- [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — NSを01-04.dnsv.jpへ変えて初めて効く。権威を先に見る／**★10/8 Vercelの向け先は案件ごとに違う（過去の cname.vercel-dns.com. を流用して訂正された）。渡す前にその案件のVercel Domainsの値を見る**
 - [効果記録は判定に任せると漏れる](reference_effect_log_is_not_optional.md) — 台帳もプルダウンも「仕組み」＝記録の対象
