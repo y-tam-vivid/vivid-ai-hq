@@ -37,3 +37,4 @@ metadata:
 - ★Vercel CLI は npx vercel で使える（y-tam-4008・チーム fuku-chi-vivid・pro を実測）。グローバルには入っていない
 - ✅10/8 15時台 本番公開の準備（10/9期限分）をすべて実施：コード＝set_household_primary に一本化・CLAUDE.md の検証データ/デプロイの一文・公開の手順を最新化（3ada949）／.vercelignore に .env* と .next（02f4b13）／Vercel＝チーム fuku-chi-vivid にプロジェクト kakei-daicho（prj_P7ibcCmQ…・既存の kakei-daicho-demo は別物で触っていない）・環境変数を Production/Preview に3つずつ（本番の秘密鍵は★仮の文字 PASTE_PROD_SECRET_HERE＝有璽氏が差し替え→再デプロイ）・本番デプロイ https://kakei-daicho.vercel.app（/login 200・noindex・JSは本番URLのみ）・ドメイン追加済み＝CNAME kakei → 63241d2029467d36.vercel-dns-016.com.（権威はさくら ns1/ns2.dns.ne.jp・TXT不要）。issuer はコードで指定していない
 - ★`vercel link` は .env.local に VERCEL_OIDC_TOKEN を1行足す（開発用の値は無事だった）。★.vercelignore に .env* が無いと手元の鍵が上がるおそれ→入れた
+- ★10/8 営業台帳側の指摘：さくらのゾーン編集にAPIは無い＝設計担当（claude.ai）は押せない恐れ。設計担当は「DNSの登録は代行する」と書いている→方針は変えず、有璽氏に「設計担当が押せないなら自分で1レコード」の手順を渡した。★値は Vercel の実際の指示値 63241d2029467d36.vercel-dns-016.com.（cname.vercel-dns.com. は予備）。エントリ名は kakei だけ
