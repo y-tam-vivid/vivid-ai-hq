@@ -78,6 +78,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
+- **【ビビ / MacBook 2026-10-08〜】119番 医療連携LP（児童/就労×A/B/C）の実装とSBフォーム営業の準備** ── 書く：公開用LPフォルダ・SBの文面下書き（保存は要承認）。読む：SBの設定・送信履歴。**★同じ対象に手をつけないでください**: 医療連携LPの公開用フォルダ／SB template（医療連携）
 - **【ビビ / 2026-10-08〜】全公開サイトへSBタグ＋クリックログ**（有璽氏「基本は全サイト」・ko-station は済）── いまは読むだけ（控え `~/.vivid-relay/_backups/*_head_20261008.html`）。✅#c3f127＝このセッションが全サイトをまとめて引き受ける（有璽氏・会話で回答）。✅#b92fb5＝GTMが無い4サイトは共用GTM-PQX3L4TQ。✅#2aacd0＝オレンジはhead挿入プラグインを1つ足す。✅#f55c69＝LSUも同じプラグイン。部品は ~/.vivid-relay/sbtag/{A,B,C}_*.html。★反映は一覧を有璽氏に見せて承認後。引き継ぎ `scratchpad/handoff/2026-10-08_SBタグとクリックログ_3サイト.md`
 - **【ビビ / 2026-10-08〜】日々のメモの振り分け** ── ✅試作・検査の直し済み（mini `memo_sort.py`・cron未登録）。▶有璽氏のデイリーノートが数日分たまったら dry-run で当たり具合を見る。**★同じ対象に手をつけないでください**: mini `~/.vivid-relay/memo_sort.py`
 - **【ビビ+チョッパー / 2026-10-06】Web制作の出戻り対策** ── ✅幅掃きの高速化・恒久ルール化は完了。
