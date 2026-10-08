@@ -39,3 +39,4 @@ metadata:
 - ★`vercel link` は .env.local に VERCEL_OIDC_TOKEN を1行足す（開発用の値は無事だった）。★.vercelignore に .env* が無いと手元の鍵が上がるおそれ→入れた
 - ★10/8 営業台帳側の指摘：さくらのゾーン編集にAPIは無い＝設計担当（claude.ai）は押せない恐れ。設計担当は「DNSの登録は代行する」と書いている→方針は変えず、有璽氏に「設計担当が押せないなら自分で1レコード」の手順を渡した。★値は Vercel の実際の指示値 63241d2029467d36.vercel-dns-016.com.（cname.vercel-dns.com. は予備）。エントリ名は kakei だけ
 - ✅10/8 15:11 有璽氏が本番の秘密鍵を Vercel に貼った（APIで Production の更新時刻だけ確認・値は見ていない）→ 再デプロイ READY。★鍵が正しいかは使う処理（招待）でしか確かめられない＝10/10 の公開後の確認で見る。DNS は未登録（kakei の CNAME 0件）
+- ✅10/8 15時台 DNS 登録完了（有璽氏）→ kakei.vivid-global.com が CNAME 63241d…vercel-dns-016.com.（さくらの権威とも一致）・https 200・証明書OK・題「家計のみとおし。」・noindex。★残りは10/10の設計担当の作業（Supabase の Site URL・本番の検証データ削除・本番の窓口と鍵）と、公開後の招待1回で秘密鍵を確かめること
