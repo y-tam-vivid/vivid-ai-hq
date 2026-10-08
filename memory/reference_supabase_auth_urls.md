@@ -1,0 +1,34 @@
+---
+name: reference_supabase_auth_urls
+description: Supabaseのパスワード再設定メールは Site URL / Redirect URLs の設定先へ飛ぶ。未設定だと localhost へ飛んで詰む
+metadata:
+  type: reference
+---
+
+**パスワードの再設定メールのリンクは、Supabase の `Site URL` と `Redirect URLs` に従う。**
+独自ドメインを載せた後にここを入れ忘れると、**★リンクが開発中の `localhost` へ飛び、再設定できない。**
+
+```
+症状   「パスワードを忘れた」→ メールは届く → ★リンクを押すと localhost:xxxx が開く（手元では何も動かない）
+原因   Authentication → URL Configuration の Site URL / Redirect URLs が★古いまま
+直す   Site URL を本番の独自ドメインに／Redirect URLs にも同じものを足す
+```
+
+★**順番の地雷**：独自ドメインを繋いだ日に、ここも同じ日に直す。
+**★「画面は開くようになった」＝「認証の導線も通る」ではない。** ログインは通っても、
+**再設定・招待・マジックリンクだけが壊れている**状態になり、★人が入れなくなって初めて気づく。
+
+## 二段階認証（TOTP）の見分け
+
+```
+★環境ごとに別の登録になる。認証アプリに「本番」と「開発用」の2つ並ぶ
+→ ★どちらか分からなければ両方の6桁を試してよい（古い方＝先に作った方が本番のことが多い）
+★登録が見当たらない＝入れない。ほかに管理者がいなければ、
+  ★Supabase の画面から当該利用者のMFA登録を消してもらう（消した後のログインで登録し直しになる）
+```
+
+★**パスワードの値は人づてに回さない。** 画面の再設定か招待メールで完結させる
+→ [[reference_plaintext_credentials_handling]]
+
+**2026-10-08 の実例**：家計のみとおし。の本番で有璽氏が入れなかった。
+→ [[project_kakei_daicho]]（10/10 設計担当の作業に Site URL / Redirect URLs が入っている）
