@@ -79,6 +79,6 @@
 
 ## MEMORY.md から移した現在地（2026-10-08 棚卸し）
 
-- [朝ブリーフィング](project_secretary_agent.md) — 10/7 ゴミ箱から復元。routineのSUCCEEDEDは書き込み先が生きている証拠でない
+- [朝ブリーフィング](project_secretary_agent.md) — ✅10/8 復元後の自動更新を確認＝解決。SUCCEEDEDは書き込み先が生きている証拠でない
 - [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — NSを01-04.dnsv.jpへ変えて初めて効く。権威を先に見る
 - [効果記録は判定に任せると漏れる](reference_effect_log_is_not_optional.md) — 台帳もプルダウンも「仕組み」＝記録の対象
