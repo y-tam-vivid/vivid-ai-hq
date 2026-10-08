@@ -1060,3 +1060,19 @@ noindex                      ★ヘッダ x-robots-tag: noindex, nofollow（/ �
 ```
 ★**松本秋紀さんの FP アカウントが本番にまだ無い**＝担当が松本さんの人は `assigned=false` で届く。
 **これは異常ではない**（あとで管理者が画面で割り当てる）。★送信を止めない。
+
+### ✅2026-10-08 17:08 本番用の鍵2本を作り、Slackへ送った
+
+```
+✅ 生成      openssl rand -hex 32 ×2（★2本は別の値であることを確認）
+✅ 保存      キーチェーン vivid-crm-prod-send / -read（★-A付き）
+✅ 照合      ★保存した値と読み出した値が一致（長さ64だけでなく中身も比較）
+✅ 受け渡し  Slack のDMへ1通（貼る場所の手順つき）
+             ★2経路で確かめた：①エラー行が出ていない ②slack_pending.json が0件（＝溜まっていない）
+             ★DMの中身は読み返していない（値を会話へ持ち込まないため）
+道具        ~/.vivid-relay/{crm_key_gen_prod.sh, _crm_key_slack.py, _crm_key_slack.sh}
+            ★値はディスク・ログ・標準出力のどこにも書いていない
+```
+
+**▶次**：有璽氏が Supabase（★上部を main）の Secrets へ2本を貼る → `crm_key_check.sh prod` で照合
+（★503が消える）→ 第1便5件（C-0071・C-0074・C-0077・C-0078・C-0080）を本番へ送る。
