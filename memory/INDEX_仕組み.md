@@ -73,3 +73,4 @@
 - [共有の置き場へ書くと相手を巻き込む](reference_shared_write_races.md) — ★9/13同型3件: Blob上書き消失/git addが書きかけごと載る/再コピー
 - [検証用WPは共用資源](reference_shared_wp_test_env_collision.md) — ★9/14再発。deploy.py等も同型危険。計測中は他セッションの使用有無を先に確認
 - [再起動後のPIDロック誤認](reference_pid_lock_reused_after_reboot.md) — ★9/28 slack_socketがPID再利用で黙って停止。ロックはPIDの生死でなくコマンド名まで見る（恒久対策は未実施）。★同じ朝 crontab直書き5本も抜けた→自動処理レジスタ
+- [Vercelコネクタの再接続](reference_vercel_connector_reauth.md) — 10/8 再接続の途中で2FA勧誘画面が出る＝エラーではない。設定推奨（本番ドメインを持つ）。切れていてもCLIで作業は続く
