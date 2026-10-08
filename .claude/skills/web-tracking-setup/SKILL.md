@@ -76,6 +76,13 @@ form_submit  form の送信（data-cta の有無を問わず。Enter キー送�
    ブラウザで開き、`performance.getEntriesByType('resource')` に `clarity` `collect` `sb-track` の通信があること、
    ボタンを押して `dataLayer` に `cta_click` が入ること。手順の詳細 → memory `reference_lp_tracking_tags`
 
+## 社内の確認アクセスを分ける（2026-10-08 有璽氏「計測が過剰にずれないように」）
+- 社内の人（有璽氏・担当・AI）がページを確認するときは、URLの末尾に **`?utm_source=check`** を付けて開く
+  （クリックログは最初の経路を保持するので、同じタブでページ内を移動しても check のまま）
+- **集計・報告では `lp_source=check` を必ず除いて数える**。GA4・Clarity のフィルタも同じ（Clarity：lp_source が check 以外）
+- 確認用URLを渡すときは、最初から `?utm_source=check` を付けた形で渡す
+- AIが実ブラウザで発火を確かめるときも同じく付ける（10/8 の確認では salesbreaker を付けて開いた＝その分は既知のノイズ）
+
 ## 人の手が要るもの（押す場所まで）
 - **Clarity のプロジェクト作成**：clarity.microsoft.com →「新しいプロジェクト」→ サイト名とURL → 表示されるID（10文字前後）を渡す
 - **GA4 で `cta_click` を数える**（初回1回だけ）：GTM → トリガー「カスタムイベント」名 `cta_click` → タグ「GA4 イベント」イベント名 `cta_click`、パラメータ `lp_variant` `lp_source` `cta` をデータレイヤー変数で渡す → 公開
