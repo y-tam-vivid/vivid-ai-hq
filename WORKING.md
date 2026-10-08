@@ -78,7 +78,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ→ピタゴラス / 2026-10-08】日々のメモの振り分け（01_Inbox→4分類）の試作** ── 写しで作って試すだけ・自動実行（cron）には載せない。目安16:00。**★同じ対象に手をつけないでください**: `Core_Brain/01_Inbox/`・`20_改善メモ.md`（新規）
+- **【ビビ / 2026-10-08〜】日々のメモの振り分け** ── ✅試作・検査の直し済み（mini `memo_sort.py`・cron未登録）。▶有璽氏のデイリーノートが数日分たまったら dry-run で当たり具合を見る。**★同じ対象に手をつけないでください**: mini `~/.vivid-relay/memo_sort.py`
 - **【ビビ+チョッパー / 2026-10-06】Web制作の出戻り対策** ── ✅幅掃きの高速化・恒久ルール化は完了。
   **★有璽氏の判断待ち4件**：本番の入口／既定の方式（resize or reload）／8750固定を外すか／重なり16〜18件/ページを目視で精査するか
   **★同じ対象に手をつけないでください**: mini `~/lifestandup-wp/{sweep_widths_fast.py,sweep_widths.py,tools/lsu_env.py}`／ポート8750
