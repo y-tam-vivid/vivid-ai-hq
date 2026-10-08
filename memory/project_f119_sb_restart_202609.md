@@ -127,3 +127,4 @@ LPの差は「クリック後の予約率」でしか測れず、1本あたり�
 送信手順 `campaigns/fukushi119-iryo-202610/04_送信の手順.md`。★送信は有璽氏（まだ押していない）
 
 **送信予定（2026-10-08 有璽氏）**：★10/9 に有璽氏が6通りを送る。導線＝文面のURL→LP（iryo）→LPの「無料相談を予約する」→Googleカレンダー予約 calendar.app.google/c5aJoxPMVB5brw9b8
+★社内の確認アクセスは `?utm_source=check`（10/8 有璽氏が6通りの確認に使用）＝★集計で lp_source=check を除外する
