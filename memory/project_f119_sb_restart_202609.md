@@ -99,3 +99,8 @@ LPの差は「クリック後の予約率」でしか測れず、1本あたり�
 
 **公開先の設定（2026-10-08 19:16 済）**：Vercel プロジェクト `fukushi119-iryo-lp`（fuku-chi-vivid）＋ドメイン iryo.vivid-global.com 登録（verified）。
 さくらDNSに iryo CNAME 670a13cd2721617e.vercel-dns-016.com. を追加（ns1・ns2・8.8.8.8 で一致／他の行は無傷）。★中身はまだ出していない（新しい写真の版待ち）
+
+**最新版で組み直し（2026-10-08 夜・LP commit 7a63dd7）**：有璽氏が Claude Design で直した最新版（`~/Downloads/福祉施設119番サービス紹介WEBページ 2/`）に、こちらの指示（kids/shuro×A/B/Cのパス・data-cta・consul_vi@・切替バー非表示・写真・試算 月約13万〜40万円・就労系の別の声）がほぼ全部入っていた
+→ ★Claude Design 側を正本にし、こちらは計測v2と公開設定（相対パス用 rewrites 48件・.vercelignore）だけを足す形に切り替えた。uploads/（提案資料PDF）は公開物から外した
+写真：medical-team.jpg＝uploads/35066767_m.jpg、doctor-consult.webp＝tomaturiHFKE2155_TP_V（★どちらも有璽氏が入れた素材写真）
+残り：★Clarity（Chromeが未ログイン＝有璽氏のサインイン待ち）→ ID を入れる → 公開 → /kids/support.js 等が200か確認
