@@ -2,7 +2,7 @@
 """計測の検問（hook_web_tracking_gate.py）の回帰テスト。直したら必ず全件通す。
   python3 ~/vivid-ai-hq/bin/web_tracking/test_gate.py
 ★テストの文字列はこのファイルの中にある＝実行コマンドには公開の文字が出ない（検問に誤って止められない）
-★着地先の検査は 127.0.0.1 のローカルサーバで行う（例外：ゲームブルの1件だけ実ネット）。node が無いときは JS の項だけ SKIP"""
+★着地先の検査は 127.0.0.1 のローカルサーバで行う（実ネットに頼るテストは無い）。node が無いときは JS の項だけ SKIP"""
 import http.server, importlib.util, json, os, shutil, subprocess, sys, tempfile, threading, time
 
 HOME = os.path.expanduser("~")
@@ -18,12 +18,23 @@ s = open(SNIP, encoding="utf-8").read()
 for k, v in FILL.items():
     s = s.replace(k, v)
 OK_HTML = "<!doctype html><html><head>" + s + '</head><body><a data-cta="hero">x</a></body></html>'
+# クリックログ部品（cta_click）だけ無い見本：SB・GTM・Clarity は入っている
+NOLOG_HTML = ("<!doctype html><html><head>"
+              '<script src="https://salesbreaker.jp/v1/sb-track.js?id=17e298ff-5e02-4630-a16d-0f4f25ede23a"></script>'
+              "<script>(function(w,d,s,l,i){w[l]=w[l]||[];j=d.createElement(s);j.src='https://www.googletagmanager.com/gtm.js?id='+i;"
+              "})(window,document,'script','dataLayer','GTM-PQX3L4TQ');</script>"
+              '<script>(function(c,l,a,r,i,t,y){t=l.createElement(r);t.src="https://www.clarity.ms/tag/"+i;})'
+              '(window,document,"clarity","script","abcd1234ef");</script>'
+              "</head><body>見本</body></html>")
 BARE_HTML = "<!doctype html><html><head><title>t</title></head><body>計測なし</body></html>"
 
 tmp = tempfile.mkdtemp(prefix="gate_test_")
 ok_dir, empty_dir = os.path.join(tmp, "ok"), os.path.join(tmp, "empty")
 os.makedirs(ok_dir); os.makedirs(empty_dir)
 open(os.path.join(ok_dir, "index.html"), "w").write(OK_HTML)
+nolog_dir = os.path.join(tmp, "nolog")
+os.makedirs(nolog_dir)
+open(os.path.join(nolog_dir, "index.html"), "w").write(NOLOG_HTML)
 
 
 # ── ローカルの着地先（ネットに出ない）
@@ -47,7 +58,7 @@ class H(http.server.BaseHTTPRequestHandler):
             return
         if self.path.startswith("/slow"):
             time.sleep(2)  # 遅いが応答はする（並列なら3本で約2秒・直列なら約6秒）
-        body = (OK_HTML if self.path.startswith("/ok") else BARE_HTML).encode()
+        body = (OK_HTML if self.path.startswith("/ok") else NOLOG_HTML if self.path.startswith("/nolog") else BARE_HTML).encode()
         self.send_response(200); self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(body))); self.end_headers(); self.wfile.write(body)
 
@@ -72,7 +83,7 @@ SB = "https://salesbreaker.jp/api/operator/v0/templates/save"
 CASES = [  # (説明, コマンド, cwd, 期待: deny / note / none, {env:…, has:…, max_sec:…})
     ("heredoc内の vercel deploy・redeploy.sh", "python3 - <<'E'\nx='''\n  vercel deploy --prod\n  redeploy.sh\n'''\nE", F, "none", {}),
     ("commitメッセージ内の文字", 'git commit -m "redeploy.sh を直した; vercel deploy"', F, "none", {}),
-    ("ゲームブルLP（クリックログ無し）", "vercel deploy --prod", HOME + "/Documents/gamemarke_lp", "deny", {}),
+    ("クリックログ無しのLP（SB・GTM・Clarityのみ）", "vercel deploy --prod", nolog_dir, "deny", {"has": "cta_click"}),
     ("稼働盤（対象外）", "cd ~/vivid-ai-hq/web/kadoban && npx vercel deploy --prod --yes", "/tmp", "note", {}),
     ("見本 --cwd", "vercel deploy --cwd ~/vivid-ai-hq/bin/web_tracking/selfcheck_fixture", "/tmp", "deny", {}),
     ("計測入り", "vercel deploy --prod", ok_dir, "note", {"has": "1枚とも計測セットあり"}),
@@ -88,7 +99,7 @@ CASES = [  # (説明, コマンド, cwd, 期待: deny / note / none, {env:…, h
     ("redeploy.sh（見本の場所）", "cd %s && bash ./redeploy.sh" % F, "/", "deny", {}),
     ("netlify deploy", "netlify deploy --prod", F, "deny", {}),
     ("こどもステーション demo（対象外）", "vercel deploy --prod", HOME + "/kodomo-station-demo-v6", "note", {}),
-    ("SB文面：着地先ゲームブル（実ネット）", 'curl -X POST %s -d "{\\"b\\":\\"https://gamemarke.vivid-global.com/\\"}"' % SB, "/tmp", "deny", {}),
+    ("SB文面：着地先がクリックログ無し（ローカル）", "curl -X POST %s -d '{\"b\":\"%s/nolog\"}'" % (SB, U), "/tmp", "deny", {"env": ENV_SB}),
     ("SB文面：着地先JFBI（対象外）", 'curl -X POST %s -d "{\\"b\\":\\"https://jfbi.vivid-global.com/\\"}"' % SB, "/tmp", "note", {}),
     ("SBのURLを文中に書いただけ", 'echo "%s を叩く予定"' % SB, "/tmp", "none", {}),
     ("/tmp で vercel --prod（広すぎ）", "vercel --prod", "/tmp", "note", {}),
