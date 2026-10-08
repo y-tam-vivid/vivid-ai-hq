@@ -43,6 +43,16 @@
       "path": "~/kodomomatsuri-press-preview",
       "reason": "こどもまつりリリースの★団体確認用プレビュー（noindex＋robots.txt Disallow・配信後に廃棄）。閲覧するのは団体の方のみで、その行動を記録する必要がない",
       "added": "2026-10-04"
+    },
+    {
+      "path": "https://kakei.vivid-global.com/",
+      "reason": "有璽氏の決定（2026-10-08・A案）『計測は入れない』。★家計の金額が映る画面で、セッション録画・行動記録を残さない。第1弾は社内運用（noindex）。★第3弾の一般公開のときに決め直す",
+      "added": "2026-10-08"
+    },
+    {
+      "path": "https://kakei-daicho.vercel.app/",
+      "reason": "有璽氏の決定（2026-10-08・A案）『計測は入れない』。★家計の金額が映る画面で、セッション録画・行動記録を残さない。第1弾は社内運用（noindex）。★第3弾の一般公開のときに決め直す（★同じアプリのVercel側のURL）",
+      "added": "2026-10-08"
     }
   ],
   "_own_domains_note": "2026-09-29 有璽氏：オレンジワークス・LIFE STAND UP 本番・ふくち。サイトも含める"
