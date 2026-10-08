@@ -177,3 +177,5 @@ Current_Focus のタスク行だけでは漏れる（人の記憶に戻るので
 - ★さくらファイルマネージャー：編集は HTMLFormElement.prototype.submit を差し替えて target=_self にすると同じタブで開く。textarea を JS で変えたあと実キー（End→空白→BackSpace）で保存ボタンが有効になる
 - ★オレンジワークスの管理画面は短時間でログインが切れる＝最初に済ませる。WAF は作業後に有璽氏が戻す
 - ✅STUDIO の正しい入れ方（10/8 実地）：ページ側で navigator.clipboard.writeText（有璽氏がクリップボードを許可）→ 編集欄を実クリック → ⌘V → 枠の外を押す → 読み込み直して枠にコードの見出しが出るのを確認 → 公開「更新」は実クリック（JS の click() は効かない）
+- ★STUDIO はカスタムコード枠を★2回実行する（SSR＋描画後）。外部読込の <script src> と中に書いたコードが二重になり、SBの閲覧・page_meta・cta_click が2倍に数えられた（10/8 実測）→ ★1つの <script> にまとめ window.__fkMeasure で1回だけ動かし、SBタグもその中から createElement で読み込む。直したあと実ブラウザで sb-track.js 1・view 1・page_meta 1・テストクリック 1 を確認
+- ✅10/8 実ブラウザ確認（5サイト：LSU・オレンジ・119番・ふくち。・gamemarke）＝SBタグ・GTM・Clarity・GA4 collect の通信あり／dataLayer に page_meta と cta_click（テスト用 data-cta="ai-firing-test"）。かわちばなしは合言葉の確認画面でブラウザが止まるため未実施（書き出し時のヘッドレス検査と本番HTMLの文字数えのみ）
