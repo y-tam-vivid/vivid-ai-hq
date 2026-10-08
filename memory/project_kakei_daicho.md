@@ -1024,3 +1024,39 @@ noindex                      ★ヘッダ x-robots-tag: noindex, nofollow（/ �
 **✅同日 有璽氏の決定（A案）＝計測は入れない。** `bin/web_tracking/exempt.json` へ2件を理由付きで登録し、
 **実際に除外が効くことを実測**（`exempt_reason()` に直接当てた・陽性対照2件も含め食い違い0件／検問のテスト160件合格）。
 ★`sites.json`（計測している側の台帳）には**載せない**。★第3弾の一般公開のときに決め直す。
+
+### ▶2026-10-08 本番の窓口ができた ── ★こちらは「別の網にいる」ため着手できない
+
+```
+本番の窓口（設計担当・有璽氏が転記）
+  送る用     https://jjetbqrxlstvjziijtne.supabase.co/functions/v1/crm-persons
+  読み取り用 https://jjetbqrxlstvjziijtne.supabase.co/functions/v1/crm-results
+★crm_key_check.sh / crm_send.py の prod は★この値で既に設定済み（10/8 夕に入れた）＝変更不要
+```
+
+**✅窓口は生きている（★実測と仕様書の2経路で一致）**
+
+| 叩いた先 | 実測 | 仕様書 §の読み分け |
+|---|---|---|
+| crm-persons へ POST | **503** | ★「鍵が未設定」＝窓口は在るが Secrets がまだ空 |
+| crm-results へ POST | **405** | ★「POST以外」＝読み取り用はGET。窓口は生きている |
+
+**🔴いま着手できない。理由は1つ＝こちらが別の網にいる。**
+```
+こちら 10.4.35.235（外出先Wi-Fi）／mini 192.168.1.200 へ ping も ssh も通らない
+★鍵の生成・キーチェーン保存（launchd経由）・Slackへの受け渡し・送信の道具は★全部 mini にある
+→ ★網に戻るまで1手も進められない（→ [[project_ask_hub_push_decisions]] 別網の節）
+```
+
+**★段取り（網に戻った直後にこの順で走る）**
+```
+1  mini で本番用の鍵2本を作る → キーチェーン vivid-crm-prod-{send,read}（★-A付き・launchd経由）
+2  鍵の値を★Slackへ送る（有璽氏は画面からコピーする。★会話に書いてもコピーできない）
+3  有璽氏が Supabase の画面★上部を「main」にして Edge Functions → Secrets へ
+   CRM_SEND_KEY / CRM_READ_KEY を貼る
+4  crm_key_check.sh prod で両側が合うか見る（★503が消えるかで分かる）
+5  第1便5件を送る＝C-0071・C-0074・C-0077・C-0078・C-0080
+6  ok / failed / assigned の数を実装担当へ返す（★設計担当への文面は実装担当が作る）
+```
+★**松本秋紀さんの FP アカウントが本番にまだ無い**＝担当が松本さんの人は `assigned=false` で届く。
+**これは異常ではない**（あとで管理者が画面で割り当てる）。★送信を止めない。
