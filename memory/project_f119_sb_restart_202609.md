@@ -110,3 +110,5 @@ LPの差は「クリック後の予約率」でしか測れず、1本あたり�
 - 実ブラウザ（/shuro/b?utm_source=salesbreaker）：見出しどおり・clarity/sb-track/gtm/GA4 collect の4通信・cta_click（shuro-b/salesbreaker/hero）を確認
 - 文面6本のURLを本物へ差し替え・SB preview 警告0（03_templates_6.json）
 残り：★SBへ文面6本の保存とリスト6本の作成（有璽氏の承認待ち）→ 送信（有璽氏）
+
+**有璽氏の承認（2026-10-08 夜）**：送信者名は★松本のまま／SBへ①文面6本の保存 ②リスト6本の作成 を承認。送信は有璽氏が押す。
