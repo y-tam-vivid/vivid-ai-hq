@@ -78,6 +78,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
+- **【ビビ / 2026-10-08〜】3サイト（ふくち。・オレンジワークス・LIFE STAND UP）へSBタグ＋クリックログ** ── いまは読むだけ（控え `~/.vivid-relay/_backups/*_head_20261008.html`）。★head への書き込みは Slack 4問（#c3f127 #b92fb5 #2aacd0 #f55c69）の回答待ち。引き継ぎ `scratchpad/handoff/2026-10-08_SBタグとクリックログ_3サイト.md`
 - **【ビビ / 2026-10-08〜】日々のメモの振り分け** ── ✅試作・検査の直し済み（mini `memo_sort.py`・cron未登録）。▶有璽氏のデイリーノートが数日分たまったら dry-run で当たり具合を見る。**★同じ対象に手をつけないでください**: mini `~/.vivid-relay/memo_sort.py`
 - **【ビビ+チョッパー / 2026-10-06】Web制作の出戻り対策** ── ✅幅掃きの高速化・恒久ルール化は完了。
   **★有璽氏の判断待ち4件**：本番の入口／既定の方式（resize or reload）／8750固定を外すか／重なり16〜18件/ページを目視で精査するか

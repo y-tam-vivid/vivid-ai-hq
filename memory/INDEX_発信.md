@@ -113,7 +113,7 @@
 ## MEMORY.md から移した現在地（2026-10-08 棚卸し）
 
 - [公開前の計測とSEO標準装備](feedback_seo_standard_kit.md) — Clarity＋Search Console＋サイトマップ。台帳 bin/web_tracking/sites.json
-- [Web制作は着手前に1枚通す](reference_web_build_kickoff_checklist.md) — デザイン側へ最初の指示の前に読み、A・Bを指示文に入れる
+- [Web制作は着手前に1枚通す](reference_web_build_kickoff_checklist.md) — 最初の指示の前に読む。★10/8〜計測＋SEO・MEO・AIEOを制作時に組込(C9の表が正本)
 - [幅掃きが実用になった](project_web_build_rules_asset.md) — mini sweep_widths_fast.py で30.7分。判断待ち4件
 - [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ03_デザイン制作。Web案件は00地図＋01〜06の型
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番v46。Ad Grants審査待ち
