@@ -46,7 +46,7 @@
    "cms": "STUDIO",
    "clarity": "ysq8l03g9y",
    "install_route": "STUDIO デザインエディタ → 右パネル「サイト」→ カスタムコード <head> 内の末尾（名前 Microsoft Clarity）→ 公開「更新」",
-   "status": "設置済（10/5）・本番3ページでID確認・実ブラウザで tag→clarity.js→collect を確認",
+   "status": "設置済（10/5）・本番3ページでID確認・実ブラウザで tag→clarity.js→collect を確認。★2026-10-08 SBタグ・共用GTM-PQX3L4TQ・クリックログ 設置済（STUDIO カスタムコード<head>の2つ目「計測セット」・公開「更新」済。実scriptタグは各1つ）",
    "gsc": {
     "property": "sc-domain:fuku-chi.com"
    },
@@ -54,7 +54,8 @@
     "ふくち",
     "福地"
    ],
-   "log_label": "ふくち。"
+   "log_label": "ふくち。",
+   "gtm": "GTM-PQX3L4TQ"
   },
   {
    "name": "オレンジワークス藤井寺",

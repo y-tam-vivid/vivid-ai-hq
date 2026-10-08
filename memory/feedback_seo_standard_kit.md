@@ -176,3 +176,4 @@ Current_Focus のタスク行だけでは漏れる（人の記憶に戻るので
 - ★clipboard.writeText を呼ぶとページが45秒固まった（権限の確認が出ている疑い）
 - ★さくらファイルマネージャー：編集は HTMLFormElement.prototype.submit を差し替えて target=_self にすると同じタブで開く。textarea を JS で変えたあと実キー（End→空白→BackSpace）で保存ボタンが有効になる
 - ★オレンジワークスの管理画面は短時間でログインが切れる＝最初に済ませる。WAF は作業後に有璽氏が戻す
+- ✅STUDIO の正しい入れ方（10/8 実地）：ページ側で navigator.clipboard.writeText（有璽氏がクリップボードを許可）→ 編集欄を実クリック → ⌘V → 枠の外を押す → 読み込み直して枠にコードの見出しが出るのを確認 → 公開「更新」は実クリック（JS の click() は効かない）
