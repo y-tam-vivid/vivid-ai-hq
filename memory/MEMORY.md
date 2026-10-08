@@ -28,6 +28,7 @@
 - [音声入力の人名・日付](feedback_voice_input_name_kanji.md) — 人名は別の出どころの表記を正に。登録した字と日付を返事で示す
 - [次の一手と有璽氏の作業](feedback_emit_next_actions_as_tasks.md) — 返答末尾に「★有璽氏がすること（n件）」節／後で見る物はFocusへ
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — 押す場所・結果・確認ダイアログまで。人の手は1つ・コマンド1行
+- [着手時に目安時刻を伝える](feedback_batch_the_checks.md) — 何をする＋完了目安／変われば言い直す／その時刻に自分で見る
 - [AIが検証できない所に人の手を置かない](feedback_dont_put_hands_where_ai_cannot_verify.md) — 人に打たせる前にダミーで同じ道を通す
 - [判断はSlackのボタン](project_ask_hub_push_decisions.md) — 終わる前にopen・answeredを数えfree_textまで読む／選択肢の数字を揃える
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
