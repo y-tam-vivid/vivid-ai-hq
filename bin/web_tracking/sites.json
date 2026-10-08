@@ -143,6 +143,16 @@
     "④ Basic認証を外す（＝一般公開）。外した日を status に書く",
     "★④の前に①〜③。順番を逆にすると、検索に載り始めた最初の数週間を測れない"
    ]
+  },
+  {
+   "name": "福祉施設の119番 医療連携LP（児童/就労×A/B/C）",
+   "url": "https://iryo.vivid-global.com/",
+   "cms": "静的（Claude Design 書き出し）・Vercel fukushi119-iryo-lp・正本 ~/Documents/fukushi119_iryo_lp/",
+   "clarity": "yuh9dj2874",
+   "gtm": "GTM-PQX3L4TQ",
+   "install_route": "index.html の <head> 直後に snippet v2（SB・GTM・Clarity・クリックログ）",
+   "status": "公開（2026-10-08 夜）。実ブラウザで clarity・sb-track・gtm・GA4 collect の4通信と cta_click を確認",
+   "log_label": "119番医療連携LP"
   }
  ],
  "excluded": [

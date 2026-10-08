@@ -104,3 +104,9 @@ LPの差は「クリック後の予約率」でしか測れず、1本あたり�
 → ★Claude Design 側を正本にし、こちらは計測v2と公開設定（相対パス用 rewrites 48件・.vercelignore）だけを足す形に切り替えた。uploads/（提案資料PDF）は公開物から外した
 写真：medical-team.jpg＝uploads/35066767_m.jpg、doctor-consult.webp＝tomaturiHFKE2155_TP_V（★どちらも有璽氏が入れた素材写真）
 残り：★Clarity（Chromeが未ログイン＝有璽氏のサインイン待ち）→ ID を入れる → 公開 → /kids/support.js 等が200か確認
+
+**★公開済み（2026-10-08 夜）** https://iryo.vivid-global.com/（/kids|shuro/a|b|c）・Vercel 本番・LP commit d3fb26c
+- Clarity ★yuh9dj2874（AIがログイン済みChromeで作成）／計測の検問を通過（全✓）／uploads・README は404
+- 実ブラウザ（/shuro/b?utm_source=salesbreaker）：見出しどおり・clarity/sb-track/gtm/GA4 collect の4通信・cta_click（shuro-b/salesbreaker/hero）を確認
+- 文面6本のURLを本物へ差し替え・SB preview 警告0（03_templates_6.json）
+残り：★SBへ文面6本の保存とリスト6本の作成（有璽氏の承認待ち）→ 送信（有璽氏）
