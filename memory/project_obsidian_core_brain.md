@@ -47,3 +47,8 @@ metadata:
 - 🔴2026-09-27 発見・修正：MacBook の `~/.claude/CLAUDE.md` は `Documents/Core_Brain/…` を @import していたが、MacBook の実フォルダは `有璽_My_Brain`
   ＝**9/25〜9/27、MacBook では 00_System が1度も読み込まれていなかった**（@import は存在しないパスを黙って捨てる）。
   ★「追加した（申告）」は届いたことの証拠にならない。直し：`~/Documents/Core_Brain -> 有璽_My_Brain` のリンクを作成＝両機とも同じパスで届く
+
+
+## MEMORY.md の索引から戻した記述（2026-10-08 棚卸し・索引には現在地だけを残した）
+
+- 00_Systemを毎ターン@import／10_Skills_RepositoryはSync除外・リンク4本(両機済)／★MacBookは9/27まで@importが空振り→Core_Brainリンクで解消

@@ -54,3 +54,10 @@
 - [SB送信前の必須3点](reference_salesbreaker_campaign_setup.md) — ★→Skill web-tracking-setup(全Web対象)。検査 bin/web_tracking_check.py
 - [119番 SB営業の再開](project_f119_sb_restart_202609.md) — 大阪5種別・児童/就労×A/B/C。LP未公開・必須修正7件・宛先consul_vi@
 - [★A1の列名は26列まで壊れる](project_kawachibanashi_portal.md) — 10/6 chr(ord(A)+n)はAA以降で[になる。38列の器で400。divmodで作る
+
+
+## MEMORY.md から移した現在地（2026-10-08 棚卸し）
+
+- [家計台帳⇄営業台帳の連携](project_kakei_daicho.md) — 10/8 送信経路が通った・M11確定。実装担当と直接やり取り／削除は設計担当
+- [既存顧客の契約は元シートで数える](project_toc_customer_ledger.md) — 備考の語で数えない。総合ステータスは6種＋対象外（10/7）
+- [営業部門のフォルダ名](reference_sales_drive_folder_naming.md) — 13-001_営業顧客リスト 形式（括弧不可）。制作物はデザイン側が正本

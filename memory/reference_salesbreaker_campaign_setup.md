@@ -121,3 +121,8 @@ curl -sIL "https://<ドメイン>/配布URL一覧.md" | grep -i '^HTTP'
 [[project_gamebull_form_sales]]（第1波・第2波の実績）
 [[reference_salesbreaker_engagement_api]]（API側の作法）
 [[feedback_stop_asking_just_do_it]]（懸念は自分で潰してから渡す）
+
+
+## MEMORY.md の索引から戻した記述（2026-10-08 棚卸し・索引には現在地だけを残した）
+
+- 9/29〜全Web必須。Skill web-tracking-setup・公開直前に検問が止める

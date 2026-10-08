@@ -1,67 +1,43 @@
-> **2026-09-24 軽量化。** 毎ターン届くのはこのファイルだけ。**ここには最小限しか置かない。**
-> 動的なルール・ナレッジの正本は Obsidian **`~/Documents/Core_Brain/00_System/`**（MOC から辿る）。
-> ここ（vivid-ai-hq）は完成したコード・スキルの置き場。旧「全体に効くもの」110行は [INDEX_全体](INDEX_全体.md) へ退避（消していない）。
+> **毎ターン届くのはこのファイルだけ。** 載せるのは★全仕事に効く行動の規範と、忘れたら設計を壊す事実だけ。
+> 案件の現在地は分野索引（下の表）へ。1行180バイトまで・既存行へ継ぎ足さない → [索引の衛生](feedback_memory_index_hygiene.md)
+> 動的なルールの正本は Obsidian `~/Documents/Core_Brain/00_System/`。10/8 棚卸しの前の全文 → [_archive/MEMORY_full_20261008](_archive/MEMORY_full_20261008.md)
 
 ## 分野索引 ── その仕事に着手したら必ず読む
 
 | 何をするとき | 読むもの |
 |---|---|
-| ★全体に効く規範・過去の地雷（旧MEMORY.mdの本体） | [INDEX_全体](INDEX_全体.md) |
-| 営業・顧客台帳・kintone・名刺・受付フォーム | [INDEX_営業](INDEX_営業.md) |
-| cron・同期・監視・GAS・シェル・議事録の自動処理 | [INDEX_仕組み](INDEX_仕組み.md) |
+| ★全体に効く規範・過去の地雷 | [INDEX_全体](INDEX_全体.md) |
+| 営業・顧客台帳・家計台帳・kintone・名刺・受付フォーム | [INDEX_営業](INDEX_営業.md) |
+| cron・同期・監視・GAS・シェル・朝ブリーフィング・DNS | [INDEX_仕組み](INDEX_仕組み.md) |
 | Notionを読む/書く・各DB・Drive・共有設定 | [INDEX_notion](INDEX_notion.md) |
-| 広報PR・SNS・Manus・デザイン・成果物の見せ方 | [INDEX_発信](INDEX_発信.md) |
-| 担当(10体)の定義・組織・個人まわりの案件 | [INDEX_担当と案件](INDEX_担当と案件.md) |
-| 担当ごとの「常設で読むもの」を知りたい | [INDEX_担当別](INDEX_担当別.md) |
+| 広報PR・Web制作・SEO・デザイン・かわちばなし・こどもS | [INDEX_発信](INDEX_発信.md) |
+| 担当の定義・組織・個人まわりの案件 | [INDEX_担当と案件](INDEX_担当と案件.md) |
+| 担当ごとの「常設で読むもの」 | [INDEX_担当別](INDEX_担当別.md) |
 | 索引から降ろしたもの・過去の版 | [_archive/INDEX_過去](_archive/INDEX_過去.md) |
 
-## 毎ターン届けるもの（最小限）
+## 毎ターン届けるもの
 
-- [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — `ssh mini`で操作する主作業機。10/5 通信は復旧（★Wi-Fi経由）。有線LANはまだ壊れたまま（IP 192.168.2.200・/32・ルーター空欄）＝Wi-Fiが切れると止まる
-- [Mac miniリモート作業機](project_macmini_remote_workhorse.md) — ★10/6 17:37 sshが切れた真因は★こちらが別網(外出先Wi-Fi 10.3.x)＝miniは無関係。先に自分のIPを見る。投げた仕事は切り離し済みで走り続けるが★出口(~/.vivid-relay)は同じ網でしか読めない→指示文に「終わったらnotify.tell」を必ず入れる。生存はgitのbehindで分かる。✅10/5夕 有線LAN復旧（手入力 192.168.1.200/24・ルーター .1・既定経路=有線を実測）。★設定はminiのAIが networksetup で直せる＝画面操作を人に渡さない
 - [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語
-- [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／**★制作物も既存物も自動で正としない(3回目)**
-- [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨する
-- [★正しさと母数は両立する](project_kawachibanashi_portal.md) — ⛔10/6訂正 対立させたのは誤り。守る仕組みが先なだけで母数は諦めない
-- [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — ★速さのために確かさを落とさない。件数は数え方を添える／担当へ渡す数字も測ってから／出典URLは検索結果をそのまま貼る
-- [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 10/5 有璽氏。★以降の進捗はnotify.tell()。会話に書いても届かない
-- [判断はSlackのボタン](project_ask_hub_push_decisions.md) — ★ターン終了前にopenを数える。1週間超は前提を測り直す(10/5 前提が消えていた)／**★10/7 open だけでなく★answered も数える（有璽氏は数分で押す。投げた1分後に答えが出ていた例あり）。★answer.free_text まで読む＝「その他（記述）」は本体がそこにしかない**／**🔴10/7 ★ラベルと説明文の数字を食い違わせた（165万ずつ／82.5万ずつ）＝押された結果がどちらの意味か決まらなくなる。金額・件数・期日を含む選択肢は両方を突き合わせてから投げる**
-- [押す場所は位置と結果まで](feedback_verify_before_declining.md) — 10/6 ★入れると確定は別番号。押した後に何が変わるかを書く／**🔴10/7 4例目＝手順を「貼ってください」で済ませた。★値の作り方（32文字以上をどう作るか）・どちらの機械か（選ばせない）・画面の道順・2か所に入れる順番・★値を表示せずに確かめる方法まで書く。鍵のようにAIが値を見られないものこそ手順が重い**／**✅10/7 ★「むずい」と言われたら説明を増やさず★手数を減らす。人に残す操作は1つ・渡すコマンドも★1行だけ。残りは全部スクリプトにする／★鍵は平文ファイルでなく★macOSキーチェーン（有璽氏の指定・値がどこにも平文で残らない）**／**🔴10/8 ★押したあとに出る確認ダイアログまで書く（文面・ボタン名・「取り消せません」と出ても困らない理由）。画面を最後まで自分で通せないなら★「ここから先は見ていません」と断る**
-- [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — 10/6 ★レコード設定はNSを01-04.dnsv.jpへ変えて初めて効く。権威がどこかを先に見る
-- [他言語文字の混入は検問が拾う](reference_unicode_escape_kanji_swap.md) — 10/6 3例目。★カタカナ語の1字目が置き換わる。鳴ったら必ず直す／**★10/7 4例目＝台帳へ書く★値のリテラルに混入（これまでは出力だった）。偶然使わず助かった。★書く直前に非ASCIIの種類を数える**
-- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 🔴★自分が出した警告を読む(10/6 置換0件を無視し承認なしでデプロイした)／**★10/7 4例目＝自分が書いた「印」を他人が書いた「事実」の代わりに数えた。経路は出どころが違うものを2つ。数え直す前に自分が同じ対象について何を書いたかを読む**
-- [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync除外・リンク4本(両機済)／★MacBookは9/27まで@importが空振り→Core_Brainリンクで解消
-- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — launchd 15分ごと稼働中(9/29〜)。★9/30 同じ目印の2行で完了⇄未完了が往復→行を複製する時は目印を消す。同期側の重複ガードは未実装
-- [ツールの使い分けと導入状況](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚・git=完成品。★施設側はClaude未導入・Notionは有璽氏個人＋一部／日々のメモは3か所に分散(Macメモ帳・Chatwork・iPhoneメモ)→Obsidian 01_Inbox のデイリーノートへ集約開始(9/27・振り分けは未)
-- [Web公開前の計測は標準](reference_salesbreaker_campaign_setup.md) — 9/29〜全Web必須。Skill web-tracking-setup・公開直前に検問が止める
-- [★実データが入ったら早く公開](feedback_seo_standard_kit.md) — 10/5有璽氏。検索に載るまで時間がかかる。計測は★sites.jsonに載せて予約
-- [公開中サイトのSEO標準装備](feedback_seo_standard_kit.md) — 10/5〜 Clarity＋Search Console＋サイトマップ＋月次レビュー。★Clarity設置済＝ILIFE・ふくち。・オレンジ・119番・こどもS／ビビッドのみ保留(WPログインURL不明)。台帳 bin/web_tracking/sites.json。★10/6〜 mini cron：Clarity毎日0:30・週次 月曜7:00・月次 毎月1日9:00（旧クラウド月次は11/1停止予定）
-- [家計台帳⇄営業台帳の連携](project_kakei_daicho.md) — **✅10/8 ★38件の送信経路が通った（本番は未・開発用は検証用12件が残り削除待ち）。対象＝商材×段階。★第1弾は社内運用で先方のメールは入れない。★人の入口はこちらだけ＝C-####を発番したら送るまでが運用。★相手は設計担当と実装担当の2役（削除は設計担当）。★M11は実装済みで有璽氏の画面確認待ち**／**✅10/8 M11確定（有璽氏の画面確認を通過）。★こちらが送ったC-0903・C-0912から世帯「架空 三郎」が作られた。★営業台帳側の運用はこのまま有効。★削除対象に★この世帯と紐付けも加わる**／**✅10/8 有璽氏の指示で★実装担当セッションと★直接やり取りする取り決め。有璽氏の手が要るものは★片方だけがCurrent_Focusの行で出し★出した側が相手に伝える（削除の行は★相手が出した＝こちらは出さない）。設計担当はclaude.ai側で一覧に無い＝有璽氏を通す**
-- [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ 03_デザイン制作プロジェクト/01_ふくち。・02_ILIFE・03_ビビッド・06_かわちばなし（10/6番号振り直し・★旧パスへ書かない）／★オレンジワークス藤井寺は単独フォルダ（運営法人が変遷）／★中はロゴ・チラシ（種類別）などでフォルダを分ける／★正本はデザイン側・営業はリンクで参照（11芽育・12福祉施設の119番）。★別置き場を残すなら片方を正本・他方はショートカット／★移すときは命名規約でリネーム。**★デザインへの依頼文は案件直下「0X_デザイン側への指示文/」へ連番・★これを渡すは1本だけ(10/6)**／**★Web案件のフォルダは00_地図＋01コンセプト〜06検査の型（かわちばなしが正・雛形は `_雛形_Webサイト案件/`・10/6 有璽氏）。★案件固有だけを入れ、共通ルール（計測はSkill web-tracking-setup・崩れない組み方は project_web_build_rules_asset）は書き写さずリンクで先に見させる＝二重管理にしない**
-- [幅掃きが実用になった](project_web_build_rules_asset.md) — ✅10/6 4.5時間→★30.7分(3,803幅・測れず0件)。mini `sweep_widths_fast.py`。旧と35幅一致＋★陽性対照で鳴ることも確認。★判断待ち4件(入口/方式/8750固定/重なり16〜18件の目視精査)
-- [Web制作は着手前に1枚通す](reference_web_build_kickoff_checklist.md) — 10/6 有璽氏「STAND UPで出戻りが相当あった」→★着手(保留が解けた)。★デザイン側へ最初の指示を出す前に読み、A(崩れない組み方・検査幅7点)とB(相手の制約)を指示文に書いて渡す。出戻りの実測＝崩れ106件/直書き88/同型指摘5回
-- [営業部門のフォルダ名](reference_sales_drive_folder_naming.md) — 13-000_営業部門は `13-001_営業顧客リスト` 形式（括弧書き不可・10/6）。営業用制作物はデザイン側が正本・営業はリンク
-- [渡し物はDrive案件フォルダ](reference_backups_in_volatile_places.md) — ★かわちばなしは10/6に06_へ改名(ID 1NEM…は不変)。パスでなくIDで持つ
-- [素材は広報の設計図でない](feedback_source_material_is_not_the_pr_plan.md) — ★チラシに無い＝書かぬは誤り／配布物を画像欄に載せない／🔴**★10/8 相手の仕様書169行を★§3.2だけgrepで拾って送り、2つの約束を破った（①開発用に実在の人を入れない運用に反して38件送った ②owner_labelは担当者名の欄なのに契約名義を入れた＝★仕様書にC-0078・C-0080と名指しで指示があった）。★相手の資料は全部読んでから動く。grep/sedで部分的に読むのは「読んだ」ではない**
-- [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番(v46・10/6 プレスリリース記事を掲載)。★情報欄のURLをリンクにする修正をClaude Designへ依頼中。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/7に確認)。立ち上げ手順とCSVは05/02_Google広告に用意済み
-- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — v22。★配信10/6(火)10:00／★入稿素材は一式そろった(Drive 06_…/04_入稿素材・本文は全体2,501字)／★PR TIMESの下書きは未作成
-- [PR TIMES入稿の罠と切り分け](reference_prtimes_editor_behaviors.md) — ★入稿前に必ず読む。**★報道素材に入れても記事本文に写真は載らない(別物・10/5に指摘を受けた)／必ずプレビューで見る**／行頭の「1.」で全体がリスト化(解除不可)／画面が読めない時は拡張のサインインを見る
-- [かわちばなし地域ポータル](project_kawachibanashi_portal.md) — **シート→サイトは9/13から kb_live.sh で稼働中（10/5 3経路一致で実測）＝新しく作らない**。★10/5夜 器に下書き47件（kb-0004〜0050・公開は人が付ける。収集は ~/.vivid-relay/kb_collect.py）。★~/kawachibanashi_site は9/10の残骸（同じVercelに紐づく・ここから出さない）
-- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — **✅10/6 10:00 配信済み**(記事 prtimes.jp/main/html/rd/p/000000006.000184772.html・200を実測)。★残＝団体サイトへ掲載★配信10/6(火)10:00／★入稿素材は一式そろった(Drive 06_…/04_入稿素材・本文は全体2,501字)／★PR TIMESの下書きは未作成
-- [PR TIMES入稿の罠と切り分け](reference_prtimes_editor_behaviors.md) — ★入稿前に必ず読む。**★報道素材に入れても記事本文に写真は載らない(別物)／**★写真は多めが既定(上限30枚)・勝手に絞らない(10/5に2回指摘)／作る前によそのリリースを1本見て形を決める**／必ずプレビューで見る**／行頭の「1.」で全体がリスト化(解除不可)／画面が読めない時は拡張のサインインを見る
-- [かわちばなし地域ポータル](project_kawachibanashi_portal.md) — **シート→サイトは9/13から kb_live.sh で稼働中（10/5 3経路一致で実測）＝新しく作らない**。★10/6 本番＝17版＋イベント静的ページ22枚＋**kawachibanashi.osaka.jp**（合言葉中）。トップは17版の get events() 1か所へ流すだけ（案B撤去）。★10/6 Clarity ytbpus9k6u を kb_live.sh へ実装済み・本番未反映（28枚・デプロイは有璽氏の判断待ち）。🔴描画検査はエラー表示も見る形に（旧検査は真っ白の一覧を○で通していた）。★~/kawachibanashi_site は9/10の残骸（同じVercelに紐づく・ここから出さない）。★10/6 掲載中の見張り kb_watch.py（読むだけ・照合はNFKC）を実測済み・cron未登録
-- [既存顧客の契約は元シートで数える](project_toc_customer_ledger.md) — 10/7 ★備考の語の有無で数えるな(自分が書いた語しか当たらず15件中4件と誤報告)。正＝Senet .xlsx「契約者情報 のコピー」。02備考10件へ実体を追記済み。★C-0018丸田＝有璽氏の資産(顧客に数えない・行は残す)・備考は直した。**✅10/7 総合ステータスは6種＋対象外へ畳んだ（選択肢の正本＝90のR列・検討時期＝V列/90のS列・プルダウンは警告のみ）。✅10/7 intake_register.py 改修済み（新規Cは M=②接触済み固定・温度感はV列へ・90のS6に「まだ分からない」追加・ステラ条件付き合格・dry-runまで＝本番未実行。結果 ~/.vivid-relay/intake_stage6_result.md）**
-- [Google広告の作成画面](reference_google_ads_campaign_wizard.md) — 10/7 ★「変更を保存できませんでした」＝本人確認待ち。★電話番号を足した直後は7日止まる（団体の端末でも不可・10/8実測）→再開10/14。その間の確認画面は古い値。AI最大化は既定で有効→オフ
-- [次の一手はタスク行で出す](feedback_emit_next_actions_as_tasks.md) — 区切りごとに Current_Focus「## 今週」へ1行（型はCore_Brain秘書コア§4）→Notionへ自動同期／**✅10/8 有璽氏「私がやるやつが分かるようにしてほしい」→ ★返答の最後に必ず「## ★有璽氏がすること（n件）」の節を置く。0件でも節ごと書く／件数を見出しに入れる／各行に★どこを開くか・誰が待っているか・急ぐかを書く。★色や記号で散らさず★場所を固定する。使い分け＝会話(いますぐ)/Slackボタン(判断)/Current_Focus(後で見返す・Notion同期)**
-- [朝ブリーフィングはゴミ箱の中で動いている](project_secretary_agent.md) — ✅10/7 12時 有璽氏がゴミ箱から復元・10/7分を親ページへ手で写した（9/29〜10/7 は日次DBに残存・9/30だけ欠け）。★明朝8:14の自動更新で直ったかを確かめる。経緯＝9/29からゴミ箱でもroutineは毎朝SUCCEEDED／APIでは復元不可。★SUCCEEDEDは書き込み先が生きている証拠にならない
-- [効果記録は判定に任せると漏れる](reference_effect_log_is_not_optional.md) — **★台帳もプルダウンも「仕組み」＝記録の対象／検問の検査5が稼働（🔴ただし★窓口が自分で作ったものは積まれない）／AI資産台帳に種別「スクリプト」「台帳・シート」を追加（実稼働232本は未登録）**
-- [あいまい突合の設計](reference_fuzzy_match_design.md) — 🔴**★10/7 氏名の部分一致（`氏名 in 全文`）で分類して3件誤った。短い氏名ほど誤って当たる／法人名＋担当者名で入っている行は漏れる。★確定済みのID対応表があるならそれを使う（機械で推定し直さない）。推定するならメール・電話で突合し氏名は確認用**
-- [フェーズを確かめる](feedback_ask_which_phase.md) — 🔴**★10/7 相手の資料の「完成形」をいまの要件として扱い、「連絡先が無いから送れない」と止めた。実際は★家計台帳は3段階で、第1弾は★社内運用＝先方のメールは入れない＝連絡先は不要だった。★着手前に「これはどの段階の話か」を1問で確かめる／「できない理由」はどのフェーズの条件かを確かめてから報告する**
-- [音声入力の人名・日付は当てにならない](feedback_voice_input_name_kanji.md) — 10/7 「美里」→記録は「実里」。人名は別の出どころの表記を正とし、登録した字と日付を返事で示す（柴田の退職は9月末→9/4に言い直し）
-- [鍵の扱い](reference_plaintext_credentials_handling.md) — **★値は人が入れる（聞かない・ファイルにも書かない）／★macOSキーチェーン＋`-A`（無いと保存できても読めない）／🔴画面かlaunchd経由でしか触れない＝AIは鍵を読めない／🔴ブラウザのフォームへ鍵を入れる操作は環境の安全装置が止まる／環境はdev/prodでサービス名を分ける**
-- [miniの実行環境](reference_mac_mini_execution_env.md) — **★10/7実測 cron40行・launchd3本とも★環境変数を持たせていない＝スクリプトが自分で config.env を読む（35本・共通関数 load_config_env）。「書けば読める」は不正確。★新しいスクリプトは自分で読む処理を入れる／🔴常駐プロセス(slack-socket PID4613・9/26から)は起動時の値しか持たない＝再起動が要る／~/.vivid-relay は git外・ディレクトリは755でファイル側600が中身を守っている**
-- [シェルは変数の直後の全角で落ちる](reference_shell_fullwidth_paren_breaks_var.md) — 🔴**日本語の中の変数は必ず `${VAR}`（`（$VAR）` は set -u で停止）／`bash -n` では検出できない／★置換を重ねると順番で壊れる＝2回以上直すならファイルを一から書き直し、実物を読み返す**
-- [AIが検証できない場所に人の手を置かない](feedback_dont_put_hands_where_ai_cannot_verify.md) — 🔴**★人に打たせる前にダミーでAIが同じ道を全部通す。通らないならAIが検証できる置き場を選ぶ／★「できない」と断じる前に別の経路を探す**
-- [読む人に合わせて書く](feedback_write_for_the_reader.md) — **✅10/8 ★相手が書いたことをそのまま返さない。返す価値があるのは★こちらの運用がどう変わるかと、★相手の前提が崩れていること（例：世帯作成の機能を実装中だが開発用の人が0件＝テストに使う人がいない）／★相手の指示を読んだら「この前提は今も成り立つか」を1つ確かめる**
-- [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — **🔴10/8 ★有璽氏に「そちらで進んでいる？」と思わせた＝渡しているのは★人の手（10/8だけで5往復）。★人の手で渡すものは毎回「渡すのは有璽氏の手です」と書く／★往復の回数を数えて伝える／★AI同士は繋がない（fukuchi-core）が、置き場を1つにして往復を減らす案は未検討**
-- [人に頼む前に自分の道具を見る](feedback_check_your_own_tools_before_asking_a_human.md) — 🔴**★10/8 ListAgents/SendMessageで他セッションへ直接送れるのに使わず人に5往復させた。★人に頼む前に1回ListAgents/ToolSearchを叩く／往復3回超で減らせないか考える／★役割のあるセッションには名前を付ける（送るのは資料と状態・★判断は人へ戻す）**
+- [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／制作物も既存物も自動で正としない
+- [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨
+- [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — 件数は数え方を添える／担当へ渡す数字も測ってから
+- [1経路で断定するな](feedback_one_route_is_not_verification.md) — 出どころの違う2経路で。自分の警告・自分が書いた印を事実と取り違えない
+- [相手の資料は全部読む](feedback_source_material_is_not_the_pr_plan.md) — grep等の部分読みは読んだことにならない（10/8 約束を2つ破った）
+- [フェーズを確かめる](feedback_ask_which_phase.md) — 着手前に「どの段階の話か」を1問。できない理由がどの段階の条件かも
+- [読む人に合わせて書く](feedback_write_for_the_reader.md) — 相手の文を返さない。運用の変化と崩れた前提だけ返す
+- [音声入力の人名・日付](feedback_voice_input_name_kanji.md) — 人名は別の出どころの表記を正に。登録した字と日付を返事で示す
+- [次の一手と有璽氏の作業](feedback_emit_next_actions_as_tasks.md) — 返答末尾に「★有璽氏がすること（n件）」節／後で見る物はFocusへ
+- [押す場所は位置と結果まで](feedback_verify_before_declining.md) — 押す場所・結果・確認ダイアログまで。人の手は1つ・コマンド1行
+- [AIが検証できない所に人の手を置かない](feedback_dont_put_hands_where_ai_cannot_verify.md) — 人に打たせる前にダミーで同じ道を通す
+- [判断はSlackのボタン](project_ask_hub_push_decisions.md) — 終わる前にopen・answeredを数えfree_textまで読む／選択肢の数字を揃える
+- [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
+- [人に頼む前に自分の道具](feedback_check_your_own_tools_before_asking_a_human.md) — ListAgents/SendMessageを先に。往復3回超は減らす
+- [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — 人の手で渡すものは「渡すのは有璽氏の手」と書く
+- [他言語文字の混入](reference_unicode_escape_kanji_swap.md) — カタカナ語の1字目が化ける。台帳へ書く直前に非ASCIIを数える
+- [鍵の扱い](reference_plaintext_credentials_handling.md) — 値は人が入れる・聞かない／macOSキーチェーン＋-A／AIは鍵を読めない
+- [Mac mini作業機](project_macmini_remote_workhorse.md) — ssh mini。切れたら先に自分の網を見る／投げる指示文に notify.tell
+- [miniの実行環境](reference_mac_mini_execution_env.md) — cron/launchdは環境変数なし＝スクリプトがconfig.envを自分で読む
+- [シェルは全角の直前で落ちる](reference_shell_fullwidth_paren_breaks_var.md) — 日本語中の変数は${VAR}。bash -nでは見つからない
+- [Obsidian Core_Brainが動的正本](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync対象外
+- [ツールの使い分け](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚・git=完成品。施設側はClaude未導入
+- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — launchd15分ごと稼働。行を複製する時は目印を消す

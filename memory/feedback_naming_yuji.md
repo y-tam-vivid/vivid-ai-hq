@@ -64,3 +64,8 @@ metadata:
   **判定の材料としては使ってよい。判定そのものを実物に肩代わりさせない。**
 
 関連 [[project_giji_automation_gas]] ／ [[feedback_prtimes_npo_account_scope]]
+
+
+## MEMORY.md の索引から戻した記述（2026-10-08 棚卸し・索引には現在地だけを残した）
+
+- 「本人/田村さん」不可／**★制作物も既存物も自動で正としない(3回目)**

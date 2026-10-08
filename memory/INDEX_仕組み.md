@@ -75,3 +75,10 @@
 - [再起動後のPIDロック誤認](reference_pid_lock_reused_after_reboot.md) — ★9/28 slack_socketがPID再利用で黙って停止。ロックはPIDの生死でなくコマンド名まで見る（恒久対策は未実施）。★同じ朝 crontab直書き5本も抜けた→自動処理レジスタ
 - [Vercelコネクタの再接続](reference_vercel_connector_reauth.md) — 10/8 再接続の途中で2FA勧誘画面が出る＝エラーではない。設定推奨（本番ドメインを持つ）。切れていてもCLIで作業は続く
 - [daco-kunのVercel→GitHub Actions移行](reference_vercel_github_actions_secrets.md) — 10/8 ★フォークは有璽氏の個人アカウント＝Secrets登録とVercelのDisconnectは有璽氏の手でしかできない。3つの名前は推測（指示文が正）
+
+
+## MEMORY.md から移した現在地（2026-10-08 棚卸し）
+
+- [朝ブリーフィング](project_secretary_agent.md) — 10/7 ゴミ箱から復元。routineのSUCCEEDEDは書き込み先が生きている証拠でない
+- [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — NSを01-04.dnsv.jpへ変えて初めて効く。権威を先に見る
+- [効果記録は判定に任せると漏れる](reference_effect_log_is_not_optional.md) — 台帳もプルダウンも「仕組み」＝記録の対象

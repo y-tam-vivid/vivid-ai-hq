@@ -30,3 +30,8 @@ Obsidianへ寄せるかを検討中（提案＝書き留める場所は Obsidian
 - ✅2026-09-27 デイリーノートの受け皿を作成（MacBook）：`.obsidian/daily-notes.json`＝保存先 01_Inbox・名前 YYYY-MM-DD・型 `90_Templates/デイリーノート`（見出し：メモ／やること／決まったこと／人への連絡）。`templates.json`＝90_Templates。MOC §1 に1行。控え `~/.vivid-relay/_backups/obsidian_config_20260927/`
   ★設定ファイルは Obsidian 起動中に外から書いた＝反映は再起動後。スマホへ設定が届くかは Sync の「設定を同期」次第（ディスクから読めない・未確認）
   ★01_Inbox の「やること」は Notion へ自動では行かない（同期対象は Current_Focus だけ）。AIの振り分けで移す
+
+
+## MEMORY.md の索引から戻した記述（2026-10-08 棚卸し・索引には現在地だけを残した）
+
+- Obsidian=机・Notion=本棚・git=完成品。★施設側はClaude未導入・Notionは有璽氏個人＋一部／日々のメモは3か所に分散(Macメモ帳・Chatwork・iPhoneメモ)→Obsidian 01_Inbox のデイリーノートへ集約開始(9/27・振り分けは未)

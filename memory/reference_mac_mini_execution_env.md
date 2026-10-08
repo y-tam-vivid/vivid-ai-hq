@@ -64,3 +64,8 @@ launchd         3本（com.vivid.{slack-socket, notion-focus-sync, ai-usage-repo
 - ★`~/.vivid-relay` の権限は `drwxr-xr-x`（755）＝**ファイル名は他者に見える**。
   ★中身を守っているのは★ファイル側の 600（`-rw-------`）。新しく作るときは `umask 077` か `chmod 600`
 - ★`~/.vivid-relay` は**git リポジトリではない**（実測）。`vivid-ai-hq` の外にあるので追跡対象にもならない
+
+
+## MEMORY.md の索引から戻した記述（2026-10-08 棚卸し・索引には現在地だけを残した）
+
+- **★10/7実測 cron40行・launchd3本とも★環境変数を持たせていない＝スクリプトが自分で config.env を読む（35本・共通関数 load_config_env）。「書けば読める」は不正確。★新しいスクリプトは自分で読む処理を入れる／🔴常駐プロセス(slack-socket PID4613・9/26から)は起動時の値しか持たない＝再起動が要る／~/.vivid-relay は git外・ディレクトリは755でファイル側600が中身を守っている**

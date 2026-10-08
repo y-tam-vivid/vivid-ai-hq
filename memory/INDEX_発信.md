@@ -108,3 +108,14 @@
 - [かわちばなし・母数は自前から](project_kawachibanashi_portal.md) — ★10/6 こどもステーションを載せる。一次情報に当たれる所から増やす
 - [★一次情報は紙にある](project_kawachibanashi_portal.md) — 10/7 こどもステーションのチラシに10月の全予定。サイトは月だけ12件だった
 - [かわちばなし・トップもシート](project_kawachibanashi_portal.md) — ✅10/5 本番反映済(2経路一致)。🔴11/1に0件→更新が止まる。v3はDrive
+
+
+## MEMORY.md から移した現在地（2026-10-08 棚卸し）
+
+- [公開前の計測とSEO標準装備](feedback_seo_standard_kit.md) — Clarity＋Search Console＋サイトマップ。台帳 bin/web_tracking/sites.json
+- [Web制作は着手前に1枚通す](reference_web_build_kickoff_checklist.md) — デザイン側へ最初の指示の前に読み、A・Bを指示文に入れる
+- [幅掃きが実用になった](project_web_build_rules_asset.md) — mini sweep_widths_fast.py で30.7分。判断待ち4件
+- [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ03_デザイン制作。Web案件は00地図＋01〜06の型
+- [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番v46。Ad Grants審査待ち
+- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — 10/6 10:00 配信済み。残＝団体サイトへ掲載
+- [Google広告の作成画面](reference_google_ads_campaign_wizard.md) — 電話番号を足すと7日止まる→再開10/14

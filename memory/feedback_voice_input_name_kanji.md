@@ -19,3 +19,8 @@ metadata:
 - 日付は書いたあと、何日で入れたかを返事に必ず出す（言い直しに気づけるように）。
 
 関連: [[feedback_never_write_an_unmeasured_number]] [[feedback_one_route_is_not_verification]]
+
+
+## MEMORY.md の索引から戻した記述（2026-10-08 棚卸し・索引には現在地だけを残した）
+
+- 10/7 「美里」→記録は「実里」。人名は別の出どころの表記を正とし、登録した字と日付を返事で示す（柴田の退職は9月末→9/4に言い直し）
