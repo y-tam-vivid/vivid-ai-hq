@@ -25,6 +25,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
 
 UA = {"User-Agent": "Mozilla/5.0 (fukuchi web_tracking_check)"}
 
@@ -71,6 +72,31 @@ def check_html(html):
     return rows
 
 
+def _is_html(body):
+    head = body[:2000].lower()
+    return "<html" in head or "<!doctype html" in head
+
+
+def _title(body):
+    m = re.search(r"<title[^>]*>(.*?)</title>", body, re.S | re.I)
+    return re.sub(r"\s+", " ", m.group(1)).strip() if m else None
+
+
+def leak_verdict(path, code, body, probe_code, probe_body):
+    """社内向けファイル path が外へ出ているか。戻り値 (出ている?, 理由1行)。
+    ★200 でも STUDIO 等の SPA は存在しないパスにトップページを返す。
+      存在しない乱数パスと同じ HTML なら「SPA の受け皿＝中身は出ていない」。
+    ★.md 本文など HTML でない中身が 200 で返れば従来どおり出ている（安全側）。"""
+    if code != 200:
+        return False, f"{code}"
+    if not (_is_html(body) and probe_code == 200 and _is_html(probe_body)):
+        return True, "200 で中身が返っている"
+    same = body.split() == probe_body.split() or (_title(body) is not None and _title(body) == _title(probe_body))
+    if same or not path.endswith(".html"):
+        return False, "200だが存在しないパスと同じHTML＝SPAの受け皿"
+    return True, "200 で存在しないパスと違うHTMLが返っている"
+
+
 def main():
     args = sys.argv[1:]
     if not args:
@@ -92,9 +118,17 @@ def main():
     rows = check_html(html)
     if is_url:
         base = "{0.scheme}://{0.netloc}".format(urllib.parse.urlparse(target))
-        leaks = [p for p in ("/README.md", "/配布URL一覧.md", "/index.bak.html")
-                 if fetch(base + urllib.parse.quote(p))[0] == 200]
-        rows.append(("社内向けファイルが塞がっている", not leaks, ",".join(leaks) or "404 を確認"))
+        probe_code, probe_body = fetch(base + "/zzz-not-exist-" + uuid.uuid4().hex[:12])
+        leaks, spa = [], []
+        for p in ("/README.md", "/配布URL一覧.md", "/index.bak.html"):
+            c, b = fetch(base + urllib.parse.quote(p))
+            leaked, why = leak_verdict(p, c, b, probe_code, probe_body)
+            if leaked:
+                leaks.append(p)
+            elif c == 200:
+                spa.append(p)
+        note = ",".join(leaks) or ("200だが存在しないパスと同じHTML＝SPAの受け皿（" + ",".join(spa) + "）" if spa else "404 を確認")
+        rows.append(("社内向けファイルが塞がっている", not leaks, note))
         bad = [f"{p}={c}" for p in paths for c in [fetch(base + p)[0]] if c != 200]
         if paths:
             rows.append(("経路・案のパス", not bad, ",".join(bad) or f"{len(paths)}本とも200"))

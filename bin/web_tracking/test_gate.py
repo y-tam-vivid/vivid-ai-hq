@@ -333,6 +333,19 @@ check("check_html：本体だけ差し替えてコメントを残しても誤爆
       "差し替え忘れ {{…}}" not in fails("<html><head>" + half + "</head></html>"), fails("<html><head>" + half + "</head></html>"))
 check("check_html：未差し替えは ✗", "差し替え忘れ {{…}}" in fails("<html><head>" + raw + "</head></html>"))
 
+# ── 単体：leak_verdict（項目7・SPA の受け皿）
+SPA = "<!DOCTYPE html><html><head><title>ふくち。グループ｜x</title></head><body>app</body></html>"
+v = W.leak_verdict("/README.md", 200, SPA, 200, SPA)
+check("leak_verdict：SPA受け皿（存在しないパスと同じHTML）は塞がっている扱い", v[0] is False and "SPA" in v[1], v)
+v = W.leak_verdict("/README.md", 200, "# 社内メモ\nパスワードは…", 200, SPA)
+check("leak_verdict：md本文が出ていれば ✗", v[0] is True, v)
+v = W.leak_verdict("/README.md", 200, "# 社内メモ", 404, "")
+check("leak_verdict：存在しないパスが404でmdが200なら ✗", v[0] is True, v)
+v = W.leak_verdict("/index.bak.html", 200, "<html><title>旧版</title></html>", 200, SPA)
+check("leak_verdict：.bak.html が受け皿と違うHTMLなら ✗", v[0] is True, v)
+v = W.leak_verdict("/README.md", 404, "", 404, "")
+check("leak_verdict：404 は塞がっている", v[0] is False, v)
+
 # ── JS（項目9）
 if shutil.which("node"):
     r = subprocess.run(["node", os.path.join(BINDIR, "web_tracking/test_snippet.js"), SNIP], capture_output=True, text=True, timeout=60)
