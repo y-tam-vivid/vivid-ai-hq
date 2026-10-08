@@ -125,3 +125,5 @@ LPの差は「クリック後の予約率」でしか測れず、1本あたり�
 実測2経路：①全31,893件を取り直し＝タグ件数 230/229/228/196/196/194・タグ以外の変化0・対象外の変化0 ②送信画面でkids-aタグを検索＝★230件
 ★my-lists/upsert は url 必須＝既存行を更新するときは★全項目を渡す（足りないと400）。控え `~/.vivid-relay/_backups/sb_mylist_osaka_before_tag_20261008.json`
 送信手順 `campaigns/fukushi119-iryo-202610/04_送信の手順.md`。★送信は有璽氏（まだ押していない）
+
+**送信予定（2026-10-08 有璽氏）**：★10/9 に有璽氏が6通りを送る。導線＝文面のURL→LP（iryo）→LPの「無料相談を予約する」→Googleカレンダー予約 calendar.app.google/c5aJoxPMVB5brw9b8
