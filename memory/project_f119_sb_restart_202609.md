@@ -96,3 +96,6 @@ LPの差は「クリック後の予約率」でしか測れず、1本あたり�
 - 「Claude Design 側で写真は全て差し替えている」＝★Drive の書き出し（9/29）は古い版。公開前に★新しい書き出しを受け取り、写真だけ取り込む（DesignSync はデザインシステム専用で通常案件は読めない）
 - 公開先ドメイン＝★iryo.vivid-global.com で進めてよい。「さくらのDNSに増やす作業もそちらで」＝★AIがDNS追加まで実装（有璽氏の承認済み）
 - 段取り：Vercelプロジェクト作成＋ドメイン追加（中身はまだ出さない）→ さくらDNSにCNAME → Clarity作成 → 新しい写真を取り込み → 公開
+
+**公開先の設定（2026-10-08 19:16 済）**：Vercel プロジェクト `fukushi119-iryo-lp`（fuku-chi-vivid）＋ドメイン iryo.vivid-global.com 登録（verified）。
+さくらDNSに iryo CNAME 670a13cd2721617e.vercel-dns-016.com. を追加（ns1・ns2・8.8.8.8 で一致／他の行は無傷）。★中身はまだ出していない（新しい写真の版待ち）
