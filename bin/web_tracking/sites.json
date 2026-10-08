@@ -1,6 +1,6 @@
 {
  "_説明": "公開中サイトの台帳（★正本）。SEO標準装備＝Clarity（サイトごと別ID）＋Search Console＋サイトマップ＋月次レビュー。site_audit.py がこれを読んで実測する。サイトを公開・廃止したらここを直す。",
- "_更新": "2026-10-06 ビビ（かわちばなしの Search Console 所有確認が通った）",
+ "_更新": "2026-10-08 ビビ（SBタグ・クリックログを4サイトへ。かわちばなしの行は別ブロック宣言中のため未記入）",
  "sites": [
   {
    "name": "株式会社ビビッド",
@@ -26,7 +26,7 @@
    "cms": "WordPress（テーマ lifestandup＝当方製）・162.43.117.28",
    "clarity": "ysq88yt7d8",
    "install_route": "Microsoft Clarity 公式プラグイン（0.10.35）。プロジェクトIDは admin-ajax edit_clarity_project_id で保存",
-   "status": "設置済（10/5）・実ブラウザで tag→clarity.js→collect の3通信を確認",
+   "status": "設置済（10/5）・実ブラウザで tag→clarity.js→collect の3通信を確認。★2026-10-08 SBタグ・共用GTM-PQX3L4TQ・クリックログ 設置済（プラグイン Code Snippets のHTMLスニペット「計測セット」id=5・<head>）",
    "gsc": {
     "property": "https://i-life-fukushi.com/"
    },
@@ -37,7 +37,8 @@
     "スタンドアップ",
     "ライフスタンドアップ"
    ],
-   "log_label": "ILIFE"
+   "log_label": "ILIFE",
+   "gtm": "GTM-PQX3L4TQ"
   },
   {
    "name": "株式会社ふくち。",
@@ -62,7 +63,7 @@
    "clarity": "ysq8wingsx",
    "gtm": "GTM-PL37X5BK",
    "install_route": "AIOSEO →一般設定→ウェブマスターツール→Microsoft Clarity にIDを入れて保存（★さくらWAFがREST保存を403で遮断＝WAFを一時オフにしてから）。公式プラグインの導入も同じ理由で失敗。WAFの場所＝さくら(vivid)コントロールパネル → セキュリティ → WAF設定ドメイン → orange-works.co「設定」→「利用する」のチェック",
-   "status": "設置済（10/5・AIOSEOのClarity欄・WAFを一時オフにして保存）。本番3ページ＋実ブラウザ3通信を確認。★WAFは有璽氏が戻す",
+   "status": "設置済（10/5・AIOSEOのClarity欄・WAFを一時オフにして保存）。本番3ページ＋実ブラウザ3通信を確認。★WAFは有璽氏が戻す。★2026-10-08 SBタグ・クリックログ 設置済（既存プラグイン Code Snippets のHTMLスニペット id=7・<head>。GTMは既存のGTM-PL37X5BK）",
    "gsc": {
     "property": "https://orange-works.co/"
    },
@@ -78,7 +79,7 @@
    "cms": "静的HTML（nginx）・さくら 210.224.185.82",
    "clarity": "ysq969p6oj",
    "install_route": "さくら(vivid)ファイルマネージャー /home/vivid/www/fukushi119/index.html の <head> 直後（★編集画面は値をJSで変えただけだと保存されない→実キー入力を1回入れてから「保存」）",
-   "status": "Clarity 作成済・未設置（★WPログインURLが不明・有璽氏「直ぐには分からない」10/5＝保留）",
+   "status": "Clarity 設置済（2026-10-08 実測で確認・旧表記は誤り）。★2026-10-08 SBタグ・共用GTM・クリックログ 設置済（index.html の Clarity の直後・控え ~/.vivid-relay/_backups/fukushi119_index_20261008.html）",
    "gsc": {
     "property": "sc-domain:vivid-global.com",
     "page_contains": "://fukushi119.vivid-global.com"
@@ -87,7 +88,8 @@
     "119番",
     "福祉施設の119"
    ],
-   "log_label": "119番"
+   "log_label": "119番",
+   "gtm": "GTM-PQX3L4TQ"
   },
   {
    "name": "NPO法人 南河内こどもステーション",
@@ -115,7 +117,7 @@
    "clarity": "y999sy395z",
    "gtm": "GTM-PQX3L4TQ",
    "noindex_expected": true,
-   "status": "Clarity 作成済・未設置（★WPログインURLが不明・有璽氏「直ぐには分からない」10/5＝保留）"
+   "status": "Clarity 設置済（2026-10-08 実測で確認・旧表記は誤り）。★2026-10-08 クリックログ追加・Vercel 本番反映（SBタグ・GTM・Clarity は既設）"
   },
   {
    "name": "かわちばなし（南河内4市のイベントポータル）",

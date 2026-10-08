@@ -97,7 +97,7 @@ E5 ★これらは「位置」しか見ていない                重なり・�
      | 型 | 対象 | 入れる場所 | 実例 |
      |---|---|---|---|
      | ① 自社で書くHTML | 静的HTML・Vercel・さくら静的・ビルドスクリプト | HTML（またはビルド）の head へ部品を直書き | ko-station・gamemarke・119番・かわちばなし |
-     | ② WordPress | 自社製テーマでも既製テーマでも | ★head挿入の専用プラグイン（WPCode）に貼る。テーマ・SEOプラグインの欄には入れない | オレンジワークス・LIFE STAND UP（・ビビッド） |
+     | ② WordPress | 自社製テーマでも既製テーマでも | ★プラグイン「Code Snippets」の HTML スニペット（場所＝サイトヘッダー内 <head>）に貼る。テーマ・SEOプラグインの欄には入れない（10/8 実装でWPCodeから変更＝オレンジに既に入っていたものに揃えた） | オレンジワークス・LIFE STAND UP（・ビビッド） |
      | ③ ノーコード | STUDIO 等 | サービスの「カスタムコード head」 | ふくち。 |
      - GTM：★既定は会社共用 `GTM-PQX3L4TQ`（10/8 #b92fb5）。既にサイト専用GTMがあればそれを使う（オレンジ＝GTM-PL37X5BK）
      - 部品：`bin/web_tracking/snippet.html` から組む（★Clarity はサイトごとに別ID）。★GTM の中だけに入れる形は使わない（元のHTMLに出ず、検問が止め続ける）

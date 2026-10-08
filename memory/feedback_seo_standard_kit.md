@@ -168,3 +168,11 @@ Current_Focus のタスク行だけでは漏れる（人の記憶に戻るので
 
 **★新しく除外の仕組みを作らない。** 2026-10-08、`site_audit.py` に除外の概念が無いので作ろうとしたが、
 **★`exempt.json` が既にあった**（検問 `hook_web_tracking_gate.py` が読む）。**先に同じ場所の実物を見る。**
+
+## 2026-10-08 SBタグ・クリックログを全サイトへ入れたときに踏んだもの
+- ✅入った：gamemarke（Vercel）／かわちばなし（kb_live.sh）／オレンジ・LSU（Code Snippets の HTML スニペット・<head>）／119番（ファイルマネージャー）。台帳 sites.json の status に記入
+- ★STUDIO のカスタムコード欄（CodeMirror 6）は、JS で作った貼り付けイベントだと★画面には出るが保存されない（名前だけ残り中身は空）。公開「更新」で Congratulations が出ても本番は0件だった＝★本番を数えて確かめる
+- ★ブラウザ（Claude in Chrome）のクリップボードは、ターミナル側の pbcopy と★別物（⌘Vで無関係な文字が入った→⌘Zで戻した）
+- ★clipboard.writeText を呼ぶとページが45秒固まった（権限の確認が出ている疑い）
+- ★さくらファイルマネージャー：編集は HTMLFormElement.prototype.submit を差し替えて target=_self にすると同じタブで開く。textarea を JS で変えたあと実キー（End→空白→BackSpace）で保存ボタンが有効になる
+- ★オレンジワークスの管理画面は短時間でログインが切れる＝最初に済ませる。WAF は作業後に有璽氏が戻す
