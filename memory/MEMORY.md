@@ -41,4 +41,4 @@
 - [Obsidian Core_Brainが動的正本](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync対象外
 - [ツールの使い分け](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚。★有璽氏が普段見るのはObsidian（10/8）
 - [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — launchd15分ごと稼働。行を複製する時は目印を消す
-- [仮称は識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 名前未確定なら役割で識別子を付ける。決まったら数えてから置換
+- [仮称を識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 識別子は役割で付ける。置換は数えてから
