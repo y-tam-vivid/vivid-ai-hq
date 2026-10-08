@@ -169,16 +169,25 @@ Se20=★上妻の買い増し分と松本氏の★共同保有（上妻計495万
             引き継ぎ v4.0 ＋ 鍵の入れ方手順書（Drive経由で有璽氏へ渡した。★v3.0は破棄）
 ```
 
-**🔴10/7 鍵の投入は★3往復して止めた**（有璽氏「今日は無理だ」）。真因＝★キーチェーンはSSH越しから触れず
-★AIが検証できない場所に人の手を置いた。→ `feedback_dont_put_hands_where_ai_cannot_verify.md`
-✅**抜け道を実測＝launchd(LaunchAgent)経由なら★AIが保存も読み出しもできる**（ダミー値・片付け済み）
-▶**次にやること（★有璽氏の手を使わない形で組む）**：launchd 経由で鍵を入れる仕掛けを作り、
-値だけ Slackのボタンの「✍️その他」で1回受け取る案を出す（★値がSlackに載るので可否は有璽氏の判断）
-★いまキーチェーンにある2本は★-A が無く★値が読めない状態（項目は実在）。入れ直しが要る
-**★有璽氏の手が要るもの2件**：①鍵2本の投入（★形を作り直してから1回だけ）
-②NotionのAI活用ログへ「Chatworkリレー」を接続（★AI資産台帳は完了済み）
-★残：①C-0070 を家計台帳へ送るか ②シート集計「TRANBI 12人」とこちらの11人の差（件数18は一致）
-③90のR/S列は保護の外・buildWorkbookで消えるおそれ ④相手待ち＝窓口の鍵・p_emailの扱い・p_name_kanaが必須か
+**✅10/8 ★家計台帳への受け渡しが通った**（鍵の保管→送信→検査まで一式）
+```
+✅鍵      macOSキーチェーン vivid-crm-{dev,prod}-{send,read}（★-A付き・AIは読めない構造）
+          ★launchd(LaunchAgent)経由なら AI が保存も読み出しもできる（SSH越しは不可）
+✅送信    38件を開発用へ送り received=38 ok=38 failed=0。読み取り用も200
+✅道具    crm_key_set.sh / crm_key_check.sh / crm_send.py / _build_payload.py / _testpersons.py
+          ＋ launchd から呼ぶ包み3本（_crmsend.sh / _crmcheck.sh / _crmresults.sh）
+✅効果記録 AI活用ログ1件＋AI資産台帳1件（★削減時間は未計測＝確立してから測る）
+```
+**🔴10/8 こちらの誤りが4つ出た（全部記録済み）**
+```
+①開発用へ★実在38件を送った（仕様書§4違反・相手に削除いただいた）
+②owner_labelに契約名義を入れた（§2.3違反・★「担当」列を一度も読んでいなかった）
+③仕様書を grep で部分的に読んだ（★項目名 p_c_id のまま送って5件とも弾かれた）
+④置換を重ねて save 関数だけ古いまま残った（★2回以上直すならファイルを一から書き直す）
+★10/7 の鍵の3往復＝AIが検証できない場所に人の手を置いたのが真因
+```
+**▶相手待ち**：①架空2件(C-0901/0902)の削除 ②本番の窓口と鍵 ③テスト用の人を送るかの返事
+**▶本番が来たら**：有璽氏の手で `crm_key_set.sh both prod` を1回 → こちらが環境引数を足して送る
 **★同じ対象に手をつけないでください（追加）**：`02_個人マスタ` の総合ステータス列・検討時期列(V) ／
 `90_選択肢マスタ` の末尾2列 ／ `~/.vivid-relay/{crm_dev.env,crm_key_check.sh,kakei_payload_20261007.*}` ／
 `memory/{reference_dropdowns_prevent_value_sprawl,reference_effect_log_is_not_optional,feedback_ask_which_phase}.md`
