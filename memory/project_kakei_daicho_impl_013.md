@@ -7,7 +7,7 @@ metadata:
 
 ★統合側セッションが [[project_kakei_daicho]] を「触らないで」に入れているため、実装担当側の現在地はこちらに書く。
 
-- ★リポジトリが★移った：`~/Downloads/家計台帳/kakei-daicho`（旧 `~/Downloads/kakei-daicho` は無い）。HEAD＝839974f（M10）
+- ★リポジトリの置き場所（10/8 午後に有璽氏がフォルダ名を変えた）：`~/Downloads/家計台帳【家計のみとおし。】/kakei-daicho`（旧 `~/Downloads/家計台帳/kakei-daicho`・さらに前 `~/Downloads/kakei-daicho` は無い）。★動かすと開発サーバーが落ちる＝置き場所を確かめてから起こし直す。HEAD＝839974f（M10）
 - 10/8 12時台に実測（開発用DB・読むだけ）：
   - 013〜015は★適用済み。表＝persons／household_persons、households に kind 列
   - 関数＝create_customer_household(p_name, p_person_ids, p_primary_person_id, p_primary_fp_id)／assign_person_fp(p_person_id, p_fp_id)／upsert_person_from_crm、ビュー crm_results
