@@ -249,7 +249,8 @@ Se20=★上妻の買い増し分と松本氏の★共同保有（上妻計495万
   ✅Clarity 設置＝ILIFE・ふくち。・オレンジワークス・119番（10/5・実ブラウザで3通信確認）／★ビビッドのみ保留（WPログインURL不明）／SKILL.md 追記は承認待ち
   ▶SEO週次・月次：✅10/6 本番化（レジスタ3行・mini cron 3行）。★残＝10/7朝 Clarity初回を確認→レジスタ「有効」／10/12 週次初回／11/1 月次初回→旧クラウド月次 trig_01Y9 停止。**★同じ対象に手をつけないでください**: bin/web_tracking/{clarity_daily,weekly_seo_report,monthly_seo_report,ai_analysis}.py／mini crontab の SEO 3行
 
-- **【ビビ（サイト担当）/ MacBook 2026-10-03】こどもステーション団体サイト ── v28 公開済み・ko-station.org へ乗せ替え準備中**
+- **【ビビ（サイト担当）/ MacBook 2026-10-03】こどもステーション団体サイト ── 本番 v46・Ad Grants 承認済み**
+  - ★10/8 Ad Grants のキャンペーン作成は★Googleの本人確認で7日停止（電話番号追加直後）＝再開 10/14。GA4キーイベント3つは済。手順の罠は `memory/reference_google_ads_campaign_wizard.md`
   - ★**`~/kodomo-photo-work/build_site.py` を2セッションで同時に触っている**（リリース側が festgal へ13枚追加）。
     公開は★必ず最新の番号から（いま v46 ★10/7 古いURLに410（api/・middleware.js も前の版から写す）。直しの正本は oct3_fixes.py＋articles/sheet_answers/seo/ga4_fixes.py。直しの正本は oct3_fixes.py＋seo_fixes.py）。古い番号から出すとトップ切り替え・注目の取り組みのリンク・素案札の削除・計測が消える
   - ✅10/3 14時台 ko-station.org / www で本番公開済み（DNS切替完了・証明書発行済み）。以後の公開も最新番号から
