@@ -668,3 +668,19 @@ owner_label    ★担当者の名前。空なら管理者が割り当てる（�
 - ★この試験は**設計担当が設計してくれたもの**。「false が正しい側」と「true が出るべき側」を
   1件ずつ用意する形。**★自分の修正を確かめる試験は、こう組む**（成功だけを見ない）
 - ★道具：`~/.vivid-relay/_probe2.py`（★架空C番号だけを送る）／`_probe2.sh`（launchd 経由で鍵を渡す）
+
+### ✅2026-10-08 本番を受け入れる準備（鍵を環境で分けた）
+
+```
+キーチェーンのサービス名   vivid-crm-dev-send / -read ／ ★vivid-crm-prod-send / -read
+道具（引数で環境を明示させる・取り違え防止）
+  bash ~/.vivid-relay/crm_key_set.sh   [both|send|read] [dev|prod]   既定は dev
+  bash ~/.vivid-relay/crm_key_check.sh [dev|prod]                    既定は dev
+  ★check は環境でURLも切り替える（dev=orqmjadhy… ／ prod=jjetbqrxlstvjziijtne…）
+  ★dev 決め打ちは両方から消えた（実測）
+控え  _backups/{crm_key_set.sh,crm_key_check.sh}.bak_envsplit_20261008
+```
+
+- ★**本番の鍵が来たら `crm_key_set.sh both prod` を有璽氏の手で1回**（キーチェーンはAIが触れない）。
+  ★そのあとの確認・送信はAIが launchd 経由でできる
+- ★送信側（`crm_send.py`）は★まだ dev 固定。**本番の鍵が来たときに環境の引数を足す**（未実装）
