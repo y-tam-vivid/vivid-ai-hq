@@ -74,6 +74,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
+- **【ビビ→ピタゴラス / 2026-10-08】Current_Focus を2枚に分け期日順に並べる（案①・有璽氏決定）** ── 写しで作って試すだけ・★本番の同期（mini launchd）はまだ差し替えない。**★同じ対象に手をつけないでください**: mini `~/.vivid-relay/notion_focus_sync.py`／`00_System/02_Current_Focus.md` の書式
 - **【ビビ+チョッパー / 2026-10-06】Web制作の出戻り対策** ── ✅幅掃きの高速化・恒久ルール化は完了。
   **★有璽氏の判断待ち4件**：本番の入口／既定の方式（resize or reload）／8750固定を外すか／重なり16〜18件/ページを目視で精査するか
   **★同じ対象に手をつけないでください**: mini `~/lifestandup-wp/{sweep_widths_fast.py,sweep_widths.py,tools/lsu_env.py}`／ポート8750
