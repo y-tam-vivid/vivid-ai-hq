@@ -376,3 +376,4 @@ metadata:
 - ko-station.org 本番(v46・10/6 プレスリリース記事を掲載)。★情報欄のURLをリンクにする修正をClaude Designへ依頼中。直しの正本は ~/kodomo-photo-work/*_fixes.py＋api_src。★Ad Grants 審査待ち(10/5申請・10/7に確認)。立ち上げ手順とCSVは05/02_Google広告に用意済み
 
 - **★2026-10-09 有璽氏「引き渡しフォルダの4つの差分（data/schedule・年間カレンダー・お知らせ・月間予定表）を本番へ」**：Claude Design 側で作業済みと言われたが、★手元（Drive 03_ClaudeDesign書き出し の構築1〜7・Downloads）に新しい書き出しは無かった（最新の構築7は10/6・2026-11.json なし）。★書き出しはクラウドにあり、有璽氏がダウンロードして Drive へ置くまで届かない＝こちらから取りに行く手段は無い。対応表 年間カレンダー→calendar.html／お知らせ→news.html／月間予定表→schedule.html／data/schedule→同名フォルダ。
+- **★2026-10-09 有璽氏「なるべく手がかからないように」→ 書き出しの受け渡しの型**：有璽氏の手は★Claude Designでダウンロードを押して「落とした」と言うだけ（保存先・名前・解凍は触らなくてよい）。★こちらが Downloads と Drive の両方から新しい書き出し（zip可）を探し、Drive `03_ClaudeDesign書き出し/南河内こどもステーション WEBサイト構築 N/` へ番号を振って置き、そこから v(N) を作る。★Drive が正本・Downloads は通り道。
