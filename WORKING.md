@@ -92,9 +92,10 @@
 - **【リリス / 2026-10-05〜】公開中サイトへ Clarity＋SEO標準装備** ── ✅4サイト設置済み。
   ★残：ビビッド（www.vivid-global.com）のみ保留＝WPログインURL不明／SKILL.md 追記は承認待ち／10/12 週次初回／11/1 月次初回→旧クラウド月次 trig_01Y9 停止
   **★同じ対象に手をつけないでください**: 上記サイトの head／GTM-PQX3L4TQ／`bin/web_tracking/{clarity_daily,weekly_seo_report,monthly_seo_report,ai_analysis}.py`／mini crontab の SEO 3行
-- **【ビビ（サイト担当）/ 2026-10-03〜】こどもステーション団体サイト** ── 本番 v49（10/9 構築8＋予定表の制作メモ削除＋活動紹介の月の帯を年度の月間予定表へ）・Ad Grants 承認済み。
+- **【ビビ（サイト担当）/ 2026-10-03〜】こどもステーション団体サイト** ── 本番 v50（10/9 構築8＋予定表の制作メモ削除＋活動紹介の月の帯を年度の月間予定表へ＋トップのフッター復旧）・Ad Grants 承認済み。
+  📮**かわちばなし担当へ（10/9 有璽氏「新しいイベントはかわちばなしにも共有して掲載を進めて」）**：こどもステーションの主催イベント5件＋出店3件を Drive `06_かわちばなし_…/引き継ぎ_こどもステーションのイベントを掲載_20261009.md` に置いた。★器「イベント」タブはかわちばなし側の持ち物なので、こちらは書いていない。掲載はかわちばなし担当が進めてください
   ▶Ad Grants のキャンペーン作成は★Googleの本人確認で停止中＝**再開 10/14**（罠は `memory/reference_google_ads_campaign_wizard.md`）
-  ★`~/kodomo-photo-work/build_site.py` を2セッションで触る。公開は★必ず最新の番号から（いま v49）。直しの正本は `oct3_fixes.py` ほか `*_fixes.py`
+  ★`~/kodomo-photo-work/build_site.py` を2セッションで触る。公開は★必ず最新の番号から（いま v50）。直しの正本は `oct3_fixes.py` ほか `*_fixes.py`
   **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定／`~/kodomo-photo-work/{oct3_fixes,apply_oct3}.py`
 
 ## Claude Desktop セッション
