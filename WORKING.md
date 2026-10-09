@@ -78,6 +78,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
+- **【ビビ→ピタゴラス / 2026-10-09】定期タスク台帳（Notion）と毎月の自動起票の試作** ── 有璽氏決定（台帳から自動・7日前・施設/法人ごとに分ける）。試作と dry-run まで・自動実行は承認後。目安11:30。**★同じ対象に手をつけないでください**: Notion の新規DB「🔁 定期タスク台帳」
 - **【ビビ / MacBook 2026-10-08〜】119番 医療連携LP（児童/就労×A/B/C）の実装とSBフォーム営業の準備** ── 書く：公開用LPフォルダ・SBの文面下書き（保存は要承認）。読む：SBの設定・送信履歴。**★同じ対象に手をつけないでください**: 医療連携LPの公開用フォルダ／SB template（医療連携）
 - **【ビビ / 2026-10-08〜】全公開サイトへSBタグ＋クリックログ**（有璽氏「基本は全サイト」・ko-station は済）── いまは読むだけ（控え `~/.vivid-relay/_backups/*_head_20261008.html`）。✅#c3f127＝このセッションが全サイトをまとめて引き受ける（有璽氏・会話で回答）。✅#b92fb5＝GTMが無い4サイトは共用GTM-PQX3L4TQ。✅#2aacd0＝オレンジはhead挿入プラグインを1つ足す。✅#f55c69＝LSUも同じプラグイン。部品は ~/.vivid-relay/sbtag/{A,B,C}_*.html。✅10/8 承認済み。✅gamemarke（Vercel）・✅かわちばなし（mini kb_live.sh にSBタグ等を追加・控え _backups/kb_live.sh.bak_20261008_sbtag・本番反映）。✅オレンジ・LSU（Code Snippets）・119番も本番反映。✅ふくち。（STUDIO）も反映。✅誤検知の直し（2a75299）・実ブラウザ確認5サイト。✅テスト見本差し替え（4d2804a・165件全件合格）。▶残：ビビッドはWPログインURL待ち。ビビッドはWPログインURL判明まで保留。引き継ぎ `scratchpad/handoff/2026-10-08_SBタグとクリックログ_3サイト.md`
 - **【ビビ / 2026-10-08〜】日々のメモの振り分け** ── ✅試作・検査の直し済み（mini `memo_sort.py`・cron未登録）。▶有璽氏のデイリーノートが数日分たまったら dry-run で当たり具合を見る。**★同じ対象に手をつけないでください**: mini `~/.vivid-relay/memo_sort.py`
