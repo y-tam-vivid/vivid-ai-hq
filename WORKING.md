@@ -92,9 +92,9 @@
 - **【リリス / 2026-10-05〜】公開中サイトへ Clarity＋SEO標準装備** ── ✅4サイト設置済み。
   ★残：ビビッド（www.vivid-global.com）のみ保留＝WPログインURL不明／SKILL.md 追記は承認待ち／10/12 週次初回／11/1 月次初回→旧クラウド月次 trig_01Y9 停止
   **★同じ対象に手をつけないでください**: 上記サイトの head／GTM-PQX3L4TQ／`bin/web_tracking/{clarity_daily,weekly_seo_report,monthly_seo_report,ai_analysis}.py`／mini crontab の SEO 3行
-- **【ビビ（サイト担当）/ 2026-10-03〜】こどもステーション団体サイト** ── 本番 v48（10/9 構築8＝11月予定表・お知らせ5件・年間カレンダー／予定表の制作メモを外した）・Ad Grants 承認済み。
+- **【ビビ（サイト担当）/ 2026-10-03〜】こどもステーション団体サイト** ── 本番 v49（10/9 構築8＋予定表の制作メモ削除＋活動紹介の月の帯を年度の月間予定表へ）・Ad Grants 承認済み。
   ▶Ad Grants のキャンペーン作成は★Googleの本人確認で停止中＝**再開 10/14**（罠は `memory/reference_google_ads_campaign_wizard.md`）
-  ★`~/kodomo-photo-work/build_site.py` を2セッションで触る。公開は★必ず最新の番号から（いま v48）。直しの正本は `oct3_fixes.py` ほか `*_fixes.py`
+  ★`~/kodomo-photo-work/build_site.py` を2セッションで触る。公開は★必ず最新の番号から（いま v49）。直しの正本は `oct3_fixes.py` ほか `*_fixes.py`
   **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定／`~/kodomo-photo-work/{oct3_fixes,apply_oct3}.py`
 
 ## Claude Desktop セッション
