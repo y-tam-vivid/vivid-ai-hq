@@ -78,7 +78,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ / MacBook 2026-10-10】医療連携システムの自社開発（運営者版）** ── ✅有璽氏決定＝先に開発・弁護士確認は並行か完成時／制度は現行運用を前提（調査は後追い）。✅骨子v0.2（`scratchpad/iryo-renkei/10_…`）。▶設計中：ピタゴラス（20_データと権限）・エジソン（30_画面の流れ）／検査：センゴク／制度の裏付け：クローバー博士。★有璽氏の回答待ち＝10問（仮の前提 1B 2B 3C 4A 5C 6A 7A 8A 9A 10A で進行）。★現行 cross-care.net への追加調査は凍結・`01_…` は設計/実装担当に渡さない。**★同じ対象に手をつけないでください**: `scratchpad/iryo-renkei/`。経緯 `memory/project_iryo_renkei_system.md`
+- **【ビビ / MacBook 2026-10-10】医療連携システムの自社開発（運営者版）** ── ✅有璽氏決定＝先に開発・弁護士確認は並行か完成時／制度は現行運用を前提（調査は後追い）。✅骨子v0.2（`scratchpad/iryo-renkei/10_…`）。▶設計中：ピタゴラス（20_データと権限）・エジソン（30_画面の流れ）／検査：センゴク／制度の裏付け：クローバー博士。✅10問確定＝1A 2B 3A 4A 5B 6A 7B 8A 9B 10B（設計へ反映中）。▶精算の検討用骨子（ステラ・`11_…`）。★現行 cross-care.net への追加調査は凍結・`01_…` は設計/実装担当に渡さない。**★同じ対象に手をつけないでください**: `scratchpad/iryo-renkei/`。経緯 `memory/project_iryo_renkei_system.md`
 - **【ビビ / MacBook 2026-10-10】かわちばなし ── ★団体回答の反映が mini 待ちで止まっている**
   ★MacBookが別の網（10.68.225.19）にいて mini へ届かない。シートの鍵も道具も mini にしか無い。
   ★やることは全部確定済み（`memory/project_kawachibanashi_portal.md` の「⏸2026-10-10」節に手順）。
