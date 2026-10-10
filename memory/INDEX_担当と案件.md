@@ -36,3 +36,4 @@
 - [有璽氏の特性分析](project_trait_analysis_20260919.md) — ★本人限定。Notion個人スペース1ページ・他の担当の判断材料に引用しない
 - [家計台帳（FP向け）](project_kakei_daicho.md) — M10(把握の範囲・メモ)まで完了(10/2)・テスト92件／手元は開発用Supabase／残=Vercel(顧客情報を入れる段階)
 - [家計台帳 実装側の013〜015](project_kakei_daicho_impl_013.md) — 10/8 ★リポジトリは ~/Downloads/家計台帳/kakei-daicho へ移動。開発用は013〜015適用済み・persons 0件。★設計担当の指示文がまだ実装側に無い
+- [医療連携システムの自社開発](project_iryo_renkei_system.md) — 10/10 cross-care.netをステーションの役割で調査済み・設計メモはscratchpad/iryo-renkei。運営者版・先に開発（弁護士確認は並行）。★現行への追加調査は凍結・調査メモは実装担当に渡さない
