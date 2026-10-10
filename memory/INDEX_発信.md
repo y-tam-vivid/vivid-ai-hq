@@ -108,6 +108,7 @@
 - [かわちばなし・母数は自前から](project_kawachibanashi_portal.md) — ★10/6 こどもステーションを載せる。一次情報に当たれる所から増やす
 - [★一次情報は紙にある](project_kawachibanashi_portal.md) — 10/7 こどもステーションのチラシに10月の全予定。サイトは月だけ12件だった
 - [かわちばなし・他セッションから受領](project_kawachibanashi_portal.md) — ★10/9 器はこちら・向こうは中身だけ渡す形
+- [★誰の時間かで値が違う](project_kawachibanashi_portal.md) — 10/10 出店の催しは主催の開催時間を出す。参加時間は紹介文へ
 - [かわちばなし・トップもシート](project_kawachibanashi_portal.md) — ✅10/5 本番反映済(2経路一致)。🔴11/1に0件→更新が止まる。v3はDrive
 
 
