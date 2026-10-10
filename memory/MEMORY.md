@@ -36,6 +36,7 @@
 - [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — 人の手で渡すものは「渡すのは有璽氏の手」と書く
 - [他言語文字の混入](reference_unicode_escape_kanji_swap.md) — カタカナ語の1字目が化ける。台帳へ書く直前に非ASCIIを数える
 - [鍵の扱い](reference_plaintext_credentials_handling.md) — 値は人が入れる・聞かない／macOSキーチェーン＋-A／AIは鍵を読めない
+- [★外出先ではminiに届かない](project_macmini_remote_workhorse.md) — 10/10 .localもIPも同じLAN内だけ。まず自分の網を見る
 - [Mac mini作業機](project_macmini_remote_workhorse.md) — ssh mini。切れたら先に自分の網を見る／投げる指示文に notify.tell
 - [miniの実行環境](reference_mac_mini_execution_env.md) — cron/launchdは環境変数なし＝スクリプトがconfig.envを自分で読む
 - [シェルは全角の直前で落ちる](reference_shell_fullwidth_paren_breaks_var.md) — 日本語中の変数は${VAR}。bash -nでは見つからない
