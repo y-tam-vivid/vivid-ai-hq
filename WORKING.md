@@ -78,7 +78,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ / MacBook 2026-10-10】医療連携システムの自社開発（運営者版）** ── ✅設計段階まで完了：制度調査02／骨子10 v0.3／データと権限20 v0.4（ピタゴラス）／画面の流れ30＋モック31（エジソン）／検査2周（つる・センゴク。差し戻し40・41）。★20 v0.4 と30の最後の直しは検査役が未確認＝実装時の検査で見る。★有璽氏の判断待ち：実装に入るための3点＋台帳の検証者／お金の流れ10問（03に行あり）。★現行 cross-care.net への追加調査は凍結。★`scratchpad/_restricted_iryo/` は設計/実装担当に渡さない。実データは入れない。**★同じ対象に手をつけないでください**: `scratchpad/iryo-renkei/`・`scratchpad/_restricted_iryo/`。経緯 `memory/project_iryo_renkei_system.md`
+- **【ビビ / MacBook 2026-10-10】医療連携システムの自社開発（運営者版）** ── ✅設計段階まで完了：制度調査02／骨子10 v0.3／データと権限20 v0.4（ピタゴラス）／画面の流れ30＋モック31（エジソン）／検査2周（つる・センゴク。差し戻し40・41）。★20 v0.4 と30の最後の直しは検査役が未確認＝実装時の検査で見る。✅有璽氏決定：新リポジトリ `~/iryo-renkei-app`・費用をかけない（手元のみ）・DB変更は設計担当を設ける・検証者は未定。▶実装 段階1（権限の層を除く背骨）をピタゴラスが実装中。★有璽氏の回答待ち：お金の流れ10問（03に行あり）。★現行 cross-care.net への追加調査は凍結。★`scratchpad/_restricted_iryo/` は設計/実装担当に渡さない。実データは入れない。**★同じ対象に手をつけないでください**: `scratchpad/iryo-renkei/`・`scratchpad/_restricted_iryo/`・`~/iryo-renkei-app`。経緯 `memory/project_iryo_renkei_system.md`
 - **【ビビ / MacBook 2026-10-10】かわちばなし ── ★団体回答の反映が mini 待ちで止まっている**
   ★MacBookが別の網（10.68.225.19）にいて mini へ届かない。シートの鍵も道具も mini にしか無い。
   ★やることは全部確定済み（`memory/project_kawachibanashi_portal.md` の「⏸2026-10-10」節に手順）。
