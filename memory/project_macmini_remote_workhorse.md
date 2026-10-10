@@ -130,3 +130,36 @@ mini    192.168.1.200 ＝ ping 届かず／`tamurayuujinoMac-mini.local` は名�
 ★ssh が落ちたとき、**miniを疑う前に自分のIPを見る**。これで3回とも説明がついた。
 ★影響＝mini にしか無いもの（ask_hub の判断ボタン・~/.vivid-relay の出口）は★この間使えない。
 → 逃げ方は [[project_ask_hub_push_decisions]] の「別の網にいるとボタンを出せない」節。
+
+## 🔴2026-10-10 ★MacBookが別の網にいると mini へ一切届かない（外出先・テザリング等）
+
+```
+MacBook  Wi-Fi 10.68.225.19 ／ ゲートウェイ 10.68.128.1   ★自宅・社内の 192.168.1.x ではない
+mini     192.168.1.200（10/5 に設定した値）
+結果     ssh mini          → ★Could not resolve hostname（.local は同じ網でしか引けない）
+         ssh 192.168.1.200 → ★Operation timed out
+         ★外（インターネット）へは出られる（kawachibanashi 200）
+```
+
+★**「外へ出られる＝miniへ届く」ではない。** mDNS（`.local`）もプライベートIPも
+**同じLANの中でしか通らない。** 外出先では何をしても届かない。
+
+```
+★切り分けの順（30秒）
+  ① ipconfig getifaddr en0        ★自分がどの網にいるか
+  ② route -n get default | gateway ★ゲートウェイが 192.168.1.1 か
+  ③ 違えば → ★別の網にいる。miniの設定の問題ではない。待つか別の経路
+```
+★**10/6 にも同じ「Could not resolve hostname」が出て、そのときは自然に戻った。**
+あれも一時的に別の網（またはmDNSの取りこぼし）だった可能性がある。
+★**「miniが落ちた」と早合点しない。** まず自分がどこに居るかを見る。
+
+**★miniへ届かないときにできること／できないこと**
+```
+できる    Drive（CloudStorage）の読み書き／git／本番サイトの確認（curl）／
+          Google Sheets API ★MacBookに鍵があれば
+できない  ~/.vivid-relay/ の道具（kb_live.sh・ask_hub・notify・sheets_client）／
+          担当エージェントの起動（run_agent.sh）／★本番への公開（kb_live.sh が mini にある）
+```
+★**シートの読み書きは、MacBook に鍵があれば mini 無しでできる**（要確認）。
+公開（デプロイ）だけは mini が要る。
