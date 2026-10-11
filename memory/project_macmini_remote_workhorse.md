@@ -163,3 +163,9 @@ mini     192.168.1.200（10/5 に設定した値）
 ```
 ★**シートの読み書きは、MacBook に鍵があれば mini 無しでできる**（要確認）。
 公開（デプロイ）だけは mini が要る。
+
+## ✅2026-10-11 外出先から mini へ届かなかった真因と直し
+- 真因：MacBook の `~/.ssh/config` の `Host mini` が `HostName tamurayuujinoMac-mini.local`（★Bonjour＝同じLANの中でしか名前が引けない）。外出先（192.168.148.x）では引けず不通。★Tailscale は両機とも稼働していたのに使っていなかった。
+- 直し：`Host mini` → `HostName 100.126.116.44`（Tailscale の固定アドレス・家でも外でも届く）。予備に `Host mini-lan`（.local・Tailscaleが止まっている時用）。控え `~/.ssh/config.bak_20261011`。外出先から `ssh mini` で届くのを実測。
+- ★「miniに届かない」ときの順：①自分のIP ②`/Applications/Tailscale.app/Contents/MacOS/Tailscale status` ③`ssh mini`（Tailscale経由）。家のLANにいない＝届かない、と決めつけない。
+- ★もう1台（mini 側の ~/.ssh/config に MacBook 宛てがあれば）も同じ問題を持ちうる＝未確認。

@@ -24,7 +24,7 @@
   **★同じ対象に手をつけないでください**: 営業ワークブック `02_個人マスタ`（総合ステータス列・検討時期列V）／`90_選択肢マスタ` 末尾2列／`~/.vivid-relay/{crm_dev.env,crm_key_check.sh,kakei_payload_20261007.*}`／`memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 - **【ビビ / 10/10〜】医療連携システムの自社開発（運営者版）** ── 実装 段階1＋検査の直し済み（テスト138件）。▶ステラの再検査が未実施。次の段は有璽氏の判断（安全の設定の上限値・検証者・代理・PostgreSQL）とお金の流れ10問の回答待ち。経緯 `memory/project_iryo_renkei_system.md`。
   **★同じ対象に手をつけないでください**: `scratchpad/iryo-renkei/`・`scratchpad/_restricted_iryo/`（設計/実装担当に渡さない）・`~/iryo-renkei-app`
-- **【ビビ / 10/05〜】かわちばなし** ── 本番＝17版＋`kawachibanashi.osaka.jp`（合言葉中）。▶★mini へ届かず2件が止まっている（外出先Wi-Fi）：①10/10 団体回答の反映 ②18版（承認済み・出す前に写真7枚の src と日本語名の href を直す。手順書 Drive `04_ClaudeCodeへの引き継ぎ/引き継ぎ_18版を本番へ反映_20261011.md`）。🔴残：@media 未対応／申込締切後の見せ方／Search Console→合言葉を外す。手順 `memory/project_kawachibanashi_portal.md`。
+- **【ビビ / 10/05〜】かわちばなし** ── 本番＝17版＋`kawachibanashi.osaka.jp`（合言葉中）。▶2件が止まっている（10/11 mini へ届かない原因は解消＝Tailscale経由で再開できる）：①10/10 団体回答の反映 ②18版（承認済み・出す前に写真7枚の src と日本語名の href を直す。手順書 Drive `04_ClaudeCodeへの引き継ぎ/引き継ぎ_18版を本番へ反映_20261011.md`）。🔴残：@media 未対応／申込締切後の見せ方／Search Console→合言葉を外す。手順 `memory/project_kawachibanashi_portal.md`。
   **★同じ対象に手をつけないでください**: シート `1mRp6Cx…`（「イベント」タブ・kb-0051/0053〜0058）／`kb_live.sh`／`~/.vivid-relay/kb_collect.py`／`bin/web_tracking/sites.json` のかわちばなしの行／`~/kb_build`／`~/kb_live`
 - **【ビビ / 10/03〜】こどもステーション団体サイト** ── 本番 v54・Ad Grants 承認済み。▶キャンペーン作成は本人確認で停止中＝**再開 10/14**。公開は必ず最新番号から（直しの正本 `~/kodomo-photo-work/*_fixes.py`）。
   **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定／`~/kodomo-photo-work/{oct3_fixes,apply_oct3}.py`
