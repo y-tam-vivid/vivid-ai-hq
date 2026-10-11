@@ -169,3 +169,5 @@ mini     192.168.1.200（10/5 に設定した値）
 - 直し：`Host mini` → `HostName 100.126.116.44`（Tailscale の固定アドレス・家でも外でも届く）。予備に `Host mini-lan`（.local・Tailscaleが止まっている時用）。控え `~/.ssh/config.bak_20261011`。外出先から `ssh mini` で届くのを実測。
 - ★「miniに届かない」ときの順：①自分のIP ②`/Applications/Tailscale.app/Contents/MacOS/Tailscale status` ③`ssh mini`（Tailscale経由）。家のLANにいない＝届かない、と決めつけない。
 - ★もう1台（mini 側の ~/.ssh/config に MacBook 宛てがあれば）も同じ問題を持ちうる＝未確認。
+- ✅10/11 外での継続作業の条件を実測：Tailscale 両機オンライン・mini は sleep 0（AC・眠らない）・bin/.claude に .local の決め打ち0件。
+  ★残る弱点2つ（有璽氏の手）：①Tailscale の鍵の期限＝両機とも 2027-01-04（切れると外から届かない）→ 管理画面で「Disable key expiry」 ②mini の autorestart=0（停電後に自動で起動しない）→ mini で `sudo pmset -a autorestart 1`（パスワードが要る）。
