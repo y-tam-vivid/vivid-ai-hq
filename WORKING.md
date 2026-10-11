@@ -24,8 +24,14 @@
   **★同じ対象に手をつけないでください**: 営業ワークブック `02_個人マスタ`（総合ステータス列・検討時期列V）／`90_選択肢マスタ` 末尾2列／`~/.vivid-relay/{crm_dev.env,crm_key_check.sh,kakei_payload_20261007.*}`／`memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 - **【ビビ / 10/10〜】医療連携システムの自社開発（運営者版）** ── 実装 段階1＋検査の直し済み（テスト138件）。▶ステラの再検査が未実施。次の段は有璽氏の判断（安全の設定の上限値・検証者・代理・PostgreSQL）とお金の流れ10問の回答待ち。経緯 `memory/project_iryo_renkei_system.md`。
   **★同じ対象に手をつけないでください**: `scratchpad/iryo-renkei/`・`scratchpad/_restricted_iryo/`（設計/実装担当に渡さない）・`~/iryo-renkei-app`
-- **【ビビ / 10/05〜】かわちばなし** ── 本番＝17版＋`kawachibanashi.osaka.jp`（合言葉中）。▶2件が止まっている（10/11 mini へ届かない原因は解消＝Tailscale経由で再開できる）：①10/10 団体回答の反映 ②18版（承認済み・出す前に写真7枚の src と日本語名の href を直す。手順書 Drive `04_ClaudeCodeへの引き継ぎ/引き継ぎ_18版を本番へ反映_20261011.md`）。🔴残：@media 未対応／申込締切後の見せ方／Search Console→合言葉を外す。手順 `memory/project_kawachibanashi_portal.md`。
-  **★同じ対象に手をつけないでください**: シート `1mRp6Cx…`（「イベント」タブ・kb-0051/0053〜0058）／`kb_live.sh`／`~/.vivid-relay/kb_collect.py`／`bin/web_tracking/sites.json` のかわちばなしの行／`~/kb_build`／`~/kb_live`
+- **【ビビ / 10/05〜】かわちばなし** ── 本番 `kawachibanashi.osaka.jp`（公開中）。✅10/11 18版（現地レポート1本）を公開・
+  イベント30件・sitemap 36件（実測）。✅団体回答の反映も済み（器30件⇄本番30件の3経路一致）。
+  **★有璽氏の判断待ち3件**：①終わった催しの見せ方（10/11のサツマイモ掘りが明日から過去になる・現地レポートへ繋ぐか）
+  ②記事を増やす仕組み（デザイン側が「1か所にまとめて何枚でも出す形」を提案・指示文23番）③幅ごとの切り替え点（@media 未対応＝チョッパー）
+  ▶待ち：人形劇（kb-0057）の参加費（決まったら連絡＋★チラシ制作の依頼が来る見込み）
+  ★記事を1本足すと `kb_live.sh` の6か所に手が要る。手順は `memory/project_kawachibanashi_portal.md`
+  **★同じ対象に手をつけないでください**: シート `1mRp6Cx…` の「イベント」タブ ／ `kb_live.sh` ／ `~/kb_build`
+
 - **【ビビ / 10/03〜】こどもステーション団体サイト** ── 本番 v54・Ad Grants 承認済み。▶キャンペーン作成は本人確認で停止中＝**再開 10/14**。公開は必ず最新番号から（直しの正本 `~/kodomo-photo-work/*_fixes.py`）。
   **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定／`~/kodomo-photo-work/{oct3_fixes,apply_oct3}.py`
 - **【ビビ / 10/08〜】119番 医療連携LP（児童/就労×A/B/C）とSBフォーム営業の準備** ── 書く：公開用LPフォルダ・SBの文面下書き（保存は要承認）。
