@@ -101,7 +101,7 @@
 - **【ビビ（サイト担当）/ 2026-10-03〜】こどもステーション団体サイト** ── 本番 v51（10/10 団体回答5点＝火曜の食堂・西浦東小・もちつき料金・公式LINE を反映。全ページを構築8から作り直し）・Ad Grants 承認済み。
   📮**かわちばなし担当へ（10/9 有璽氏「新しいイベントはかわちばなしにも共有して掲載を進めて」）**：こどもステーションの主催イベント5件＋出店3件を Drive `06_かわちばなし_…/引き継ぎ_こどもステーションのイベントを掲載_20261009.md` に置いた。★器「イベント」タブはかわちばなし側の持ち物なので、こちらは書いていない。掲載はかわちばなし担当が進めてください
   ▶Ad Grants のキャンペーン作成は★Googleの本人確認で停止中＝**再開 10/14**（罠は `memory/reference_google_ads_campaign_wizard.md`）
-  ★`~/kodomo-photo-work/build_site.py` を2セッションで触る。公開は★必ず最新の番号から（いま v52）。直しの正本は `oct3_fixes.py` ほか `*_fixes.py`
+  ★`~/kodomo-photo-work/build_site.py` を2セッションで触る。公開は★必ず最新の番号から（いま v53）。直しの正本は `oct3_fixes.py` ほか `*_fixes.py`
   **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定／`~/kodomo-photo-work/{oct3_fixes,apply_oct3}.py`
 
 ## Claude Desktop セッション
