@@ -124,3 +124,7 @@
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番v46。Ad Grants審査待ち
 - [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — 10/6 10:00 配信済み。残＝団体サイトへ掲載
 - [Google広告の作成画面](reference_google_ads_campaign_wizard.md) — 電話番号を足すと7日止まる→再開10/14
+
+> ★**フォルダ番号の注記（2026-10-11）** ── このファイルに出てくる
+> `04_画像素材`→**05_画像素材** ／ `05_公開と計測`→**06_公開と計測** ／ `06_検査と報告`→**07_検査と報告**。
+> 04 は `04_ClaudeCodeへの引き継ぎ` が入りました。★**以後は番号でなく名前で書く。**
