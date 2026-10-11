@@ -172,5 +172,6 @@ mini     192.168.1.200（10/5 に設定した値）
 - ✅10/11 外での継続作業の条件を実測：Tailscale 両機オンライン・mini は sleep 0（AC・眠らない）・bin/.claude に .local の決め打ち0件。
   ★残る弱点2つ（有璽氏の手）：①Tailscale の鍵の期限＝両機とも 2027-01-04（切れると外から届かない）→ 管理画面で「Disable key expiry」 ②mini の autorestart=0（停電後に自動で起動しない）→ mini で `sudo pmset -a autorestart 1`（パスワードが要る）。
 - ✅10/12 ①済み：有璽氏が両機の「Disable key expiry」を押した。`tailscale status --json` の KeyExpiry が両機とも空（＝期限なし）を実測。残りは②autorestart だけ。
+- ✅10/12 ②済み：有璽氏が `ssh -t mini 'sudo pmset -a autorestart 1'` を実行。pmset -g で autorestart 1 を実測＝弱点2つとも解消。
 - ★mini の sudo は ssh でも打てる（有璽氏 10/12「sshでは届かない？」）：MacBook の「ターミナル」アプリで `ssh -t mini 'sudo …'` → mini のパスワード。
   AIの Bash からは打てない（sudo -n で「password is required」＝パスワードを渡す道が無い・AIは聞かない）。人に頼むときは「mini の前に座って」でなく ssh -t の1行で渡す。
