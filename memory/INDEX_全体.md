@@ -47,7 +47,7 @@
 - [判断はSlackのボタンで返す](project_ask_hub_push_decisions.md) — **全担当の恒久ルール＝判断はask_hubのボタン一本。★出した側が台帳を閉じる。詳細は本文**
 - [自分に見えた≠相手に見える](reference_private_pages_404_for_the_viewer.md) — ★9/14 非公開WPはログイン中の自分にだけ見えた。リンクを渡す前に未ログインで開く
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — **🔴9/12★2回。足りない→待つで止めるな。器を縮める／依頼文を作る**
-- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★宣言では止まらない。渡す直前に実物を数える／**★10/3 境界は「案件」でなく★成果物。相手の作業は代わりにやらず材料で渡す**
+- [同じ依頼が2つのセッションへ入る](reference_two_sessions_built_the_same_thing.md) — ★宣言では止まらない。渡す直前に実物を数える／**★10/3 境界は「案件」でなく★成果物。相手の作業は代わりにやらず材料で渡す**／**★10/12 記録に「作成済み」と書いた一式が★両機とも実在しなかった（18日間）。人に渡すものを ~/Downloads へ置くと週次の掃除と同じ場所になる＝★本数とバイト数を併記し、次の着手でまず ls する**
 - [日本語名は判定を外す](reference_nonascii_filename_breaks_the_check.md) — ✅9/16直り本番で発火・9/17 behind0。★直った証拠は翌朝の数字／★詰まりが流れた先の器を測る
 - [直した所は配られるか](reference_fix_where_git_reaches.md) — 🔴9/14★同じ日に4回。手順書に落とした当日に自分が関所2(ver上げ)を飛ばした。★機械で時刻を比べて止める(未実装)
 - [担当が増えたら3か所](reference_new_agent_needs_three_places.md) — ★9/13 チョッパー追加で席が出なかった。名鑑を正本へ寄せた
