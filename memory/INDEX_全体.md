@@ -115,4 +115,4 @@
 - [Claude Designのものを公開する](reference_claude_design_local_edit_not_reflected.md) — ★9/10 書き出しは★3形式ある(bundler/生HTML/.dc.html+React)。★形式判別の工程が要る。C→Design は不可
 - [Obsidian Core_Brainを動的正本へ](project_obsidian_core_brain.md) — 9/24方針。★00_Systemは.md.md二重拡張子・@importは未切替
 - [判断は対象を名前で並べて聞く](feedback_name_the_targets_when_asking.md) — 「今回登録した分」等の指示語だけで聞かない（10/3）
-- [正規表現の範囲が他の行を食う](reference_regex_range_ate_other_sessions_blocks.md) — ★毎ターン届くMDは範囲指定で置換しない。行を特定してEdit／前後で行数を数える
+- [正規表現の範囲が他の行を食う](reference_regex_range_ate_other_sessions_blocks.md) — ★10/13 HTMLでも2回。範囲指定で置換しない＝完全一致でcount==1／置いた後に数を出す
