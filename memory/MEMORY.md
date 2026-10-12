@@ -29,6 +29,7 @@
 - [次の一手と有璽氏の作業](feedback_emit_next_actions_as_tasks.md) — 返答末尾に「★有璽氏がすること」節／頼む行は03へ区分付き(10/8〜)
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — ★人へ渡す前に検査を通す（渡せば即実行され訂正が間に合わない）
 - [着手時に目安時刻を伝える](feedback_batch_the_checks.md) — 何をする＋完了目安／変われば言い直す／その時刻に自分で見る
+- [「一旦」の承認は恒久でない](feedback_provisional_approval_is_not_final.md) — 出してよいかと★何で変わるかを対で記録。完了にしない
 - [AIが検証できない所に人の手を置かない](feedback_dont_put_hands_where_ai_cannot_verify.md) — 人に打たせる前にダミーで同じ道を通す
 - [判断はSlackのボタン](project_ask_hub_push_decisions.md) — 終わる前にopen・answeredを数えfree_textまで読む／選択肢の数字を揃える
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
