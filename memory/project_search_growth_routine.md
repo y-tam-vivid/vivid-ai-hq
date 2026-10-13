@@ -40,4 +40,4 @@ metadata:
 - こどもS ボランティアの役割カード6枚に応募ボタン → v55 公開（ko-station.org と md5 一致・ボタン6・#apply へ）。★実際に指で押してスクロールするかは、自動操作のタブが裏（hidden）でスムーズスクロールが進まず確かめ切れていない（既存の「応募のしかた」ボタンと同じ仕組み・即時の scrollIntoView は動く）
 - ILIFE 記事2本の題を変更（WP 3284・4364・REST で題だけ・URL不変・本番の <title> で確認）。旧題は改善ログの「気づき」に控え
 - 改善ログ：2行を 完了・実施日・根拠の数字（実施前）・比べ方を記入／重複の古い候補行は「完了（重複）」で閉じた（消していない）→ 橋が「効果を見る日」11/3・結果＝判定待ち を自動で入れ、AI_QUEUE は 0件へ
-- ⏸ 担当ウソップの定義ファイル：★この環境は .claude/agents/ への書き込みを Write・Bash とも拒否（don't ask mode）。有璽氏の手でコピーしてもらう（下書き scratchpad/search-growth.md → 永続の置き場が要る）
+- ✅ 担当ウソップの定義 `.claude/agents/search-growth.md`：この環境は .claude/agents/ への書き込みを Write・Bash とも拒否（don't ask mode）→ 有璽氏が `! cp memory/_drafts/agent_search-growth.md …` で配置（10/13・cmp で一致確認）。★次に担当を足すときも同じ道（下書きを repo に置き、有璽氏の手で cp）

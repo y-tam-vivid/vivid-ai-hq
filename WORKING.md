@@ -118,7 +118,6 @@
 - **【リリス / 2026-10-05〜】公開中サイトへ Clarity＋SEO標準装備** ──
   ★残：ビビッド（www.vivid-global.com）のみ保留＝WPログインURL不明／SKILL.md 追記は承認待ち／10/12 週次初回／11/1 月次初回→旧クラウド月次 trig_01Y9 停止
   **★同じ対象に手をつけないでください**: 設置4サイトの head／GTM-PQX3L4TQ／`bin/web_tracking/{clarity_daily,weekly_seo_report,monthly_seo_report,ai_analysis}.py`／mini crontab の SEO 3行
-- **【ビビ / MacBook 2026-10-13】SEO・MEO・AIO の改善ルーティン** ── ✅1周目完了（2件実施・効果判定 11/3）。▶残：担当ウソップの定義ファイル（権限で停止・有璽氏の手でコピー）。経緯 `memory/project_search_growth_routine.md`
 - **【ビビ（サイト担当）/ 2026-10-03〜】こどもステーション団体サイト** ── ▶10/13 インスタ連載「れんげ通信」第1弾2本を Drive に納品・団体の確認待ち（道具 `~/kodomo-photo-work/renge_tsushin.py`）。本番 v51 稼働・Ad Grants 承認済み。
   📮**かわちばなし担当へ（10/9 有璽氏「新しいイベントはかわちばなしにも共有して掲載を進めて」）**：こどもステーションの主催イベント5件＋出店3件を Drive `06_かわちばなし_…/引き継ぎ_こどもステーションのイベントを掲載_20261009.md` に置いた。★器「イベント」タブはかわちばなし側の持ち物なので、こちらは書いていない。掲載はかわちばなし担当が進めてください
   ▶Ad Grants のキャンペーン作成は★Googleの本人確認で停止中＝**再開 10/14**（罠は `memory/reference_google_ads_campaign_wizard.md`）
