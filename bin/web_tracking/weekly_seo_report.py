@@ -9,6 +9,7 @@
             Clarity は日次シートに貯まった直近7日分（貯まっていない日数は表示で断る）
 材料        台帳 sites.json（gsc.property / gsc.page_contains / clarity）
             Google 鍵 ~/.vivid-relay/google_token_seo.json（webmasters.readonly＋gmail.send・シート用とは別）
+            MEO   gbp_weekly.py（鍵 google_token_gbp.json・3法人のビジネスプロフィール・10/13〜）
             Clarity 日次シート ~/.vivid-relay/clarity_sheet_id.txt（clarity_daily.py が毎日追記）
 心拍        ~/.vivid-relay/weekly_seo_report.last
 ★数字は API とシートの値だけ。推測で埋めない（無いものは「—」）
@@ -35,6 +36,7 @@ PROC_NAME = 'SEO週次レポート（weekly_seo_report.py）'   # ★⚙️自�
 PROBLEMS = []   # 部分失敗（AI・Notion・Slack・シート）を集めて心拍のメッセージに載せる
 LOG_HTML = ''
 AI_HTML = ''
+MEO_HTML = ''   # ★10/13 有璽氏「MEOも毎週に」＝gbp_weekly.py が作る表
 
 
 def creds():
@@ -265,6 +267,7 @@ def build(data, cur, prev, cdays, tags):
              'デッド＝押しても反応しない所を押した訪問の割合／怒り＝同じ所を連打した割合／すぐ戻る＝開いてすぐ戻った割合。'
              '読了の深さ＝ページの何%までスクロールしたか（平均）。指名検索＝施設名・社名を含む検索（AIEOの代わりの指標）。'
              'AI経由＝ChatGPT・Copilot・Perplexity等から来た訪問（Clarityの参照元）</div>')
+    h.append(MEO_HTML)
     h.append('<h3 style="margin:24px 0 6px">② AIの深掘りと今週の打ち手</h3>')
     h.append(AI_HTML or '<div style="font-size:12px;color:#7a6a5c">（AIの分析なし）</div>')
     h.append('<h4 style="margin:16px 0 4px;font-size:13px">機械が拾った変化（参考）</h4><div style="font-size:13px">')
@@ -302,7 +305,7 @@ def build(data, cur, prev, cdays, tags):
     for name, st in tags:
         h.append('%s　%s<br>' % (e(st), e(name)))
     h.append('</div><div style="font-size:11px;color:#7a6a5c;margin-top:20px">'
-             'Mac mini の weekly_seo_report.py が自動で作成。数字は Search Console と Clarity の値のみ（推測で埋めていない）。</div></div>')
+             'Mac mini の weekly_seo_report.py が自動で作成。数字は Search Console・Clarity・Googleビジネスプロフィールの値のみ（推測で埋めていない）。</div></div>')
     return '\n'.join(h)
 
 
@@ -427,7 +430,17 @@ def main():
             tags.append((s['name'], a.get('clarity', '—')))
         except Exception as ex:
             tags.append((s['name'], '✗ 点検失敗 %s' % str(ex)[:60]))
-    global LOG_HTML, AI_HTML
+    global LOG_HTML, AI_HTML, MEO_HTML
+    meo = {}
+    try:
+        import gbp_weekly
+        meo = gbp_weekly.collect(cur, prev)
+        if any(v.get('error') for v in meo.values()):
+            PROBLEMS.append('MEO')
+        MEO_HTML = gbp_weekly.build_html(meo, pct, f)
+    except Exception as ex:
+        PROBLEMS.append('MEO')
+        MEO_HTML = '<div style="font-size:12px;color:#b3261e">MEO（Googleビジネスプロフィール）を取得できませんでした（%s）</div>' % html.escape(str(ex)[:120])
     ai = {}
     if '--no-ai' not in sys.argv:
         from ai_analysis import analyze
@@ -440,6 +453,8 @@ def main():
             'clarity': ({k: v for k, v in d['clarity'].items() if k != 'days'} if d.get('clarity') else None),
             'brand_search': d.get('brand'), 'ai_referrals': (d['ai'][0] if d.get('ai') else None),
             'signals': [t for _, t in d.get('findings', [])], 'tag': dict(tags).get(d['name'])} for d in data]}
+        if meo:
+            payload['meo_google_business_profile'] = meo   # 店舗ごとの今週/先週（表示・経路・サイト・電話）とクチコミ
         try:
             payload['improvement_log'] = [{'site': r['site'], 'title': r['title'], 'state': r['state'],
                                            'effect': r['effect']} for r in improvement_log()]
@@ -473,6 +488,12 @@ def main():
         except Exception as ex:
             sys.stderr.write('週次サマリーの記録に失敗：%s\n' % ex)
             PROBLEMS.append('週次サマリー記録')
+        try:
+            if meo:
+                print('MEOを記録：%d行' % gbp_weekly.record(meo, cur))
+        except Exception as ex:
+            sys.stderr.write('MEOの記録に失敗：%s\n' % ex)
+            PROBLEMS.append('MEO記録')
     open(OUT_HTML, 'w', encoding='utf-8').write(body)
     subject = 'ふくち。グループ SEO週次レポート（%s〜%s）' % (cur[0][5:].replace('-', '/'), cur[1][5:].replace('-', '/'))
     if '--dry-run' in sys.argv:
