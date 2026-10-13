@@ -1,0 +1,42 @@
+<!-- ★2026-10-13 有璽氏「ナビに触れたら候補が出る形に（こどもSと同じ）」。WP「Code Snippets」の HTML スニペット（フッター）で入れる＝テーマは触らない。正本：~/vivid-ai-hq/bin/web_tracking/lsu_navdrop.html -->
+<style>
+.lsu-dd{position:relative;display:inline-flex;align-items:center}
+.lsu-dd>a::before{content:"";position:absolute;right:-12px;top:50%;width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg);opacity:.6}
+.lsu-dd{margin-right:12px}
+.lsu-dd-panel{position:absolute;top:100%;left:50%;transform:translate(-50%,6px);min-width:190px;padding:8px;margin-top:8px;background:#fff;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:grid;gap:2px;opacity:0;visibility:hidden;transition:opacity .15s,transform .15s;z-index:70;white-space:nowrap}
+.lsu-dd-panel::before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px}
+.lsu-dd:hover .lsu-dd-panel,.lsu-dd:focus-within .lsu-dd-panel,.lsu-dd.open .lsu-dd-panel{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.nav-menu .lsu-dd-panel a{display:block;padding:9px 14px;border-radius:9px;font-size:14px}
+.nav-menu .lsu-dd-panel a:hover{background:#FFF6D8}
+.nav-menu .lsu-dd-panel a:hover::after{display:none}
+@media (max-width:880px){
+  .lsu-dd{display:block;margin-right:0;width:100%}
+  .lsu-dd>a::before{display:none}
+  .lsu-dd-panel{position:static;transform:none!important;opacity:1;visibility:visible;box-shadow:none;background:none;padding:0 0 4px 14px;margin:0 0 0 6px;border-left:2px dotted #E0D6C2;border-radius:0;min-width:0}
+  .lsu-dd-panel::before{display:none}
+  .nav-menu .lsu-dd-panel a{padding:10px 4px;font-size:14px}
+}
+</style>
+<script>/*lsu-navdrop*/(function(){
+  var G=[
+    ['/about/ilife/',[['事業所概要','/company'],['スタッフ紹介','/about/staff'],['はじめての方へ','/beginners-guide']]],
+    ['/stand-up/',[['1日の流れ','/stand-up/daily-schedule/']]],
+    ['/news/',[['お知らせ一覧','/news/'],['活動風景（ブログ）','/%E6%B4%BB%E5%8B%95%E9%A2%A8%E6%99%AF/']]]
+  ];
+  var HIDE='/stand-up/daily-schedule/';   // 「1日の流れ」は STAND UP の下へ移す（上の段からは隠す・テーマのリンクは消さない）
+  function path(h){try{return new URL(h,location.origin).pathname.replace(/\/?$/,'/')}catch(e){return h}}
+  function run(){
+    var nav=document.querySelector('header .nav-menu'); if(!nav||nav.dataset.lsuDd) return; nav.dataset.lsuDd='1';
+    [].slice.call(nav.querySelectorAll(':scope > a')).forEach(function(a){ if(path(a.getAttribute('href'))===HIDE) a.style.display='none'; });
+    G.forEach(function(g){
+      var a=[].slice.call(nav.querySelectorAll(':scope > a')).filter(function(x){return path(x.getAttribute('href'))===g[0]})[0]; if(!a) return;
+      var w=document.createElement('span'); w.className='lsu-dd'; a.parentNode.insertBefore(w,a); w.appendChild(a);
+      var p=document.createElement('div'); p.className='lsu-dd-panel'; p.setAttribute('role','menu');
+      g[1].forEach(function(c){var l=document.createElement('a'); l.href=c[1]; l.textContent=c[0]; l.setAttribute('role','menuitem'); l.setAttribute('data-cta','nav-sub'); p.appendChild(l)});
+      w.appendChild(p); a.setAttribute('aria-haspopup','true');
+      a.addEventListener('touchstart',function(e){ if(window.innerWidth>880 && !w.classList.contains('open')){ e.preventDefault(); document.querySelectorAll('.lsu-dd.open').forEach(function(o){o.classList.remove('open')}); w.classList.add('open'); } },{passive:false});
+    });
+    document.addEventListener('click',function(e){ if(!e.target.closest('.lsu-dd')) document.querySelectorAll('.lsu-dd.open').forEach(function(o){o.classList.remove('open')}) });
+  }
+  if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
+})();</script>
