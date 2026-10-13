@@ -120,6 +120,7 @@
 - [SEO・MEO・AIOの改善ルーティン](project_search_growth_routine.md) — 打ち手→実施→効果→成功/失敗事例→制作へ。正本はNotion改善ログ・担当ウソップ（10/13〜）
 - [AIの作業待ち](AI_QUEUE.md) — 機械（seo_action_bridge.py）が毎朝書く。CLAUDE.md が毎ターン読み込む
 
+- [こどもSの記事を団体でも出せる形](project_kodomo_article_cms.md) — 団体のClaudeプロジェクト／こちら の2つの道を WordPress下書き→団体が公開 に合流（10/13 構想）
 ## MEMORY.md から移した現在地（2026-10-08 棚卸し）
 
 - [公開前の計測とSEO標準装備](feedback_seo_standard_kit.md) — Clarity＋Search Console＋サイトマップ。台帳 bin/web_tracking/sites.json
