@@ -16,6 +16,8 @@
 
 @WORKING.md
 
+@memory/AI_QUEUE.md
+
 ## 編集のルール（これを破るとズレが再発する）
 
 - **共通規範の本文は `.claude/skills/fukuchi-core/SKILL.md` にしか書かない。**

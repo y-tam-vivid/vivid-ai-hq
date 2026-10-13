@@ -27,6 +27,7 @@
 | ピタゴラス（システム） | `system-developer.md` | [INDEX_仕組み](INDEX_仕組み.md) ／ [INDEX_営業](INDEX_営業.md) ／ Skill `web-tracking-setup` |
 | エジソン（アプリ） | `app-developer.md` | [INDEX_仕組み](INDEX_仕組み.md) |
 | リリス（ウェブ） | `web-developer.md` | [INDEX_仕組み](INDEX_仕組み.md) ／ [INDEX_発信](INDEX_発信.md) ／ Skill `web-tracking-setup` |
+| ウソップ（SEO・MEO・AIO） | `search-growth.md`（★定義は有璽氏の承認待ち・10/13） | [INDEX_発信](INDEX_発信.md) ／ `project_search_growth_routine.md` ／ `AI_QUEUE.md` ／ Skill `web-tracking-setup` |
 | チョッパー（レスポンシブ） | `responsive-engineer.md` | [INDEX_発信](INDEX_発信.md) ／ Skill `web-tracking-setup` |
 | つる（データ検査役） | `data-auditor.md` | [INDEX_営業](INDEX_営業.md) ／ [INDEX_notion](INDEX_notion.md) |
 | ドーベルマン（自動処理の番人） | `automation-watchdog.md` | [INDEX_仕組み](INDEX_仕組み.md) |
