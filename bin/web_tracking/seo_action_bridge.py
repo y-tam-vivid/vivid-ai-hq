@@ -25,7 +25,7 @@ RELAY = os.path.expanduser('~/.vivid-relay')
 REPO = os.path.abspath(os.path.join(HERE, '..', '..'))
 sys.path.insert(0, RELAY)
 sys.path.insert(0, HERE)
-from weekly_seo_report import notion, plain, NOTION_DS   # noqa: E402
+notion = plain = NOTION_DS = None    # ★import は main の try の中で読む（落ちても心拍に「失敗」を残す・ドーベルマン 10/13 必須1）
 
 JST = dt.timezone(dt.timedelta(hours=9))
 QUEUE_MD = os.path.join(REPO, 'memory', 'AI_QUEUE.md')
@@ -33,6 +33,7 @@ ASK_PREFIX = '【SEO週次】打ち手の採否：'
 DONE = os.path.join(RELAY, 'seo_bridge_done.json')      # 反映済みの ask_id（同じ回答を二度動かさない）
 PROC_NAME = 'SEO打ち手の橋（seo_action_bridge.py）'
 EFFECT_DAYS = 21
+DROPPED = 0
 DRY = '--dry-run' in sys.argv
 
 
@@ -62,6 +63,7 @@ def update(pid, props):
 
 
 def apply_answers(log):
+    global DROPPED
     done = set(json.load(open(DONE))) if os.path.exists(DONE) else set()
     items = json.load(open(os.path.join(RELAY, 'ask_hub_queue.json')))['items']
     moved = []
@@ -82,6 +84,8 @@ def apply_answers(log):
                 if '担当' in props:
                     r['who'] = 'AI（ウソップ）'
                 moved.append('%s → %s：%s' % (k, new, r['title'][:40]))
+        if new and not hit and not [r for r in log if r['title'][:60] == head[:60]]:
+            DROPPED += 1                     # 該当行が無い回答（消された等）＝数を心拍に出す
         if new and (hit or not [r for r in log if r['title'][:60] == head[:60]]):
             done.add(k)                      # 反映した／該当行が無い（消された等）ものは二度見ない
     if not DRY:
@@ -129,10 +133,14 @@ def write_queue(log):
     if DRY:
         print(text)
         return len(todo), len(judge), False
-    if strip(old) == strip(text):
-        return len(todo), len(judge), False          # 中身が同じなら書かない（毎朝の空コミットを作らない）
-    open(QUEUE_MD, 'w', encoding='utf-8').write(text)
     rel = os.path.relpath(QUEUE_MD, REPO)
+    if strip(old) == strip(text):
+        # ★前回 commit が落ちて未コミットのまま残っていたら、commit だけやり直す（ドーベルマン 10/13 必須2）
+        dirty = subprocess.run(['git', '-C', REPO, 'status', '--porcelain', '--', rel], capture_output=True, text=True).stdout.strip()
+        if not dirty:
+            return len(todo), len(judge), False      # 中身が同じなら書かない（毎朝の空コミットを作らない）
+    else:
+        open(QUEUE_MD, 'w', encoding='utf-8').write(text)
     subprocess.run(['git', '-C', REPO, 'add', '--', rel], check=True)          # ★このファイルだけ（git add -A は使わない）
     subprocess.run(['git', '-C', REPO, 'commit', '-q', '-m', 'AI_QUEUE：実施待ち%d件・効果判定%d件（seo_action_bridge 自動）'
                     % (len(todo), len(judge)), '--', rel], check=True)
@@ -150,11 +158,14 @@ def beat(ok, msg):
 
 
 def main():
+    global notion, plain, NOTION_DS
+    from weekly_seo_report import notion, plain, NOTION_DS   # noqa: F811
     log = rows()
     moved = apply_answers(log)
     n = set_check_dates(log)
     t, j, wrote = write_queue(log)
-    msg = 'OK 回答の反映%d件・効果を見る日%d件・作業待ち 実施%d／判定%d%s' % (len(moved), n, t, j, '（AI_QUEUE更新）' if wrote else '')
+    msg = 'OK 回答の反映%d件・効果を見る日%d件・作業待ち 実施%d／判定%d%s%s' % (len(moved), n, t, j, '（AI_QUEUE更新）' if wrote else '',
+                                                         '／該当行なしで捨てた回答%d件' % DROPPED if DROPPED else '')
     for m in moved:
         print(' ', m)
     print(msg)
