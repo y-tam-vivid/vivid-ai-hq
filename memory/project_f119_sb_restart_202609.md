@@ -135,3 +135,9 @@ LPの差は「クリック後の予約率」でしか測れず、1本あたり�
 - kids-a 230／kids-b 229／kids-c 228／shuro-c 194 は全件。shuro-a・shuro-b は100件ずつ（1ページ目だけ送られた）
 - 残り96件ずつに「119医療202610_shuro-a_残り」「…shuro-b_残り」タグ。送信画面で各96件と出ることを確認（10/9）
 - ★地雷：送信画面のリストタグ欄は「検索条件を適用」を押すまで反映されない（0件に見える）。1ページ100件＝100超は取りこぼす。送る前に「◯件を送信」の数字を見る
+
+## 2026-10-13 第1波の途中経過（SB API 送信履歴1,081行・engagement・tracking／Clarity 画面）
+- 送信1,081件のうち SUCCESS 289（27%）。NEEDS_REVIEW 192・PRE_SUBMIT_REVIEW 146・FAIL 214・フォーム無し等 240
+- クリックした会社 7社（kids-a 1／kids-b 2／kids-c 1／shuro-a 1／shuro-b 1／shuro-c 1）。全社が SUCCESS の送信先
+- LPに着いた記録（utm=salesbreaker）：SBタグ 4人・Clarity 3セッション（kids-a 3分26秒／shuro-b 2分04秒／kids-b 31秒）。予約ボタンのクリックは0（Clarity の cta_* 1セッションは 10/8 の check）
+- shuro-a_残り・shuro-b_残り（各96件）は10/13時点で未送信。案の優劣は件数が少なく判定不可
