@@ -1,0 +1,16 @@
+# ko-station.org ゾーン（さくら ドメインコントロールパネル・2026-10-13 14:1x 編集前の控え・SOA シリアル 2026100502）
+@ NS ns1.dns.ne.jp.
+@ NS ns2.dns.ne.jp.
+@ A 216.150.1.1
+@ MX 10 www1094.sakura.ne.jp.
+@ TXT "v=spf1 a:www1094.sakura.ne.jp mx ~all"
+@ A 216.150.16.1
+@ TXT "google-site-verification=43lozRkBYNCr57URne1khrlPL_b8b9aemAQqNB3sbFI"
+www CNAME @
+ftp CNAME @
+mail CNAME @
+resend._domainkey TXT "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDINrJ4BI8DHi0NoJpBPJTTD2PBpoxtGnkVQUSSD4H4HvRVc6NekGSrls1YNikywUZYPwUKsQZRc8S6b7cHEsB6uXWE9HucTy5jqL+6Huxd9+d8+MzvetsWmjPc9eywKlqF0gFMHk3TcQ7zLffJuJPFBXibBbx5TwVS64vyZPR61wIDAQAB"
+rsend CNAME rsend-apne1.forge.rmta.net.
+send CNAME send.forge.rmta.net.
+_dmarc TXT "v=DMARC1; p=none;"
+# 足す予定：cms A 210.224.185.82（ふくち。側さくら vivid.sakura.ne.jp）
