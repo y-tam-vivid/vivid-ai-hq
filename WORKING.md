@@ -93,17 +93,18 @@
   ★現行 cross-care.net への追加調査は凍結。★`scratchpad/_restricted_iryo/` は設計/実装担当に渡さない・実データを入れない。
   経緯 `memory/project_iryo_renkei_system.md`
   **★同じ対象に手をつけないでください**: `scratchpad/iryo-renkei/`・`scratchpad/_restricted_iryo/`・`~/iryo-renkei-app`
-- **【ビビ / MacBook 2026-10-05〜】かわちばなし** ── 本番 `kawachibanashi.osaka.jp` 公開中（イベント30件・18版まで反映済み）。
+- **【ビビ / MacBook 2026-10-05〜】かわちばなし** ── 本番 `kawachibanashi.osaka.jp` 公開中（イベント29件・19版まで反映済み）。
   ★本番へ出す道は mini の `kb_live.sh` ただ1本（MacBook に鍵が無い・Vercel 経路は画像が運べない）。
   **10/13 有璽氏の判断4件が出た**（03の4行は閉じた）：①終わった催しは一覧から外して現地レポートへ繋ぐ
   ②記事を増やす改修は依頼する ③毎週ある催し（火曜の食堂など）は今は載せない ④幅の崩れは点検する
   ①は実装・本番反映済み（一覧29件／落とした1件＝kb-0053。★詳細 event-kb-0053.html は残して記事へ繋いだ）。
-  ④点検済み＝**360px以上は7ページとも崩れ0件**。崩れるのは320〜359pxの帯だけ（結果 mini `kawachi_responsive_result.md`）。
-  ▶**有璽氏の手：指示文24番と25番をデザイン側へ渡す**（03の「## 今週」に2行）。25番＝小さい画面の横あふれ3か所。
-  ★直すのはデザイン側（kb_live.sh で当てると次の版で消える）。直った後は同じ幅掃きで0件を測り直す。
+  ✅**19版を本番へ反映済み（10/13 19:32）**＝24番（記事を `kawachi-reports.js` の1か所へ）と25番（小さい画面の横あふれ3か所）の両方。
+  Drive `02_デザインの版/地域イベントポータルサイト設計 19`（135件）。★トップも19版で配れた（18版は picks で止まり17版のままだった）。
+  ▶**残り：幅の直りの再測定（チョッパーが実行中）**。結果は mini `kawachi_responsive_result.md` の末尾。
   ▶有璽氏の手の作業：器の下書き47件に「確認した／公開する」を付ける（03の「## いつでも」に行あり）
   ▶待ち：人形劇（kb-0057）の参加費（決まったら連絡＋★チラシ制作の依頼が来る見込み）／写真URLが空のイベントが多い
-  ★記事を1本足すと `kb_live.sh` の6か所に手が要る。経緯 `memory/project_kawachibanashi_portal.md`
+  ★記事の2本目からは `kawachi-reports.js` に1本書く＋写真を uploads へ（kb_live.sh は触らない）。
+  ★残る手作業は `_SEO_PAGES["report"]` の題と説明だけ（いまは1本目の題が固定で出る）。経緯 `memory/project_kawachibanashi_portal.md`
   **★同じ対象に手をつけないでください**: `~/.vivid-relay/kb_collect.py`／シート `1mRp6Cx…` の「イベント」タブと kb-0051/0053〜0058 ／
   `bin/web_tracking/sites.json` のかわちばなしの行／`kb_live.sh`／`~/kb_build`／`~/kb_live`
 - **【ビビ / 2026-10-09〜】定期タスクの自動起票** ── 本番稼働（mini cron 毎朝7:05・レジスタ「定期タスクの自動起票」）。▶初回の実物確認が残り（見方は `memory/project_personal_task_system.md` の末尾）。**★同じ対象に手をつけないでください**: mini `~/.vivid-relay/recurring_tasks.py`／Notion「🔁 定期タスク台帳」
