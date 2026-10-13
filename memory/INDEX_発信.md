@@ -115,6 +115,7 @@
 - [★取材ぶんは種類の受け皿へ](project_kawachibanashi_portal.md) — 10/11 04_画像素材/06_イベントレポート/<日付>。素材直下に日付を置かない
 - [★記録にフォルダ番号で書かない](project_kawachibanashi_portal.md) — 10/11 1日でずれた。名前で書く。現地レポートはget reports()1か所に決まった
 - [かわちばなし・トップもシート](project_kawachibanashi_portal.md) — ✅10/5 本番反映済(2経路一致)。🔴11/1に0件→更新が止まる。v3はDrive
+- [かわちばなし・判断4件が確定](project_kawachibanashi_portal.md) — ★10/13 終わった催しは外して記事へ繋ぐ／増やす改修は依頼／定例は載せない／幅の点検は実施
 
 
 - [SEO・MEO・AIOの改善ルーティン](project_search_growth_routine.md) — 打ち手→実施→効果→成功/失敗事例→制作へ。正本はNotion改善ログ・担当ウソップ（10/13〜）
