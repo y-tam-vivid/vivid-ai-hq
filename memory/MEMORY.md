@@ -48,3 +48,4 @@
 - [仮称を識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 識別子は役割で付ける。置換は数えてから
 - [インスタは毎回確認](feedback_ask_instagram_each_time.md) — 活動レポートを作るたび、どの法人でも「投稿文と画像を作るか／投稿までするか」を聞く。★投稿しない決定も恒久にしない
 - [Workspaceのagentic設定](reference_workspace_agentic_oauth.md) — 11/11期限のGoogle通知はREST APIだけの今の仕組みに影響なし。既存クライアントに印を付けない（10/13 有璽氏決定）
+- [SEO・MEO・AIOの改善ルーティン](project_search_growth_routine.md) — 打ち手→実施→効果→成功/失敗事例→サイト制作へ。正本はNotion改善ログ（10/13 有璽氏・構築中）
