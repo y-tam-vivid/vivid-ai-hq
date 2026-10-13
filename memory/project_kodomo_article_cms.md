@@ -41,3 +41,4 @@ metadata:
 - ✅**2026-10-13 ③WordPress 設置完了**（有璽氏が「WordPress追加」）：http://cms.ko-station.org/kodomo-cms/ ・トップ/ログイン/wp-json とも 200・robots noindex,nofollow。
 - ▶**④無料SSL**：Let's Encrypt は www.cms の名前解決も要る → ko-station.org ゾーンに `www.cms A 210.224.185.82` を追加（控えに追記・ns1/ns2/8.8.8.8 で解決・apex/MX/サイト200 不変）。無料SSLの最終画面は「Let's Encryptの利用ポリシーに同意する」＋「無料SSL証明書登録」＝★規約の同意なので有璽氏の手。済んだら WordPress の URL を https へ。
 - ▶2026-10-13 14:2x 有璽氏が無料SSL（Let's Encrypt）を登録。直後は共有証明書（*.sakura.ne.jp）のまま＝発行待ち。こちらで2分おきに見張り中（最長2時間）。発行されたら ⑤WordPress の URL を https へ。
+- ✅**2026-10-13 14:36 ④無料SSL 発行**（Let's Encrypt・CN=cms.ko-station.org）。https://cms.ko-station.org/kodomo-cms/ 200。wp-json では url=http（★siteurl がまだ http）・home=https。▶⑤siteurl を https へ＝WP 管理画面のログインが要る（さくらの「管理画面」自動ログインは別窓に開いて、こちらのタブには引き継がれず wp-login の再認証へ）＝有璽氏にログインしてもらう。★同じさくらに vivid-global.com の WP もある＝さくらの WordPress 一覧で触るのは cms の行だけ。
