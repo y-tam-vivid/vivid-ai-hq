@@ -40,3 +40,4 @@ metadata:
 - ▶**2026-10-13 14:2x ③WordPress クイックインストールの入力を途中まで用意**（ふくち。側 vivid を再確認済み）：サイトURL http://cms.ko-station.org/ ＋「Web公開フォルダーを変更せずにサブディレクトリ」＝ kodomo-cms（→ http://cms.ko-station.org/kodomo-cms/）／DB 自動設定（DBパスワード不要）／サイトタイトル「こどもステーション 記事管理」／検索エンジンに表示しない＝✓。★ユーザー名・パスワード・メール・規約同意・「WordPress追加」は有璽氏の手。★SSL 未設定のため http で入る＝④無料SSLの後に WordPress のURLを https へ直す。
 - ✅**2026-10-13 ③WordPress 設置完了**（有璽氏が「WordPress追加」）：http://cms.ko-station.org/kodomo-cms/ ・トップ/ログイン/wp-json とも 200・robots noindex,nofollow。
 - ▶**④無料SSL**：Let's Encrypt は www.cms の名前解決も要る → ko-station.org ゾーンに `www.cms A 210.224.185.82` を追加（控えに追記・ns1/ns2/8.8.8.8 で解決・apex/MX/サイト200 不変）。無料SSLの最終画面は「Let's Encryptの利用ポリシーに同意する」＋「無料SSL証明書登録」＝★規約の同意なので有璽氏の手。済んだら WordPress の URL を https へ。
+- ▶2026-10-13 14:2x 有璽氏が無料SSL（Let's Encrypt）を登録。直後は共有証明書（*.sakura.ne.jp）のまま＝発行待ち。こちらで2分おきに見張り中（最長2時間）。発行されたら ⑤WordPress の URL を https へ。
