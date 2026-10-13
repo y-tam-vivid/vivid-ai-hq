@@ -14,3 +14,4 @@ rsend CNAME rsend-apne1.forge.rmta.net.
 send CNAME send.forge.rmta.net.
 _dmarc TXT "v=DMARC1; p=none;"
 # 足す予定：cms A 210.224.185.82（ふくち。側さくら vivid.sakura.ne.jp）
+# 2026-10-13 14:3x 追加：cms A 210.224.185.82 ／ www.cms A 210.224.185.82（無料SSL＝Let's Encrypt が www.cms の名前解決を要求したため）
