@@ -79,6 +79,9 @@ SPEC = [
     #   SalesBreaker の文面保存の直前に、計測セット（SB・GA4・Clarity・クリックログ）を検査して
     #   揃っていなければ止める。対象外は bin/web_tracking/exempt.json（理由つき）。
     ('PreToolUse',       'hook_web_tracking_gate.py',  'Bash',                    30),
+    # ★2026-10-14 有璽氏承認。Slackのボタンの回答がセッションへ届く経路が無く、押されても気づかなかった（10/7・10/14 再発）。
+    #   まだ見せていない回答を毎ターン差し込む。mini に届かなければ黙って抜ける。
+    ('UserPromptSubmit', 'hook_ask_answers.py',        None,                      10),
 ]
 
 hooks = d.setdefault('hooks', {})
