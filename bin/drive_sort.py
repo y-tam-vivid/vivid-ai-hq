@@ -46,16 +46,26 @@ DATE_RE = [
 
 
 def date_from_name(name):
+    """★月00・日00 を出さない（「2026-005」で 2026-00-01 を作った実害・2026-10-14）"""
     for rx, f in DATE_RE:
         m = rx.search(name)
         if m:
             try:
-                y = int(f(m)[:4])
-                if 2015 <= y <= datetime.date.today().year + 1:
-                    return f(m)
+                v = f(m)
+                y, mo, d = int(v[:4]), int(v[5:7]), int(v[8:10])
+                if 2015 <= y <= datetime.date.today().year + 1 and 1 <= mo <= 12 and 1 <= d <= 31:
+                    return v
             except Exception:
                 pass
     return None
+
+
+def safe_name(x):
+    """★ファイル名に使えない文字を直す（2026-07-20 の記録にあったのに実装し忘れ、
+       「2025/09/03のBNI天竜」で移動が落ちた・2026-10-14）"""
+    x = x.replace("/", "・").replace(":", "：").replace("\\", "・")
+    x = re.sub(r"[\x00-\x1f]", "", x)
+    return x.strip(" .")[:150]
 
 
 def birth(path):
@@ -151,8 +161,29 @@ def stage1(info):
 
 HAIKU_PROMPT = """あなたはふくち。グループの書類を仕分けます。JSONだけを返してください。
 
-部門は次のどれか1つ：
-10_経営企画室 / 11_事業開発 / 12_マーケティング / 13_営業 / 14_管理 / 15_施設運営 / _個人(本人限定) / 不明
+部門は次のどれか1つ。★その部門が何を扱うかは下のとおり：
+10_経営企画室    会社全体の方針・組織・KGI・社外共有の制作物・補助金の申請
+11_事業開発      新規事業・デザイン制作・Web制作・プロダクト開発・社内のAI活用
+12_マーケティング 広報・SNS・プレスリリース・イベント・調査研究
+13_営業          商談・提案資料・顧客や取引先の資料・パートナー・案件の進行
+14_管理          労務(勤怠・給与)／経理(請求・支払・口座)／法務(契約・弁護士・訴訟)／
+                 採用(応募・履歴書・面接)／総務(サブスク・社内の契約事務)
+15_施設運営      LIFE STAND UP・オレンジワークス・リアンライフ等、福祉の現場運営
+                 (支援記録・加算・実地指導・利用者・保護者)
+_個人(本人限定)   有璽氏個人の学び・健康・家計・私的な記録（会社の仕事でないもの）
+                 ★取引先・顧客の破産や債権債務、紹介された人の資料は「会社の仕事」＝個人ではない
+                 ★個人に入れるのは、会社の誰にも関係しない本人だけのもの
+不明             ★上のどれにも当てはめられないとき
+
+★よくあるものの行き先
+   他社の会社案内・サービス資料・業界の参考資料   → 13_営業（相手を知るための資料）
+   書籍の要約・講座・セミナー・思想や自己啓発     → _個人(本人限定)
+   催しの名簿・申込者一覧                      → その催しを持つ部門（多くは12_マーケティング）
+   研究・調査・論文                           → 12_マーケティング（調査・リサーチ部）
+   AIやツールの使い方・プロンプト集             → 11_事業開発（社内のAI活用）
+
+★「誰宛か」ではなく「★どの仕事の書類か」で決める。
+   例：ILIFE宛でも、契約書なら14_管理（法務）、請求書なら14_管理（経理）、支援記録なら15_施設運営
 
 種類は次のどれか1つ：
 契約書 / 請求書 / 提案書 / 議事録 / 資料 / 様式 / 報告書 / 申請 / データ / 記録 / 素材 / 不明
@@ -191,16 +222,21 @@ def stage2(info, hints=()):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--cat", required=True)
+    ap.add_argument("--cat")
+    ap.add_argument("--dir", help="任意のフォルダを対象にする（_要判断 の再判定など）")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--limit", type=int, default=0)
     a = ap.parse_args()
-    src = None
-    for x in os.listdir(ARC):
-        if nfc(x) == nfc(a.cat):
-            src = os.path.join(ARC, x)
-    if not src:
-        print("カテゴリが無い:", a.cat); sys.exit(1)
+    if a.dir:
+        src = a.dir if os.path.isabs(a.dir) else os.path.join(DEP, a.dir)
+        a.cat = os.path.basename(src)
+    else:
+        src = None
+        for x in os.listdir(ARC):
+            if nfc(x) == nfc(a.cat or ""):
+                src = os.path.join(ARC, x)
+    if not src or not os.path.isdir(src):
+        print("対象が無い:", a.cat or a.dir); sys.exit(1)
 
     items = [x for x in sorted(os.listdir(src)) if not x.startswith(".")]
     if a.limit:
@@ -236,7 +272,7 @@ def main():
                 tai = raw[:34]
             base = "【%s】%s" % (tgt.get("種類", "資料"), "_".join([t for t in (tai, you) if t])[:46])
             ext = os.path.splitext(info["name"])[1] if info["kind"] == "ファイル" else ""
-            newname = "%s%s_v1%s" % (info["date"], base, ext)
+            newname = safe_name("%s%s_v1%s" % (info["date"], base, ext))
         plan.append({"元": info["name"], "先": dest, "新": newname, "根拠": why, "確信": conf})
         print("%-40s → %-28s %s" % (info["name"][:40], dest, conf))
         if dest != "_要判断_20261014":
