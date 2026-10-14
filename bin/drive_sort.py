@@ -305,6 +305,11 @@ def main():
                 raw = os.path.splitext(info["name"])[0]
                 raw = re.sub(r"^\s*20\d{2}[-_./年]\s*\d{1,2}[-_./月]?\s*\d{0,2}日?\s*", "", raw)
                 raw = re.sub(r"【[^】]*】", "", raw).strip(" _-")
+                # ★2026-10-15：名前が【】だけのファイルは、掃除で中身が消えて
+                #   「2026-04-21【資料】_v1.docx」という名無しになる
+                #   （実測：「【ビジネスメンバー採用の流れ】.docx」）。空なら元の名前を使う
+                if not raw:
+                    raw = os.path.splitext(info["name"])[0].strip("【】 _-")
                 tai = raw[:34]
             base = "【%s】%s" % (tgt.get("種類", "資料"), "_".join([t for t in (tai, you) if t])[:46])
             ext = os.path.splitext(info["name"])[1] if info["kind"] == "ファイル" else ""
