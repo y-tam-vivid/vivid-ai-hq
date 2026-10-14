@@ -170,7 +170,7 @@ def main(dry=True, beat=False):
         return 0
 
     try:
-        r = subprocess.run([CLAUDE, '-p', prompt], cwd=REPO,
+        r = subprocess.run([CLAUDE, '--model', 'haiku', '-p', prompt], cwd=REPO,
                            capture_output=True, text=True, timeout=TIMEOUT)
         out = (r.stdout or '').strip()
         ok = (r.returncode == 0)

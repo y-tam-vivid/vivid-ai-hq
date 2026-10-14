@@ -139,7 +139,7 @@ def run_agent(agent, task, angle, role):
 600文字以内。日本語。**やっていないことをやったように書かない。**
 """ % (agent, agent, role, angle, task)
     try:
-        r = subprocess.run([CLAUDE, '-p', prompt], cwd=REPO,
+        r = subprocess.run([CLAUDE, '--model', 'sonnet', '-p', prompt], cwd=REPO,
                            capture_output=True, text=True, timeout=TIMEOUT)
         return agent, (r.stdout or '').strip(), r.returncode == 0
     except Exception as e:
