@@ -19,7 +19,7 @@
 
 - [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語。★英語の要約から再開した直後に英語化した(10/12)
 - [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／制作物も既存物も自動で正としない
-- [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。適するモデルは能動的に推奨
+- [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。★定型の仕分けはHaiku＋機械。迷いは人へ(10/14)
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — 数え方を添える。★回数は grep -o|wc -l（grep -c は行の数）
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 出どころの違う2経路で。自分の警告・自分が書いた印を事実と取り違えない
 - [記録の「待ち」は腐る](reference_stale_premise_daily.md) — ★着手前に実測。10/14 cronの「切替待ち」が3か月そのままだった
