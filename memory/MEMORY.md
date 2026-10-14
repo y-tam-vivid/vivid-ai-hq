@@ -39,7 +39,7 @@
 - [他言語文字の混入](reference_unicode_escape_kanji_swap.md) — カタカナ語の1字目が化ける。台帳へ書く直前に非ASCIIを数える
 - [鍵の扱い](reference_plaintext_credentials_handling.md) — 人が入れる／AIは読めない。★Drive直下のclient_secretは有璽氏判断で現状維持(10/14)
 - [器のコピーはフォームも増やす](reference_sheet_backup_breeds_form_copies.md) — ★フォーム付きの器はsnapshot()。51個が人のドライブに溜まった
-- [ドライブの置き場](reference_drive_placement_rules.md) — 案件のものはマイドライブに置かない＝共有ドライブの案件フォルダが正本（10/14）
+- [ドライブの置き場](reference_drive_placement_rules.md) — 案件のものは共有ドライブが正本。★AIが消せないものは1フォルダにまとめて渡す(10/14)
 - [★外出先ではminiに届かない](project_macmini_remote_workhorse.md) — 10/10 .localもIPも同じLAN内だけ。まず自分の網を見る
 - [Mac mini作業機](project_macmini_remote_workhorse.md) — ssh mini＝Tailscale経由(10/11〜外でも届く)。家LAN用は mini-lan
 - [miniの実行環境](reference_mac_mini_execution_env.md) — cron/launchdは環境変数なし＝スクリプトがconfig.envを自分で読む
