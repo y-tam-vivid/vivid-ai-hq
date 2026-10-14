@@ -32,6 +32,11 @@ SENSITIVE = ["是正勧告", "勧告書", "診断", "障害者手帳", "給与",
 #   正本＝14_管理/14-300_法務部/_機微。案件部門にはショートカット（権限は元を継ぐので漏れない）
 #   ★「参考」「ひな形」「サンプル」が付くものは原本でない＝機微にしない
 CONTRACT = ["契約書", "覚書", "念書", "合意書", "示談書"]
+# ★労務・採用の個人書類は規則で寄せる（判定表に「給与明細・応募者・従業員の個人情報」と明記）
+#   2026-10-14 実測：_要判断28件のうち12件がこれ。Haikuは機微を前に「確信:低」を返しがち
+LABOR = ["勤怠", "勤務表", "出勤表", "シフト表", "稼働報告", "労働条件", "雇用契約",
+         "標準報酬", "社会保険", "健康保険", "厚生年金", "給与明細", "賃金"]
+HIRING = ["応募", "履歴書", "職務経歴", "経歴書", "採用の流れ", "誓約書", "面接", "コンピテンシー"]
 CONTRACT_NOT = ["参考", "ひな形", "雛形", "サンプル", "テンプレ"]
 
 
@@ -154,9 +159,15 @@ def stage1(info):
     sens = [w for w in SENSITIVE if w in hay]
     hints = [k for k in BIZ if k in hay]
     contract = is_contract_original(hay)
+    labor = any(k in hay for k in LABOR)
+    hiring = any(k in hay for k in HIRING)
     if contract:
         sens = sens + ["契約原本"]
-    return {"ヒント": hints, "機微": sens, "契約原本": contract}
+    if labor:
+        sens = sens + ["労務の個人書類"]
+    if hiring:
+        sens = sens + ["採用の個人書類"]
+    return {"ヒント": hints, "機微": sens, "契約原本": contract, "労務": labor, "採用": hiring}
 
 
 HAIKU_PROMPT = """あなたはふくち。グループの書類を仕分けます。JSONだけを返してください。
@@ -243,8 +254,15 @@ def main():
         items = items[:a.limit]
     print("対象 %d 個（%s）\n" % (len(items), a.cat))
     plan = []
+    MEDIA = (".mov", ".mp4", ".m4a", ".mp3", ".wav", ".png", ".jpg", ".jpeg", ".heic", ".gif", ".psd", ".ai")
+    skipped = 0
     for x in items:
         p = os.path.join(src, x)
+        # ★中身を読めないもの（音声・動画・画像）はAIへ投げない。名前だけで動かす価値が薄い
+        #   2026-10-14 実測：16_音声・動画メモ 15件がすべて「要判断」に落ちた
+        if os.path.isfile(p) and os.path.splitext(x)[1].lower() in MEDIA:
+            skipped += 1
+            continue
         info = peek(p)
         s1 = stage1(info)
         tgt = stage2(info, s1["ヒント"])
@@ -253,7 +271,8 @@ def main():
         if s1["機微"]:
             why += " ／★機微語 " + "・".join(s1["機微"][:3])
         dep = tgt.get("部門", "不明")
-        if dep == "不明" or conf == "低":
+        forced = s1.get("契約原本") or s1.get("労務") or s1.get("採用")
+        if (dep == "不明" or conf == "低") and not forced:
             dest = "_要判断_20261014"
             newname = info["name"]
         else:
@@ -261,6 +280,12 @@ def main():
             if s1.get("契約原本"):
                 dest = "14_管理/14-300_法務部/_機微"
                 why += " ／★契約原本は規則で法務へ"
+            elif s1.get("労務"):
+                dest = "14_管理/14-100_労務部/_機微"
+                why += " ／★労務の個人書類は規則で労務へ"
+            elif s1.get("採用"):
+                dest = "14_管理/14-400_採用部/_機微"
+                why += " ／★採用の個人書類は規則で採用へ"
             else:
                 dest = dep + ("/_機微" if s1["機微"] else "")
             tai = (tgt.get("対象") or "").strip()
@@ -279,7 +304,8 @@ def main():
             print("     %s" % newname[:76])
         print("     %s" % why)
 
-    print("\n合計 %d ／ 要判断 %d" % (len(plan), sum(1 for x in plan if x["先"].startswith("_要判断"))))
+    print("\n合計 %d ／ 要判断 %d ／ ★素材で飛ばした %d" % (
+        len(plan), sum(1 for x in plan if x["先"].startswith("_要判断")), skipped))
     out = "/tmp/drive_sort_%s.json" % re.sub(r"\W", "_", a.cat)
     json.dump(plan, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print("提案:", out)
