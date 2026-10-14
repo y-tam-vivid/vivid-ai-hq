@@ -112,3 +112,4 @@ env -i HOME=… PATH=/usr/bin:/bin claude -p … → Failed to authenticate: OAu
 → ★claude を呼ぶスクリプトは config.env から `CLAUDE_CODE_OAUTH_TOKEN` を subprocess の env へ渡す。確かめるのは `env -i` で。
 ✅**10/14 直した（#c31c98 有璽氏承認）**：入口 `~/.vivid-relay/claude_cron.sh`（git `bin/claude_cron.sh`）が config.env から読んで本体を exec。
 self_audit / memory_sweep / slack_inbox / inbox_runner / team_run / run_agent.sh の6か所をこの入口へ。★新しく claude を呼ぶものもこの入口を使う。
+✅**10/14 `--model` も明示（#fa2a60 有璽氏「仕分け系はHaiku／指示を実行する系はSonnet」）**：memory_sweep=haiku、ほか5本=sonnet。★新しく足すものも必ず --model を書く（Core_Brain 17_モデルの使い分け）。
