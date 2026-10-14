@@ -280,6 +280,20 @@ CRON_APPLY="$HOME/vivid-ai-hq/bin/cron_apply.sh"
 DAILY_JOBS="$HOME/vivid-ai-hq/bin/daily_jobs.sh"
 [ -x "$DAILY_JOBS" ] && "$DAILY_JOBS" >/dev/null 2>&1 || true
 
+# ④'''' 「過去の地雷」一覧を mini から写す（2026-10-14 #4ea78c 有璽氏「同期のたびにminiから写す」）
+#       一覧 landmines.json を作るのは mini の cron（毎朝08:25 build_landmine_index.py）だけ。
+#       注入フックは自分の ~/.vivid-relay/landmines.json を読むので、写さないと古いまま
+#       （実害：MacBook は 9/29 版のまま10/14まで、⛔を付けた行を毎ターン注入していた）。
+#       作る側でない機械だけが写す。届かない・JSONとして読めないときは手元をそのまま使う。
+if ! crontab -l 2>/dev/null | grep -q build_landmine_index; then
+  LM="$HOME/.vivid-relay/landmines.json"
+  LMT="${LM}.incoming"
+  if /usr/bin/scp -q -o ConnectTimeout=3 -o BatchMode=yes mini:.vivid-relay/landmines.json "$LMT" 2>/dev/null \
+     && /usr/bin/python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "$LMT" 2>/dev/null; then
+    cmp -s "$LMT" "$LM" || mv -f "$LMT" "$LM"
+  fi
+fi
+
 # ⑤ 心拍（失敗しても本体は落とさない）
 if [ -f "$HEARTBEAT" ]; then
   MSG="未取込${BEHIND}件 / 未push${AHEAD}件 / 未コミット${DIRTY}件 / 取込=${MERGED} / 送信=${PUSHED}"
