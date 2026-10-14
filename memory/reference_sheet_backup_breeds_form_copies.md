@@ -36,3 +36,23 @@ sheets_client.backup(file_id, title)
 回答は原本にだけ入る。コピーは誰にも配っていないので、回答は1件も入らない。
 
 関連 [[project_kawachibanashi_portal]] ／ [[feedback_memory_index_hygiene]]（作ったものの寿命を決める）
+
+## 止め方（2026-10-14 実装・実測で止まることを確認）
+
+`sheets_client.backup()` の冒頭でタブを見て、「フォームの回答」で始まるタブがあれば
+**RuntimeError で止める**（`force=True` のときだけ複製する）。
+
+```
+実測  backup("1mRp6Cx…") → ★止まった
+      「この器にはフォームが繋がっている（フォームの回答 2／フォームの回答 1）。…snapshot を使うこと」
+控え  ~/.vivid-relay/_backups/sheets_client.py.bak_20261014-1454_formguard（15,910B）
+      15,910B → 17,110B（+1,200B）
+```
+
+★**捨てる操作はこちらではできない**（この端末では Drive のゴミ箱への移動が禁止・
+サービスアカウントは有璽氏が持ち主のファイルを消せない）。**押す場所まで書いて人へ渡す。**
+
+```
+ドライブの検索窓に   コピー ～ イベント掲載
+1つ目を押す → Command+A → ゴミ箱のマーク（30日は戻せる）
+```
