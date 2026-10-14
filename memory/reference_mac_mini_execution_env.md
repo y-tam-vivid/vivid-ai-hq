@@ -101,3 +101,12 @@ git 側の版には `config.env` が無い（★秘密を git に置かないた
 🔴**ヒアドキュメントと標準入力はぶつかる。** `printf … | python3 - <<"PY"` は
 **★ヒアドキュメントが stdin を奪う**ので、パイプの値は届かない（2026-10-08 実測・1個しか読めなかった）。
 → ★値を渡すなら**スクリプトをファイルに置いてから**パイプする。
+
+🔴**claude の認証は ssh では通り、cron では落ちる（2026-10-14 実測）。** 長期トークン `CLAUDE_CODE_OAUTH_TOKEN` は
+`~/.zshenv` にある＝★ssh のシェルだけが読む。cron は読まない → `.credentials.json` に落ち、その更新鍵は **10/5 08:56 で期限切れ**。
+```
+ssh mini 'claude -p …'                       → OK（★ここで「直っている」と思わない）
+env -i HOME=… PATH=/usr/bin:/bin claude -p … → Failed to authenticate: OAuth session expired
+影響   claude を呼ぶ self_audit / memory_sweep（10/5〜🔴）・inbox_runner / slack_inbox / team_run も同じ型（呼ばれた時に落ちる）
+```
+→ ★claude を呼ぶスクリプトは config.env から `CLAUDE_CODE_OAUTH_TOKEN` を subprocess の env へ渡す。確かめるのは `env -i` で。

@@ -385,7 +385,7 @@ WORKING.md は終わったら消す器なので、消した瞬間に存在ごと
 この検査の死角に入る）。
 
 ```
-実例   ~/.vivid-relay/agent_watchdog.py（2026-09-06新設・crontab */5で本番稼働・
+実例   ~/.vivid-relay/agent_watchdog.py（2026-09-06新設・crontab */5で本番稼働［⛔9/7 停止・.disabled＝10/14 実測］・
        notify.tell()のみで通知・heartbeat.pyをimportしていない）
 実測   heartbeat_names_check.py を実行 → ★0件（この処理に一切触れない）
        automation_inventory_check.py（週次月曜09:20・crontabの実行行を直接見る）を実行

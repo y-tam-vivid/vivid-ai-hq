@@ -427,7 +427,7 @@ ssh mini 'nohup script -q ~/tmp.log ~/.npm-global/bin/claude setup-token > /dev/
 - **★②の痕跡は現状どこにも残らない。** 打ち切りの文言は Slack へ返る戻り値の中だけで、
   `slack_inbox.log` には `★失敗` としか出ない（打ち切りと他の失敗を区別できない）。
   **事後に数えられない＝当たる前に気づくしかない**（25分で予告する形にした）。
-- 実装 → `~/.vivid-relay/stall_watch.py`（2026-09-05 新設・★cron未登録／ドーベルマン検査待ち）。
+- 実装 → `~/.vivid-relay/stall_watch.py`（2026-09-05 新設・⛔「cron未登録」は古い＝9/7 から mini crontab */5 で稼働・10/14 実測）。
   出口は ask_hub のボタン。**殺す判断は人に返す**（押されて初めて次の巡回で止める）。
 
 ### ★踏んだ地雷 ── `ps -o etimes` は macOS に無い（rc=0 のまま列が1つ減る）
@@ -771,7 +771,7 @@ AskUserQuestion拒否テスト・README要約テスト・Slack投稿のみのテ
 ### 入れたもの
 
 ```
-~/.vivid-relay/agent_watchdog.py   ★mini・cron */5 で稼働（2026-09-06 登録）
+~/.vivid-relay/agent_watchdog.py   ⛔9/7 停止（.disabled・stall_watch.py へ統合＝10/14 crontab で実測）。以下は 9/6 登録時の記述
 判定  CPU<1% かつ 直近5分のファイル更新0件 が ★3回続いたら「止まっている疑い」
       起動から180秒は判定しない（考え込む時間を殺さないため）
 出口  Slack DM（notify.tell）。★既定では殺さない（作業を失うため）

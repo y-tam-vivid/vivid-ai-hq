@@ -22,7 +22,7 @@ metadata:
 - fukuchi-core 冒頭に「正本の置き場」節を追加（控え `_backups/fukuchi-core_SKILL.md.bak_20260924`）
 - MEMORY.md を 25,009B→約2.8KB へ。旧本体110行は `INDEX_全体.md`、全文は `_archive/MEMORY_full_20260924.md`
 - ✅2026-09-25 完了：MacBook の `~/.claude/CLAUDE.md` にも 00_System 3本の @import を追加（有璽氏が手作業・申告）
-- ★残：02_Current_Focus は 0バイト・10_Skills_Repository は空
+- ⛔（9/24時点・古い＝10/14 実測で 02 は 6,795B・10_Skills_Repository は両機とも agents/skills/output-styles/vivid-ai-hq の4本）残：02_Current_Focus は 0バイト・10_Skills_Repository は空
 
 **Why:** 規範の正本を2か所に置くと二重管理になる（fukuchi-core「どれが正本か先に決める」）。
 **How to apply:** fukuchi-core 本文の改訂・@import の差し替えは「規範の変更」＝要承認。

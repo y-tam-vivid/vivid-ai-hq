@@ -35,7 +35,7 @@ MCPではない         SalesBreaker（HTTP API・鍵は .env）
 | 道具 | 鍵の在り処 | 能力の確かめ方 |
 |---|---|---|
 | **SalesBreaker** | `~/Downloads/JapanGtmAgentWorkspace/.env` の `SALESBREAKER_API_KEY` | `GET /api/operator/v0/help/capabilities` ★**叩くと自分で全能力を答える** |
-| Google（Sheets/Drive） | mini `~/.vivid-relay/google_service_account.json` ／ `google_token.json` | token の `scopes` を見る（2026-08-23時点は spreadsheets と drive のみ＝**Apps Scriptは実行できない**） |
+| Google（Sheets/Drive） | mini `~/.vivid-relay/google_token.json`（★`google_service_account.json` は存在しない＝10/14 実測。SEO用 `google_token_seo.json`・GBP用 `google_token_gbp.json` も別にある） | token の `scopes` を見る（2026-08-23時点は spreadsheets と drive のみ＝**Apps Scriptは実行できない**） |
 | Vercel | `~/Library/Application Support/com.vercel.cli/auth.json` | `npx vercel whoami`（失効することがある。その時は有璽氏が `npx vercel login`） |
 | Notion / Slack / Chatwork | `~/.vivid-relay/config.env` | キー名の有無を grep（値は読まない） |
 | さくら（DNS・FTP） | **無い** | ゾーン編集APIも存在しない → [[reference_vivid_dns_sakura]] |
