@@ -23,6 +23,7 @@
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — 数え方を添える。★回数は grep -o|wc -l（grep -c は行の数）
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 出どころの違う2経路で。自分の警告・自分が書いた印を事実と取り違えない
 - [相手の資料は全部読む](feedback_source_material_is_not_the_pr_plan.md) — grep等の部分読みは読んだことにならない（10/8 約束を2つ破った）
+- [案を出す前に探す](feedback_check_the_archive_first.md) — 規約の類は誰かが作っている。★命名規約の正本はNotion📛（10/14）
 - [フェーズを確かめる](feedback_ask_which_phase.md) — 着手前に「どの段階の話か」を1問。できない理由がどの段階の条件かも
 - [読む人に合わせて書く](feedback_write_for_the_reader.md) — 相手の文を返さない。運用の変化と崩れた前提だけ返す
 - [音声入力の人名・団体名・日付](feedback_voice_input_name_kanji.md) — 人名も団体名も登録済みの表記を正に。当てた字と日付を返事で示す
