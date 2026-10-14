@@ -76,7 +76,6 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【バックオフィス担当 / MacBook 2026-10-14 22:05〜】03の並べ方を「案B＋先頭に答えが要る枠」へ（#75faeb 有璽氏）** ── 実装ピタゴラス→検査ステラ。**★同じ対象に手をつけないでください**: mini `~/.vivid-relay/notion_focus_sync.py` の 03 描画部分（render_ai_file 周り）と `test_notion_focus_sync_v2.py`
 - **【ビビ / MacBook 2026-10-12〜】JFBI 調査研究サイト ── 協力団体4件が本番稼働。残っているのは待ちだけ**
   ▶**相手待ち2件（10/13 有璽氏が先方へ依頼を送付済み・★こちらから催促しない）**：
   ①★リライフの写真（○が付いたものを 3:2 の枠へ収めて載せる）②プラスワンのロゴ横組み（本体カードのロゴ枠 458x64 へ差し替え）
