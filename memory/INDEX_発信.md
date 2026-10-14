@@ -121,7 +121,7 @@
 - [SEO・MEO・AIOの改善ルーティン](project_search_growth_routine.md) — 打ち手→実施→効果→成功/失敗事例→制作へ。正本はNotion改善ログ・担当ウソップ（10/13〜）
 - [AIの作業待ち](AI_QUEUE.md) — 機械（seo_action_bridge.py）が毎朝書く。CLAUDE.md が毎ターン読み込む
 
-- [インスタをウェブ版で投稿・予約](reference_instagram_web_posting.md) — 予約可・4:5は手で切替・リンク変更はスマホのみ・Business SuiteはOWが選ばれる＝こどもSに使わない／投稿時間の調査（夜が第1候補・推論）
+- [インスタをウェブ版で投稿・予約](reference_instagram_web_posting.md) — 予約可・リンクはスマホのみ・BSはOW＝使わない
 - [こどもSの記事を団体でも出せる形](project_kodomo_article_cms.md) — 団体のClaudeプロジェクト／こちら の2つの道を WordPress下書き→団体が公開 に合流（10/13 構想）
 ## MEMORY.md から移した現在地（2026-10-08 棚卸し）
 
