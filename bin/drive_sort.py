@@ -28,6 +28,15 @@ BIZ = {  # 名前に出たら確定する固有名詞 → 部門
 SENSITIVE = ["是正勧告", "勧告書", "診断", "障害者手帳", "給与", "賃金台帳", "源泉", "扶養",
              "児童管理", "個人情報", "履歴書", "職務経歴", "健康診断", "返戻", "過誤",
              "退職", "懲戒", "示談", "訴訟", "被害", "通帳", "マイナンバー"]
+# ★契約の原本は機微（2026-07-20 の判定表に明記・2026-10-14 有璽氏が置き場を確定）
+#   正本＝14_管理/14-300_法務部/_機微。案件部門にはショートカット（権限は元を継ぐので漏れない）
+#   ★「参考」「ひな形」「サンプル」が付くものは原本でない＝機微にしない
+CONTRACT = ["契約書", "覚書", "念書", "合意書", "示談書"]
+CONTRACT_NOT = ["参考", "ひな形", "雛形", "サンプル", "テンプレ"]
+
+
+def is_contract_original(hay):
+    return any(k in hay for k in CONTRACT) and not any(k in hay for k in CONTRACT_NOT)
 DATE_RE = [
     (re.compile(r"(20\d{2})[-_./年]\s*(\d{1,2})[-_./月]\s*(\d{1,2})"), lambda m: "%s-%02d-%02d" % (m.group(1), int(m.group(2)), int(m.group(3)))),
     (re.compile(r"(20\d{2})[-_./年]\s*(\d{1,2})月?"), lambda m: "%s-%02d-01" % (m.group(1), int(m.group(2)))),
@@ -134,7 +143,10 @@ def stage1(info):
     hay = info["name"] + " " + " ".join(info["inner"]) + " " + info["body"][:400]
     sens = [w for w in SENSITIVE if w in hay]
     hints = [k for k in BIZ if k in hay]
-    return {"ヒント": hints, "機微": sens}
+    contract = is_contract_original(hay)
+    if contract:
+        sens = sens + ["契約原本"]
+    return {"ヒント": hints, "機微": sens, "契約原本": contract}
 
 
 HAIKU_PROMPT = """あなたはふくち。グループの書類を仕分けます。JSONだけを返してください。
@@ -209,7 +221,12 @@ def main():
             dest = "_要判断_20261014"
             newname = info["name"]
         else:
-            dest = dep + ("/_機微" if s1["機微"] else "")
+            # ★契約の原本は、Haikuが何と答えても法務部の _機微 へ寄せる（規則が優先）
+            if s1.get("契約原本"):
+                dest = "14_管理/14-300_法務部/_機微"
+                why += " ／★契約原本は規則で法務へ"
+            else:
+                dest = dep + ("/_機微" if s1["機微"] else "")
             tai = (tgt.get("対象") or "").strip()
             you = (tgt.get("要点") or "").strip()[:24]
             if not (tai or you):   # ★Haikuが何も返さなければ元の名前を掃除して使う
