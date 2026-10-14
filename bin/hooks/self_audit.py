@@ -41,7 +41,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 #   独自の代入文をやめ、bin/hooks/paths.py の正本を import する。
 sys.path.insert(0, HERE)
 from paths import REPO, WORKING_MD
-CLAUDE = os.path.expanduser('~/.npm-global/bin/claude')
+CLAUDE = os.path.expanduser("~/.vivid-relay/claude_cron.sh")  # 2026-10-14 cron でも長期トークンが届く入口
 PROC_NAME = '自己監査（自分で穴を見つけて直す）'
 TIMEOUT = 1500
 STATE = os.path.join(HERE, 'self_audit_state.json')

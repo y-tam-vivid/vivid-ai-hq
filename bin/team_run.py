@@ -39,7 +39,7 @@ import datetime
 
 REPO = os.path.expanduser('~/vivid-ai-hq')
 RELAY = os.path.expanduser('~/.vivid-relay')
-CLAUDE = os.path.expanduser('~/.npm-global/bin/claude')
+CLAUDE = os.path.expanduser("~/.vivid-relay/claude_cron.sh")  # 2026-10-14 cron でも長期トークンが届く入口
 TIMEOUT = 1500
 
 # ── 何の仕事か → 誰を呼ぶか（★ここが編成の正本）────────────────

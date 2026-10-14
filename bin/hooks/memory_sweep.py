@@ -36,7 +36,7 @@ import datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.expanduser('~/vivid-ai-hq')
-CLAUDE = os.path.expanduser('~/.npm-global/bin/claude')
+CLAUDE = os.path.expanduser("~/.vivid-relay/claude_cron.sh")  # 2026-10-14 cron でも長期トークンが届く入口
 PROC_NAME = '記録の取りこぼしを拾う（ロビンの朝の棚卸し）'
 TIMEOUT = 900
 
