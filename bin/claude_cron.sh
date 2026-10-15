@@ -15,4 +15,7 @@ if [ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] && [ -r "$CFG" ]; then
   fi
 fi
 export PATH="$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:${PATH:-/usr/bin:/bin}"
-exec "$HOME/.npm-global/bin/claude" "$@"
+# 2026-10-15 対話用のフックと出力スタイルを子へ引き継がない（かわちばなし担当の実測：JSONを返さず完走していた）
+#   印 VIVID_CRON_CLAUDE を見て UserPromptSubmit／Stop のフック3本が黙る。出力スタイルは default に上書き
+export VIVID_CRON_CLAUDE=1
+exec "$HOME/.npm-global/bin/claude" --settings '{"outputStyle":"default"}' "$@"

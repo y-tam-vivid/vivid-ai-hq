@@ -109,6 +109,9 @@ PATTERNS = [
 
 
 def main():
+    # 2026-10-15 cron から呼ばれた claude -p（claude_cron.sh が印を立てる）では何もしない＝子の入口に文を差し込まない
+    if os.environ.get("VIVID_CRON_CLAUDE"):
+        return
     try:
         raw = sys.stdin.read()
         d = json.loads(raw) if raw.strip() else {}

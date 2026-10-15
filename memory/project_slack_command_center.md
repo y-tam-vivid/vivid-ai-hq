@@ -32,3 +32,9 @@ Slack DM ─→ slack_inbox
 - ▶理想との差（未着手・相談して決める）：振り分けは語の正規表現で決まる（ビビの判断ではない）／担当の結果を束ねて返すのは team_run 側
 
 **How to apply:** Slack 指示まわりを触る前にここを読む。新しい受付を作らず slack_inbox を直す。[[project_ask_hub_push_decisions]]
+
+**🔴→✅2026-10-15 cron の claude -p が対話用のフックを引き継いでいた**（かわちばなし担当の実測を受けて mini で確認）
+- 実測：env -i で claude_cron.sh を叩くと ★hook_ask_answers が子の入口で発火（seen ファイルが10:22に増えた・07:05/08:30/08:40 の cron 分も同じ）。出力スタイル Fable も子に効く。たまたまJSONは返ったが、Stop の書き戻し催促が鳴る日は判定が壊れる
+- 直し：claude_cron.sh が印 `VIVID_CRON_CLAUDE=1` を立て、`--settings '{"outputStyle":"default"}'` を足す。フック3本（ask_answers／catch_correction／session_writeback）は印があれば何もしない。★PreToolUse の検問は残す（権限・安全のため）
+- 確認：直した後 env -i で JSON だけ返り、seen ファイルは増えない（10→10）。控え mini `_backups/*.bak_20261015_cronhooks`
+- ★新しく UserPromptSubmit／Stop のフックを足すときも同じ印を見ること
