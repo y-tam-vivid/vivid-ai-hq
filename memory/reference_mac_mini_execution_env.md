@@ -130,6 +130,8 @@ self_audit / memory_sweep / slack_inbox / inbox_runner / team_run / run_agent.sh
 - **★対策は「落ちた件数を数えて、閾値を超えたら止める」。**
   いまは落ちた件数が出力に混ざるだけで、合計の行には出ない。
   ★`claude -p` を使う仕分けは、**冒頭で1件だけ試し、返らなければ着手しない**。
+- **追記（同日・後の実測）:** 同じ MacBook で `claude -p --model haiku --settings …` を1件だけ試したら **5.8秒で返り、rc 0・出力は正しいJSON**。★返らない状態は一時的だった可能性がある。
+  ただし1回の成功は「直った」の証拠にならない。仕分けを再開する前は、冒頭の1件試しを毎回やる。
 - ★同じ処理を mini で回す選択肢がある（[[project_macmini_remote_workhorse]]）が、
   **Drive のマウントは機械ごと**。MacBook の `/Users/yujimac/Library/CloudStorage/...` は
   mini から見えない。**ファイルを扱う仕分けは、そのファイルが在る機械でしか動かせない。**
