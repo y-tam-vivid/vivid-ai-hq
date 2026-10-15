@@ -21,3 +21,9 @@ Mac「テキストエディット」で書き溜めた **.rtf/.txt メモ 約1,0
 **次アクション**: 別タブの議事録DB/ナレッジDB設計と合流（下ごしらえCSVが投入データ）。DBはそちらで一度だけ構築。残❓の確定後にCompany付与。
 
 **作業データ**: scratchpad に memos.json / triage_decisions.csv / triage.py / classify・build_htmlスクリプト（セッション限り）。手法=find+textutilで全文抽出→キーワード＋本文精読で分類。
+
+## 2026-10-15 再開：行き先は Obsidian `20_メモ帳`（有璽氏「同じ要領で格納して」）
+- ★7/7 の決定表 `~/Desktop/メモ下ごしらえ_決定表_20260707.csv` は★もう無い（mdfind でも0件）。分類はやり直し
+- 10/15 実測：Desktop/Documents の rtf/rtfd/txt＝1,279件（中身の重複を除くと1,176・2万字超104件＝Zoom文字起こし等で計680万字）。名前に日付あり502件
+- 今朝の TextEdit 開きっぱなし123枚は格納済み（[[project_tool_roles_and_adoption]]）。iCloud TextEdit フォルダには★開いていない22枚（名称未設定216〜278 等・8/16 索引 `~/Documents/メモ棚卸し/` との差分）が残る＝未格納
+- 範囲は #54324f で確認中。★Desktop/[999]PW（パスワード帳8件）は入れない
