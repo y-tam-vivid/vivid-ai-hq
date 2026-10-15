@@ -17,6 +17,26 @@ ARC = B + "/Downloads書類アーカイブ"
 DEP = B + "/00_部門軸アーカイブ"
 nfc = lambda s: u.normalize("NFC", s)
 
+# ── ★`claude -p` を呼ぶときの隔離（2026-10-15 実測で分かった地雷）────────────
+#   claude -p は★呼び出し元のフックと出力スタイルを子プロセスへ引き継ぐ。
+#   そのため（1）UserPromptSubmit が子の入口へ文を差し込み、Haiku が仕分けではなく
+#   その文（Slackの回答・書き戻しの催促）に答える （2）outputStyle: Fable Style が
+#   「結論先行の説明文」を書かせ、★JSONが返らない。
+#   実測 ── cwd=リポジトリ内 100.9秒でフックへの返答／cwd=/tmp 76.5秒で説明文／
+#           ★下の隔離 30.9秒で `{"区分": 1, "理由": "test"}` だけ
+#   ＝ フックと出力スタイルを切り、★リポジトリの外から呼ぶ。
+CLAUDE_ISO_DIR = os.path.join(os.path.expanduser("~"), ".vivid-relay", "_claude_iso")
+CLAUDE_ISO_SETTINGS = os.path.join(CLAUDE_ISO_DIR, "settings.json")
+
+
+def _iso():
+    """隔離用の settings.json を用意して (settingsのパス, 呼ぶ場所) を返す"""
+    os.makedirs(CLAUDE_ISO_DIR, exist_ok=True)
+    if not os.path.exists(CLAUDE_ISO_SETTINGS):
+        json.dump({"hooks": {}, "outputStyle": "default"},
+                  open(CLAUDE_ISO_SETTINGS, "w"), ensure_ascii=False)
+    return CLAUDE_ISO_SETTINGS, CLAUDE_ISO_DIR
+
 # ── 段1：機械で決まるもの ───────────────────────────────
 BIZ = {  # 名前に出たら確定する固有名詞 → 部門
     "オレンジワークス": "15_施設運営", "SWELL": "15_施設運営", "リアンライフ": "15_施設運営",
@@ -237,12 +257,16 @@ _個人(本人限定)   有璽氏個人の学び・健康・家計・私的な�
 def stage2(info, hints=()):
     p = HAIKU_PROMPT % (info["name"], info["kind"], " / ".join(info["inner"][:12]),
                         info["body"][:1200], "・".join(hints) or "なし")
+    s, wd = _iso()
     try:
-        r = subprocess.run(["claude", "-p", "--model", "haiku", p],
-                           capture_output=True, text=True, timeout=120)
+        r = subprocess.run(["claude", "-p", "--model", "haiku", "--settings", s, p],
+                           capture_output=True, text=True, timeout=180, cwd=wd)
         t = r.stdout.strip()
         m = re.search(r"\{.*\}", t, re.S)
-        return json.loads(m.group(0)) if m else {"部門": "不明", "確信": "低"}
+        if m:
+            return json.loads(m.group(0))
+        # ★JSONが無い＝判定できていない。「不明」と区別する（不明は判定した結果）
+        return {"部門": "不明", "確信": "低", "err": "JSONなし", "生": t[:120]}
     except Exception as e:
         return {"部門": "不明", "確信": "低", "err": type(e).__name__}
 
@@ -269,6 +293,16 @@ def main():
     if a.limit:
         items = items[:a.limit]
     print("対象 %d 個（%s）\n" % (len(items), a.cat))
+
+    # ★着手の前に段2を1回だけ試す（2026-10-15）。返らない・JSONが来ない状態で流すと
+    #   全件が「不明」＝_要判断 に落ちたまま、終了コード0で完走してしまう
+    _t = stage2({"name": "検証.pdf", "kind": "ファイル", "inner": [],
+                 "body": "これは段2が生きているかを確かめるための検証です。"})
+    if _t.get("err"):
+        print("★段2（Haiku）が使えない：%s %s" % (_t["err"], _t.get("生", "")))
+        print("★全件が『不明』に落ちるので着手しません。直してから流してください")
+        sys.exit(2)
+    print("段2の動作確認 OK（部門=%s）\n" % _t.get("部門"))
     plan = []
     MEDIA = (".mov", ".mp4", ".m4a", ".mp3", ".wav", ".png", ".jpg", ".jpeg", ".heic", ".gif", ".psd", ".ai")
     skipped = 0
