@@ -29,6 +29,7 @@
 - [読む人に合わせて書く](feedback_write_for_the_reader.md) — 相手の文を返さない。運用の変化と崩れた前提だけ返す
 - [音声入力の人名・団体名・日付](feedback_voice_input_name_kanji.md) — 人名も団体名も登録済みの表記を正に。当てた字と日付を返事で示す
 - [次の一手と有璽氏の作業](feedback_emit_next_actions_as_tasks.md) — 03へ区分付き。WORKINGのN件は03をgrepし揃える。★渡す行は受け取り方まで書く（有璽氏は即日渡す）
+- [答え済みの行はその場で閉じる](feedback_emit_next_actions_as_tasks.md) — ★ボタンの答えを実行したら同じターンで03を[x]。会話で報告した判断待ちも03へ1行(10/16)
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — ★人へ渡す前に検査を通す（渡せば即実行され訂正が間に合わない）
 - [着手時に目安時刻を伝える](feedback_batch_the_checks.md) — 何をする＋完了目安／変われば言い直す／その時刻に自分で見る
 - [「一旦」の承認は恒久でない](feedback_provisional_approval_is_not_final.md) — 出してよいかと★何で変わるかを対で記録。完了にしない
