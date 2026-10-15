@@ -113,3 +113,25 @@ env -i HOME=… PATH=/usr/bin:/bin claude -p … → Failed to authenticate: OAu
 ✅**10/14 直した（#c31c98 有璽氏承認）**：入口 `~/.vivid-relay/claude_cron.sh`（git `bin/claude_cron.sh`）が config.env から読んで本体を exec。
 self_audit / memory_sweep / slack_inbox / inbox_runner / team_run / run_agent.sh の6か所をこの入口へ。★新しく claude を呼ぶものもこの入口を使う。
 ✅**10/14 `--model` も明示（#fa2a60 有璽氏「仕分け系はHaiku／指示を実行する系はSonnet」）**：memory_sweep=haiku、ほか5本=sonnet。★新しく足すものも必ず --model を書く（Core_Brain 17_モデルの使い分け）。
+
+## 🔴 MacBook の `claude -p` が返らなくなる（2026-10-15 実測）
+
+```
+10:02  drive_unkibi.py を起動（40件を haiku で判定）
+10:09  終了。★40件のうち28件が「返りを読めない」＝判定できていなかった
+       （前の回の drive_sort は 08:47 に87件を正常に判定している＝途中から壊れた）
+10:11  同じ呼び出しを単体で試す → ★120秒でも240秒でも返らない
+```
+
+- **★`claude -p` が返らないとき、スクリプトは落ちない。** `drive_sort.py` も
+  `drive_unkibi.py` も except で既定値（部門=不明／区分=3）へ倒す作りなので、
+  **全件が「不明」や「安全側」に落ちたまま、見かけは正常に完走する。**
+  ＝★これは [[reference_ran_is_not_succeeded]] の一種。終了コード0が判定の成功を示さない。
+- **★対策は「落ちた件数を数えて、閾値を超えたら止める」。**
+  いまは落ちた件数が出力に混ざるだけで、合計の行には出ない。
+  ★`claude -p` を使う仕分けは、**冒頭で1件だけ試し、返らなければ着手しない**。
+- ★同じ処理を mini で回す選択肢がある（[[project_macmini_remote_workhorse]]）が、
+  **Drive のマウントは機械ごと**。MacBook の `/Users/yujimac/Library/CloudStorage/...` は
+  mini から見えない。**ファイルを扱う仕分けは、そのファイルが在る機械でしか動かせない。**
+- ★判定が少数（数十件）なら、**セッション自身が中身を読んで決めるほうが速くて正確**だった
+  （10/15 の40件はこれで片づけた）。Haikuに投げるのは件数が多いときの手段であって、目的ではない。
