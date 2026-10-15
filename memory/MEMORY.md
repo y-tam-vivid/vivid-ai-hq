@@ -42,6 +42,7 @@
 - [鍵の扱い](reference_plaintext_credentials_handling.md) — 人が入れる／AIは読めない。★Drive直下のclient_secretは有璽氏判断で現状維持(10/14)
 - [器のコピーはフォームも増やす](reference_sheet_backup_breeds_form_copies.md) — ★フォーム付きの器はsnapshot()。51個が人のドライブに溜まった
 - [ドライブの置き場](reference_drive_placement_rules.md) — ★2段運用。一旦マイドライブ00_部門軸アーカイブ→共有と決めたものだけ共有ドライブ
+- [補助金はどの部門か](reference_drive_placement_rules.md) — ★中身を直す人で3分割。制度＝営業/道具＝営業/自社の申請＝管理。実測107件が6部門に散る
 - [名前と日付の付け方](reference_drive_placement_rules.md) — ★日付は実際の作成日（整理日でない）／★中身を見てから名前を付ける(10/14)
 - [検知≠隔離](feedback_confidential_two_layer_rule.md) — ★機微は置き場を実物で数える。10/15 理由文に出すだけで3件素通りしていた
 - [★外出先ではminiに届かない](project_macmini_remote_workhorse.md) — 10/10 .localもIPも同じLAN内だけ。まず自分の網を見る
