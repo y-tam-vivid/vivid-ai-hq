@@ -43,6 +43,7 @@
 - [器のコピーはフォームも増やす](reference_sheet_backup_breeds_form_copies.md) — ★フォーム付きの器はsnapshot()。51個が人のドライブに溜まった
 - [ドライブの置き場](reference_drive_placement_rules.md) — ★2段運用。一旦マイドライブ00_部門軸アーカイブ→共有と決めたものだけ共有ドライブ
 - [名前と日付の付け方](reference_drive_placement_rules.md) — ★日付は実際の作成日（整理日でない）／★中身を見てから名前を付ける(10/14)
+- [検知≠隔離](feedback_confidential_two_layer_rule.md) — ★機微は置き場を実物で数える。10/15 理由文に出すだけで3件素通りしていた
 - [★外出先ではminiに届かない](project_macmini_remote_workhorse.md) — 10/10 .localもIPも同じLAN内だけ。まず自分の網を見る
 - [Mac mini作業機](project_macmini_remote_workhorse.md) — ssh mini＝Tailscale経由(10/11〜外でも届く)。家LAN用は mini-lan
 - [miniの実行環境](reference_mac_mini_execution_env.md) — cron/launchdは環境変数なし＝スクリプトがconfig.envを自分で読む

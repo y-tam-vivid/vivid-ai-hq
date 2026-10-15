@@ -156,18 +156,34 @@ def stage1(info):
       固有名詞は「誰の書類か（対象）」であって「どの部門の仕事か」ではない。
     """
     hay = info["name"] + " " + " ".join(info["inner"]) + " " + info["body"][:400]
-    sens = [w for w in SENSITIVE if w in hay]
+    # ★2026-10-15：強制の根拠は「名前（とフォルダ直下の名前）」に限る。
+    #   本文に機微語が1回出ただけで隔離すると、営業の案内資料が _機微 に埋まる
+    #   （実測：「ふくち福祉BPO案内資料」が本文の“退職”で／ソフトバンクとの
+    #     共催企画提案が“診断”で 13_営業/_機微 へ寄った＝★死蔵になる）。
+    #   本文だけで当たったものは隔離せず「人に見てもらう印」にする
+    #   → feedback_confidential_two_layer_rule「機微と決めるのはAIではない」
+    nm = info["name"] + " " + " ".join(info["inner"])
+    sens = [w for w in SENSITIVE if w in nm]
+    sens_body = [w for w in SENSITIVE if w in hay and w not in sens]
     hints = [k for k in BIZ if k in hay]
-    contract = is_contract_original(hay)
-    labor = any(k in hay for k in LABOR)
-    hiring = any(k in hay for k in HIRING)
+    contract = is_contract_original(nm)
+    labor = any(k in nm for k in LABOR)
+    hiring = any(k in nm for k in HIRING)
     if contract:
         sens = sens + ["契約原本"]
     if labor:
         sens = sens + ["労務の個人書類"]
     if hiring:
         sens = sens + ["採用の個人書類"]
-    return {"ヒント": hints, "機微": sens, "契約原本": contract, "労務": labor, "採用": hiring}
+    # 本文だけに出た労務・採用・契約も「印」の側へ回す（隔離はしない）
+    if not labor and any(w in hay for w in LABOR):
+        sens_body.append("労務語(中身)")
+    if not hiring and any(w in hay for w in HIRING):
+        sens_body.append("採用語(中身)")
+    if not contract and is_contract_original(hay):
+        sens_body.append("契約語(中身)")
+    return {"ヒント": hints, "機微": sens, "★中身に機微語": sens_body,
+            "契約原本": contract, "労務": labor, "採用": hiring}
 
 
 HAIKU_PROMPT = """あなたはふくち。グループの書類を仕分けます。JSONだけを返してください。
@@ -269,9 +285,18 @@ def main():
         conf = tgt.get("確信", "低")
         why = "段2：Haiku" + ("（手がかり %s）" % "・".join(s1["ヒント"]) if s1["ヒント"] else "")
         if s1["機微"]:
-            why += " ／★機微語 " + "・".join(s1["機微"][:3])
+            why += " ／★名前に機微語 " + "・".join(s1["機微"][:3])
+        if s1["★中身に機微語"]:
+            # ★隔離はしない。有璽氏に「置いてよいか・隔離するか」を聞くための印
+            why += " ／▲中身に機微語 " + "・".join(s1["★中身に機微語"][:3]) + "（隔離せず印だけ）"
         dep = tgt.get("部門", "不明")
-        forced = s1.get("契約原本") or s1.get("労務") or s1.get("採用")
+        # ★2026-10-15 修正：機微語に当たったものは「どれも」規則で寄せる。
+        #   それまで forced は契約原本・労務・採用の3つだけで、SENSITIVE（マイナンバー・
+        #   診断・給与ほか）は why に書くだけで何もしていなかった。実測で
+        #   「マイナンバー(表)_田村佑司.pdf」「鈴川聖子さん診断結果.pdf」が
+        #   人が開ける _要判断 に素のまま置かれていた（3件）。
+        forced = (s1.get("契約原本") or s1.get("労務") or s1.get("採用")
+                  or bool(s1["機微"]))
         if (dep == "不明" or conf == "低") and not forced:
             dest = "_要判断_20261014"
             newname = info["name"]
@@ -286,6 +311,11 @@ def main():
             elif s1.get("採用"):
                 dest = "14_管理/14-400_採用部/_機微"
                 why += " ／★採用の個人書類は規則で採用へ"
+            elif s1["機微"] and dep == "不明":
+                # ★部門が決まらない機微は、人が開ける素の _要判断 に置かない。
+                #   同じ _要判断 の中の _機微 サブフォルダへ入れる（権限を限定できる形）
+                dest = "_要判断_20261014/_機微"
+                why += " ／★部門が不明な機微は _要判断/_機微 へ"
             else:
                 dest = dep + ("/_機微" if s1["機微"] else "")
             tai = (tgt.get("対象") or "").strip()
@@ -294,11 +324,17 @@ def main():
                 raw = os.path.splitext(info["name"])[0]
                 raw = re.sub(r"^\s*20\d{2}[-_./年]\s*\d{1,2}[-_./月]?\s*\d{0,2}日?\s*", "", raw)
                 raw = re.sub(r"【[^】]*】", "", raw).strip(" _-")
+                # ★2026-10-15：名前が【】だけのファイルは、掃除で中身が消えて
+                #   「2026-04-21【資料】_v1.docx」という名無しになる
+                #   （実測：「【ビジネスメンバー採用の流れ】.docx」）。空なら元の名前を使う
+                if not raw:
+                    raw = os.path.splitext(info["name"])[0].strip("【】 _-")
                 tai = raw[:34]
             base = "【%s】%s" % (tgt.get("種類", "資料"), "_".join([t for t in (tai, you) if t])[:46])
             ext = os.path.splitext(info["name"])[1] if info["kind"] == "ファイル" else ""
             newname = safe_name("%s%s_v1%s" % (info["date"], base, ext))
-        plan.append({"元": info["name"], "先": dest, "新": newname, "根拠": why, "確信": conf})
+        plan.append({"元": info["name"], "先": dest, "新": newname, "根拠": why,
+                     "確信": conf, "▲中身に機微語": s1["★中身に機微語"]})
         print("%-40s → %-28s %s" % (info["name"][:40], dest, conf))
         if dest != "_要判断_20261014":
             print("     %s" % newname[:76])
