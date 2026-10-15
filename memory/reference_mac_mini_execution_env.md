@@ -137,3 +137,42 @@ self_audit / memory_sweep / slack_inbox / inbox_runner / team_run / run_agent.sh
   mini から見えない。**ファイルを扱う仕分けは、そのファイルが在る機械でしか動かせない。**
 - ★判定が少数（数十件）なら、**セッション自身が中身を読んで決めるほうが速くて正確**だった
   （10/15 の40件はこれで片づけた）。Haikuに投げるのは件数が多いときの手段であって、目的ではない。
+
+### ✅ 原因が確定した ── 一時的な不調ではなく、フックの引き継ぎだった（2026-10-15 バックオフィス担当が mini で再現）
+
+**上の「返らない状態は一時的だった可能性がある」は撤回する。** mini で再現した。
+
+```
+実測（mini・env -i で claude_cron.sh を叩く）
+  ★hook_ask_answers が★子プロセスの入口で発火していた
+    → ask_answers_seen/ に新しいファイルが増える
+  ★07:05／08:30／08:40 の cron 分にも同じ跡があった
+    ＝ 毎朝の自動処理が、ずっとこの影響を受けていた
+  outputStyle も Fable Style（user と project の両方）
+  ★その回は偶然JSONが返ったが、Stop の催促が鳴る日は壊れる
+```
+
+**✕採らなかった直し**：`--setting-sources` で user を外す
+→ **許可設定（permissions）まで落ちる。** 隔離の代償が大きすぎる。
+
+```
+◎mini 側の直し（commit e996a7e・バックオフィス担当）
+  1 claude_cron.sh が VIVID_CRON_CLAUDE=1 を立て、--settings '{"outputStyle":"default"}' を付ける
+  2 UserPromptSubmit／Stop のフック3本（hook_ask_answers／hook_catch_correction／
+    hook_session_writeback）は★その印があれば何もしない
+    ★PreToolUse の検問は残す（地雷の注入は子でも効かせたい）
+  確認：env -i で `{"区分": 1}` だけが返り、seen ファイルは増えない（10→10）
+  控え：mini `_backups/*.bak_20261015_cronhooks`
+
+◎MacBook 側（drive_sort.py・commit 6b164c0）
+  ~/.vivid-relay/_claude_iso/settings.json（{"hooks": {}, "outputStyle": "default"}）を
+  --settings で渡し、★cwd もそこにする（リポジトリの CLAUDE.md を引き継がせない）
+  ★claude_cron.sh を通すなら印が立つので、この隔離は要らない
+```
+
+- **★「対話のために入れたフック」が、無人で動くAIの入口にも入る。**
+  フックを足すときは「対話セッションだけに効かせるのか」を必ず決める。
+  ★印（環境変数）で分けるのが、いまのところ唯一きれいな分け方。
+- **★1回成功しても「直った」にしない。** こちらは1件試して5.8秒で返ったので
+  「一時的だった」と書きかけた。**再現させた側の実測が正しかった。**
+  → [[feedback_one_route_is_not_verification]]

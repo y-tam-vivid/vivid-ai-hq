@@ -46,7 +46,7 @@
 - [検知≠隔離](feedback_confidential_two_layer_rule.md) — ★機微は置き場を実物で数える。10/15 理由文に出すだけで3件素通りしていた
 - [★外出先ではminiに届かない](project_macmini_remote_workhorse.md) — 10/10 .localもIPも同じLAN内だけ。まず自分の網を見る
 - [Mac mini作業機](project_macmini_remote_workhorse.md) — ssh mini＝Tailscale経由(10/11〜外でも届く)。家LAN用は mini-lan
-- [miniの実行環境](reference_mac_mini_execution_env.md) — cron/launchdは環境変数なし＝config.envを自分で読む。★claude -pが返らなくても完走する(10/15)
+- [miniの実行環境](reference_mac_mini_execution_env.md) — ★claude -pは対話用フックを子に引き継ぐ＝判定が黙って死ぬ。10/15 両機で隔離済み
 - [シェルは全角の直前で落ちる](reference_shell_fullwidth_paren_breaks_var.md) — 変数は${VAR}。★埋め込みPythonはbash -nを通る→取り出してpy_compile
 - [Obsidian Core_Brainが動的正本](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync対象外
 - [ツールの使い分け](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚。★有璽氏が普段見るのはObsidian（10/8）
