@@ -119,6 +119,8 @@ def build(kind, today, data):
             pct(ctr(a.get('impressions', 0), a.get('clicks', 0))), '{:,.0f}'.format(a.get('conversions', 0)),
             '（前の期間のクリック %s）' % '{:,.0f}'.format(b['clicks']) if b.get('clicks') else ''))
     acc = ctr(tot['impressions'], tot['clicks'])
+    if not tot['impressions']:
+        lines.append('・🔴 この期間、広告は1回も表示されていない')
     lines.append('・合計：表示 %s／クリック %s／クリック率 %s／成果 %s（前の期間：表示 %s・クリック %s）' % (
         '{:,.0f}'.format(tot['impressions']), '{:,.0f}'.format(tot['clicks']), pct(acc),
         '{:,.0f}'.format(tot['conversions']), '{:,.0f}'.format(ptot['impressions']), '{:,.0f}'.format(ptot['clicks'])))
