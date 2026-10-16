@@ -21,6 +21,7 @@
 - [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／制作物も既存物も自動で正としない
 - [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。★定型の仕分けはHaiku＋機械。迷いは人へ(10/14)
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — 数え方を添える。★回数は grep -o|wc -l（grep -c は行の数）
+- [渡された件数は数え方から](feedback_never_write_an_unmeasured_number.md) — ★findの既定はドットを拾う。7,894→実7,154の740件差(10/16)
 - [1経路で断定するな](feedback_one_route_is_not_verification.md) — 出どころの違う2経路で。自分の警告・自分が書いた印を事実と取り違えない
 - [記録の「待ち」は腐る](reference_stale_premise_daily.md) — ★着手前に実測。10/14 cronの「切替待ち」が3か月そのままだった
 - [相手の資料は全部読む](feedback_source_material_is_not_the_pr_plan.md) — grep等の部分読みは読んだことにならない（10/8 約束を2つ破った）
