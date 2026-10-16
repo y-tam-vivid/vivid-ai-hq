@@ -76,8 +76,6 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ / MacBook 2026-10-16】こどもS Ad Grants の週次・月次報告**（有璽氏「週1回進捗・大きいものは月1回」）── 書く：npo.station の Google広告スクリプト／新規 `bin/ads_grants_report.py`。★既存の weekly/monthly_seo_report.py は触らない（リリスの宣言）
-  **★同じ対象に手をつけないでください**: `bin/ads_grants_report.py`／Google広告（905-941-6874）のスクリプト
 - **【ビビ / MacBook 2026-10-14〜】マイドライブの片付け（Downloads書類アーカイブ → 00_部門軸アーカイブ）** ──
   ✅**書類の移動は17カテゴリすべて完了**。規則は「★名前に出たときだけ隔離」（commit `5ed38c8`）。
   機微の線は「★外へ出て誰が不利益を受けるか」＝個人情報の有無ではない → `memory/feedback_confidential_two_layer_rule.md`
