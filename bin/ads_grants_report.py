@@ -215,7 +215,8 @@ def main():
             print(body)
         else:
             from notify import tell
-            tell(title, body, summary='返信は要りません。' + summary)
+            if not tell(title, body, summary='返信は要りません。' + summary):
+                raise RuntimeError('Slack送信失敗')   # ★届いていないのに「成功」の心拍にしない（10/16 ドーベルマン指摘）
         ok = not stale or bool(a.today)
         msg = summary if ok else '書き出しが古い（%s）' % upd
     except Exception as e:  # noqa: BLE001 ― 失敗も心拍で残す
