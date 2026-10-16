@@ -45,6 +45,7 @@
 - [ドライブの置き場](reference_drive_placement_rules.md) — ★2段運用。一旦マイドライブ00_部門軸アーカイブ→共有と決めたものだけ共有ドライブ
 - [補助金はどの部門か](reference_drive_placement_rules.md) — ★中身を直す人で4区分。①制度原本②営業の道具③自社申請(系:労務/経理)④顧客・他社が申請者。迷ったら④
 - [名前と日付の付け方](reference_drive_placement_rules.md) — ★日付は実際の作成日（整理日でない）／★中身を見てから名前を付ける(10/14)
+- [機微の線は不利益の有無](feedback_confidential_two_layer_rule.md) — ★個人情報かでなく外へ出て誰が困るか。本人の診断は機微でない・会社の処分歴と値付けは機微(10/16)
 - [検知≠隔離](feedback_confidential_two_layer_rule.md) — ★機微は置き場を実物で数える。10/15 理由文に出すだけで3件素通りしていた
 - [★外出先ではminiに届かない](project_macmini_remote_workhorse.md) — 10/10 .localもIPも同じLAN内だけ。まず自分の網を見る
 - [Mac mini作業機](project_macmini_remote_workhorse.md) — ssh mini＝Tailscale経由(10/11〜外でも届く)。家LAN用は mini-lan
