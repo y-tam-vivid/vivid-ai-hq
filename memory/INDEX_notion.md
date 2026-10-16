@@ -16,6 +16,7 @@
 - [タスクDB Relation付替](project_task_db_relation_migration.md) — Step1-5＋双方向化まで完了。残=ビュー実在確認・Step7降格処理
 - [Notionナレッジハブ](reference_notion_knowledge_hub.md) — 業務管理Notion＋組織マスターの体系。別タブの会話は読めない
 - [ローカルメモ棚卸し](project_local_memo_cleanup.md) — 約1,004件を20分類(未移動)。商談約300件は議事録DBの原資
+- [行政届出の置き場](project_gov_filings_drive_structure.md) — 10/16 有璽氏依頼・設計検討中。届出を1か所に固め施設からも引く。手元の[001]生活基盤推進が型
 - [共有ドライブのフォーム](reference_shared_drive_form_upload.md) — ファイル添付不可。フォーム本体だけマイドライブへ移す
 - [共有ドライブの権限の床](reference_shared_drive_permission_floor.md) — 配下の権限を狭められない。`_機微`は無効＝別ドライブへ出す
 - [Notionは戻せる](reference_notion_restore_path.md) — GETの生プロパティをPATCHで復元。★未実行のバックアップはバックアップでない
