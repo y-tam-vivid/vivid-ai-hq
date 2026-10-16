@@ -76,6 +76,8 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
+- **【ビビ / MacBook 2026-10-16】こどもS Ad Grants の週次・月次報告**（有璽氏「週1回進捗・大きいものは月1回」）── 書く：npo.station の Google広告スクリプト／新規 `bin/ads_grants_report.py`。★既存の weekly/monthly_seo_report.py は触らない（リリスの宣言）
+  **★同じ対象に手をつけないでください**: `bin/ads_grants_report.py`／Google広告（905-941-6874）のスクリプト
 - **【バックオフィス担当 / MacBook 2026-10-16】旧いきいきステーション一式を Drive へコピー**（有璽氏の指示・置き場はドライブ整理担当と合意済み）
   先：`00_部門軸アーカイブ/15_施設運営/_機微/2021-12-20【資料】旧いきいきステーション（一般社団法人）_…_v1`。直下のフォルダを1つずつ入れて照合（ドットを除いた7,154件）。★ローカルの元は照合が済むまで動かさない
   **★同じ対象に手をつけないでください**: `~/Documents/[iki]旧いきいきステーション_200420`／上の Drive フォルダ
