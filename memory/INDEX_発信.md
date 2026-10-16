@@ -131,7 +131,7 @@
 - [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ03_デザイン制作。Web案件は00地図＋01〜06の型
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番v46。Ad Grants審査待ち
 - [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — 10/6 10:00 配信済み。残＝団体サイトへ掲載
-- [Google広告の作成画面](reference_google_ads_campaign_wizard.md) — 電話番号を足すと7日止まる→再開10/14
+- [Google広告の作成画面](reference_google_ads_campaign_wizard.md) — 3キャンペーン稼働・表示0(10/16)。週次月次報告 ads_grants_report.py＋広告スクリプト。★スクリプト承認はシークレットで
 
 > ★**フォルダ番号の注記（2026-10-11）** ── このファイルに出てくる
 > `04_画像素材`→**05_画像素材** ／ `05_公開と計測`→**06_公開と計測** ／ `06_検査と報告`→**07_検査と報告**。
