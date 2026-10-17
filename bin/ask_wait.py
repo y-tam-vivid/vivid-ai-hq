@@ -12,6 +12,13 @@ Slack のボタンの回答を待ち、押されたら終わる ── セッシ
 使い方
   python3 bin/ask_wait.py 47be69 [47be69 ...]   （Bash の run_in_background で呼ぶ）
   どれか1件が押されたら、その回答を出して終わる。既定の上限は12時間（--hours で変える）。
+
+2026-10-17 追記（有璽氏「Slack から入るものは窓口ビビが受け、スレッドに受領・誰が・目安を返す」）
+  待っている間は mini の ~/.vivid-relay/ask_listen/<id> に印を打つ。押されるとビビがスレッドに
+  「担当のセッションが待機中＝1分以内に着手」と返す（印が無ければ「次に開いたとき」と返す）。
+  ★起きたセッションは、着手した時点で完了の目安をそのスレッドへ書く：
+    ssh mini 'cd ~/.vivid-relay && python3 ask_hub.py --reply <id> "着手しました。完了の目安 HH:MM"'
+  終わったら同じ形で結果を1行書く。
 """
 
 import sys
@@ -24,7 +31,9 @@ REMOTE = r'''python3 - "$@" <<"PY"
 import json,os,sys
 q=json.load(open(os.path.expanduser("~/.vivid-relay/ask_hub_queue.json"))).get("items",{})
 out={}
+L=os.path.expanduser("~/.vivid-relay/ask_listen"); os.makedirs(L,exist_ok=True)
 for k in sys.argv[1:]:
+    open(os.path.join(L,k),"a").close(); os.utime(os.path.join(L,k))   # 待機中の印（窓口ビビが受付の返事で使う）
     v=q.get(k) or {}
     a=v.get("answer") or {}
     out[k]={"status":v.get("status"),"label":a.get("label"),"free_text":a.get("free_text"),"at":a.get("at"),"subject":v.get("subject")}
