@@ -45,6 +45,7 @@
 - [Slackの窓口はビビ・ビビは動かない](project_slack_command_center.md) — ★ボタンもDMもビビが受けてスレッドに「受領・誰が・目安」を返し担当へ流す。作業は担当(10/17有璽氏)
 - [Slackは1件1スレッド](project_slack_command_center.md) — ★有璽氏がスレッドに返した発言も拾い、同じスレッドで続ける。AIの返事も指示した発言のスレッドへ(10/17)
 - [Slackの件をClaude Codeで続ける](project_slack_command_center.md) — ★受付番号 #s＋6桁で呼ぶ。bin/slack_thread.py で流れを読み、--reply で同じスレッドへ書き戻す(10/17)
+- [成果物はパスで返さない](feedback_cannot_copy_from_terminal.md) — ★画像はDriveへ置きFinderで開いてQuick Lookで表示する。「場所がわからない・そのまま表示して触れるように」(10/17)
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
 - [人に頼む前に自分の道具](feedback_check_your_own_tools_before_asking_a_human.md) — ListAgents/SendMessageを先に。往復3回超は減らす
 - [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — 人の手で渡すものは「渡すのは有璽氏の手」と書く
@@ -65,6 +66,7 @@
 - [ツールの使い分け](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚。★有璽氏が普段見るのはObsidian（10/8）
 - [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — 10/8〜2枚(02=有璽氏＋🔥優先/03=AI)・15分毎。複製時は目印を消す
 - [仮称を識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 識別子は役割で付ける。置換は数えてから
+- [インスタのハイライトカバー](reference_instagram_highlight_cover.md) — ★デザインの外周（縁の丸）を画像の幅いっぱいに置く＝拡大せずにはまる。縁は消さない（10/17 取り違えた）。中身のストーリーが1本ないと作れない
 - [インスタは毎回確認](feedback_ask_instagram_each_time.md) — 法人問わずレポートごとに「作るか／投稿までか」を聞く
 - [Workspaceのagentic](reference_workspace_agentic_oauth.md) — 11/11期限の通知は影響なし。既存クライアントに印を付けない(10/13決定)
 - [さくらはログインで鯖が替わる](feedback_sakura_cp_switches_server.md) — 書く前に初期ドメインで確認（10/13 団体側へ誤追加）
