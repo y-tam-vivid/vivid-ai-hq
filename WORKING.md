@@ -76,8 +76,6 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【フランキー / mini 2026-10-17 16:27〜】こどもS Instagram ハイライト6つの中身（ストーリー画像）** ── 目安18:00・18:07にminiが見回り・報告は Slack #s028c4b。書く：mini `scratchpad/ks_ig_profile_20261017/stories_v1/`・Drive「プロフィール・ハイライト/ストーリー_v1_中身」
-  **★同じ対象に手をつけないでください**: 上の2か所
 - **【バックオフィス担当 / MacBook 2026-10-17】Slack の窓口をビビに（ボタンもDMもビビが受け、スレッドに受領・誰が・目安。ビビは動かない）** ✅作った・ボタンは試験済み。▶DM の端から端の試験だけ残り
   **★同じ対象に手をつけないでください**: mini `~/.vivid-relay/{vivi_desk,ask_hub,slack_inbox}.py`
 - **【バックオフィス担当 / MacBook 2026-10-16】行政届出を共有ドライブへ（年度→届出の時系列）** ✅R3〜R8 の72フォルダ・1,552件コピー済み＋10月のオレンジワークス申請を R8年度へ移動し、新しい手元の版を表にした（#b36181・#47be69）。▶年度外（研修関係・処遇改善加算・支援金など・送迎用バス・単独ファイル）と施設ごとの運営指導の綴りは未着手
