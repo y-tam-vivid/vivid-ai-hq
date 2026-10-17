@@ -44,6 +44,7 @@
 - [問いを出したら待ち役を走らせる](project_ask_hub_push_decisions.md) — ★ask後は同じターンで bin/ask_wait.py <id> をバックグラウンドで。フックは話しかけられるまで動かない(10/17)
 - [Slackの窓口はビビ・ビビは動かない](project_slack_command_center.md) — ★ボタンもDMもビビが受けてスレッドに「受領・誰が・目安」を返し担当へ流す。作業は担当(10/17有璽氏)
 - [Slackは1件1スレッド](project_slack_command_center.md) — ★有璽氏がスレッドに返した発言も拾い、同じスレッドで続ける。AIの返事も指示した発言のスレッドへ(10/17)
+- [Slackの件をClaude Codeで続ける](project_slack_command_center.md) — ★受付番号 #s＋6桁で呼ぶ。bin/slack_thread.py で流れを読み、--reply で同じスレッドへ書き戻す(10/17)
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
 - [人に頼む前に自分の道具](feedback_check_your_own_tools_before_asking_a_human.md) — ListAgents/SendMessageを先に。往復3回超は減らす
 - [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — 人の手で渡すものは「渡すのは有璽氏の手」と書く
