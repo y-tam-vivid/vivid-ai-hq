@@ -38,3 +38,9 @@ Slack DM ─→ slack_inbox
 - 直し：claude_cron.sh が印 `VIVID_CRON_CLAUDE=1` を立て、`--settings '{"outputStyle":"default"}'` を足す。フック3本（ask_answers／catch_correction／session_writeback）は印があれば何もしない。★PreToolUse の検問は残す（権限・安全のため）
 - 確認：直した後 env -i で JSON だけ返り、seen ファイルは増えない（10→10）。控え mini `_backups/*.bak_20261015_cronhooks`
 - ★新しく UserPromptSubmit／Stop のフックを足すときも同じ印を見ること
+
+**2026-10-17 有璽氏：Slack のボタンを押した行為そのものを、エージェント（窓口ビビなど）が拾えるようにしてほしい**
+- 有璽氏の入口は3つ：①Claude（ターミナル等）へ直接聞く ②Slack の DM で依頼する（slack_inbox が受ける）③Slack のボタンで判断を返す（ask_hub）。★3つとも「入れたら誰かが動く」が前提
+- 実測（10/17）：ボタンは mini の常駐 `slack_socket.py`（launchd com.vivid.slack-socket）が受け、`ask_hub_queue.json` に答えを書く★だけ。動き出す者はいない
+  （届く先＝問いを出したセッションの次のターンのフック／`ask_hub_to_notion.py` は cron に無い＝Notion の✅化も動いていない）
+- 10/17 の手当て：出した側のセッションが `bin/ask_wait.py` をバックグラウンドで走らせる（押されて30秒ほどで起きる）。★出した側が閉じていると効かない＝ビビが拾う形の設計は #（10/17 判断待ち）
