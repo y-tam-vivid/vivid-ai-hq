@@ -66,7 +66,7 @@
 - [ツールの使い分け](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚。★有璽氏が普段見るのはObsidian（10/8）
 - [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — 10/8〜2枚(02=有璽氏＋🔥優先/03=AI)・15分毎。複製時は目印を消す
 - [仮称を識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 識別子は役割で付ける。置換は数えてから
-- [インスタのハイライトカバー](reference_instagram_highlight_cover.md) — ★デザインの外周（縁の丸）を画像の幅いっぱいに置く＝拡大せずにはまる。縁は消さない（10/17 取り違えた）。中身のストーリーが1本ないと作れない
+- [インスタのハイライトカバー](reference_instagram_highlight_cover.md) — ★デザインの外周（縁の丸）を画像の幅いっぱいに置く＝拡大せずにはまる。縁は消さない（10/17 取り違えた）。★並びは最後にストーリーを足したものが左（アーカイブしても動かない）
 - [インスタは毎回確認](feedback_ask_instagram_each_time.md) — 法人問わずレポートごとに「作るか／投稿までか」を聞く
 - [Workspaceのagentic](reference_workspace_agentic_oauth.md) — 11/11期限の通知は影響なし。既存クライアントに印を付けない(10/13決定)
 - [さくらはログインで鯖が替わる](feedback_sakura_cp_switches_server.md) — 書く前に初期ドメインで確認（10/13 団体側へ誤追加）
