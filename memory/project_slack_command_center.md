@@ -75,3 +75,5 @@ Slack DM ─→ slack_inbox
 **2026-10-17 有璽氏：Slack で依頼した件を、Slack 以外（Claude Code 等）でも続けられるようにしたい**
 - 「Slack 側で依頼したものは、Claude Code 等でどう伝えれば拾えるか。その続きをできる形はどう作るか」
 - 方針：スレッドごとに受付番号（#s＋6桁）を付けて受付の返事に出す → Claude Code では「#s◯◯◯◯◯◯ の続き」と言えば、スレッドの流れを読み込んで続け、結果を同じスレッドへ書き戻す
+- ✅10/17 14:1x 作った：受付の返事に受付番号 `#s＋6桁`（ts の sha1 先頭6桁＝同じスレッドなら常に同じ番号）。mini `~/.vivid-relay/slack_thread.py`（show／reply／list）・どの機からも `bin/slack_thread.py`（mini でなければ ssh）。試験：`list 1` で今日の2件、`show '#s028c4b'` でインスタの流れ7件を読めた
+- ★有璽氏が Claude Code で「#s◯◯◯◯◯◯ の続き」「Slack の◯◯の件」と言ったら：show で流れを読む → 作業 → reply で同じスレッドへ書き戻す（MEMORY.md の1行で全セッションに届く）
