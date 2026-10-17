@@ -176,3 +176,7 @@ self_audit / memory_sweep / slack_inbox / inbox_runner / team_run / run_agent.sh
 - **★1回成功しても「直った」にしない。** こちらは1件試して5.8秒で返ったので
   「一時的だった」と書きかけた。**再現させた側の実測が正しかった。**
   → [[feedback_one_route_is_not_verification]]
+
+## ★見回りを `pgrep -f <語>` で書くと、自分自身に当たる（2026-10-17）
+`nohup bash -c "sleep N; if pgrep -f 作業名 …"` は、見回りの bash のコマンド文字列に作業名が入る。だから pgrep が見回り自身を見つけて、★いつも「まだ動いている」と判定してしまう。
+→ ★見回りは起動時の PID を `kill -0 <PID>` で見る。判定は別のスクリプトファイルに書いて呼ぶ（実例 `~/.vivid-relay/ks_stories_watch.sh`）。
