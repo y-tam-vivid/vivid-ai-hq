@@ -40,6 +40,7 @@
 - [毎ターン届くMDは丸ごと書かない](feedback_memory_index_hygiene.md) — 00_Systemも1行ずつEdit（全文書き戻しで同期と衝突し03が壊れた）
 - [AIが検証できない所に人の手を置かない](feedback_dont_put_hands_where_ai_cannot_verify.md) — 人に打たせる前にダミーで同じ道を通す
 - [判断はSlackのボタン](project_ask_hub_push_decisions.md) — 10/14フックで届く。★「押されるまで待つ」で終えず戻る時刻を決める(10/15)
+- [問いを出したら待ち役を走らせる](project_ask_hub_push_decisions.md) — ★ask後は同じターンで bin/ask_wait.py <id> をバックグラウンドで。フックは話しかけられるまで動かない(10/17)
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
 - [人に頼む前に自分の道具](feedback_check_your_own_tools_before_asking_a_human.md) — ListAgents/SendMessageを先に。往復3回超は減らす
 - [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — 人の手で渡すものは「渡すのは有璽氏の手」と書く
