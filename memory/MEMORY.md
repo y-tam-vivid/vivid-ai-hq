@@ -35,6 +35,7 @@
 - [進捗は確認状況とセット](feedback_emit_next_actions_as_tasks.md) — ★有璽氏10/16。①進捗②有璽氏の未回答③止めている分 を分母つきで
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — ★人へ渡す前に検査を通す（渡せば即実行され訂正が間に合わない）
 - [着手時に目安時刻を伝える](feedback_batch_the_checks.md) — 何をする＋完了目安／変われば言い直す／その時刻に自分で見る
+- [担当の長い作業はminiで](feedback_batch_the_checks.md) — ★2時間超は着手時にrun_agent.shでminiへ＋完了通知と目安時刻の見回りもmini。10/17 MacBookのスリープで2時間失った
 - [「一旦」の承認は恒久でない](feedback_provisional_approval_is_not_final.md) — 出してよいかと★何で変わるかを対で記録。完了にしない
 - [窓口はSNSのことも](reference_partner_web_presence_may_be_sns.md) — ★サイト無し≠載せるもの無し。Instaも探す／IDは推測せず貼ってもらう
 - [毎ターン届くMDは丸ごと書かない](feedback_memory_index_hygiene.md) — 00_Systemも1行ずつEdit（全文書き戻しで同期と衝突し03が壊れた）
@@ -42,6 +43,8 @@
 - [判断はSlackのボタン](project_ask_hub_push_decisions.md) — 10/14フックで届く。★「押されるまで待つ」で終えず戻る時刻を決める(10/15)
 - [問いを出したら待ち役を走らせる](project_ask_hub_push_decisions.md) — ★ask後は同じターンで bin/ask_wait.py <id> をバックグラウンドで。フックは話しかけられるまで動かない(10/17)
 - [Slackの窓口はビビ・ビビは動かない](project_slack_command_center.md) — ★ボタンもDMもビビが受けてスレッドに「受領・誰が・目安」を返し担当へ流す。作業は担当(10/17有璽氏)
+- [Slackは1件1スレッド](project_slack_command_center.md) — ★有璽氏がスレッドに返した発言も拾い、同じスレッドで続ける。AIの返事も指示した発言のスレッドへ(10/17)
+- [Slackの件をClaude Codeで続ける](project_slack_command_center.md) — ★受付番号 #s＋6桁で呼ぶ。bin/slack_thread.py で流れを読み、--reply で同じスレッドへ書き戻す(10/17)
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
 - [人に頼む前に自分の道具](feedback_check_your_own_tools_before_asking_a_human.md) — ListAgents/SendMessageを先に。往復3回超は減らす
 - [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — 人の手で渡すものは「渡すのは有璽氏の手」と書く
