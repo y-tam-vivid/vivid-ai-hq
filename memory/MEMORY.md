@@ -35,6 +35,7 @@
 - [進捗は確認状況とセット](feedback_emit_next_actions_as_tasks.md) — ★有璽氏10/16。①進捗②有璽氏の未回答③止めている分 を分母つきで
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — ★人へ渡す前に検査を通す（渡せば即実行され訂正が間に合わない）
 - [着手時に目安時刻を伝える](feedback_batch_the_checks.md) — 何をする＋完了目安／変われば言い直す／その時刻に自分で見る
+- [担当の長い作業はminiで](feedback_batch_the_checks.md) — ★2時間超は着手時にrun_agent.shでminiへ＋完了通知と目安時刻の見回りもmini。10/17 MacBookのスリープで2時間失った
 - [「一旦」の承認は恒久でない](feedback_provisional_approval_is_not_final.md) — 出してよいかと★何で変わるかを対で記録。完了にしない
 - [窓口はSNSのことも](reference_partner_web_presence_may_be_sns.md) — ★サイト無し≠載せるもの無し。Instaも探す／IDは推測せず貼ってもらう
 - [毎ターン届くMDは丸ごと書かない](feedback_memory_index_hygiene.md) — 00_Systemも1行ずつEdit（全文書き戻しで同期と衝突し03が壊れた）
