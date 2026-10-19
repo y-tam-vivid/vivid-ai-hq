@@ -68,6 +68,6 @@
 - [仮称を識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 識別子は役割で付ける。置換は数えてから
 - [インスタのハイライトカバー](reference_instagram_highlight_cover.md) — ★デザインの外周（縁の丸）を画像の幅いっぱいに置く＝拡大せずにはまる。縁は消さない（10/17 取り違えた）。★並びは最後にストーリーを足したものが左（アーカイブしても動かない）
 - [インスタは毎回確認](feedback_ask_instagram_each_time.md) — 法人問わずレポートごとに「作るか／投稿までか」を聞く
-- [HUGの様子の出力](reference_hug_record_output.md) — ★様子は「本日の様子一括印刷」→PDFに保存(有璽氏OK)。月単位・名前に年月と氏名。★自動保存は個人情報判定で止まる(10/20)
+- [HUGの様子の出力](reference_hug_record_output.md) — ★「本日の様子一括印刷」→PDF1本(全員可)→bin/hug_split_yosu.pyで月×利用者に分ける。★HUGでは1か月ずつ出す(10/20)
 - [Workspaceのagentic](reference_workspace_agentic_oauth.md) — 11/11期限の通知は影響なし。既存クライアントに印を付けない(10/13決定)
 - [さくらはログインで鯖が替わる](feedback_sakura_cp_switches_server.md) — 書く前に初期ドメインで確認（10/13 団体側へ誤追加）
