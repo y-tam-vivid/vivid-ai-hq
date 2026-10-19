@@ -76,7 +76,8 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ / MacBook 2026-10-19】Family Growth Brain講座（長田瑞恵教授・全6回）→ 有璽氏が語る研修/YouTube連載へ作り変える設計** ── 読む：Drive `10-100_経営戦略/familyBrainコンテンツ開発/` の文字起こし6本／書く：同フォルダに設計書。経緯 `memory/project_family_growth_brain_content.md`
+- **【ビビ / MacBook 2026-10-19】こどもの脳と関わりプログラム（長田瑞恵先生の講座＋CRAFT由来＋脳科学・まず児童）** ── 設計・導入計画v0.2・台本#3 まで済み。▶**有璽氏待ち**：先生への連絡（有璽氏が自分で）と導入計画§6の4点（03に行あり・@10/31）。★先生への文面は作らない・催促しない。経緯 `memory/project_family_growth_brain_content.md`
+  **★同じ対象に手をつけないでください**: Drive `10-100_経営戦略/familyBrainコンテンツ開発/` の設計書群
 - **【バックオフィス担当 / MacBook 2026-10-17】Slack の窓口をビビに（ボタンもDMもビビが受け、スレッドに受領・誰が・目安。ビビは動かない）** ✅作った・ボタンは試験済み。▶DM の端から端の試験だけ残り
   **★同じ対象に手をつけないでください**: mini `~/.vivid-relay/{vivi_desk,ask_hub,slack_inbox}.py`
 - **【バックオフィス担当 / MacBook 2026-10-16】行政届出を共有ドライブへ（年度→届出の時系列）** ✅R3〜R8 の72フォルダ・1,552件コピー済み＋10月のオレンジワークス申請を R8年度へ移動し、新しい手元の版を表にした（#b36181・#47be69）。▶年度外（研修関係・処遇改善加算・支援金など・送迎用バス・単独ファイル）と施設ごとの運営指導の綴りは未着手
