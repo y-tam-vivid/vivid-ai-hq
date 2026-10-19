@@ -11,7 +11,10 @@
 
   区切り：ページの冒頭に「利用者名（ 氏 名 ）」の行があれば、その利用者の始まり。無いページは前の人の続き。
   年月  ：その利用者の分に出る日付（YYYY/MM/DD）。★複数の月にまたがれば止める（月単位の前提が崩れている）。
-  出力  ：元のPDFと同じ場所の <YYYY-MM>/<YYYY-MM>_本日の様子_<施設>_<氏名>.pdf。元のPDFは動かさない・消さない。
+  出力  ：元のPDFと同じ場所に（★原本は利用者別・月別はショートカット＝個別支援計画は利用者ごとに読むため。有璽氏 10/20）
+            利用者別/<氏名>/<YYYY-MM>_本日の様子_<施設>_<氏名>.pdf   原本
+            月別/<YYYY-MM>/<同じ名前>                              原本への相対の symlink（★Driveへ移すならドライブのショートカットで作り直す）
+          元のPDFは動かさない・消さない。既に同じ名前があれば1本も書かずに止める。
   ★氏名・本文は画面に出さない（件数とページ数だけ）。
 """
 import argparse
@@ -64,21 +67,30 @@ def split_one(src, facility, dry_run):
             sys.exit(f"{len(g['months'])}か月にまたがる（または日付が無い）利用者がいます。月単位で出し直してください")
 
     print(f"元のPDF {len(doc)}ページ → 利用者 {len(gs)}人（ページ数の内訳 {sorted(Counter(len(g['pages']) for g in gs).items())}）")
-    if len(gs) == 25:
-        print("  ★ちょうど25人＝HUGの印刷画面は1ページ25人まで。2ページ目がある場合は送って保存したか確かめる")
-    if dry_run:
-        return
+    print("  ★この人数が HUG の「出力人数」と合うかを見る（取り忘れの目安）")
+
+    root = src.parent
+    plan = []
     for g in gs:
         ym = next(iter(g["months"]))
-        dest = src.parent / ym / f"{ym}_本日の様子_{facility}_{g['name']}.pdf"
-        dest.parent.mkdir(exist_ok=True)
-        if dest.exists():
-            sys.exit(f"同じ名前のファイルが既にあります（{ym} の{len(list(dest.parent.glob('*.pdf')))}本）。上書きしないので止めます")
+        fname = f"{ym}_本日の様子_{facility}_{g['name']}.pdf"
+        plan.append((g, ym, root / "利用者別" / g["name"] / fname, root / "月別" / ym / fname))
+    if clash := [p for _, _, o, l in plan for p in (o, l) if p.exists() or p.is_symlink()]:
+        sys.exit(f"同じ名前のファイルが既に{len(clash)}本あります。上書きしないので止めます")
+    if dry_run:
+        return
+
+    for g, ym, orig, link in plan:
+        orig.parent.mkdir(parents=True, exist_ok=True)
+        link.parent.mkdir(parents=True, exist_ok=True)
         out = fitz.open()
         out.insert_pdf(doc, from_page=g["pages"][0], to_page=g["pages"][-1])
-        out.save(dest)
-    total = sum(len(fitz.open(p)) for p in (src.parent / ym).glob("*.pdf"))
-    print(f"書き出し {len(gs)}本 → {src.parent / ym}（合計 {total}ページ・元 {len(doc)}ページ）")
+        out.save(orig)
+        link.symlink_to(Path("..", "..", "利用者別", g["name"], orig.name))
+    pages = sum(len(fitz.open(o)) for _, _, o, _ in plan)
+    broken = sum(1 for *_, l in plan if not l.resolve().exists())
+    print(f"原本 {len(plan)}本 → {root / '利用者別'}（合計 {pages}ページ・元 {len(doc)}ページ）")
+    print(f"ショートカット {len(plan)}本 → {root / '月別'}（切れているもの {broken}本）")
 
 
 if __name__ == "__main__":
