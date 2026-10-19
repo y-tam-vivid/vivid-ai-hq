@@ -27,6 +27,7 @@ from pathlib import Path
 
 import fitz
 
+INBOX = "受け取り（HUGから保存）"  # ~/Documents/_機微_HUG本日の様子/ の下。有璽氏がHUGのPDFを置く所（10/20）
 NAME_RE = re.compile(r"^利用者名[（(]\s*(.+?)\s*[）)]\s*$")
 DATE_RE = re.compile(r"(20\d\d)/(\d\d)/\d\d")
 
@@ -71,7 +72,8 @@ def split_one(src, facility, dry_run):
     print(f"元のPDF {len(doc)}ページ → 利用者 {len(gs)}人（ページ数の内訳 {sorted(Counter(len(g['pages']) for g in gs).items())}）")
     print("  ★この人数が HUG の「出力人数」と合うかを見る（取り忘れの目安）")
 
-    root = src.parent
+    # 有璽氏は 受け取り（HUGから保存）/ に置く。結果はその1つ上（利用者別・月別・元PDF の並ぶ所）へ出す
+    root = src.parent.parent if src.parent.name == INBOX else src.parent
     plan = []
     for g in gs:
         ym = next(iter(g["months"]))
