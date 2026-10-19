@@ -76,7 +76,6 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ（Web実装）/ MacBook 2026-10-19】LSU・こどもSに常設の問い合わせ導線（PC右端の縦並び＋スマホ下の帯）** ── ✅LSU は本番反映済み（Code Snippets id=7・10/19）。▶こどもSはこれから。こどもSは build_site.py の担当セッションの最新版を確かめてから。経緯 `memory/project_lifestandup_website_wordpress.md` 末尾
 - **【ビビ / MacBook 2026-10-19】こどもの脳と関わりプログラム（長田瑞恵先生の講座＋CRAFT由来＋脳科学・まず児童）** ── 設計・導入計画v0.2・台本#3 まで済み。▶**有璽氏待ち**：先生への連絡（有璽氏が自分で）と導入計画§6の4点（03に行あり・@10/31）。★先生への文面は作らない・催促しない。経緯 `memory/project_family_growth_brain_content.md`
   **★同じ対象に手をつけないでください**: Drive `10-100_経営戦略/familyBrainコンテンツ開発/` の設計書群
 - **【バックオフィス担当 / MacBook 2026-10-17】Slack の窓口をビビに（ボタンもDMもビビが受け、スレッドに受領・誰が・目安。ビビは動かない）** ✅作った・ボタンは試験済み。▶DM の端から端の試験だけ残り
