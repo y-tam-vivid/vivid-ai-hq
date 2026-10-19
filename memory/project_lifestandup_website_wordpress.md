@@ -5369,3 +5369,4 @@ role_guardの誤検出でメインセッションから直接書けずAgent委�
 - 見本＝C-SEED（放課後等デイ）：PCは右端に縦並びの丸ボタン、ホバーで「LINEのご登録はこちら」と横に伸びる／スマホは画面下に5つ並びの固定バー
 - 実測（10/19）：LSU トップは tel:072-959-7337 と Instagram @life.standup_official のみ。★LINE なし・mailto なし（問い合わせは /contact のフォーム）・固定の導線なし
   こどもS は tel・LINE(lin.ee/typTOwI)・Instagram @stationkodomo・mailto あり。★スマホだけ下部固定バー（電話・LINE・アクセス）が既にある＝PC側が無い・メール/インスタが無い
+- ✅10/19 有璽氏の決定：LSU の LINE＝https://lin.ee/PIVgqZc ／メールボタン＝問い合わせフォーム（/contact）へ飛ばす／こどもS は 電話・LINE・Instagram・地図（メールは外す）
