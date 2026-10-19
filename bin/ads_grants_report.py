@@ -49,6 +49,13 @@ def sheet_id():
     return files[0]['id']
 
 
+def stamp(s):
+    """表の時刻を読む。★表は '2026-10-19 4:28:50' のように時を1桁で返す＝fromisoformat が落ちる（10/19 週次が止まった）"""
+    d, t = str(s).strip().replace('T', ' ').split(' ')[:2]
+    h, m, sec = (t.split(':') + ['0', '0'])[:3]
+    return dt.datetime(*map(int, d.split('-')), int(h), int(m), int(float(sec)), tzinfo=JST)
+
+
 def table(sh, fid, tab):
     rows = sh.read(fid, tab)
     if not rows:
@@ -205,7 +212,7 @@ def main():
         upd = meta.get('updated_at', '')
         stale = True
         if upd:
-            t = dt.datetime.fromisoformat(str(upd)).replace(tzinfo=JST)
+            t = stamp(upd)
             stale = (dt.datetime.now(JST) - t).total_seconds() > STALE_HOURS * 3600
         if stale and not a.today:
             body = '🔴 広告の書き出しが %s から更新されていない（Google広告のスクリプト「AdGrants 書き出し」）\n\n' % (upd or '—') + body
