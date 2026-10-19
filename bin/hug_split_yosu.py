@@ -6,7 +6,8 @@
   HUG の出力はPDFでなく印刷画面＝有璽氏が「すべてチェック→印刷→PDFに保存」で1本にまとめる。
   分けると名前付けはこちら。→ memory/reference_hug_record_output.md
 
-  python3 hug_split_yosu.py <保存したPDF> [--facility STANDUP] [--dry-run]
+  python3 hug_split_yosu.py <保存したPDF> [<別の月のPDF> ...] [--facility STANDUP] [--dry-run]
+  ★期間を広げるときも、HUGでは1か月ずつ保存する（1人の分の中で月が替わるページに2か月が混ざり、ページでは切れないため）
 
   区切り：ページの冒頭に「利用者名（ 氏 名 ）」の行があれば、その利用者の始まり。無いページは前の人の続き。
   年月  ：その利用者の分に出る日付（YYYY/MM/DD）。★複数の月にまたがれば止める（月単位の前提が崩れている）。
@@ -42,13 +43,17 @@ def groups(doc):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("pdf")
+    ap.add_argument("pdf", nargs="+", help="1か月ずつ保存したPDF（何本でも）")
     ap.add_argument("--facility", default="STANDUP")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
+    for p in a.pdf:
+        split_one(Path(p).expanduser(), a.facility, a.dry_run)
 
-    src = Path(a.pdf).expanduser()
+
+def split_one(src, facility, dry_run):
     doc = fitz.open(src)
+    print(f"[{src.name}]")
     gs = groups(doc)
 
     names = Counter(g["name"] for g in gs)
@@ -59,11 +64,13 @@ def main():
             sys.exit(f"{len(g['months'])}か月にまたがる（または日付が無い）利用者がいます。月単位で出し直してください")
 
     print(f"元のPDF {len(doc)}ページ → 利用者 {len(gs)}人（ページ数の内訳 {sorted(Counter(len(g['pages']) for g in gs).items())}）")
-    if a.dry_run:
+    if len(gs) == 25:
+        print("  ★ちょうど25人＝HUGの印刷画面は1ページ25人まで。2ページ目がある場合は送って保存したか確かめる")
+    if dry_run:
         return
     for g in gs:
         ym = next(iter(g["months"]))
-        dest = src.parent / ym / f"{ym}_本日の様子_{a.facility}_{g['name']}.pdf"
+        dest = src.parent / ym / f"{ym}_本日の様子_{facility}_{g['name']}.pdf"
         dest.parent.mkdir(exist_ok=True)
         if dest.exists():
             sys.exit(f"同じ名前のファイルが既にあります（{ym} の{len(list(dest.parent.glob('*.pdf')))}本）。上書きしないので止めます")
