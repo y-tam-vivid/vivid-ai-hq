@@ -5370,3 +5370,7 @@ role_guardの誤検出でメインセッションから直接書けずAgent委�
 - 実測（10/19）：LSU トップは tel:072-959-7337 と Instagram @life.standup_official のみ。★LINE なし・mailto なし（問い合わせは /contact のフォーム）・固定の導線なし
   こどもS は tel・LINE(lin.ee/typTOwI)・Instagram @stationkodomo・mailto あり。★スマホだけ下部固定バー（電話・LINE・アクセス）が既にある＝PC側が無い・メール/インスタが無い
 - ✅10/19 有璽氏の決定：LSU の LINE＝https://lin.ee/PIVgqZc ／メールボタン＝問い合わせフォーム（/contact）へ飛ばす／こどもS は 電話・LINE・Instagram・地図（メールは外す）
+- 10/19 有璽氏（見本v1を見て）「色がうるさい」「デザインは『LIFE STAND UPでの1日』の型で」「LINEはロゴくらいの緑」「一番上はLINE」
+  → v2：.tl-icon の値を実測で流用（56px・枠2px #212121・角丸14・影 3px 3px 0 #212121）、淡い色はページ既存の4色（#E8F5E9/#FCE4EC/#FFF8E1/#E3F2FD）、LINE の色はロゴ画像の最多色 #61AD47。並び LINE→電話→メール→Instagram
+  ★型：サイトに既にある部品の値（色・枠・影）を実測して流用する。新しい色を持ち込まない（見本v1は原色ベタで「うるさい」と言われた）
+  部品の控え ~/.vivid-relay/contactbar/lsu_contactbar.html ／ 重なり順45（スマホのメニュー＝ヘッダー50の中より下に置く）
