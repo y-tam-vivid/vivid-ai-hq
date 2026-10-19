@@ -14,7 +14,9 @@
   出力  ：元のPDFと同じ場所に（★原本は利用者別・月別はショートカット＝個別支援計画は利用者ごとに読むため。有璽氏 10/20）
             利用者別/<氏名>/<YYYY-MM>_本日の様子_<施設>_<氏名>.pdf   原本
             月別/<YYYY-MM>/<同じ名前>                              原本への相対の symlink（★Driveへ移すならドライブのショートカットで作り直す）
-          元のPDFは動かさない・消さない。既に同じ名前があれば1本も書かずに止める。
+          元のPDFは消さない。分け終えたら 元PDF/<YYYY-MM>_本日の様子_<施設>.pdf へ名前を付けて移す（同名があれば触らない）。
+          既に同じ名前があれば1本も書かずに止める。
+          ★最終の置き場は STAND UP の共有ドライブのフォルダ（有璽氏 10/20・どのフォルダかは #17160b で確認中）。
   ★氏名・本文は画面に出さない（件数とページ数だけ）。
 """
 import argparse
@@ -91,6 +93,14 @@ def split_one(src, facility, dry_run):
     broken = sum(1 for *_, l in plan if not l.resolve().exists())
     print(f"原本 {len(plan)}本 → {root / '利用者別'}（合計 {pages}ページ・元 {len(doc)}ページ）")
     print(f"ショートカット {len(plan)}本 → {root / '月別'}（切れているもの {broken}本）")
+
+    # 元PDFにも名前を付ける（氏名なし・有璽氏 10/20）。既にあれば触らない
+    yms = sorted({ym for _, ym, _, _ in plan})
+    renamed = root / "元PDF" / f"{'_'.join(yms)}_本日の様子_{facility}.pdf"
+    if src != renamed and not renamed.exists():
+        renamed.parent.mkdir(exist_ok=True)
+        src.rename(renamed)
+        print(f"元PDF → {renamed.relative_to(root)}")
 
 
 if __name__ == "__main__":
