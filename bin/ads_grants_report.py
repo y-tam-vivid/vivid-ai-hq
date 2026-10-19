@@ -205,7 +205,8 @@ def main():
         upd = meta.get('updated_at', '')
         stale = True
         if upd:
-            t = dt.datetime.fromisoformat(str(upd)).replace(tzinfo=JST)
+            _d, _, _t = str(upd).strip().replace('T', ' ').partition(' ')
+            t = dt.datetime.fromisoformat(_d + ' ' + _t.split('.')[0].zfill(8)).replace(tzinfo=JST)  # 4:28:50 はゼロ埋めが要る
             stale = (dt.datetime.now(JST) - t).total_seconds() > STALE_HOURS * 3600
         if stale and not a.today:
             body = '🔴 広告の書き出しが %s から更新されていない（Google広告のスクリプト「AdGrants 書き出し」）\n\n' % (upd or '—') + body
