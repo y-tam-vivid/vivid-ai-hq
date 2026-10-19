@@ -403,3 +403,6 @@ metadata:
 
 **2026-10-17 SNS の置き場（有璽氏）**：共有ドライブ `11-000_事業開発部門/03_デザイン制作プロジェクト/04_NPO法人南河内こどもステーション/09_SNS投稿/` を★SNS全体の置き場にした（「SNS全体ということに。並べて」）。媒体ごとに `0N_媒体_アカウント`（01_Instagram_stationkodomo／02_LINE公式＝器のみ／Facebook 等は始めたら足す）。旧 `05_…WEBサイト/07_Instagram活動レポート` はロビンが `01_Instagram_stationkodomo/活動レポート` へ移動済み（63件・MacBook のマウントで数えた）。★`~/kodomo-photo-work/{insta_report,renge_tsushin}.py` の出力先が旧パスのまま＝次に動かす前に新パスへ直す（このサイトの担当セッションの持ち物）
 - **✅2026-10-17 ハイライトカバーは v3（手描き風・ChatGPT画像）で決定**（有璽氏「いいね。これでいこう」15:5x）。表は共有ドライブ `09_SNS投稿/01_Instagram_stationkodomo/プロフィール・ハイライト/ハイライト_v3_手描き風/`（7枚 md5一致）・v1は同じ場所の `_旧版/`。★ハイライトは中身のストーリーが1本以上ないと作れない＝各カバーに入れる「中身」（1枚目のストーリー）が別に要る（有璽氏の気づき）。★投稿・設定は団体側（10/11の線のまま）。
+- **2026-10-19 常設の問い合わせ導線（有璽氏・LSU と同じ形）見本 v57 作成・★公開は承認待ち**：正本 `~/kodomo-photo-work/float_contact.py`（patch_float）。LINE→Instagram→地図→電話（電話は一番右＝LSUに揃えた）。見た目＝線 2px #604C3F・クリーム #FCF9F2・影 3px #604C3F・アイコン色はサイト既存（LINE #6FBA2C・インスタ #CF93A5・地図 #4ABCB8・電話 #D9603F）。切り替え 1260px（サイトの isMobile と同じ）。トップの元の下の帯（電話・LINE・アクセス）は箱の中だけ外し、bottomPad 60px→0（こちらが body に 70px）。
+  実測：v56 を写して当てた v57＝公開14ページに1組ずつ・道具ページ8枚は入れない・div 開閉一致・footer 数は v56 と同じ（schedule は元から2）。PC 1400 で右端に縦並び・乗せると伸びる／iframe 390 で下の帯 68px・はみ出し0・メニューは上の帯の中で開く＝重ならない。
+  ★本番の組み立てに残すには oct3_fixes.py の最後に `from float_contact import patch_float; s=patch_float(v,s)` の1行が要る（oct3_fixes はサイト担当ブロックが「触らないで」）。
