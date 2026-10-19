@@ -5378,3 +5378,4 @@ role_guardの誤検出でメインセッションから直接書けずAgent委�
 - ✅10/19 v3 を本番反映（有璽氏「これでいきましょう」）：Code Snippets「常設の問い合わせ導線…v3」id=7・場所＝フッター（</body> 直前）。★止めるときはこの枠を「無効」
   実測：トップ・/contact・/about・/news の4ページで #fk-contact が1組／検査 data-cta 4個 ✓／実ブラウザで float-line を押して dataLayer に cta_click／スマホ幅（390）で下の帯 68px・はみ出しなし
   控えの本文＝ ~/.vivid-relay/contactbar/lsu_contactbar.html（本番はCSSコメント2行を除いた同一内容・SHA256 先頭 aee8b328）
+- ✅10/19 有璽氏が本番で「問題なく動く・入っている」ことを確認
