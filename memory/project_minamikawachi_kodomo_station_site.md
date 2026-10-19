@@ -406,3 +406,5 @@ metadata:
 - **2026-10-19 常設の問い合わせ導線（有璽氏・LSU と同じ形）見本 v57 作成・★公開は承認待ち**：正本 `~/kodomo-photo-work/float_contact.py`（patch_float）。LINE→Instagram→地図→電話（電話は一番右＝LSUに揃えた）。見た目＝線 2px #604C3F・クリーム #FCF9F2・影 3px #604C3F・アイコン色はサイト既存（LINE #6FBA2C・インスタ #CF93A5・地図 #4ABCB8・電話 #D9603F）。切り替え 1260px（サイトの isMobile と同じ）。トップの元の下の帯（電話・LINE・アクセス）は箱の中だけ外し、bottomPad 60px→0（こちらが body に 70px）。
   実測：v56 を写して当てた v57＝公開14ページに1組ずつ・道具ページ8枚は入れない・div 開閉一致・footer 数は v56 と同じ（schedule は元から2）。PC 1400 で右端に縦並び・乗せると伸びる／iframe 390 で下の帯 68px・はみ出し0・メニューは上の帯の中で開く＝重ならない。
   ★本番の組み立てに残すには oct3_fixes.py の最後に `from float_contact import patch_float; s=patch_float(v,s)` の1行が要る（oct3_fixes はサイト担当ブロックが「触らないで」）。
+- 10/19 有璽氏（v57を見て）「こどもSは元々設置されていたボタンのデザインを踏襲して」＝★LSUの型を持ち込まない。元の下の帯（塗りの色・白文字・上に小さな添え字 TEL/いちばん簡単/MAP・LINEだけ幅広 1.7fr・すき間1px #EAE0C8）に Instagram を同じ作りで足す。並びも元の帯に倣い 電話→LINE→Instagram→地図（有璽氏が最初に挙げた順と同じ）
+  ★型：サイトごとに「既にある同じ役割の部品」が在ればそれを踏襲する。別サイトで決めた型を横展開しない（LSU の型は LSU の部品から作ったもの）
