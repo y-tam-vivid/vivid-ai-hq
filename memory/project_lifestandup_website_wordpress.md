@@ -5363,3 +5363,9 @@ role_guardの誤検出でメインセッションから直接書けずAgent委�
 **★これは実装せず、選択肢として持っておく。**
 
 → [[feedback_show_the_skeleton_first]]（★機能は載せ、代償は1行で言う。決めるのは有璽氏）
+
+## 2026-10-19 有璽氏：問い合わせの動線を常に出す（LSU 優先・こどもSも）
+- 「ウェブでもスマホでも常に問い合わせの動線を作る」。手段は★電話・メール・LINE・Instagram（★TikTokはやっていない＝載せない）
+- 見本＝C-SEED（放課後等デイ）：PCは右端に縦並びの丸ボタン、ホバーで「LINEのご登録はこちら」と横に伸びる／スマホは画面下に5つ並びの固定バー
+- 実測（10/19）：LSU トップは tel:072-959-7337 と Instagram @life.standup_official のみ。★LINE なし・mailto なし（問い合わせは /contact のフォーム）・固定の導線なし
+  こどもS は tel・LINE(lin.ee/typTOwI)・Instagram @stationkodomo・mailto あり。★スマホだけ下部固定バー（電話・LINE・アクセス）が既にある＝PC側が無い・メール/インスタが無い
