@@ -57,3 +57,6 @@ metadata:
     → mini では nohup で流す・`socket.setdefaulttimeout(120)`＋`execute(num_retries=5)`。同じ名前は作らないので流し直してよい。
   - ★同日：前の回が残ったまま流し直し、ショートカットが72本二重になった（411/339）→ 2本目以降をゴミ箱へ・`flock` で同時起動を止めた。
   - ✅10/20 09:4x 完了：1〜9月の原本339本・月別ショートカット339本（全部が原本を指す）・元PDF3本。
+- **★10/20 有璽氏：STAND UP の「AI（Claude）に頼んで回す操作」は Notion の STAND UP マニュアルに13番として置く**（ルーティン業務ではなく操作の手引き）。
+  → `13_AI操作マニュアル｜LIFE STAND UP` https://app.notion.com/p/3ff7b1568b57818aba09efb7e297a01e （親 [20-100]LIFE STAND UP の末尾）。本件は 13-1。
+  ★新しい AI 操作が決まったら、このページの一覧表に1行＋節を1つ足す（別ページを増やさない）。Notion 側は要約＝正本は 00_System/19。氏名は書かない。
