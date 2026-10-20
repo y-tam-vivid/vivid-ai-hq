@@ -13,6 +13,7 @@
   ファイル名の <YYYY-MM>_ で月を決める。月別に同じ名前があれば作らない（何度流してもよい）。
   ★氏名は画面に出さない（件数だけ）。原本は読むだけで、動かさない・消さない。
 """
+import fcntl
 import os
 import re
 import socket
@@ -66,6 +67,14 @@ def folder(s, drive_id, parent, name, create):
 
 def main():
     dry = "--dry-run" in sys.argv
+    if not dry:
+        # ★同時に2本走らせない（10/20 前の回が残ったまま流し直して二重に作った）
+        global _lock
+        _lock = open("/tmp/hug_drive_shortcuts.lock", "w")
+        try:
+            fcntl.flock(_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            sys.exit("別の回が動いています。終わってから流してください")
     s = svc()
     drives = [d for d in s.drives().list(pageSize=100).execute(num_retries=5)["drives"] if d["name"] == DRIVE_NAME]
     if len(drives) != 1:
@@ -104,13 +113,27 @@ def main():
                              supportsAllDrives=True, fields="id").execute(num_retries=5)
             made += 1
 
-    # 実物で照合：月別の中のショートカットが、原本を指しているか
+    # 同じ名前のショートカットが2本以上あれば、2本目以降をゴミ箱へ（★10/20 二重に流れて72本重なった）
     ids = {f["id"] for f in originals}
+    trashed = 0
+    for m in children(s, did, monthly, FOLDER):
+        seen = set()
+        for f in children(s, did, m["id"]):
+            if f["mimeType"] != SHORTCUT:
+                continue
+            if f["name"] in seen:
+                s.files().update(fileId=f["id"], body={"trashed": True},
+                                 supportsAllDrives=True).execute(num_retries=5)
+                trashed += 1
+            seen.add(f["name"])
+
+    # 実物で照合：月別の中のショートカットが、原本を指しているか
     links = []
     for m in children(s, did, monthly, FOLDER):
         links += [f for f in children(s, did, m["id"]) if f["mimeType"] == SHORTCUT]
     ok = sum(1 for f in links if f.get("shortcutDetails", {}).get("targetId") in ids)
-    print(f"ショートカット 作成 {made}本・既にあった {skipped}本 → 月別の合計 {len(links)}本（原本を指している {ok}本）")
+    print(f"ショートカット 作成 {made}本・既にあった {skipped}本・重複をゴミ箱へ {trashed}本"
+          f" → 月別の合計 {len(links)}本（原本を指している {ok}本・原本 {len(originals)}本）")
 
 
 if __name__ == "__main__":
