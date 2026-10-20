@@ -43,4 +43,10 @@ for _ in $(seq 1 40); do
   sleep 30
 done
 [ "${n:-0}" -ge "${want}" ] || { echo "★ドライブ側がそろわないまま打ち切り。あとでもう一度流す"; exit 1; }
-ssh mini 'python3 /tmp/hug_drive_shortcuts.py 2>/dev/null'
+# ★ssh が切れても止まらないよう nohup で流し、終わるのを待って結果だけ読む（10/20 Broken pipe で途中終了した）
+ssh mini 'nohup python3 /tmp/hug_drive_shortcuts.py > /tmp/hug_shortcuts.log 2>&1 &'
+for _ in $(seq 1 80); do
+  sleep 15
+  ssh mini 'pgrep -f hug_drive_shortcuts >/dev/null' || break
+done
+ssh mini 'grep -E "^(原本|ショートカット)|Error" /tmp/hug_shortcuts.log'

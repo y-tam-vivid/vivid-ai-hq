@@ -15,6 +15,7 @@
 """
 import os
 import re
+import socket
 import sys
 from collections import Counter
 
@@ -22,6 +23,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 
+socket.setdefaulttimeout(120)  # 10/20 初回、既定の待ち時間で読み取りがタイムアウトして途中で落ちた
 TOKEN = os.path.expanduser("~/.vivid-relay/google_token.json")
 DRIVE_NAME = "15-000_施設運営部門"
 PATH = ["LIFE STAND UP", "本日の様子（HUG）"]
@@ -44,7 +46,7 @@ def children(s, drive_id, parent, mime=None):
     while True:
         r = s.files().list(q=q, corpora="drive", driveId=drive_id, includeItemsFromAllDrives=True,
                            supportsAllDrives=True, pageSize=1000, pageToken=tok,
-                           fields="nextPageToken,files(id,name,mimeType,shortcutDetails)").execute()
+                           fields="nextPageToken,files(id,name,mimeType,shortcutDetails)").execute(num_retries=5)
         out += r["files"]
         if not (tok := r.get("nextPageToken")):
             return out
@@ -59,13 +61,13 @@ def folder(s, drive_id, parent, name, create):
     if not create:
         return None
     return s.files().create(body={"name": name, "mimeType": FOLDER, "parents": [parent]},
-                            supportsAllDrives=True, fields="id").execute()["id"]
+                            supportsAllDrives=True, fields="id").execute(num_retries=5)["id"]
 
 
 def main():
     dry = "--dry-run" in sys.argv
     s = svc()
-    drives = [d for d in s.drives().list(pageSize=100).execute()["drives"] if d["name"] == DRIVE_NAME]
+    drives = [d for d in s.drives().list(pageSize=100).execute(num_retries=5)["drives"] if d["name"] == DRIVE_NAME]
     if len(drives) != 1:
         sys.exit(f"共有ドライブ {DRIVE_NAME} が{len(drives)}個見つかりました")
     did = drives[0]["id"]
@@ -99,7 +101,7 @@ def main():
                 continue
             s.files().create(body={"name": f["name"], "mimeType": SHORTCUT, "parents": [mid],
                                    "shortcutDetails": {"targetId": f["id"]}},
-                             supportsAllDrives=True, fields="id").execute()
+                             supportsAllDrives=True, fields="id").execute(num_retries=5)
             made += 1
 
     # 実物で照合：月別の中のショートカットが、原本を指しているか
