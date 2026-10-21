@@ -33,6 +33,7 @@
 - [答え済みの行はその場で閉じる](feedback_emit_next_actions_as_tasks.md) — ★ボタンの答えを実行したら同じターンで03を[x]。会話で報告した判断待ちも03へ1行(10/16)
 - [[x]は答えでない](feedback_emit_next_actions_as_tasks.md) — ★Notionで✅完了にする経路で答えが来る(10/16は削除OKの意)。知らぬ間の[x]は1問で確かめる
 - [進捗は確認状況とセット](feedback_emit_next_actions_as_tasks.md) — ★有璽氏10/16。①進捗②有璽氏の未回答③止めている分 を分母つきで
+- [規約を読んでから勧める](feedback_check_platform_policy_before_recommending.md) — ★Ad Grants は入札がコンバージョン型必須・地域は役立つ範囲。読まずにクリック最大化と府全体を推奨した(10/21)
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — ★人へ渡す前に検査を通す（渡せば即実行され訂正が間に合わない）
 - [着手時に目安時刻を伝える](feedback_batch_the_checks.md) — 何をする＋完了目安／変われば言い直す／その時刻に自分で見る
 - [担当の長い作業はminiで](feedback_batch_the_checks.md) — ★2時間超は着手時にrun_agent.shでminiへ＋完了通知と目安時刻の見回りもmini。10/17 MacBookのスリープで2時間失った
