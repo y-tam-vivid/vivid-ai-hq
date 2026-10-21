@@ -131,7 +131,7 @@
 - [幅掃きが実用になった](project_web_build_rules_asset.md) — mini sweep_widths_fast.py で30.7分。判断待ち4件
 - [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ03_デザイン制作。Web案件は00地図＋01〜06の型
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番v46。Ad Grants審査待ち
-- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — 10/6 10:00 配信済み。残＝団体サイトへ掲載
+- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — 10/6 10:00 配信済み・サイト掲載済み(v46)。▶10/21 ★実施報告へ移行＝**数字が揃わないと出さない**（期限は終了から1週間＝10/25）。現場へのお願いは Drive `06_…/05_実施報告/01_…★これを渡す`。🔴前回比の土台が無い（「延べ500名・20店舗」がどの回か未確認→第36回の実績値を聞く）。★最優先はドラ券の発行額（団体の本題を1数字で表せる）
 - [Google広告の作成画面](reference_google_ads_campaign_wizard.md) — 3キャンペーン稼働・表示0(10/16)。週次月次報告 ads_grants_report.py＋広告スクリプト。★スクリプト承認はシークレットで
 
 > ★**フォルダ番号の注記（2026-10-11）** ── このファイルに出てくる
