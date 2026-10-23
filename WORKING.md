@@ -159,6 +159,11 @@
 ### 進行中（Desktop セッション記入）
 
 
+## クラウド（claude.ai/code）セッション
+
+- **【リリス / クラウド 2026-10-23】LSU 活動ブログ（お便り→記事）** ── 確認用 https://lsu-blog-review.vercel.app/ 公開済み（Basic認証）。▶写真の元データ・顔処理の方式・7/22の順番の回答待ち
+  **★同じ対象に手をつけないでください**: Vercel `lsu-blog-review`／`~/lifestandup-wp/blog-review/`
+
 ## 触ってはいけないもの（両セッション共通）
 
 ```
