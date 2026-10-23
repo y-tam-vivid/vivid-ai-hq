@@ -47,3 +47,12 @@ URL       https://lsu-blog-review.vercel.app/  （Vercel lsu-blog-review／チ�
 - 写真の元データ（STANDUP LINEアルバム）を Drive へ
 - 顔の処理：モザイク か 既存と同じ笑顔スタンプ か
 - 7/22 の順番：お便り「31アイス→映画」／実施報告の予定表「映画→31アイス」
+
+## 公開中サイト（固定ページ）の子どもの顔 ── 10/23 差し替え済み
+
+- 集計：固定ページ32本・表示画像77枚を2経路（HTML／実ブラウザ表示）で数え、表示の切り抜きのまま目視。ブログ134本は有璽氏の判断で対象外
+- 有璽氏の判断：A1〜A5・B1 を差し替え、Instagram欄など他はそのまま。★モザイク案は取りやめ「丸ごと別の写真」へ
+- 実ファイル5枚（A2とA3は重ねて表示される同じ1枚）：voice-3←iv-x-photo／prog-jhs-list←iv-fv-2／iv-k-photo←voice-2／recruit-values-fv←su-fv-main／prog-hs-body←iv-fv-1
+- 反映：有璽氏がXサーバーのファイル管理で上書き。本番のハッシュ一致＋実ブラウザ表示で5/5確認（10/23）。元画像は lifestandup-wp 4b6ca3f の親
+- ★GitHubのテーマは9/10版で本番(9/14〜)と不一致＝zipを作り直して上げると直しが戻る。写真だけの上書きにした
+- ★旧サイトのページ（/trial・/company・/beginners-guide 等）がまだ200で見える。残すかは未判断
