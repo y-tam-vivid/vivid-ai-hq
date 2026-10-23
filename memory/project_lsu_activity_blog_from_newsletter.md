@@ -26,6 +26,8 @@ URL       https://lsu-blog-review.vercel.app/  （Vercel lsu-blog-review／チ�
 実測      10/23 合言葉なし401／あり200（/・part1・part2）。ソース(layout.html等)は404。
           ★curl で <title> まで本物を確認（Security Checkpoint ではなかった）
 ソース    ~/lifestandup-wp/blog-review/（vercel/ が出している中身・drafts/ が下書きの正本）
+出し直し  ★push しただけでは出ない。Vercel API の gitSource（ブランチ＋sha）で本番デプロイ（rootDirectory=blog-review/vercel）
+          画像を含むので、ファイルを直接送るより git 経由が確実（10/23 2回目から）
 ```
 
 **★既存の仮公開 lifestandup-preview には足せなかった。** 書き出し一式（static-preview/）は MacBook にしか無く、
@@ -33,6 +35,12 @@ URL       https://lsu-blog-review.vercel.app/  （Vercel lsu-blog-review／チ�
 
 **★解析タグを必ず外す。** 公開中ページを型にすると GA4・SalesBreaker・Jetpack統計まで付いてきて、
 確認用の閲覧が本番の計測に混ざる。build_review_site.py は外れていないと止まる。
+
+## 本文とサムネイル（10/23 2回目）
+
+- 本文は実施報告を参照して加筆（約1.7倍）。★報告に書かれていることだけで足す（推測の情景描写を入れない）
+- サムネイルは既存「Summer Vacation at Stand Up Part 1」の飾りを土台に文字だけ描き直し（make_thumbs.py・League Spartan Black）
+- ★報告とお便りの食い違い2件目：7/31 プラネタリウムの番組はお便り「星空」／報告はアニメ番組 → 本文は「映像」でぼかした
 
 ## 未決（03/Notion 個人タスクに行あり）
 
