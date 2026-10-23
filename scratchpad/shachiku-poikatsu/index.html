@@ -72,7 +72,7 @@ h2{font-family:var(--display);font-weight:400;font-size:24px;margin:0;text-wrap:
       <div><b>STEP 2</b>家計と制度の基本を知る</div>
       <div><b>STEP 3</b>必要なら、個別に相談する</div>
     </div>
-    <p class="pr">このページには広告を含みます。案件を紹介すると、紹介元から当方に紹介料が支払われる場合があります。</p>
+    <p class="pr">このページには広告を含みます。紹介料は広告主から当方に支払われるもので、利用される方の負担にはなりません。契約の相手は各広告主で、当方は紹介者です。</p>
   </section>
 
   <section class="step">
@@ -105,7 +105,9 @@ h2{font-family:var(--display);font-weight:400;font-size:24px;margin:0;text-wrap:
   <div class="notes">
     <p>※ 報酬の目安は紹介元の資料によるもので、成果を約束するものではありません。条件・金額は予告なく変わります。</p>
     <p>※ 参加前に、各案件の公式の規約・条件を必ずご確認ください。</p>
-    <p>※ 当方は個別の金融商品の勧誘・助言は行いません。</p>
+    <p>※ 当方は投資・保険・税務・法律の助言を行いません。</p>
+    <p>※ 報酬は課税の対象になる場合があります。</p>
+    <p>運営者情報（運営主体・所在地・連絡先・苦情窓口）：準備中</p>
   </div>
 </div>
 
@@ -120,18 +122,16 @@ const CASES = [
     note:"使わない商品は、回収サービスで現金化できる場合があります（1商品800円〜）" },
   { name:"来店型モニター", source:"Luna", status:"ok",
     rows:[["報酬の目安",'<span class="yen">1件 4,000円〜</span>（最低保証 2,000円）'],
-          ["やること","無料カウンセリングや体験に参加する（脱毛・痩身・ジム・資料請求など）"],
+          ["やること","無料カウンセリングや体験に参加する（契約・購入が報酬の条件にならないものに限る）"],
           ["時間","土日に2時間ほど"],["支払い","当月分を翌月末に銀行振込"],
           ["条件","20歳以上／対象エリアは首都圏・地方都市が中心"]],
-    note:"契約は不要の案件が中心です。勧誘を断っても報酬の条件に影響しないかは、案件ごとに確認します" },
-  { name:"保険モニター", status:"hold", note:"内容を確認中です" },
-  { name:"Y!mobile 申込み", status:"hold", note:"内容を確認中です" },
+    note:"来店後、広告主から契約などの勧誘を受ける場合があります" },
 ];
 const el = document.getElementById("cases");
 for (const c of CASES) {
   const s = document.createElement("article");
   s.className = "slip" + (c.status === "hold" ? " locked" : "");
-  const chip = c.status === "ok" ? '<span class="chip ok">案内中</span>' : '<span class="chip hold">確認中</span>';
+  const chip = c.status === "ok" ? '<span class="chip ok">PR・案内中</span>' : '<span class="chip hold">確認中</span>';
   const rows = (c.rows || []).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
   s.innerHTML = `<header><h3>${c.name}</h3>${chip}</header><dl>${rows}</dl><footer>${c.note}${c.source ? "｜紹介元：" + c.source : ""}</footer>`;
   el.appendChild(s);
