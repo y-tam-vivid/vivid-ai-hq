@@ -76,7 +76,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ / MacBook 2026-10-24】こどもS 助成金本選考プレゼンの写真選定・取り込み** ── 読む：Drive `04_NPO法人南河内こどもステーション/00_素材写真`（★読み取りのみ）。書く：`~/kodomo-photo-work/honsenko_photos/`・mini `~/.vivid-relay/honsenko_sheets/`。資料本体の在処は未確認
+- **【ビビ / MacBook 2026-10-24】こどもS 助成金本選考プレゼンの写真選定・取り込み** ── 読む：Drive `04_NPO法人南河内こどもステーション/00_素材写真`（★読み取りのみ）。✅写真23枚・レポート・沿革の文面を Drive `04_…/10_助成金本選考プレゼン_写真と沿革/` へ。▶有璽氏が資料本体（.dc.html）を同じフォルダへ入れたら差し込む（03に行あり）
 - **【ビビ / MacBook 2026-10-19】こどもの脳と関わりプログラム（長田瑞恵先生の講座＋CRAFT由来＋脳科学・まず児童）** ── 設計・導入計画v0.2・台本#3 まで済み。▶**有璽氏待ち**：先生への連絡（有璽氏が自分で）と導入計画§6の4点（03に行あり・@10/31）。★先生への文面は作らない・催促しない。経緯 `memory/project_family_growth_brain_content.md`
   **★同じ対象に手をつけないでください**: Drive `10-100_経営戦略/familyBrainコンテンツ開発/` の設計書群
 - **【ビビ / MacBook 2026-10-23】社畜メガネ→ポイ活案件ページ→資産形成の導線** ── 非公開の下書き v0.3（Artifact）。▶公式LINEのリンク先と運営者情報が決まったら埋める。★公開しない。経緯 `memory/project_shachiku_poikatsu_funnel.md`
