@@ -368,3 +368,19 @@ C サブドメイン等に別で作る            分離できるがサーバー
 - **代わりの経路は mini の `notify.tell()`**（`ssh mini 'cd ~/.vivid-relay && python3 -c "import notify; notify.tell(...)"'`）。実測で DM へ届いた（戻り値 True・2回）。
 - ★「離席するので Slack に通知して」と言われたら、最初から mini の notify 経由で出す。
 
+## ★permissions の `Write(...)` 規則は効かない。`Edit(...)` だけが file 操作に効く（ログの警告・実測 2026-10-22 前後）
+
+`~/.vivid-relay/approve2.log` に、ハーネスの警告が出ていた。
+
+```
+Permission ask rule (../.claude/settings.json): Write(.claude/skills/**) is not matched by file permission checks — only Edit(path) rules are. Use Edit(.claude/skills/**) instead (Edit rules cover all file-editing tools).
+```
+
+- **★意味：** ask/allow の `Write(...)` は file 権限の判定に照合されない。`Edit(...)` だけが効き、
+  Edit ルールは file を編集するツール全体を覆う。
+- **★実測：** `~/.claude/settings.json` の ask 側に `Write(.claude/skills/**)` と
+  `Write(.claude/skills/fukuchi-core/SKILL.md)` が残っている（85・87行目）。ここに書いた Write 規則は、
+  同じ場所の拒否の判定に使われていない。
+- **How to apply：** 権限を書くときは `Edit(...)` を使う。`Write(...)` を足しても効いたと見なさない。
+  `.claude/` 配下の拒否理由は、この規則の書き方の違いとは別に、上の節の層で既に塞がれている。
+

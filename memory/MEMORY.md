@@ -62,10 +62,11 @@
 - [★外出先ではminiに届かない](project_macmini_remote_workhorse.md) — 10/10 .localもIPも同じLAN内だけ。まず自分の網を見る
 - [Mac mini作業機](project_macmini_remote_workhorse.md) — ssh mini＝Tailscale経由(10/11〜外でも届く)。家LAN用は mini-lan
 - [miniの実行環境](reference_mac_mini_execution_env.md) — ★claude -pは対話用フックを子に引き継ぐ＝判定が黙って死ぬ。10/15 両機で隔離済み
+- [時刻はゼロ埋め](reference_hand_built_timestamp_zero_pad.md) — 4:28:50 を fromisoformat は読めない。10/20 読む側を直した・書き手は未特定
 - [シェルは全角の直前で落ちる](reference_shell_fullwidth_paren_breaks_var.md) — 変数は${VAR}。★埋め込みPythonはbash -nを通る→取り出してpy_compile
 - [Obsidian Core_Brainが動的正本](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync対象外
 - [ツールの使い分け](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚。★有璽氏が普段見るのはObsidian（10/8）
-- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — 10/8〜2枚(02=有璽氏＋🔥優先/03=AI)・15分毎。複製時は目印を消す
+- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — 10/8〜2枚・15分毎。同じ目印2組が10/20も警告中＝02で片方の目印を消すのは有璽氏
 - [仮称を識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 識別子は役割で付ける。置換は数えてから
 - [インスタのハイライトカバー](reference_instagram_highlight_cover.md) — ★デザインの外周（縁の丸）を画像の幅いっぱいに置く＝拡大せずにはまる。縁は消さない（10/17 取り違えた）。★並びは最後にストーリーを足したものが左（アーカイブしても動かない）
 - [インスタは毎回確認](feedback_ask_instagram_each_time.md) — 法人問わずレポートごとに「作るか／投稿までか」を聞く
