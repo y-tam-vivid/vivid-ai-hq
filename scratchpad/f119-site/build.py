@@ -91,7 +91,7 @@ def cta_section(eyebrow="CONTACT", title="まずは、現在地を知ること�
                 lead="健康診断のご相談、過去の分の扱い、月額サービスの構成。どの段階のご相談でも構いません。率直なご状況をお聞かせください。", cta="band"):
     return f'''<section class="sec navy"><div class="wrap">
   {sh(eyebrow, title, lead)}
-  <div class="btnrow">{cal_btn("無料相談を予約する（30分・オンライン）", cta, "cta-large")}<a class="btn on-dark" href="contact.html">お問い合わせ</a></div>
+  <div class="btnrow">{cal_btn("無料相談を予約する（30分・オンライン）", cta, "cta", " lg")}<a class="btn on-dark" href="contact.html">お問い合わせ</a></div>
   <p class="small" style="margin-top:16px;color:var(--text-on-dark-muted)">予約フォームが開きます。ご都合のよい日時をお選びください。</p>
 </div></section>
 '''
@@ -126,7 +126,7 @@ PAGES["index.html"] = ("トップ", "放課後等デイサービス・児童発�
     <h1>実地指導は、<br>必ず来ます。</h1>
     <p class="lead">施設運営の健康診断を入口に、過去の是正と、これからの運営改善までを一体でご支援します。設計しているのは、放課後等デイサービスと就労継続支援B型を自ら運営している事業者です。</p>
     <div class="actions">{cal_btn("無料相談を予約する", "hero", "cta-large")}<a class="btn on-dark" href="service.html">サービスを見る</a></div>
-    <p class="note">健康診断はオンライン完結・最短2週間・3万円〜／事業所（税別）</p>
+    <p class="hnote">健康診断はオンライン完結・最短2週間・3万円〜／事業所（税別）</p>
   </div>
 </section>
 
@@ -457,7 +457,7 @@ PAGES["contact.html"] = ("無料相談・お問い合わせ", "福祉施設の11
 <section class="sec"><div class="wrap split">
   <div class="stack">
     {sh("BOOKING", "無料相談を予約する", "30分・オンライン。予約フォームが開きます。ご都合のよい日時をお選びください。")}
-    <div>{cal_btn("無料相談を予約する（30分・オンライン）", "contact", "cta-large")}</div>
+    <div>{cal_btn("無料相談を予約する（30分・オンライン）", "contact", "cta", " lg")}</div>
     <div class="tbl" style="margin-top:24px"><table style="min-width:0"><tbody>
       <tr><td style="width:120px">運営</td><td>株式会社ビビッド（ふくち。グループ）</td></tr>
       <tr><td>所在地</td><td>大阪市北区梅田1-1-3 大阪駅前第3ビル 29階</td></tr>

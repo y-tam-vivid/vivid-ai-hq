@@ -46,6 +46,7 @@ h1,h2,h3,h4,p{margin:0}
 .hero{position:relative;overflow:hidden;background:var(--f119-navy);color:#fff;min-height:520px;display:flex;align-items:center}
 .hero>img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:var(--r-photo);filter:saturate(.85)}
 .hero .scrim{position:absolute;inset:0;background:var(--scrim-left)}
+@media (max-width:760px){.hero .scrim{background:linear-gradient(0deg,rgba(14,42,71,.9) 0%,rgba(14,42,71,.78) 100%)}}
 .hero .sym{position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:420px;height:420px;opacity:var(--hero-symbol-opacity);pointer-events:none}
 .hero .inner{position:relative;width:100%;padding-block:72px}
 .bar{width:var(--bar-w);height:var(--bar-h);background:var(--f119-orange);margin-bottom:24px}
@@ -54,7 +55,7 @@ h1,h2,h3,h4,p{margin:0}
 .hero h1{margin-top:8px;font-size:var(--fs-h1);font-weight:var(--fw-medium);line-height:1.45;letter-spacing:var(--tr-heading);max-width:760px;text-wrap:balance}
 .hero .lead{margin-top:20px;max-width:620px;color:#E6ECF2;line-height:var(--lh-body)}
 .hero .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
-.hero .note{margin-top:16px;font-size:var(--fs-sm);color:var(--text-on-dark-muted)}
+.hero .hnote{margin-top:16px;font-size:var(--fs-sm);color:var(--text-on-dark-muted)}
 .hero.sub{min-height:300px}
 .hero.sub h1{font-size:36px}
 @media (max-width:700px){.hero{min-height:0}.hero h1{font-size:30px}.hero.sub h1{font-size:28px}.hero .inner{padding-block:48px}.hero .sym{width:260px;height:260px;right:-90px}}
@@ -221,3 +222,4 @@ textarea.input{resize:vertical}
 .ftr .bottom .id img{width:28px;height:28px}
 .ftr .bottom .id .sep{opacity:.4;margin:0 8px}
 .ftr .bottom .c{font-size:var(--fs-cap);color:var(--text-on-dark-muted)}
+section[id]{scroll-margin-top:96px}
