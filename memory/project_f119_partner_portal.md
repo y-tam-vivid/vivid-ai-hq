@@ -30,3 +30,10 @@ https://claude.ai/artifact/32DppG7CdR4xwdQo7NTMzz　元ファイル `scratchpad/
 ## ★未決（構想書§9）
 紹介料を取るか（人材紹介・保険・融資は職安法・保険業法・貸金業法に触れうる＝取るなら法務確認が先）／掲載基準・掲載料／
 相談の受け方／置き場所（119番サイト配下か別ドメインか）／診断士・社労士の当て
+
+## 写真（2026-10-27 有璽氏「ダミーで良いので写真も」）
+- Gamma＝無料プランでクレジット不足（402）／Canva＝2枚で quota_exceeded（2枚もサムネ200pxしか取れず未使用）
+- Unsplash 等の検索は自動判定で拒否された（bot回避扱い）＝使わない
+- ★有璽氏の案で ChatGPT で生成 → Drive `12_福祉施設の119番/2026-10-27【試作】119番解決パートナー_ダミー写真`（1S0W9xF64QPZYs_xLPKwTHtsMa-0ZuLBf）へ hero,a〜m の14枚
+  頼み方 `scratchpad/f119-portal/chatgpt_photo_prompts.md`（同じ内容をフォルダに Google ドキュメントで置いた）
+- ▶入ったら：Drive から取り込み → photos/ に縮小して置き、Artifact の files で同じURLへ公開
