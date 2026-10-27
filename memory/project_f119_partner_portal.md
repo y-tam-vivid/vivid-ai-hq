@@ -34,6 +34,11 @@ https://claude.ai/artifact/32DppG7CdR4xwdQo7NTMzz　元ファイル `scratchpad/
 ## 写真（2026-10-27 有璽氏「ダミーで良いので写真も」）
 - Gamma＝無料プランでクレジット不足（402）／Canva＝2枚で quota_exceeded（2枚もサムネ200pxしか取れず未使用）
 - Unsplash 等の検索は自動判定で拒否された（bot回避扱い）＝使わない
-- ★有璽氏の案で ChatGPT で生成 → Drive `12_福祉施設の119番/2026-10-27【試作】119番解決パートナー_ダミー写真`（1S0W9xF64QPZYs_xLPKwTHtsMa-0ZuLBf）へ hero,a〜m の14枚
+- 有璽氏の案でまず ChatGPT → ★同日、ターミナルの Claude Code に依頼する形へ変更（依頼文 `scratchpad/f119-portal/terminal_request_photos.md`・任意で v1,v2 の2枚追加）
+- 置き場は同じ： → Drive `12_福祉施設の119番/2026-10-27【試作】119番解決パートナー_ダミー写真`（1S0W9xF64QPZYs_xLPKwTHtsMa-0ZuLBf）へ hero,a〜m の14枚
   頼み方 `scratchpad/f119-portal/chatgpt_photo_prompts.md`（同じ内容をフォルダに Google ドキュメントで置いた）
 - ▶入ったら：Drive から取り込み → photos/ に縮小して置き、Artifact の files で同じURLへ公開
+
+## v0.2（2026-10-27・有璽氏「サイトの中身をもう少し制作進めましょう」）
+お悩み別ページ×11／パートナー記事×13（ポップアップを1ページに）／経営者の声×2（架空）／掲載をご希望の会社へ（申込フォーム）／
+相談フォーム（お悩み・会社を選んだ状態で開ける）。★写真は `photos/<id>.jpg`（hero,a〜m,v1,v2）を Artifact の files で足すだけで差し替わる。
