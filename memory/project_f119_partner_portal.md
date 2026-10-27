@@ -86,3 +86,5 @@ Vercel team fuku-chi-vivid／project fukushi119-partners（prj_OMtPpwmusvYD40idK
   SB・GTM・GA4 collect・Clarity collect が発火、cta_click 1件。sites.json に行を追加。
 写真14枚＝ターミナル側が生成し Drive `12_…/2026-10-27【試作】…ダミー写真` に格納（子どもの顔・文字・赤なしを目視）。
 ▶次：有璽氏が協力先へURLを送る（確認用URLを社内で開くときは ?utm_source=check）。
+
+- 10/28 公開版を v0.6（119番デザインシステム）へ更新（dpl_75xaSUJxsjVK9RVQ9Fgzgvx1cx5a・commit e4b9c6a・本番と手元のsha1一致を確認）。★「119番について」の3か所は Webサイト(fukushi119-web)公開まで本番LP fukushi119.vivid-global.com へ向けている（build_public.py の SITE_URL）。同日、諸橋さんへLINEで確認依頼の文面を作成（送るのは有璽氏）。
