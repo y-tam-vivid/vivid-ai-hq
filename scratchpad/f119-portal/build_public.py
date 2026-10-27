@@ -17,6 +17,7 @@ SB_TOKEN = "8d63c4ed-05b5-4cd8-90cd-d1a8a89e947b"  # 自社の公開ページに
 GTM_ID = "GTM-PQX3L4TQ"
 CLARITY_ID = "z431w59a74"
 NOTICE = "協力先さま確認用の試作です。掲載している会社名・人名・事例はすべて架空です。ご意見は福祉施設の119番の担当までお寄せください。"
+SITE_URL = "https://fukushi119.vivid-global.com/"  # 119番Webサイト（fukushi119-web）公開までは本番LPへ向ける
 FORBIDDEN = ["構想書", "118", "SparkLabo", "諸橋", "宮原", "齋藤", "井上", "CAS", "△", "職業安定法", "参考サイト", "concept"]
 
 
@@ -50,6 +51,7 @@ def main():
             "採用・送迎・加算など、お悩み分類ごとに集まる場。")
     s = re.sub(r"/\* Layout:[^*]*\*/", "/* Layout: 福祉施設の119番 Design System v0.1 */", s, count=1)
     s = s.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', "")
+    s = s.replace("https://fukushi119-web.vercel.app/", SITE_URL)
     # 骨組み・noindex・計測
     snippet = (REPO / "bin/web_tracking/snippet.html").read_text(encoding="utf-8")
     snippet = (snippet.replace("{{SB_TRACK_ID}}", SB_ID).replace("{{SB_TRACK_TOKEN}}", SB_TOKEN)
