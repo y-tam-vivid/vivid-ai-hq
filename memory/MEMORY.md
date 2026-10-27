@@ -17,7 +17,7 @@
 
 ## 毎ターン届けるもの
 
-- [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語。★英語の要約から再開した直後に英語化した(10/12)
+- [Language: Japanese](feedback_language_japanese.md) — 応答は常に日本語。★英語の要約から再開直後(10/12)・英語の画面とツール出力が続いた作業の途中(10/27)に英語化
 - [呼称は「有璽」「有璽氏」](feedback_naming_yuji.md) — 「本人/田村さん」不可／制作物も既存物も自動で正としない
 - [モデル使い分け](feedback_model_usage_rule.md) — Sonnet標準/Opus難所/Fable封印。★定型の仕分けはHaiku＋機械。迷いは人へ(10/14)
 - [測っていない数字を書かない](feedback_never_write_an_unmeasured_number.md) — 数え方を添える。★回数は grep -o|wc -l（grep -c は行の数）
