@@ -69,7 +69,7 @@
 - [Obsidian Core_Brainが動的正本](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync対象外
 - [ツールの使い分け](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚。★有璽氏が普段見るのはObsidian（10/8）
 - [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — 10/8〜2枚・15分毎。同じ目印2組が10/20も警告中＝02で片方の目印を消すのは有璽氏
-- [[x]が消えない＝目印の重複](project_notion_focus_sync.md) — ★複製で目印が写ると両行凍結。ログの「同じ目印が内容の違う行」を見て複製側の目印を外す。[x]は翌日Archiveへ(10/27)
+- [[x]が消えない＝目印の重複](project_notion_focus_sync.md) — ★同期が同名の新行に既存の目印を付けていた(人の複製ではない)。10/27修正。両行凍結→ログ「同じ目印が内容の違う行」。[x]は翌日Archiveへ
 - [仮称を識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 識別子は役割で付ける。置換は数えてから
 - [インスタのハイライトカバー](reference_instagram_highlight_cover.md) — ★デザインの外周（縁の丸）を画像の幅いっぱいに置く＝拡大せずにはまる。縁は消さない（10/17 取り違えた）。★並びは最後にストーリーを足したものが左（アーカイブしても動かない）
 - [インスタは毎回確認](feedback_ask_instagram_each_time.md) — 法人問わずレポートごとに「作るか／投稿までか」を聞く
