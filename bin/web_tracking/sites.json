@@ -167,6 +167,19 @@
         "解決パートナー"
       ],
       "log_label": "119番解決パートナー"
+    },
+    {
+      "name": "福祉施設の119番 Webサイト（試作）",
+      "url": "https://fukushi119-web.vercel.app/",
+      "cms": "静的HTML 7ページ・Vercel（team fuku-chi-vivid／project fukushi119-web・リポジトリ連携なし）",
+      "clarity": "z46d8rwt4j",
+      "gtm": "GTM-PQX3L4TQ",
+      "install_route": "scratchpad/f119-site/build.py が <!--TRACKING--> を snippet v2 に置換。公開は Vercel API の gitSource（rootDirectory=scratchpad/f119-site/public）",
+      "status": "2026-10-28 公開予定・noindex（meta＋X-Robots-Tag＋robots.txt）。本番LP fukushi119.vivid-global.com の置き換えは未決",
+      "brand": [
+        "119番"
+      ],
+      "log_label": "119番Webサイト試作"
     }
   ],
   "excluded": [

@@ -6,6 +6,14 @@ CAL = "https://calendar.app.google/c5aJoxPMVB5brw9b8"
 PARTNERS = "https://fukushi119-partners.vercel.app/"
 IRYO = "https://iryo.vivid-global.com/"
 MAIL = "sales-consulting@vivid-global.com"
+# 計測セット（bin/web_tracking/snippet.html v2）。SB・GTM は自社共通、Clarity はこのサイト専用
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+TRACK = {"{{SB_TRACK_ID}}": "17e298ff-5e02-4630-a16d-0f4f25ede23a", "{{SB_TRACK_TOKEN}}": "8d63c4ed-05b5-4cd8-90cd-d1a8a89e947b",
+         "{{GTM_ID}}": "GTM-PQX3L4TQ", "{{CLARITY_ID}}": "z46d8rwt4j"}
+with open(os.path.join(REPO, "bin/web_tracking/snippet.html"), encoding="utf-8") as f:
+    SNIPPET = f.read()
+for k, v in TRACK.items():
+    SNIPPET = SNIPPET.replace(k, v)
 
 NAV = [("index.html", "トップ"), ("service.html", "サービス"), ("price.html", "料金"),
        ("flow.html", "導入の流れ"), ("about.html", "わたしたち"), ("faq.html", "よくある質問")]
@@ -483,5 +491,9 @@ document.getElementById('cform').addEventListener('submit',function(e){{e.preven
 
 for fn, (title, desc, body) in PAGES.items():
     with open(os.path.join(OUT, fn), "w", encoding="utf-8") as f:
-        f.write(head(title, desc, fn) + body + foot())
+        f.write((head(title, desc, fn) + body + foot()).replace("<!--TRACKING-->", SNIPPET.strip(), 1))
+for name, text in {"robots.txt": "User-agent: *\nDisallow: /\n", ".vercelignore": "*.md\n*.bak*\n",
+                   "vercel.json": '{\n  "headers": [\n    { "source": "/(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ] }\n  ]\n}\n'}.items():
+    with open(os.path.join(OUT, name), "w", encoding="utf-8") as f:
+        f.write(text)
 print("wrote", len(PAGES), "pages")
