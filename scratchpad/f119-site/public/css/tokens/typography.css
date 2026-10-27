@@ -1,0 +1,12 @@
+/* 文字：見出しも本文もゴシック。明朝は代表メッセージ等の情緒的文脈のみ */
+:root{
+--font-sans:"Noto Sans JP","Noto Sans CJK JP","Hiragino Sans",sans-serif;
+--font-latin:"Inter","Noto Sans JP",sans-serif;
+--font-serif-exception:"Noto Serif JP","Noto Serif CJK JP",serif; /* 例外のみ */
+--fs-h1:44px; --fs-h2:30px; --fs-h3:19px; --fs-h4:17px;
+--fs-lead:19px; --fs-body:17px; --fs-sm:14px; --fs-cap:12px;
+--fs-eyebrow:13px; --fs-stat:36px; --fs-cta-large:20px;
+--fw-regular:400; --fw-medium:500; --fw-bold:700; --fw-latin-semibold:600;
+--lh-heading:1.5; --lh-card:1.6; --lh-body:1.9; --lh-sm:1.8;
+--tr-heading:.04em; --tr-body:.02em; --tr-eyebrow:.3em; --tr-label:.06em;
+}

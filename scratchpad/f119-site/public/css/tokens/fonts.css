@@ -1,0 +1,2 @@
+/* ブランド指定は Noto Sans CJK JP。バイナリ未提供のため Google Fonts の Noto Sans JP で代用。欧文・数字は Inter（CI仕様書5章） */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;600;700&display=swap");
