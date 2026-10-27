@@ -67,3 +67,11 @@ https://claude.ai/artifact/32DppG7CdR4xwdQo7NTMzz　元ファイル `scratchpad/
 ★コントラスト実測：白文字on#E2733B=3.11（不可）／#E2733B文字onサンド=2.76（不可）／白on#57A6C9=2.73（不可）→ 白文字の面・小さい文字は #B85A2A（4.63）を提案。試作v0.5も小さい文字とラベルは#b85a2aに直した。
 依頼文 `scratchpad/f119-portal/claude_design_brief.md` ＝ Drive `12_福祉施設の119番/2026-10-27【デザイン】119番デザイン統一_Claude Design依頼/119番デザイン統一_Claude Design依頼文_v1.0.md`
 ▶渡すのは有璽氏の手（資料3本のPDFも一緒に。PDFはこのクラウドのアップロードにしか無い）。LP本番反映は有璽氏の判断。
+
+## 協力先向けの公開（2026-10-27 有璽氏「Vercel側に公開して協力先に確認を」）
+有璽氏の回答：①URLを知っている人だけ（合言葉なし・noindex）②計測は入れる ③構想書タブは外す。
+公開版＝`scratchpad/f119-portal/public/`（構想書・118件・候補者実名を除去／noindex＋X-Robots-Tag＋robots.txt／.vercelignore）。
+計測：SB 17e298ff…（token は gamemarke・ko-station の公開ページ2経路で一致）＋GTM-PQX3L4TQ＋クリックログ＋data-cta 7個＝✓。
+★Clarity だけ✗＝有璽氏がプロジェクトを作ってIDを渡すまで公開しない（検査で✗）。予定URL https://fukushi119-partners.vercel.app （10/27時点 未使用）。Vercel team fuku-chi-vivid。
+★Vercel Hobby は規約上「非商用のみ」（reference_free_plan_blocks_on_terms_not_only_limits）＝既知の全体課題。
+公開したら sites.json に行を足す（Clarity別ID）。
