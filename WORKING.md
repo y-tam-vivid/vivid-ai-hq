@@ -155,6 +155,11 @@
   ★`~/kodomo-photo-work/build_site.py` を2セッションで触る。公開は★必ず最新の番号から（いま v55・10/13 ボランティア応募ボタン）。直しの正本は `oct3_fixes.py` ほか `*_fixes.py`
   **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定／`~/kodomo-photo-work/{oct3_fixes,apply_oct3}.py`
 
+## claude.ai/code（クラウド）セッション
+
+- **【ビビ / クラウド 2026-10-27】福祉施設の119番 解決パートナー（ポータル）の試作と構想書** ── 書く：Artifact https://claude.ai/artifact/32DppG7CdR4xwdQo7NTMzz・`scratchpad/f119-portal/`。▶有璽氏の判断待ち（構想書§9）。経緯 `memory/project_f119_partner_portal.md`
+  **★同じ対象に手をつけないでください**: `scratchpad/f119-portal/`
+
 ## Claude Desktop セッション
 
 > 3つ目の面。SalesBreaker 関連のやり取りはここで行われている（2026-08-13 有璽氏）。

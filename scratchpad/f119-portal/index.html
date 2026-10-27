@@ -1,0 +1,456 @@
+<title>119番 解決パートナー</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+/* Layout: 左に「お悩み」の索引、右に「解ける会社」。お悩み→会社→相談 の一方向に読ませる。上部に 試作／構想書 の切替 */
+:root{
+  --bg:#f6f7f6; --surface:#ffffff; --ink:#1d2a2e; --muted:#5b6b70; --line:#dde3e2;
+  --accent:#c8442f; --accent-soft:#f7e3de; --teal:#1f5f66; --teal-soft:#dcebec;
+  --warn:#8a5a00; --warn-soft:#fbefd2;
+  --display:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  --body:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121a1c; --surface:#1a2427; --ink:#e6eceb; --muted:#9db0b3; --line:#2c3a3d;
+  --accent:#ec7a63; --accent-soft:#3a221d; --teal:#7cc2c8; --teal-soft:#1d3336;
+  --warn:#f0c46a; --warn-soft:#3a2f17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121a1c; --surface:#1a2427; --ink:#e6eceb; --muted:#9db0b3; --line:#2c3a3d;
+  --accent:#ec7a63; --accent-soft:#3a221d; --teal:#7cc2c8; --teal-soft:#1d3336;
+  --warn:#f0c46a; --warn-soft:#3a2f17; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.75}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.35;margin:0}
+a{color:var(--teal)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:baseline;gap:8px;font-family:var(--display);font-weight:900}
+.logo b{color:var(--accent);font-size:22px;letter-spacing:.02em}
+.logo span{font-size:14px}
+.tabs{margin-left:auto;display:flex;gap:4px;background:var(--bg);border-radius:999px;padding:4px}
+.tabs a{text-decoration:none;color:var(--muted);padding:4px 14px;border-radius:999px;font-size:13px;font-weight:700}
+.tabs a[aria-current="page"]{background:var(--ink);color:var(--surface)}
+.notice{background:var(--warn-soft);color:var(--warn);font-size:12.5px}
+.notice .wrap{padding-block:6px}
+
+/* hero */
+.hero{padding-block:40px 28px}
+.hero .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+.hero h1{font-size:clamp(26px,4.2vw,40px);font-weight:900;margin-top:6px}
+.hero p{max-width:62ch;color:var(--muted);margin:12px 0 0}
+.search{margin-top:22px;display:flex;gap:8px;max-width:640px}
+.search input{flex:1;min-width:0;font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+
+/* pains grid */
+.sec{padding-block:28px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sec-h h2{font-size:22px}
+.sec-h small{color:var(--muted)}
+.pains{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.pain{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:left;color:var(--ink);display:flex;flex-direction:column;gap:4px;min-width:0}
+.pain:hover{border-color:var(--teal)}
+.pain[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.pain .no{font-size:11px;color:var(--muted);letter-spacing:.08em}
+.pain .t{font-family:var(--display);font-weight:700;font-size:16px}
+.pain .q{font-size:12.5px;color:var(--muted);line-height:1.6}
+.pain .n{font-size:12px;color:var(--teal);font-weight:700;margin-top:auto}
+.pain.owner{background:var(--accent-soft);border-color:transparent}
+
+/* filters + list */
+.layout{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}
+@media (max-width:820px){.layout{grid-template-columns:1fr}}
+.filters{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px)}
+@media (max-width:820px){.filters{position:static}}
+.filters h3{font-size:13px;letter-spacing:.06em;color:var(--muted)}
+.filters label{display:flex;gap:8px;align-items:center;font-size:14px}
+.filters select{font:inherit;width:100%;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:3px 10px}
+.chip[aria-pressed="true"]{background:var(--teal);color:var(--surface);border-color:var(--teal)}
+.reset{background:none;border:none;color:var(--teal);text-decoration:underline;padding:0;font-size:13px;align-self:flex-start}
+.count{font-size:13px;color:var(--muted);margin-bottom:10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-align:left;padding:0;color:var(--ink);min-width:0}
+.card:hover{border-color:var(--teal)}
+.ph{aspect-ratio:16/9;max-width:100%;display:flex;align-items:flex-end;padding:12px;font-family:var(--display);font-weight:900;font-size:22px;color:var(--surface)}
+.card .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
+.card .co{font-size:12px;color:var(--muted)}
+.card .msg{font-family:var(--display);font-weight:700;font-size:16px;line-height:1.5}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tag{font-size:11.5px;background:var(--teal-soft);color:var(--teal);border-radius:6px;padding:1px 8px}
+.tag.area{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.tag.online{background:var(--accent-soft);color:var(--accent)}
+.empty{padding:24px;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
+
+/* detail */
+dialog{border:none;border-radius:16px;padding:0;max-width:760px;width:calc(100% - 32px);background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(10,20,22,.55)}
+.dl-h{padding:24px 24px 0}
+.dl-h .crumb{font-size:12px;color:var(--muted)}
+.dl-h h2{font-size:24px;margin-top:6px}
+.dl-b{padding:8px 24px 24px;display:flex;flex-direction:column;gap:18px}
+.dl-b h3{font-size:15px;border-left:3px solid var(--accent);padding-left:10px;margin-bottom:6px}
+.dl-b p{margin:0}
+.dl-b ul{margin:0;padding-left:1.2em}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:4px 12px;font-size:14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:none;border-radius:10px;padding:10px 18px;font-weight:700}
+.btn.p{background:var(--accent);color:#fff}
+.btn.s{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.close{position:absolute;top:10px;right:12px;background:var(--bg);border:none;border-radius:999px;width:34px;height:34px;color:var(--ink)}
+.toast{font-size:13px;color:var(--teal)}
+
+/* community */
+.comm{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.comm div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.comm h3{font-size:16px}
+.comm p{margin:6px 0 0;font-size:13.5px;color:var(--muted)}
+.soon{display:inline-block;font-size:11px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:0 6px;margin-left:6px;vertical-align:middle}
+
+/* concept */
+.doc{max-width:860px;padding-block:32px 64px}
+.doc h1{font-size:30px}
+.doc h2{font-size:21px;margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
+.doc p,.doc li{max-width:68ch}
+.doc .lead{color:var(--muted)}
+.tbl{overflow-x:auto;margin-top:10px}
+.tbl table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px;background:var(--surface)}
+.tbl th,.tbl td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.tbl th{background:var(--bg);font-weight:700}
+pre.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:13px;line-height:1.6}
+.box{background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:12px 16px;margin-top:12px}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+footer .wrap{padding-block:20px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="bar"><div class="wrap">
+  <div class="logo"><b>福祉施設の119番</b><span>解決パートナー</span></div>
+  <nav class="tabs" aria-label="表示の切り替え">
+    <a href="#proto" id="tab-proto">試作</a>
+    <a href="#concept" id="tab-concept">構想書</a>
+  </nav>
+</div></header>
+<div class="notice"><div class="wrap">非公開の試作です。掲載している会社名・人名・文面はすべて架空です（ジャンルだけ実際の候補に合わせています）。</div></div>
+
+<main id="view-proto">
+  <section class="wrap hero">
+    <div class="eyebrow">施設経営者のための お悩み別 相談先ガイド</div>
+    <h1>その悩み、ひとりで抱えなくていい。<br>解ける会社が、ここにいます。</h1>
+    <p>人・お金・制度・現場・経営者ご自身のこと。福祉施設の119番が、施設経営のお悩みごとに「解決できる会社」とその想いを紹介します。まずはお悩みから選んでください。</p>
+    <div class="search"><input id="q" type="search" placeholder="例：送迎車、法定研修、家賃、助成金" aria-label="キーワードで探す"></div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="h-pains">
+    <div class="sec-h"><h2 id="h-pains">お悩みから探す</h2><small>困りごとリスト118件の10分類＋経営者ご自身の悩み</small></div>
+    <div class="pains" id="pains"></div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="h-list">
+    <div class="sec-h"><h2 id="h-list">解決パートナー</h2><small>カードを押すとインタビューを開きます</small></div>
+    <div class="layout">
+      <aside class="filters" aria-label="絞り込み">
+        <div><h3>本拠地エリア</h3><select id="f-area"><option value="">すべて</option></select></div>
+        <div><h3>対応のしかた</h3>
+          <label><input type="checkbox" id="f-online"> オンラインで全国対応</label>
+          <label><input type="checkbox" id="f-visit"> 訪問・現地対応あり</label></div>
+        <div><h3>施設の種類</h3><div class="chips" id="f-target"></div></div>
+        <div><h3>タグ</h3><div class="chips" id="f-tags"></div></div>
+        <button class="reset" id="reset" type="button">条件をすべて外す</button>
+      </aside>
+      <div>
+        <div class="count" id="count"></div>
+        <div class="cards" id="cards"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="h-comm">
+    <div class="sec-h"><h2 id="h-comm">つながる</h2><small>将来のコミュニティ機能（構想）</small></div>
+    <div class="comm">
+      <div><h3>経営者の相談会<span class="soon">構想</span></h3><p>同じ立場の経営者と、パートナー企業が少人数で話す会。匿名で悩みを出せる形を検討。</p></div>
+      <div><h3>テーマ別の分科会<span class="soon">構想</span></h3><p>参考サイトの「部活」にあたる場。採用・送迎・加算など、お悩み分類ごとに集まる。</p></div>
+      <div><h3>経営者インタビュー<span class="soon">構想</span></h3><p>パートナー側だけでなく、施設経営者の「乗り越えた話」も載せる。</p></div>
+      <div><h3>会員登録（無料）<span class="soon">構想</span></h3><p>登録すると相談履歴と分科会の案内が届く。運営体制が決まるまで作らない。</p></div>
+    </div>
+  </section>
+</main>
+
+<main id="view-concept" hidden>
+  <article class="wrap doc">
+    <p class="lead">構想書 v0.1 ／ 2026-10-27 ／ 状態：たたき台（有璽氏の判断待ちあり）</p>
+    <h1>福祉施設の119番 解決パートナー（仮称）構想書</h1>
+
+    <h2>1. 結論</h2>
+    <p>「福祉施設の119番」の一部として、<strong>施設経営者のお悩みから入り、それを解ける会社の想いと取り組みを読み、119番の窓口から相談する</strong>ポータルを作ります。土台は9月に作った困りごとリスト118件です。その判定で「119番では触れない（△）」とした94件を提携先で解く場所にする、というのがこのサイトの役割です。</p>
+    <pre class="fig">  施設経営者のお悩み（10分類＋経営者本人）
+            │
+            ├─ 119番で解けるもの（◎○ 24件）──→ 健康診断・ドック・月額3本
+            │
+            └─ 119番では触れないもの（△ 94件）──→ 解決パートナー（このサイト）
+                                                     │
+                                                     └─ 相談は119番の窓口が受けて振り分ける</pre>
+
+    <h2>2. 前提と制約</h2>
+    <ul>
+      <li>名義は福祉施設の119番（2026-10-27 有璽氏の回答）。運営主体は119番の提供元である株式会社ビビッドを想定しています（未確認）。</li>
+      <li>掲載候補は承諾をまだ取っていません。試作はダミー名で作っています。</li>
+      <li>最終的には、福祉経営者と親和性のある会社を束ねたコミュニティにすることを目指します。</li>
+      <li>参考サイト Bowers は業種での絞り込みだけでした。エリア・タグ・お悩みからの入口は、このサイトで独自に足すものです。</li>
+    </ul>
+
+    <h2>3. ページ構成</h2>
+    <pre class="fig">トップ
+ ├─ お悩みから探す（11分類 → 該当パートナー一覧）
+ ├─ 解決パートナー一覧（エリア／対応方法／施設の種類／タグで絞り込み）
+ │    └─ パートナー詳細＝インタビュー記事
+ ├─ 経営者インタビュー（施設側の事例）  ← 第2段階
+ ├─ つながる（相談会・分科会・会員登録） ← 第3段階
+ └─ 119番について ／ 相談する（窓口は1つ）</pre>
+
+    <h2>4. インタビュー記事の型</h2>
+    <p>Bowers の型（事業内容 → ここが他社と違う → 会社情報 → プロフィール → 繋がりたい業種 → 相談）を、施設経営者向けに組み替えます。いちばん上に置くのは事業内容ではなく、<strong>経営者へのひと言</strong>です。</p>
+    <div class="tbl"><table>
+      <tr><th>順</th><th>項目</th><th>中身</th><th>Bowersでの対応</th></tr>
+      <tr><td>1</td><td>施設経営者へのひと言</td><td>見出しになる一文。悩みに向けた言葉で書く</td><td>リード文</td></tr>
+      <tr><td>2</td><td>解決できるお悩み</td><td>11分類から選び、具体的な悩みを2〜4個</td><td>なし（新設）</td></tr>
+      <tr><td>3</td><td>私たちの想い</td><td>なぜ福祉施設に関わるのか。原体験</td><td>会社設立経緯</td></tr>
+      <tr><td>4</td><td>具体的な取り組み・事例</td><td>施設の種類、何をして、何が変わったか</td><td>ここが他社と違う</td></tr>
+      <tr><td>5</td><td>対応エリア・対応方法</td><td>本拠地／訪問できる範囲／オンライン可否</td><td>なし（新設）</td></tr>
+      <tr><td>6</td><td>費用の目安</td><td>載せるかは各社の判断。初回相談の有償・無償だけは必須</td><td>なし（新設）</td></tr>
+      <tr><td>7</td><td>会社情報・プロフィール</td><td>会社概要、代表または担当者</td><td>会社情報・プロフィール</td></tr>
+      <tr><td>8</td><td>つながりたい施設・分野</td><td>どんな施設と組みたいか</td><td>繋がりたい業種</td></tr>
+      <tr><td>9</td><td>119番から相談する</td><td>窓口は119番に一本化</td><td>LINEで相談</td></tr>
+    </table></div>
+
+    <h2>5. 分類の設計</h2>
+    <div class="tbl"><table>
+      <tr><th>軸</th><th>値</th><th>使い方</th></tr>
+      <tr><td>お悩みカテゴリ</td><td>人／利用者の獲得／お金／制度・法令／現場運営／利用者・家族対応／経営・組織／外部連携／IT・情報／その他＋経営者ご自身</td><td>入口。困りごとリストの10分類と番号を揃える</td></tr>
+      <tr><td>施設の種類</td><td>障害福祉全般／放デイ・児発／就労継続支援／居宅介護／介護</td><td>リストのA〜D区分に合わせる。障害福祉が主戦場</td></tr>
+      <tr><td>エリア</td><td>本拠地（都道府県）＋ 対応方法（オンライン全国／訪問可）</td><td>本拠地と対応範囲を分けて持つ</td></tr>
+      <tr><td>タグ</td><td>送迎、加算、法定研修、資金調達など</td><td>自由入力にしない。一覧から選ぶ（表記ゆれ防止）</td></tr>
+    </table></div>
+
+    <h2>6. 掲載候補の当てはめ（現時点のイメージ）</h2>
+    <div class="tbl"><table>
+      <tr><th>ジャンル</th><th>お悩みカテゴリ</th><th>経由</th><th>確認したいこと</th></tr>
+      <tr><td>融資</td><td>お金／経営者ご自身</td><td>井上さん？</td><td>候補者の確定</td></tr>
+      <tr><td>助成金（人材開発）</td><td>お金／人</td><td>CAS</td><td>—</td></tr>
+      <tr><td>旅費規程</td><td>お金／経営者ご自身</td><td>—</td><td>提供者が未定</td></tr>
+      <tr><td>家賃交渉</td><td>お金</td><td>SparkLabo</td><td>—</td></tr>
+      <tr><td>ニッチEC</td><td>経営・組織（就労Bの工賃）</td><td>SparkLabo 加藤さん</td><td>施設のどの悩みに効くか</td></tr>
+      <tr><td>医療（2者）</td><td>外部連携</td><td>諸橋さん</td><td>—</td></tr>
+      <tr><td>テニスコート</td><td>人（定着・福利厚生）？</td><td>諸橋さん</td><td>施設経営者にどう効くか不明</td></tr>
+      <tr><td>保険（介護福祉施設）</td><td>経営者ご自身／現場運営</td><td>宮原さん</td><td>—</td></tr>
+      <tr><td>法定研修</td><td>制度・法令</td><td>齋藤さん</td><td>—</td></tr>
+      <tr><td>人材紹介（精神障害）</td><td>人／外部連携</td><td>加藤さん？・諸橋さん</td><td>候補者の確定</td></tr>
+      <tr><td>業務効率ツール開発 ×2</td><td>IT・情報／現場運営</td><td>諸橋さん・SparkLabo</td><td>2社の違いの出し方</td></tr>
+      <tr><td>リース車両</td><td>現場運営（送迎）</td><td>SparkLabo</td><td>—</td></tr>
+    </table></div>
+    <p>この12ジャンルでは、困りごとリストで件数がいちばん多かった<strong>経営そのもの（収支・稼働率・承継：中小企業診断士の領域）</strong>と、<strong>労務（社労士）</strong>が空いています。どちらも△の上位です。</p>
+
+    <h2>7. 進め方（3段階）</h2>
+    <div class="tbl"><table>
+      <tr><th>段階</th><th>作るもの</th><th>始める条件</th></tr>
+      <tr><td>第1段階</td><td>お悩み入口＋パートナー記事（8〜12社）＋119番の相談窓口</td><td>掲載承諾が取れた会社が5社以上</td></tr>
+      <tr><td>第2段階</td><td>経営者インタビュー、相談の振り分け記録</td><td>相談が実際に入り始めたら</td></tr>
+      <tr><td>第3段階</td><td>会員登録、相談会、分科会</td><td>運営する人と頻度が決まったら</td></tr>
+    </table></div>
+
+    <h2>8. この形の利点と弱点</h2>
+    <p><strong>利点</strong>：経営者は会社名ではなく困りごとで探すので、入口が合っています。119番の窓口に相談が集まるので、119番の見込み客も同時に取れます。困りごとリストと分類を揃えておけば、空いている分野（誰も解けない悩み）が一覧で見え、次に声をかける相手が決まります。</p>
+    <p><strong>弱点</strong>：119番の名前で紹介する以上、紹介先の質の問題が119番の評判に返ってきます。掲載社が少ないうちに細かいタグやエリアを出すと、該当0件ばかりの寂しいサイトに見えます。記事の取材と更新にかかる手間は、掲載社が増えるほど大きくなります。</p>
+
+    <h2>9. 決めること・確かめること</h2>
+    <ul>
+      <li><strong>紹介料・送客手数料を取るか。</strong>人材紹介・保険・融資は、紹介して対価を受け取ると職業安定法・保険業法・貸金業法などに触れる可能性があります。取る場合は、ジャンルごとに法務の確認を先に通します。</li>
+      <li><strong>掲載の基準。</strong>誰が掲載を決めるのか。掲載料を取るかどうか。</li>
+      <li><strong>相談の受け方。</strong>119番の窓口で一度受けるか、各社へ直接つなぐか（試作は前者）。</li>
+      <li><strong>サイトの置き場所。</strong>119番のサイトの下に置くか、別ドメインにするか。</li>
+      <li><strong>空いている分野の候補。</strong>中小企業診断士と社労士に心当たりはあるか。</li>
+    </ul>
+    <div class="box">試作の会社名・人名・文面はすべて架空です。実際の掲載は、ご本人の承諾と原稿確認を取ってからにします。</div>
+  </article>
+</main>
+
+<dialog id="dl" aria-labelledby="dl-title">
+  <button class="close" id="dl-close" type="button" aria-label="閉じる">×</button>
+  <div class="dl-h"><div class="crumb" id="dl-crumb"></div><h2 id="dl-title"></h2></div>
+  <div class="dl-b" id="dl-body"></div>
+</dialog>
+
+<footer><div class="wrap">福祉施設の119番 解決パートナー（仮称）・非公開の試作 v0.1 ・ 掲載社は架空</div></footer>
+
+<script>
+const PAINS=[
+ {id:1,t:"人",q:"採用できない・すぐ辞める・育たない"},
+ {id:2,t:"利用者の獲得",q:"稼働率が上がらない・紹介元がない"},
+ {id:3,t:"お金",q:"資金繰り・報酬改定・加算の取りこぼし"},
+ {id:4,t:"制度・法令",q:"運営指導が怖い・法定研修が回らない"},
+ {id:5,t:"現場運営",q:"送迎・記録・シフトで手一杯"},
+ {id:6,t:"利用者・家族対応",q:"クレーム・保護者面談・支援の質"},
+ {id:7,t:"経営・組織",q:"多店舗化・理念浸透・数字が読めない"},
+ {id:8,t:"外部連携",q:"医療機関・相談支援とのつながり"},
+ {id:9,t:"IT・情報",q:"システムが乱立・個人情報が心配"},
+ {id:10,t:"その他",q:"どこに相談すればいいか分からない"},
+ {id:11,t:"経営者ご自身",q:"相談相手がいない・個人保証・後継",owner:true}
+];
+const T={all:"障害福祉全般",kids:"放デイ・児発",work:"就労継続支援",home:"居宅介護",care:"介護"};
+const C=[
+ {id:"a",name:"みなもと資金パートナーズ",person:"代表 山科 誠（架空）",genre:"融資・資金調達",col:"#1f5f66",pains:[3,11],tags:["資金調達","創業融資"],target:["all","care"],area:"大阪府",online:true,visit:true,
+  msg:"開業資金も、運転資金も。「借りられるか」より先に「返せる計画か」を一緒に作ります。",
+  solve:["開業・増設の資金が足りない","報酬の入金まで運転資金がもたない","借入が個人保証頼みになっている"],
+  why:"父が営んだ通所介護が資金繰りで行き詰まったのを見て、福祉の資金計画を専門にしました。",
+  work:"放デイ2拠点目の開設で、日本政策金融公庫の融資申請と月次の資金繰り表を整備。開設3か月目の資金ショートを避けた（架空の事例）。",fee:"初回相談 無料",want:"これから開業・増設する障害福祉の事業者"},
+ {id:"b",name:"はぐくみ人材開発 社労士事務所",person:"特定社会保険労務士 森川 遥（架空）",genre:"助成金（人材開発）",col:"#3b6e4f",pains:[3,1],tags:["助成金","人材育成","処遇改善"],target:["all","care"],area:"大阪府",online:true,visit:false,
+  msg:"研修にかけたお金、取り戻せていますか。人材開発支援助成金で、育成の費用を国と分け合いましょう。",
+  solve:["職員研修の費用が重い","助成金の要件が分からない","処遇改善加算の書類が回らない"],
+  why:"介護職から社労士になりました。現場の研修が「費用」でなく「投資」になる仕組みを作りたい。",
+  work:"就労継続支援B型で、新人研修を訓練計画に組み直し人材開発支援助成金を申請（架空の事例）。",fee:"着手金なし・成功報酬",want:"職員10名以上の法人"},
+ {id:"c",name:"オフィス規程ラボ",person:"担当 佐伯 涼（架空）",genre:"旅費規程",col:"#5a5f8a",pains:[11,3],tags:["旅費規程","役員報酬"],target:["all","care"],area:"東京都",online:true,visit:false,
+  msg:"経営者の移動、経費の扱いは正しいですか。出張旅費規程を整えて、会社と個人のお金を分けます。",
+  solve:["経営者の出張・移動費の扱いが曖昧","役員報酬の決め方に根拠がない"],
+  why:"小さな法人ほど、経営者個人と会社のお金が混ざりやすい。そこを整えるのが仕事です。",
+  work:"多拠点を回る経営者向けに出張旅費規程と日当の基準を作成（架空の事例）。",fee:"規程作成 定額",want:"複数拠点を持つ法人"},
+ {id:"d",name:"賃料ミライ",person:"代表 長尾 健（架空）",genre:"家賃交渉",col:"#8a5a2b",pains:[3],tags:["固定費削減","賃料"],target:["all","care"],area:"大阪府",online:true,visit:true,
+  msg:"毎月の家賃は、報酬単価のように国が決めたものではありません。相場に合わせて見直せます。",
+  solve:["家賃が収支を圧迫している","更新のたびに言われるまま払っている"],
+  why:"報酬は上げられない業界だからこそ、固定費を下げる余地を残したくない。",
+  work:"放デイ3拠点の賃料を相場資料をもとに交渉し、更新時に減額（架空の事例）。",fee:"成功報酬（削減額の一部）",want:"賃貸物件で運営している事業所"},
+ {id:"e",name:"ことづくりマーケット",person:"代表 加賀 楓（架空）",genre:"ニッチEC",col:"#8a3f5e",pains:[7,2],tags:["工賃向上","自主製品","EC販売"],target:["work"],area:"京都府",online:true,visit:false,
+  msg:"利用者さんが作ったものを、ちゃんと届く場所へ。自主製品のEC販売で工賃を上げます。",
+  solve:["自主製品が売れず工賃が上がらない","施設の魅力が外に伝わっていない"],
+  why:"作り手の顔が見える商品は、ネットで強い。その売り方を施設に持ち込みたい。",
+  work:"就労継続支援B型の焼き菓子をEC化し、ギフト需要を取り込んだ（架空の事例）。",fee:"初期費用＋販売手数料",want:"自主製品を持つ就労系事業所"},
+ {id:"f",name:"まちなか在宅クリニック連携室",person:"連携室長 三上 葵（架空）",genre:"医療連携",col:"#2d5d8a",pains:[8],tags:["医療連携","医療的ケア"],target:["kids","home","care"],area:"大阪府",online:false,visit:true,
+  msg:"「何かあったとき、どこに電話するか」が決まっているだけで、受け入れられる子が増えます。",
+  solve:["医療的ケア児の受け入れに踏み出せない","嘱託医・協力医療機関が見つからない"],
+  why:"在宅医療の側から見ると、福祉施設とつながれば地域で暮らせる人が増えます。",
+  work:"放デイと協力医療機関の契約を結び、緊急時の連絡手順を共同で作成（架空の事例）。",fee:"内容により見積",want:"医療的ケアの受け入れを考える施設"},
+ {id:"g",name:"ベースラインスポーツ",person:"代表 早瀬 陸（架空）",genre:"運動施設（テニスコート）",col:"#4a7a2a",pains:[1],tags:["福利厚生","職員の健康"],target:["all","care"],area:"兵庫県",online:false,visit:true,
+  msg:"体を使う仕事だからこそ、体を整える場所を。職員の福利厚生にコートを使えます。",
+  solve:["職員の定着につながる福利厚生がない"],
+  why:"（位置づけ確認中）施設の職員と利用者の運動の場として提供できないか検討しています。",
+  work:"（事例なし・構想段階）",fee:"未定",want:"職員の健康づくりに取り組みたい法人"},
+ {id:"h",name:"ささえ保険サービス",person:"代表 宮坂 直（架空）",genre:"保険（介護福祉施設）",col:"#6b4f8a",pains:[11,5],tags:["損害保険","事故対応","賠償責任"],target:["all","kids","work","home","care"],area:"大阪府",online:true,visit:true,
+  msg:"送迎中の事故、利用者のけが、職員の訴え。経営者がひとりで背負わない備えを作ります。",
+  solve:["事故が起きたときの補償が足りているか分からない","経営者個人に責任が来るのが怖い"],
+  why:"事故のあとに保険が足りなかった施設を見てきました。起きる前に話したい。",
+  work:"放デイの送迎・施設賠償・役員賠償をまとめて見直し、重複と不足を整理（架空の事例）。",fee:"相談 無料",want:"送迎のある事業所"},
+ {id:"i",name:"福祉研修サポートセンター",person:"講師 斎木 恵（架空）",genre:"法定研修",col:"#a0522d",pains:[4,1],tags:["法定研修","虐待防止","BCP"],target:["all","kids","work","home","care"],area:"大阪府",online:true,visit:true,
+  msg:"虐待防止、身体拘束、BCP。年間の法定研修を、記録まで含めて回せる形にします。",
+  solve:["法定研修が年度内に終わらない","研修の記録が運営指導で通らない"],
+  why:"研修は「やった」だけでは足りず、記録が残って初めて施設を守ります。",
+  work:"放デイと就労Bで年間研修計画と記録様式を整え、運営指導で指摘ゼロ（架空の事例）。",fee:"1回あたり定額・年間契約あり",want:"研修担当者がいない小規模事業所"},
+ {id:"j",name:"ともに働くキャリア",person:"代表 桐生 翔（架空）",genre:"人材紹介（精神障害）",col:"#2f6f73",pains:[1,8],tags:["障害者雇用","就労移行","定着支援"],target:["work"],area:"東京都",online:true,visit:false,
+  msg:"利用者さんの「次の職場」を一緒に探します。就労系事業所の出口づくりのパートナーです。",
+  solve:["一般就労への移行先が見つからない","就職後の定着が続かない"],
+  why:"精神障害のある方の就職は、合う職場さえあれば続きます。合わせる仕事をしています。",
+  work:"就労移行支援の利用者と企業をつなぎ、半年定着まで伴走（架空の事例）。",fee:"施設側の費用なし",want:"就労移行・就労継続支援の事業所"},
+ {id:"k",name:"ケアログ・ラボ",person:"代表 鶴原 樹（架空）",genre:"業務効率ツール開発",col:"#36598a",pains:[9,5],tags:["記録業務","業務効率化","ツール開発"],target:["all","kids","work"],area:"大阪府",online:true,visit:true,
+  msg:"記録に追われて、支援の時間が減っていませんか。施設の動き方に合わせて道具を作ります。",
+  solve:["記録・書類に時間がかかりすぎる","既製のシステムが現場に合わない"],
+  why:"既製品に現場を合わせるのではなく、現場に道具を合わせたい。",
+  work:"放デイの支援記録をタブレット入力に置き換え、日報の転記をなくした（架空の事例）。",fee:"内容により見積",want:"紙と表計算で回している事業所"},
+ {id:"l",name:"サンドボックス・ワークス",person:"代表 佐野 匠（架空）",genre:"業務効率ツール開発",col:"#5b4a8a",pains:[9,7],tags:["業務効率化","データ活用","ツール開発"],target:["all","care"],area:"東京都",online:true,visit:false,
+  msg:"拠点ごとの数字を、毎朝1枚で。経営判断に使えるデータの仕組みを作ります。",
+  solve:["拠点ごとの稼働率・収支が見えない","システムが乱立して数字がつながらない"],
+  why:"数字が見えれば、経営者は現場に出る時間を取り戻せます。",
+  work:"多店舗の放デイで請求データと勤怠をつなぎ、拠点別の収支を自動で出した（架空の事例）。",fee:"内容により見積",want:"3拠点以上の法人"},
+ {id:"m",name:"パワーモビリティリース",person:"営業 木島 遼（架空）",genre:"リース車両",col:"#7a5c1e",pains:[5,3],tags:["送迎","車両リース"],target:["kids","work","care"],area:"大阪府",online:false,visit:true,
+  msg:"送迎車の購入・車検・故障に追われない。リースで台数と費用を平らにします。",
+  solve:["送迎車の買い替え資金が重い","車検・故障のたびに送迎が止まる"],
+  why:"送迎が止まると、その日の支援が止まる。止めない車の持ち方を提案します。",
+  work:"放デイ2拠点の送迎車をリースへ切り替え、代車手配まで含めて契約（架空の事例）。",fee:"月額リース",want:"送迎車を3台以上持つ事業所"}
+];
+const S={pain:null,area:"",online:false,visit:false,target:new Set(),tags:new Set(),q:""};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const painName=id=>PAINS.find(p=>p.id===id).t;
+
+function renderPains(){
+  $("#pains").innerHTML=PAINS.map(p=>{
+    const n=C.filter(c=>c.pains.includes(p.id)).length;
+    return `<button type="button" class="pain${p.owner?" owner":""}" data-p="${p.id}" aria-pressed="${S.pain===p.id}">
+      <span class="no">${p.owner?"経営者ご自身":"分類 "+p.id}</span><span class="t">${esc(p.t)}</span><span class="q">${esc(p.q)}</span>
+      <span class="n">${n?n+"社が対応":"対応する会社を募集中"}</span></button>`}).join("");
+}
+function renderFilters(){
+  [...new Set(C.map(c=>c.area))].sort().forEach(a=>$("#f-area").insertAdjacentHTML("beforeend",`<option>${esc(a)}</option>`));
+  $("#f-target").innerHTML=Object.entries(T).map(([k,v])=>`<button type="button" class="chip" data-t="${k}" aria-pressed="false">${esc(v)}</button>`).join("");
+  const tags=[...new Set(C.flatMap(c=>c.tags))];
+  $("#f-tags").innerHTML=tags.map(t=>`<button type="button" class="chip" data-g="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join("");
+}
+function match(c){
+  if(S.pain&&!c.pains.includes(S.pain))return false;
+  if(S.area&&c.area!==S.area)return false;
+  if(S.online&&!c.online)return false;
+  if(S.visit&&!c.visit)return false;
+  if(S.target.size&&![...S.target].some(t=>c.target.includes(t)))return false;
+  if(S.tags.size&&![...S.tags].some(t=>c.tags.includes(t)))return false;
+  if(S.q){const hay=[c.name,c.genre,c.msg,...c.tags,...c.solve].join(" ");if(!hay.includes(S.q))return false}
+  return true;
+}
+function renderCards(){
+  const list=C.filter(match);
+  const conds=[S.pain&&"お悩み「"+painName(S.pain)+"」",S.area,S.online&&"オンライン",S.visit&&"訪問可",...[...S.target].map(t=>T[t]),...S.tags,S.q&&"「"+S.q+"」"].filter(Boolean);
+  $("#count").textContent=`${list.length}社`+(conds.length?`（条件：${conds.join("・")}）`:"（全件）");
+  $("#cards").innerHTML=list.length?list.map(c=>`<button type="button" class="card" data-c="${c.id}">
+    <div class="ph" style="background:${c.col}">${esc(c.genre)}</div>
+    <div class="b"><div class="co">${esc(c.name)}</div><div class="msg">${esc(c.msg)}</div>
+    <div class="meta">${c.pains.map(p=>`<span class="tag">${esc(painName(p))}</span>`).join("")}
+    <span class="tag area">本拠地 ${esc(c.area)}</span>${c.online?'<span class="tag online">オンライン可</span>':""}${c.visit?'<span class="tag area">訪問可</span>':""}</div></div></button>`).join("")
+    :`<div class="empty">この条件に合う会社はまだいません。119番の窓口に相談いただければ、該当する専門家を探します。</div>`;
+}
+function openCard(id){
+  const c=C.find(x=>x.id===id);
+  $("#dl-crumb").textContent=`解決パートナー ＞ ${c.genre}`;
+  $("#dl-title").textContent=c.msg;
+  $("#dl-body").innerHTML=`
+   <div><h3>解決できるお悩み</h3><ul>${c.solve.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+     <div class="meta">${c.pains.map(p=>`<span class="tag">${esc(painName(p))}</span>`).join("")}${c.tags.map(t=>`<span class="tag area">#${esc(t)}</span>`).join("")}</div></div>
+   <div><h3>私たちの想い</h3><p>${esc(c.why)}</p></div>
+   <div><h3>具体的な取り組み</h3><p>${esc(c.work)}</p></div>
+   <div><h3>対応エリア・費用</h3><dl class="kv">
+     <dt>本拠地</dt><dd>${esc(c.area)}</dd>
+     <dt>対応方法</dt><dd>${[c.online&&"オンラインで全国",c.visit&&"訪問・現地対応"].filter(Boolean).join("／")||"要相談"}</dd>
+     <dt>施設の種類</dt><dd>${c.target.map(t=>T[t]).join("、")}</dd>
+     <dt>費用の目安</dt><dd>${esc(c.fee)}</dd></dl></div>
+   <div><h3>会社情報</h3><dl class="kv"><dt>会社名</dt><dd>${esc(c.name)}</dd><dt>話し手</dt><dd>${esc(c.person)}</dd></dl></div>
+   <div><h3>つながりたい施設</h3><p>${esc(c.want)}</p></div>
+   <div class="cta"><button class="btn p" type="button" id="ask">119番の窓口から相談する</button><button class="btn s" type="button" id="dl-close2">一覧へ戻る</button></div>
+   <div class="toast" id="toast" aria-live="polite"></div>`;
+  $("#ask").onclick=()=>{$("#toast").textContent="試作のため送信はしません。本番では119番の窓口が受け付け、この会社へおつなぎします。"};
+  $("#dl-close2").onclick=()=>$("#dl").close();
+  $("#dl").showModal();
+}
+document.addEventListener("click",e=>{
+  const p=e.target.closest("[data-p]");if(p){const id=+p.dataset.p;S.pain=S.pain===id?null:id;renderPains();renderCards();$("#h-list").scrollIntoView({behavior:"smooth",block:"start"});return}
+  const t=e.target.closest("[data-t]");if(t){const k=t.dataset.t;S.target.has(k)?S.target.delete(k):S.target.add(k);t.setAttribute("aria-pressed",S.target.has(k));renderCards();return}
+  const g=e.target.closest("[data-g]");if(g){const k=g.dataset.g;S.tags.has(k)?S.tags.delete(k):S.tags.add(k);g.setAttribute("aria-pressed",S.tags.has(k));renderCards();return}
+  const c=e.target.closest("[data-c]");if(c){openCard(c.dataset.c)}
+});
+$("#dl-close").onclick=()=>$("#dl").close();
+$("#f-area").onchange=e=>{S.area=e.target.value;renderCards()};
+$("#f-online").onchange=e=>{S.online=e.target.checked;renderCards()};
+$("#f-visit").onchange=e=>{S.visit=e.target.checked;renderCards()};
+$("#q").oninput=e=>{S.q=e.target.value.trim();renderCards()};
+$("#reset").onclick=()=>{S.pain=null;S.area="";S.online=S.visit=false;S.target.clear();S.tags.clear();S.q="";
+  $("#f-area").value="";$("#f-online").checked=$("#f-visit").checked=false;$("#q").value="";
+  document.querySelectorAll("[data-t],[data-g]").forEach(b=>b.setAttribute("aria-pressed","false"));renderPains();renderCards()};
+function route(){const c=location.hash==="#concept";$("#view-proto").hidden=c;$("#view-concept").hidden=!c;
+  $("#tab-proto").toggleAttribute("aria-current",!c);$("#tab-concept").toggleAttribute("aria-current",c);
+  if(c)$("#tab-concept").setAttribute("aria-current","page");else $("#tab-proto").setAttribute("aria-current","page")}
+addEventListener("hashchange",route);
+renderPains();renderFilters();renderCards();route();
+</script>
