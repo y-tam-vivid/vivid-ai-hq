@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1791990621785,
+  "lastUpdated": 1792797140659,
   "skills": [
     {
       "skillId": "import-memory",
@@ -162,7 +162,7 @@
       "name": "skill-creator",
       "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
       "source": "anthropic-example",
-      "updatedAt": "2026-09-14T19:41:01.499089Z"
+      "updatedAt": "2026-10-21T20:47:56.610025Z"
     },
     {
       "skillId": "skill_01Q8CvWB5hkpAfw4i2Js5dCb",
@@ -199,7 +199,7 @@
       "name": "pptx",
       "description": "Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations as PowerPoint (.pptx) files; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email, summary, or creating a different type of slide deck); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user asks for a PowerPoint or .pptx file, or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. However, when the user asks for a deck, slides, a slide deck, or a presentation without naming a file format, default to using a dedicated slide-deck artifact type or a separate slides skill if this session offers one; otherwise, use this skill.",
       "source": "anthropic",
-      "updatedAt": "2026-10-02T22:00:34.625666Z"
+      "updatedAt": "2026-10-23T23:00:21.784277Z"
     },
     {
       "skillId": "google-workspace",
@@ -238,7 +238,10 @@
     }
   ],
   "pendingClaims": [
-    "48553:Mon Oct  5 07:29:07 2026/computer-use",
+    "44489:Mon Oct  5 06:17:49 2026/pptx",
+    "27571:Mon Oct 19 23:19:13 2026/pptx",
+    "15504:Sun Oct  4 08:13:33 2026/pptx",
+    "75566:Sat Oct 17 06:44:25 2026/pptx",
     "25466:Wed Oct  7 02:28:25 2026/computer-use",
     "44489:Mon Oct  5 06:17:49 2026/computer-use",
     "15504:Sun Oct  4 08:13:33 2026/computer-use"

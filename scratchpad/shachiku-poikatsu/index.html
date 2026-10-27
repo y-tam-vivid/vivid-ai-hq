@@ -1,0 +1,158 @@
+<title>社畜メガネのお小遣い帳</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=BIZ+UDPGothic:wght@400;700&display=swap">
+<style>
+/* 伝票・経費精算書の見立て：案件は「1枚の伝票」、全体は縦1列の帳面 */
+:root{
+  --paper:#f3f4ef; --sheet:#ffffff; --ink:#1f2a33; --muted:#5d6872;
+  --rule:#cfd5d2; --stamp:#c2402f; --tape:#e9d35b; --ok:#2f7d5b; --warn:#a86a12;
+  --display:"Dela Gothic One","Hiragino Sans",sans-serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --num:"BIZ UDPGothic","Hiragino Sans",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#161b20; --sheet:#1f262d; --ink:#e7eaea; --muted:#a3adb5;
+  --rule:#36414a; --stamp:#e2654f; --tape:#d9c24a; --ok:#5cba8d; --warn:#e0a548; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#161b20; --sheet:#1f262d; --ink:#e7eaea; --muted:#a3adb5;
+  --rule:#36414a; --stamp:#e2654f; --tape:#d9c24a; --ok:#5cba8d; --warn:#e0a548; color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.8}
+.wrap{max-width:760px;margin:0 auto;padding-block:24px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:40px}
+.draft{border:2px dashed var(--stamp);color:var(--stamp);padding:10px 14px;font-size:13px;font-weight:700;line-height:1.6}
+.pr{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:8px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,7vw,48px);line-height:1.25;margin:0;text-wrap:balance;letter-spacing:.01em}
+h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--tape) 62%)}
+.lead{margin:14px 0 0;color:var(--muted);max-width:36em}
+h2{font-family:var(--display);font-weight:400;font-size:24px;margin:0;text-wrap:balance}
+.step{display:grid;gap:16px}
+.eyebrow{font-family:var(--num);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.route{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}
+.route div{background:var(--sheet);border:1px solid var(--rule);padding:10px 12px;font-size:13px;line-height:1.5}
+.route b{display:block;font-family:var(--num);font-size:12px;color:var(--stamp)}
+@media (max-width:520px){.route{grid-template-columns:1fr}}
+.slip{background:var(--sheet);border:1px solid var(--rule);position:relative}
+.slip header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding:14px 16px;border-bottom:2px solid var(--ink)}
+.slip h3{margin:0;font-size:18px;font-weight:700}
+.chip{font-size:12px;font-weight:700;padding:2px 10px;border:1.5px solid currentColor;border-radius:999px;white-space:nowrap}
+.chip.ok{color:var(--ok)} .chip.hold{color:var(--warn)}
+.slip dl{margin:0;display:grid;grid-template-columns:7.5em 1fr}
+.slip dt,.slip dd{margin:0;padding:8px 16px;border-bottom:1px solid var(--rule);min-width:0}
+.slip dt{font-size:12px;color:var(--muted);font-family:var(--num);padding-right:0}
+.slip dd{font-variant-numeric:tabular-nums}
+.slip .yen{font-family:var(--num);font-weight:700;font-size:17px}
+.slip footer{padding:10px 16px;font-size:12px;color:var(--muted)}
+.slip.locked{opacity:.75}
+.slip.locked dl{display:none}
+.list{display:grid;gap:16px}
+.topics{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:520px){.topics{grid-template-columns:1fr}}
+.topic{background:var(--sheet);border-left:4px solid var(--tape);padding:12px 14px}
+.topic b{display:block}
+.topic span{font-size:13px;color:var(--muted)}
+.consult{background:var(--ink);color:var(--paper);padding:20px;display:grid;gap:12px}
+.consult h2{color:var(--paper)}
+.consult table{border-collapse:collapse;width:100%;font-size:14px}
+.consult td{border-top:1px solid color-mix(in srgb,var(--paper) 30%,transparent);padding:8px 4px;vertical-align:top}
+.consult td:first-child{white-space:nowrap;font-weight:700;padding-right:12px}
+.cta{display:inline-block;background:var(--tape);color:#1f2a33;font-weight:700;padding:12px 20px;text-decoration:none;justify-self:start}
+.cta:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.notes{font-size:12px;color:var(--muted);display:grid;gap:4px}
+.notes p{margin:0}
+</style>
+
+<div class="wrap">
+  <div class="draft">下書き（非公開）｜法務の確認前です。案件の中身・表現・リンクは確定していません。</div>
+
+  <section>
+    <div class="eyebrow">社畜メガネ ／ お小遣い帳</div>
+    <h1>削られたHPの分くらいは、<em>取り返していい。</em></h1>
+    <p class="lead">真面目に働くほど、余裕はなくなります。まずはスキマ時間でできるお小遣い案件で、月に少しの「逃げる資金」をつくる。そのあとで、お金の守り方を一緒に考えます。</p>
+    <div class="route">
+      <div><b>STEP 1</b>お小遣い案件で、少しの余白をつくる</div>
+      <div><b>STEP 2</b>家計と制度の基本を知る</div>
+      <div><b>STEP 3</b>必要なら、個別に相談する</div>
+    </div>
+    <p class="pr">このページには広告を含みます。紹介料は広告主から当方に支払われるもので、利用される方の負担にはなりません。契約の相手は各広告主で、当方は紹介者です。</p>
+  </section>
+
+  <section class="step">
+    <div class="eyebrow">STEP 1</div>
+    <h2>いま案内できるお小遣い案件</h2>
+    <div class="list" id="cases"></div>
+  </section>
+
+  <section class="step">
+    <div class="eyebrow">STEP 2</div>
+    <h2>知らないと損する、お金の基本</h2>
+    <div class="topics">
+      <div class="topic"><b>家計の見直し</b><span>固定費（通信・保険・サブスク）から先に削る</span></div>
+      <div class="topic"><b>申請しないともらえない制度</b><span>給付金・手当・税の控除は、自分から申請する</span></div>
+      <div class="topic"><b>逃げる資金のつくり方</b><span>生活費の数か月分を、すぐ使える場所に置く</span></div>
+      <div class="topic"><b>NISA・iDeCoのしくみ</b><span>制度の違いと、向いている人の考え方</span></div>
+    </div>
+  </section>
+
+  <section class="consult">
+    <div class="eyebrow" style="color:inherit;opacity:.7">STEP 3</div>
+    <h2>お金のことを、1対1で相談する</h2>
+    <table>
+      <tr><td>当方でご相談</td><td>家計の見直し、制度の使い方、NISAなどの一般的な考え方</td></tr>
+      <tr><td>提携先をご紹介</td><td>保険や投資商品など、個別の商品が必要な方には、登録を受けた提携先を必要に応じてご紹介します</td></tr>
+    </table>
+    <a class="cta" href="#line" id="line">公式LINEで相談する（準備中）</a>
+  </section>
+
+  <div class="notes">
+    <p>※ 報酬の目安は紹介元の資料によるもので、成果を約束するものではありません。条件・金額は予告なく変わります。</p>
+    <p>※ 参加前に、各案件の公式の規約・条件を必ずご確認ください。</p>
+    <p>※ 当方は投資・保険・税務・法律の助言を行いません。</p>
+    <p>※ 報酬は課税の対象になる場合があります。</p>
+    <p>運営者情報（運営主体・所在地・連絡先・苦情窓口）：準備中</p>
+  </div>
+</div>
+
+<script>
+// 案件はここに1件ずつ足す（status: ok＝掲載 / hold＝確認中で中身を伏せる）
+const CASES = [
+  { name:"美容モニター", source:"BIMONI", status:"ok",
+    rows:[["報酬の目安",'<span class="yen">商品代金＋協力金 200〜1,000円</span>'],
+          ["やること","対象商品を購入して使い、報告フォームを送る"],
+          ["件数","月5〜15件ほど"],["支払い","月末締め・翌月10日"],
+          ["条件","18歳以上／1世帯1人／その商品を初めて買う人／Instagramをしている人"]],
+    note:"使わない商品は、回収サービスで現金化できる場合があります（1商品800円〜）" },
+  { name:"来店型モニター", source:"Luna", status:"ok",
+    rows:[["報酬の目安",'<span class="yen">1件 4,000円〜</span>（最低保証 2,000円）'],
+          ["やること","無料カウンセリングや体験に参加する（契約・購入が報酬の条件にならないものに限る）"],
+          ["時間","土日に2時間ほど"],["支払い","当月分を翌月末に銀行振込"],
+          ["条件","20歳以上／対象エリアは首都圏・地方都市が中心"]],
+    note:"来店後、広告主から契約などの勧誘を受ける場合があります" },
+  { name:"FX口座開設", source:"Luna", status:"ok",
+    rows:[["報酬の目安",'<span class="yen">3〜5万円</span>'],
+          ["やること","FX口座を開設し、必要な情報を出す"],
+          ["時間","30分〜1時間（在宅で完結）"],["件数","最大10社"],
+          ["条件","20歳以上"]],
+    note:"FXは元本を割る・損失が出る可能性がある取引です。口座はご本人だけが使ってください" },
+  { name:"MNP（携帯の乗り換え）", source:"Luna", status:"ok",
+    rows:[["報酬の目安",'<span class="yen">1日 4〜6万円</span>（MNP 4,000円／回線・新規 1,500円／回線）'],
+          ["やること","新しく回線を作り、決められた日時に店舗で乗り換えの手続きをする"],
+          ["時間","1日（基本は土日祝）。半年〜1年に1回くり返せる"],
+          ["費用","通信費・事務手数料は紹介元が負担（一時的な立て替えあり）"],
+          ["条件","18歳以上／直近6か月にMNPしていない／クレジットかデビットカードを持っている／債務整理中・キャリアのブラックの方は不可"]],
+    note:"いま使っている自分のスマホは乗り換えません。作った回線は約6か月持ち続けます" },
+  { name:"Y!mobile 申込み", source:"Luna", status:"ok",
+    rows:[["報酬の目安",'<span class="yen">5,500〜27,500円</span>'],
+          ["やること","Y!mobileに申し込み、所定の条件を達成する"],
+          ["時間","2〜3時間"],["条件","20歳以上"]],
+    note:"達成条件の中身は、申し込み前に担当からご案内します" },
+  { name:"保険モニター", status:"hold", note:"内容を準備中です" },
+];
+const el = document.getElementById("cases");
+for (const c of CASES) {
+  const s = document.createElement("article");
+  s.className = "slip" + (c.status === "hold" ? " locked" : "");
+  const chip = c.status === "ok" ? '<span class="chip ok">PR・案内中</span>' : '<span class="chip hold">確認中</span>';
+  const rows = (c.rows || []).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+  s.innerHTML = `<header><h3>${c.name}</h3>${chip}</header><dl>${rows}</dl><footer>${c.note}${c.source ? "｜紹介元：" + c.source : ""}</footer>`;
+  el.appendChild(s);
+}
+</script>

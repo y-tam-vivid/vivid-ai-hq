@@ -33,6 +33,7 @@
 - [答え済みの行はその場で閉じる](feedback_emit_next_actions_as_tasks.md) — ★ボタンの答えを実行したら同じターンで03を[x]。会話で報告した判断待ちも03へ1行(10/16)
 - [[x]は答えでない](feedback_emit_next_actions_as_tasks.md) — ★Notionで✅完了にする経路で答えが来る(10/16は削除OKの意)。知らぬ間の[x]は1問で確かめる
 - [進捗は確認状況とセット](feedback_emit_next_actions_as_tasks.md) — ★有璽氏10/16。①進捗②有璽氏の未回答③止めている分 を分母つきで
+- [規約を読んでから勧める](feedback_check_platform_policy_before_recommending.md) — ★Ad Grants は入札がコンバージョン型必須・地域は役立つ範囲。読まずにクリック最大化と府全体を推奨した(10/21)
 - [押す場所は位置と結果まで](feedback_verify_before_declining.md) — ★人へ渡す前に検査を通す（渡せば即実行され訂正が間に合わない）
 - [着手時に目安時刻を伝える](feedback_batch_the_checks.md) — 何をする＋完了目安／変われば言い直す／その時刻に自分で見る
 - [担当の長い作業はminiで](feedback_batch_the_checks.md) — ★2時間超は着手時にrun_agent.shでminiへ＋完了通知と目安時刻の見回りもmini。10/17 MacBookのスリープで2時間失った
@@ -60,6 +61,7 @@
 - [検知≠隔離](feedback_confidential_two_layer_rule.md) — ★機微は置き場を実物で数える。10/15 理由文に出すだけで3件素通りしていた
 - [★外出先ではminiに届かない](project_macmini_remote_workhorse.md) — 10/10 .localもIPも同じLAN内だけ。まず自分の網を見る
 - [Mac mini作業機](project_macmini_remote_workhorse.md) — ssh mini＝Tailscale経由(10/11〜外でも届く)。家LAN用は mini-lan
+- [Obsidian⇄Notionが止まったらminiを疑う](project_macmini_remote_workhorse.md) — ★同期はminiで動く。再起動後ログイン前のロックで全部止まる(10/25〜)。tailscaleのoffline＋自動確定の途切れで確かめる
 - [miniの実行環境](reference_mac_mini_execution_env.md) — ★claude -pは対話用フックを子に引き継ぐ＝判定が黙って死ぬ。10/15 両機で隔離済み
 - [時刻はゼロ埋め](reference_hand_built_timestamp_zero_pad.md) — 4:28:50 を fromisoformat は読めない。10/20 読む側を直した・書き手は未特定
 - [シェルは全角の直前で落ちる](reference_shell_fullwidth_paren_breaks_var.md) — 変数は${VAR}。★埋め込みPythonはbash -nを通る→取り出してpy_compile
@@ -69,5 +71,6 @@
 - [仮称を識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 識別子は役割で付ける。置換は数えてから
 - [インスタのハイライトカバー](reference_instagram_highlight_cover.md) — ★デザインの外周（縁の丸）を画像の幅いっぱいに置く＝拡大せずにはまる。縁は消さない（10/17 取り違えた）。★並びは最後にストーリーを足したものが左（アーカイブしても動かない）
 - [インスタは毎回確認](feedback_ask_instagram_each_time.md) — 法人問わずレポートごとに「作るか／投稿までか」を聞く
+- [HUGの本日の様子](reference_hug_record_output.md) — ★受け取り→bin/hug_yosu_run.sh。正本00_System/19。STAND UPのAI操作はNotion「13_AI操作マニュアル」へ(10/20)
 - [Workspaceのagentic](reference_workspace_agentic_oauth.md) — 11/11期限の通知は影響なし。既存クライアントに印を付けない(10/13決定)
 - [さくらはログインで鯖が替わる](feedback_sakura_cp_switches_server.md) — 書く前に初期ドメインで確認（10/13 団体側へ誤追加）

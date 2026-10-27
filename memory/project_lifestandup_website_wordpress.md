@@ -5363,3 +5363,19 @@ role_guardの誤検出でメインセッションから直接書けずAgent委�
 **★これは実装せず、選択肢として持っておく。**
 
 → [[feedback_show_the_skeleton_first]]（★機能は載せ、代償は1行で言う。決めるのは有璽氏）
+
+## 2026-10-19 有璽氏：問い合わせの動線を常に出す（LSU 優先・こどもSも）
+- 「ウェブでもスマホでも常に問い合わせの動線を作る」。手段は★電話・メール・LINE・Instagram（★TikTokはやっていない＝載せない）
+- 見本＝C-SEED（放課後等デイ）：PCは右端に縦並びの丸ボタン、ホバーで「LINEのご登録はこちら」と横に伸びる／スマホは画面下に5つ並びの固定バー
+- 実測（10/19）：LSU トップは tel:072-959-7337 と Instagram @life.standup_official のみ。★LINE なし・mailto なし（問い合わせは /contact のフォーム）・固定の導線なし
+  こどもS は tel・LINE(lin.ee/typTOwI)・Instagram @stationkodomo・mailto あり。★スマホだけ下部固定バー（電話・LINE・アクセス）が既にある＝PC側が無い・メール/インスタが無い
+- ✅10/19 有璽氏の決定：LSU の LINE＝https://lin.ee/PIVgqZc ／メールボタン＝問い合わせフォーム（/contact）へ飛ばす／こどもS は 電話・LINE・Instagram・地図（メールは外す）
+- 10/19 有璽氏（見本v1を見て）「色がうるさい」「デザインは『LIFE STAND UPでの1日』の型で」「LINEはロゴくらいの緑」「一番上はLINE」
+  → v2：.tl-icon の値を実測で流用（56px・枠2px #212121・角丸14・影 3px 3px 0 #212121）、淡い色はページ既存の4色（#E8F5E9/#FCE4EC/#FFF8E1/#E3F2FD）、LINE の色はロゴ画像の最多色 #61AD47。並び LINE→電話→メール→Instagram
+  ★型：サイトに既にある部品の値（色・枠・影）を実測して流用する。新しい色を持ち込まない（見本v1は原色ベタで「うるさい」と言われた）
+  部品の控え ~/.vivid-relay/contactbar/lsu_contactbar.html ／ 重なり順45（スマホのメニュー＝ヘッダー50の中より下に置く）
+- 10/19 有璽氏（v2を見て）「見た目は近い・悪くない」。直し3点：①電話を一番右（PC は一番下）＝LINE→メール→Instagram→電話 ②スマホの帯は正方形でなく横長に・左右の余白を出さない（0でもよい）③PC は白いカードが横に出るのでなく★ボタンそのものが伸びて動く（デザインは今のまま）→ v3
+- ✅10/19 v3 を本番反映（有璽氏「これでいきましょう」）：Code Snippets「常設の問い合わせ導線…v3」id=7・場所＝フッター（</body> 直前）。★止めるときはこの枠を「無効」
+  実測：トップ・/contact・/about・/news の4ページで #fk-contact が1組／検査 data-cta 4個 ✓／実ブラウザで float-line を押して dataLayer に cta_click／スマホ幅（390）で下の帯 68px・はみ出しなし
+  控えの本文＝ ~/.vivid-relay/contactbar/lsu_contactbar.html（本番はCSSコメント2行を除いた同一内容・SHA256 先頭 aee8b328）
+- ✅10/19 有璽氏が本番で「問題なく動く・入っている」ことを確認

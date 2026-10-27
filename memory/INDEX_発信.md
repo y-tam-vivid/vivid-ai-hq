@@ -51,7 +51,7 @@
 - [LSU 法定開示に年度・更新頻度を明記](project_lifestandup_website_wordpress.md) — ★9/7 自己評価=毎年度／支援プログラム=改定時、と混ぜていた共通注記を分離。年度は`meta`1箇所・来年はそことPDF差替のみでよい。5帯とも横あふれ0
 - [写真は背景で事故る](reference_photo_background_leaks.md) — ★掲載同意では防げない。板書の児童名・掲示物・書類・画面。**縮小版では読めず原寸で読める＝採用が決まった枚は必ず原寸で1枚ずつ**／5番目=書いてある内容の正しさ(英文の誤りを実地で発見)／顔ぼかしは背景を見ない／**★9/8 miniにmasked/が無くぼかしガードが機能しない。対象5番号を扱う前に必ずself_test()で確認**
 - [両端合格でも中間帯は別](reference_endpoints_pass_middle_breaks.md) — ★9/7 幅・時刻・範囲の検査は両端(スマホ幅/PC幅)だけでなく帯として掃く。中間帯(タブレット幅)を見落とす
-- [南河内こどもステーション](project_minamikawachi_kodomo_station_site.md) — ★9/30 構築5版(18ページ)で公開・写真はデザイン側に取り込み済み(当て直し停止)・地図(白黒)と協力企業ロゴ(PR TIMES・オレンジワークス・ILIFE)・SNSボタンの色(抑えめ・9/30確定)はこちらで差し込み・Claude Design用一式v2あり https://minamikawachi-kodomo-demo.vercel.app ／作り直しは ~/kodomo-photo-work/build_site.py・★日本語ファイル名はVercelで404
+- [南河内こどもステーション](project_minamikawachi_kodomo_station_site.md) — 本番 ko-station.org＝★v58（10/22公開：第37回レポート＋沿革を正本で作り直し）。直しは ~/kodomo-photo-work の *_fixes.py（公開フォルダ直書き禁止）・沿革は history_fixes.py
 - [かわちばなし（地域ポータル）](project_kawachibanashi_portal.md) — ★**公開 https://kawachibanashi.vercel.app**／**★イベント情報の器（スプレッドシート23列）を新設＝AIが書ける正本**。詳細の見せ方3案は保留
 - [Artifactは社外へ出せない](reference_artifact_is_not_public.md) — ★9/8実測。Claudeを使わない相手には共有しても届かない。社外へは長尺PNG+Drive公開(bin/drive_upload.py)。公開確認は認証なしで実体が取れるかで見る
 - [Claude Designへの渡し方](reference_claude_design_local_edit_not_reflected.md) — **✅画像はチャット添付＋「生成不要・配置だけ」を1行目に。★9/9 Driveリンクは開けない(本文で渡す)／ロゴPNGから絵の切出し不可／生成は向こうの財布(Gamma)＝絵はこちらで作る**／**★10/3 有璽氏＝正本が向こうでも★こちらが先に作ってよい。有璽氏が「こう直した」と伝えて取り込む。写真の差し替えは既にこの形で回っている。「次の書き出しで消える」を止まる理由にしない**
@@ -91,6 +91,7 @@
 - [詳細ページの戻る先は一覧](reference_detail_page_goes_back_to_its_list.md) — ★10/13 有璽氏。親の節へ返さない／ラベルと飛び先を同じ言葉に／同種のページ全部を揃える
 - [スマホのナビは3本線から開く](feedback_mobile_nav_is_a_hamburger.md) — ★10/13 有璽氏。スマホ幅でリンクを常時表示にしない。PC幅は常時表示でよい
 - [JFBI調査研究サイト](project_jfbi_research_site.md) — ★10/13 協力団体★4件が本番稼働（a’s岡崎／リライフ柏原／プラスワン諸橋薫／★南河内こどもステーション羽曳野）。✅ナビはPC常時・スマホは3本線（25通り実測・不合格0）。✅写真＝プラスワン8枚・こどもS7枚を掲載（枠は3:2の1種類）。**✅10/16 プラスワンの★正式ロゴ（横組み）を受領して差し替え済み（使用ガイドの条件＝横幅160px以上・1/4余白・改変禁止を満たして実測）。✅10/16 詳細ページ4枚に★外の窓口のURLを団体名の下へ統一（a’s だけ★Instagram @okazaki_as＝サイトが無い団体。2経路で本人確認）。★写真が未掲載なのはリライフ1件＝★相手待ち（回答は有璽氏が共有する／こちらから催促しない）。こどもSの3点は10/13に回答済み（①②は条件付き＝団体の確認結果・正式ロゴが来たら見直す）**
+- [Family Growth Brain講座の作り変え](project_family_growth_brain_content.md) — 10/19着手。長田瑞恵教授の全6回→有璽氏が語る研修/YouTube連載。★講師名の正は「瑞恵」。★公開前に教授の許諾・主催との権利が未決
 - [もらった素材は開いて数える](reference_supplied_material_needs_screening.md) — ★9/24 仕入れ単価の写り込み等4枚を外した／**★同日 追記：「サイトに載っている」は「配ってよい」ではない。Exifは空＝出どころは聞くしかない**／**★10/3 3例目：縮小一覧は候補を絞るためのもの。載せ可否は原寸で決める（組んだ後に顔が判別できる2枚を落とした）**／**★10/12 4例目：先方サイトの画像は「写真」とは限らない。右半分に見出しが焼き込まれたバナーは、別サイトへ持ち込めない**
 - [1件だと枠が全幅へ伸びる](reference_grid_collapses_when_only_one.md) — ★9/24 CSSのauto-fitは1件のとき列を畳んでカードを全幅へ伸ばす→auto-fillへ。★枠を先に出すときは0/1/2/3件の絵を実際に描いて隣のブロックと揃える
 - [並ぶカードで同じ写真を使わない](feedback_no_duplicate_photo_in_one_view.md) — ★10/4 第37回と第36回のカードが同じ写真（有璽氏が発見）。カードを足したら一覧の img を数えてから出す
@@ -130,9 +131,11 @@
 - [幅掃きが実用になった](project_web_build_rules_asset.md) — mini sweep_widths_fast.py で30.7分。判断待ち4件
 - [デザイン制作物の集約先](reference_design_assets_home.md) — 共有ドライブ03_デザイン制作。Web案件は00地図＋01〜06の型
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番v46。Ad Grants審査待ち
-- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — 10/6 10:00 配信済み。残＝団体サイトへ掲載
+- [こどもSの沿革をPR資産に](project_kodomo_history_as_pr_asset.md) — ★10/22 有璽氏「沿革は強く厚く」＋ブログ・SNS・リリースのネタとしてストック。正本 Drive 05_…WEBサイト/09_沿革/（沿革_正本＋ネタ帳）。大東市は「出張版こどもまつり」（正式）
+- [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — 告知は10/6配信済み。▶10/22 実施報告4種（Web v58未公開・Insta7枚・報告書PDF v1・リリース下書き）＝★数字は届いたら差し替え。★第37回は庁舎建て替え前の最後（再開は全体供用2031予定以降）。Instaは「声」シリーズを別に
 - [Google広告の作成画面](reference_google_ads_campaign_wizard.md) — 3キャンペーン稼働・表示0(10/16)。週次月次報告 ads_grants_report.py＋広告スクリプト。★スクリプト承認はシークレットで
 
+- [社畜メガネ→ポイ活案件サイト→資産形成](project_shachiku_poikatsu_funnel.md) — 10/23構想。★MNP・ROLEX・FX系は法務未確認＝載せる前に仕分け
 > ★**フォルダ番号の注記（2026-10-11）** ── このファイルに出てくる
 > `04_画像素材`→**05_画像素材** ／ `05_公開と計測`→**06_公開と計測** ／ `06_検査と報告`→**07_検査と報告**。
 > 04 は `04_ClaudeCodeへの引き継ぎ` が入りました。★**以後は番号でなく名前で書く。**

@@ -175,3 +175,5 @@ mini     192.168.1.200（10/5 に設定した値）
 - ✅10/12 ②済み：有璽氏が `ssh -t mini 'sudo pmset -a autorestart 1'` を実行。pmset -g で autorestart 1 を実測＝弱点2つとも解消。
 - ★mini の sudo は ssh でも打てる（有璽氏 10/12「sshでは届かない？」）：MacBook の「ターミナル」アプリで `ssh -t mini 'sudo …'` → mini のパスワード。
   AIの Bash からは打てない（sudo -n で「password is required」＝パスワードを渡す道が無い・AIは聞かない）。人に頼むときは「mini の前に座って」でなく ssh -t の1行で渡す。
+- ★10/27 実測：mini が 10/25 深夜の再起動後ログイン前のロックで止まり、★Obsidian⇄Notion の同期（02/03）・Slack窓口・毎晩の自動確定が全部止まった。有璽氏は「Obsidianとの連携が止まっている」と感じて気づいた。
+  見分け方（2経路）：①`tailscale status` で mac-mini が offline・last seen ②`git log origin/main` の 00:45「自動確定」が途切れた日。★autorestart=1 は電源が戻るだけで、ログイン前のロックは解けない＝人が mini の前で1回ログインする。

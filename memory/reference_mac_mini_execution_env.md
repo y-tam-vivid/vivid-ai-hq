@@ -180,3 +180,7 @@ self_audit / memory_sweep / slack_inbox / inbox_runner / team_run / run_agent.sh
 ## ★見回りを `pgrep -f <語>` で書くと、自分自身に当たる（2026-10-17）
 `nohup bash -c "sleep N; if pgrep -f 作業名 …"` は、見回りの bash のコマンド文字列に作業名が入る。だから pgrep が見回り自身を見つけて、★いつも「まだ動いている」と判定してしまう。
 → ★見回りは起動時の PID を `kill -0 <PID>` で見る。判定は別のスクリプトファイルに書いて呼ぶ（実例 `~/.vivid-relay/ks_stories_watch.sh`）。
+
+## ★Drive の大量読み出しは mini だと遅い（2026-10-24 実測）
+こどもS素材写真の一覧画像づくり（同じスクリプト・同じ共有ドライブ）で、mini は5分で約60枚。MacBook は1分で約180枚＝★約50倍の差（mini は Drive からの取り込みで詰まる）。
+→ ★写真・動画を何千枚も読む作業は MacBook で回す（「長い処理は mini へ」の例外）。MacBook の空きが少ないときは、空き5GB未満で止まる安全弁をスクリプトに入れる。
