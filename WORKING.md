@@ -76,7 +76,6 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ / MacBook 2026-10-27】119番 Design System を GitHub 非公開リポジトリ fukushi119-design へ** ── 手元 `~/fukushi119-design` で初回コミット済み（e0a5600a）。▶有璽氏の判断待ち Slack #a8efe2（作る場所・空のリポジトリ作成）→ push → スキル配置。**★同じ対象に手をつけないでください**: `~/fukushi119-design`
 - **【ビビ / MacBook 2026-10-24】こどもS 助成金本選考プレゼンの写真選定・取り込み** ── 読む：Drive `04_NPO法人南河内こどもステーション/00_素材写真`（★読み取りのみ）。✅写真23枚・レポート・沿革の文面を Drive `04_…/10_助成金本選考プレゼン_写真と沿革/` へ。▶有璽氏が資料本体（.dc.html）を同じフォルダへ入れたら差し込む（03に行あり）
 - **【ビビ / MacBook 2026-10-19】こどもの脳と関わりプログラム（長田瑞恵先生の講座＋CRAFT由来＋脳科学・まず児童）** ── 設計・導入計画v0.2・台本#3 まで済み。▶**有璽氏待ち**：先生への連絡（有璽氏が自分で）と導入計画§6の4点（03に行あり・@10/31）。★先生への文面は作らない・催促しない。経緯 `memory/project_family_growth_brain_content.md`
   **★同じ対象に手をつけないでください**: Drive `10-100_経営戦略/familyBrainコンテンツ開発/` の設計書群

@@ -13,4 +13,17 @@ metadata:
 - **日本語名のファイルが入った zip は `unzip` で落ちる**（`Illegal byte sequence`）。`ditto -x -k <zip> <空の新しいフォルダ>` で展開する
 - 展開先は scratchpad の空のフォルダ（ダウンロードした物は信用しない）
 
+## Design System を GitHub＋スキルにした実例（2026-10-27 完了）
+
+- 正本：https://github.com/y-tam-vivid/fukushi119-design（Private・main・初回 e0a5600a）
+- ★gh は Homebrew 無しで入れた：公式 release の macOS_arm64 zip を checksums で照合 → `~/.local/bin/gh`（MacBookのみ。miniには無い）
+  ログインは `gh auth login --web` を裏で起動 → 確認コードを有璽氏へ渡す（コードは自動でクリップボードに入る）
+- ★`~/.claude/skills` の実体は vivid-ai-hq の中。別リポジトリを clone するときは vivid-ai-hq の `.gitignore` に
+  `/.claude/skills/<名前>/` を足してから（足さないと15分同期が入れ子のリポジトリを抱え込む）。miniには clone していない
+- 次の5本（kodomo-station／vivid／life-stand-up／meiku／fukuchi）も同じ手順。リポジトリ名は確定前に有璽氏へ確認
+- ★まとめ方（10/27 有璽氏「今のプランの中でできるやり方」＝組織は作らない）：個人 y-tam-vivid のまま
+  タグで束ねる。作ったら必ず `gh repo edit <repo> --add-topic design-system --add-topic brand-<ブランド>`。
+  一覧の入口 https://github.com/y-tam-vivid?tab=repositories&q=topic%3Adesign-system
+  ★`gh search repos --owner` は private を0件で返した。確かめるのは `gh api 'search/repositories?q=user:y-tam-vivid+topic:design-system'`
+
 関連：[[project_handoff_bundle]]
