@@ -75,3 +75,14 @@ https://claude.ai/artifact/32DppG7CdR4xwdQo7NTMzz　元ファイル `scratchpad/
 ★Clarity だけ✗＝有璽氏がプロジェクトを作ってIDを渡すまで公開しない（検査で✗）。予定URL https://fukushi119-partners.vercel.app （10/27時点 未使用）。Vercel team fuku-chi-vivid。
 ★Vercel Hobby は規約上「非商用のみ」（reference_free_plan_blocks_on_terms_not_only_limits）＝既知の全体課題。
 公開したら sites.json に行を足す（Clarity別ID）。
+
+## ✅ 協力先向けに公開（2026-10-27）
+★URL https://fukushi119-partners.vercel.app/ （noindex・合言葉なし・URLを知っている人だけ）
+Vercel team fuku-chi-vivid／project fukushi119-partners（prj_OMtPpwmusvYD40idK1ScOpeWMlMk）。★リポジトリ連携なし＝pushで自動公開されない。
+公開の仕方：Vercel API create_deployment の gitSource（y-tam-vivid/vivid-ai-hq・作業ブランチの sha・rootDirectory=scratchpad/f119-portal/public）。
+  ★写真があるとファイル直送（API の inline）は容量的に無理だった。ビルド時はリポジトリ全体が Vercel に複製される（配信は public だけ・実測で ../ や memory は404/400）。
+本番ドメインの保護：ssoProtection=preview のみ（本番エイリアスは公開・プレビューURLはVercelログイン要）。
+実測：index の sha1 がローカルと一致／構想書・118件・候補者名 0件／写真 hero+a〜m の14枚（経営者の声 v1,v2 は写真なし＝紺の面）／
+  SB・GTM・GA4 collect・Clarity collect が発火、cta_click 1件。sites.json に行を追加。
+写真14枚＝ターミナル側が生成し Drive `12_…/2026-10-27【試作】…ダミー写真` に格納（子どもの顔・文字・赤なしを目視）。
+▶次：有璽氏が協力先へURLを送る（確認用URLを社内で開くときは ?utm_source=check）。

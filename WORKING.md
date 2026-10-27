@@ -157,8 +157,8 @@
 
 ## claude.ai/code（クラウド）セッション
 
-- **【ビビ / クラウド 2026-10-27】福祉施設の119番 解決パートナー（ポータル）の試作と構想書** ── 書く：Artifact https://claude.ai/artifact/32DppG7CdR4xwdQo7NTMzz・`scratchpad/f119-portal/`。▶有璽氏の判断待ち（構想書§9）。経緯 `memory/project_f119_partner_portal.md`
-  **★同じ対象に手をつけないでください**: `scratchpad/f119-portal/`
+- **【ビビ / クラウド 2026-10-27】福祉施設の119番 解決パートナー（ポータル）の試作と構想書** ── 書く：Artifact https://claude.ai/artifact/32DppG7CdR4xwdQo7NTMzz・`scratchpad/f119-portal/`。✅協力先向け公開 https://fukushi119-partners.vercel.app/ ▶有璽氏が協力先へ送る／Claude Designへ依頼文を渡す。経緯 `memory/project_f119_partner_portal.md`
+  **★同じ対象に手をつけないでください**: `scratchpad/f119-portal/`／Vercel project fukushi119-partners
 
 ## Claude Desktop セッション
 
