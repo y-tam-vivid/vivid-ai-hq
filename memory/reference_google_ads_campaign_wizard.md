@@ -137,3 +137,12 @@ metadata:
   ★プレビューを押すと編集中の中身が★保存される（タブの * が消えた）＝差し替え中は4時の書き出しが止まりうる。作業は同じ時間内で戻しまで終える
   書き出し用は 13:3x に戻して保存→再読込で 4,538字・START 行あり・addLocation なしを照合
   ▶次：表示とクリックが出始めるかを週次（11/2 月）で見る／その後に計測（電話・LINE・問い合わせ）を直してコンバージョン数の最大化へ戻す（規約）
+
+## ★2026-10-27 表示0の理由が分かった（読むだけのスクリプト2本をプレビュー・設定変更なし）
+- 道具 `bin/ads_grants/diagnose_serving_20261027.js`（primary_status と理由）＋インプレッションシェアの読み取り（同日・エディタで直接）。★「理由はどこかに出ているはず」（有璽氏）＝★GAQL の primary_status_reasons と search_rank_lost_impression_share で取れる
+- 結果：キャンペーン3本 SERVING/ELIGIBLE・理由なし／広告13本 APPROVED／キーワード 35語 ELIGIBLE・27語 NOT_ELIGIBLE「AD_GROUP_CRITERION_RARELY_SERVED」
+- 直近14日：★みんなの食堂＝表示シェア 0.0999（10%未満の表示）・★ランクで損失 0.9001（90%超）＝検索は起きているがオークションで負けている／冬のイベント・くらぶ＝値なし＝対象の検索がほぼ無い
+- ★負ける理由の筆頭：「クリック数の最大化」は Ad Grants の★上限 2.00 米ドルで頭打ち。★コンバージョン数の最大化・目標CPA・目標ROAS だけが上限を超えて入札できる（公式 support.google.com/nonprofits/answer/98870「In Ad Grants, using Maximize conversions, Target CPA, or Target ROAS bidding strategies allows the system to bid over the program-level $2.00 USD max bid」）
+  ＝★10/19 にクリック数の最大化へ替えたのは、規約上だけでなく★オークション上も不利だった。★コンバージョンの計測を直して最大化へ戻すのが本筋
+- アカウント：通貨 USD・ENABLED・テストアカウントではない
+- 書き出し用は 13:4x に戻して保存→再読込で 4,538字を照合
