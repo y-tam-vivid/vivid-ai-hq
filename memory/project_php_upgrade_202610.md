@@ -24,3 +24,4 @@ PHP 不使用（Vercel／STUDIO）：ko-station.org・kawachibanashi・gamemarke
 ★団体側のさくら（5en.sakura.ne.jp）には弊社制作物は載っていない（記録上）＝対象外。触るときは初期ドメインを先に確かめる → [[feedback_sakura_cp_switches_server]]
 
 **現在地**：各サーバーの実際の PHP 版は★未確認（WP 管理画面・サーバーパネルともログインが要る）。
+- 10/28 有璽氏「ビビッドはすでに実行済みのよう。それ以外を」＝さくら vivid（www2472）の版上げは済み（有璽氏の申告・★実物未確認）。さくらの PHP 版はサーバー単位＝同じサーバーの orange-works・cms.ko-station・119 も同じ版のはず→ログインできたら版を読んで裏を取る。残る本命＝エックスサーバー（LSU）
