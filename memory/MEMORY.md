@@ -50,6 +50,7 @@
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
 - [人に頼む前に自分の道具](feedback_check_your_own_tools_before_asking_a_human.md) — ListAgents/SendMessageを先に。往復3回超は減らす
 - [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — 人の手で渡すものは「渡すのは有璽氏の手」と書く
+- [社外へ出す前に機械で数える](feedback_confidential_two_layer_rule.md) — 番号/ID/URL/金額/人名を正規表現で0件にする。AI用は制約節つき
 - [引き継ぎ書はzipの中のことも](reference_handoff_inside_claude_design_zip.md) — ★findもmdfindもzip内を見ない。日本語名はunzipで落ちる→dittoで展開(10/27)
 - [他言語文字の混入](reference_unicode_escape_kanji_swap.md) — カタカナ語の1字目が化ける。台帳へ書く直前に非ASCIIを数える
 - [鍵の扱い](reference_plaintext_credentials_handling.md) — 人が入れる／AIは読めない。★Drive直下のclient_secretは有璽氏判断で現状維持(10/14)
