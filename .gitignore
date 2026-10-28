@@ -18,3 +18,8 @@ bin/hooks/.hook_last_notify.json
 
 # 別リポジトリ（GitHub y-tam-vivid/fukushi119-design）を clone して置くスキル。vivid-ai-hq には入れない（2026-10-27）
 /.claude/skills/fukushi119-design/
+/.claude/skills/fukuchi-design/
+/.claude/skills/vivid-design/
+/.claude/skills/life-stand-up-design/
+/.claude/skills/kodomo-station-design/
+/.claude/skills/meiku-design/
