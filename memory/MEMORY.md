@@ -52,6 +52,7 @@
 - [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — 人の手で渡すものは「渡すのは有璽氏の手」と書く
 - [社外へ出す資料](feedback_confidential_two_layer_rule.md) — 機微は正規表現で0件に／★やりたいこと→理由→現在地で書く
 - [読めないPDFがある](reference_md_to_pdf_docx.md) — 他社作のPDFは★3回で止め、画像か元ファイルをもらう
+- [商談スカウターと台帳](project_sales_minutes_integration.md) — 欲しい紹介はNotion顧客DBに項目あり(3/506)。サイトと台帳は別の軸
 - [引き継ぎ書はzipの中のことも](reference_handoff_inside_claude_design_zip.md) — ★findもmdfindもzip内を見ない。日本語名はdittoで展開
 - [他言語文字の混入](reference_unicode_escape_kanji_swap.md) — カタカナ語の1字目が化ける。台帳へ書く直前に非ASCIIを数える
 - [鍵の扱い](reference_plaintext_credentials_handling.md) — 人が入れる／AIは読めない。★Drive直下のclient_secretは有璽氏判断で現状維持(10/14)
