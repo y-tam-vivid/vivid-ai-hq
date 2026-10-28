@@ -1,0 +1,26 @@
+---
+name: project_php_upgrade_202610
+description: 2026-10 の PHP 重大脆弱性（CVE-2026-109618/109619・PHP2Shell）を受け、弊社制作サイトの PHP を最新版へ上げる作業の現在地（対象サーバー2台・5サイト）
+metadata:
+  type: project
+---
+
+**2026-10-28 有璽氏**「PHPの脆弱性…弊社側で作ってきたもので PHP を使っていて版を上げていないものを最新版に。首相等も言及している最新版に」
+
+**脆弱性**：CVE-2026-109618／109619（PHP2Shell・認証なしの遠隔コード実行・CVSS v4 9.2・10/26 CISA KEV 入り＝悪用確認）。
+修正版＝8.5.12／8.4.27／8.3.36／8.2.35（10/21公開）。7系・8.1は修正版なし・8.2は12月末で終了。IPA・JPCERT 10/22 注意喚起。
+★ホスト側が版番号を変えずに直している場合がある（表示が 8.3.35 でも修正済みのことがある）＝版番号だけで判断しない。
+さくら：10/23「提供しているPHP（サポート終了版を含む）に必要な修正を適用・対応完了」／最新のサポート対象版を推奨。
+エックスサーバー：「別のお知らせで案内」（10/26追記）＝詳細未確認。
+
+**対象（10/28 実測：DNS の逆引き＋応答ヘッダー）**
+```
+さくら www2472（初期ドメイン vivid.sakura.ne.jp・210.224.185.82）
+  orange-works.co（WP＋Elementor）／www.vivid-global.com（WP）／cms.ko-station.org（WP・記事用）／fukushi119（静的HTML＝PHP 不使用だがサーバー設定は共通）
+エックスサーバー sv13187（162.43.117.28）
+  i-life-fukushi.com（WP・テーマ lifestandup）★9/4 に有璽氏が 7.4→8.3.33 へ上げた記録
+PHP 不使用（Vercel／STUDIO）：ko-station.org・kawachibanashi・gamemarke・jfbi・kakei・fuku-chi.com
+```
+★団体側のさくら（5en.sakura.ne.jp）には弊社制作物は載っていない（記録上）＝対象外。触るときは初期ドメインを先に確かめる → [[feedback_sakura_cp_switches_server]]
+
+**現在地**：各サーバーの実際の PHP 版は★未確認（WP 管理画面・サーバーパネルともログインが要る）。

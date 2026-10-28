@@ -84,3 +84,4 @@
 - [お名前のDNSは一段ある](reference_vivid_dns_sakura.md) — NSを01-04.dnsv.jpへ変えて初めて効く。権威を先に見る／**★10/8 Vercelの向け先は案件ごとに違う（過去の cname.vercel-dns.com. を流用して訂正された）。渡す前にその案件のVercel Domainsの値を見る**
 - [効果記録は判定に任せると漏れる](reference_effect_log_is_not_optional.md) — 台帳もプルダウンも「仕組み」＝記録の対象
 - [Supabaseの認証URL](reference_supabase_auth_urls.md) — ★再設定メールは Site URL/Redirect URLs へ飛ぶ。独自ドメインを繋いだ日に同じ日に直す／TOTPは環境ごとに別登録
+- [PHP 脆弱性への版上げ（2026-10）](project_php_upgrade_202610.md) — 対象＝さくら vivid（4サイト）＋エックスサーバー（LSU）。修正版 8.5.12/8.4.27/8.3.36。実際の版は未確認
