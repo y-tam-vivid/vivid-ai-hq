@@ -5,6 +5,8 @@ description: Downloads を整理して法人マイドライブの17分類アー�
 
 # Downloads 週次スイープ（Stage 1）
 
+> ★2026-10-28：自動の定期実行（MacBook cron・`~/bin/sort_downloads.py` v6）は **`~/Downloads/_片付け箱/` に有璽氏が入れたものだけ**を毎朝9時に部門軸へ移す。Downloads 直下は自動では触らない。このスキル（提案→承認）は手で回すときの別経路。→ `memory/project_downloads_archive_system.md`
+
 Downloads の散在ファイルを、法人マイドライブ `Downloads書類アーカイブ/`（17分類）へ**整理してから格納**する。
 設計の全体像は `Downloads書類アーカイブ/_整理ログ/_設計_2段分類フロー_2026-07-07.md` を参照。
 これは **Stage 1（機械化してよい工程）**。事業部門/個人への振り分け（Stage 2）はここでは扱わない。

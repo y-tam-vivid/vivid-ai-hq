@@ -57,6 +57,7 @@
 - [他言語文字の混入](reference_unicode_escape_kanji_swap.md) — カタカナ語の1字目が化ける。台帳へ書く直前に非ASCIIを数える
 - [鍵の扱い](reference_plaintext_credentials_handling.md) — 人が入れる／AIは読めない。★Drive直下のclient_secretは有璽氏判断で現状維持(10/14)
 - [器のコピーはフォームも増やす](reference_sheet_backup_breeds_form_copies.md) — ★フォーム付きの器は複製しない。退避はsnapshot()
+- [Downloadsは片付け箱だけ自動](project_downloads_archive_system.md) — ★10/28有璽氏。~/Downloads/_片付け箱 に入れたものだけ毎朝9時に部門軸へ。直下は触らない。判定は名前の言葉だけ
 - [ドライブの置き場](reference_drive_placement_rules.md) — ★2段。一旦マイドライブの部門軸→共有と決めたものだけ共有ドライブ
 - [補助金はどの部門か](reference_drive_placement_rules.md) — ★中身を直す人で4区分。迷ったら顧客が申請者の側
 - [名前と日付の付け方](reference_drive_placement_rules.md) — ★日付は実際の作成日（整理日でない）／★中身を見てから名前を付ける(10/14)
