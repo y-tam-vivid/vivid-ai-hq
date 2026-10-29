@@ -685,3 +685,6 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - ★WP の階層＝`/home/vivid/www/orangeworks/`（Google確認ファイルのハッシュと OGP-1.webp の容量の2経路で公開側と一致）。portfolio は未存在
 - ★.htaccess に画像の直リンク禁止（リファラが orange-works.co 以外だと jpg/png が403）＝同じドメイン内なら問題ない。WP の書き換えは !-f/!-d なので実在フォルダはWPを通らない
 - ▶アップロード先の承認待ち（有璽氏）
+- ✅10/29 23:5x 公開済み（有璽氏OK）：https://orange-works.co/portfolio/ ＝`/home/vivid/www/orangeworks/portfolio/`（80ファイル・755/644・ローカルとmd5全件一致）。title・本文md5一致、参照画像79件すべて200、トップと/works/も200。WPのファイル・設定・DB・.htaccessは未変更
+- ★zipの「84」はファイル80＋フォルダ4。★計測タグ（GA4/GTM/Clarity/SB）は入っていない＝web-tracking-setup の対象。入れるかは有璽氏判断
+- ★作品集を直したら同じ場所へ上げ直す：`tar -cf - portfolio | ssh ow-sakura "/bin/sh -c 'cd ~/www/orangeworks && tar -xf -'"`（★Artifact とは別物＝両方そろえる）
