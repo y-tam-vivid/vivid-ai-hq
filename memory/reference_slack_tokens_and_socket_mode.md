@@ -303,3 +303,22 @@ Socket Mode は **そのアプリに届く全てのインタラクションを1�
 機構と直し方は [[reference_retry_backoff_resets_too_early]]（担当＝ピタゴラス）。
 
 **★見るのは disconnect の件数ではなく「秒数が増えているか」。** 同じ数字が並べば黒。
+
+## ★UUID value の正体と直し（2026-10-30 確定・MacBook ビビ）
+
+```
+正体   議事録整理Bot（GAS「議事録自動整理スクリプト」）の承認カードのボタン。
+       slack_socket.py の鍵は gijiroku-bot（B0AT7LC8S3X）＝同じアプリ（auth.test で実測）。
+       Socket Mode を入れたアプリは押下が全部 websocket へ来て、GAS の Request URL に届かない。
+裏取り 10/29 のログ失敗3件（12:36/13:37/14:22）と Slack の警告3件が件数・順で1対1。
+★害   警告がカードそのものを上書きした（Slack の時刻が毎時:08＝元カードの ts のまま）。
+       → 承認待ちのカードはボタンごと消えている。直しても「溜まったカードを押す」はできない。
+直し   slack_socket.py に is_giji_action()/forward_to_gas() を足し、action_id approve/reject/change_folder
+       か value が UUID のものは、JSON として読む前に別スレッドで GAS の /exec へ payload= で POST。
+       URL は config.env の GIJI_GAS_WEBAPP_URL（デプロイ「議事録整理 承認用Webアプリ」v10・全員）。
+       控え _backups/slack_socket.py.bak_20261030-0850・config.env.bak_20261030-*
+★罠   GAS の doPost は例外を握りつぶして常に200＝「GAS応答200」は成功の証拠にならない。
+       効いたかは Slack のカードが「承認・移動が完了しました」に変わったかで見る。
+★罠   公開中のデプロイは v10（5/28）。エディタの今のコード（8/19 更新）とは別物の可能性。
+★罠   clasp の資格は両機とも invalid_rapt で切れている。GAS はブラウザで authuser=y_tam@… を付けて開く。
+```
