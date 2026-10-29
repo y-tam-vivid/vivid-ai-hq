@@ -688,3 +688,6 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - ✅10/29 23:5x 公開済み（有璽氏OK）：https://orange-works.co/portfolio/ ＝`/home/vivid/www/orangeworks/portfolio/`（80ファイル・755/644・ローカルとmd5全件一致）。title・本文md5一致、参照画像79件すべて200、トップと/works/も200。WPのファイル・設定・DB・.htaccessは未変更
 - ★zipの「84」はファイル80＋フォルダ4。★計測タグ（GA4/GTM/Clarity/SB）は入っていない＝web-tracking-setup の対象。入れるかは有璽氏判断
 - ★作品集を直したら同じ場所へ上げ直す：`tar -cf - portfolio | ssh ow-sakura "/bin/sh -c 'cd ~/www/orangeworks && tar -xf -'"`（★Artifact とは別物＝両方そろえる）
+- ✅10/30 0:0x 計測タグを入れた（有璽氏「入れてください」）：本体と同じ ID（SB 17e298ff…／GTM-PL37X5BK／Clarity ysq8wingsx＝★同じドメインなのでサイト扱いも同じ。Clarity は URL で /portfolio/ に絞る）。data-cta は header・contact-form の2つ
+  検査 web_tracking_check.py はファイルも本番URLも✗0。実ブラウザ（?utm_source=check）で clarity4・collect4・sb-track1・GTM2 の通信、dataLayer に page_meta と cta_click(header)。画像94枚の欠け0
+  ★タグ無しの版の控え＝さくら `~/_backup_portfolio/index.html.bak_20261030_notag`（公開フォルダの外）。★zip の元（タグ無し）から作り直すとタグが消える＝上げ直す前に snippet を入れる
