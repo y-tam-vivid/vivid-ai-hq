@@ -76,7 +76,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ / MacBook 2026-10-28】オレンジワークス クリエイター名義の別ポートフォリオ（参考 studio-myy.com）** ── 非公開の試作（Artifact）のみ。書く：scratchpad。読む：orange-works.co の公開実績（★既存サイトは触らない）
+- **【ビビ / MacBook 2026-10-28】オレンジワークス クリエイター名義の別ポートフォリオ（参考 studio-myy.com）** ── 非公開の試作（Artifact）＋▶10/29〜 orange-works.co/portfolio/ へ静的ページで公開（有璽氏の指示）。書く：さくら vivid の WP 階層の portfolio/ だけ（★WPのファイル・設定・DB・.htaccess は触らない）。▶接続済み（ssh ow-sakura）・置き先 /home/vivid/www/orangeworks/portfolio/ の承認待ち
 - **【ビビ / MacBook 2026-10-24】こどもS 助成金本選考プレゼンの写真選定・取り込み** ── 読む：Drive `04_NPO法人南河内こどもステーション/00_素材写真`（★読み取りのみ）。✅写真23枚・レポート・沿革の文面を Drive `04_…/10_助成金本選考プレゼン_写真と沿革/` へ。▶有璽氏が資料本体（.dc.html）を同じフォルダへ入れたら差し込む（03に行あり）
 - **【ビビ / MacBook 2026-10-19】こどもの脳と関わりプログラム（長田瑞恵先生の講座＋CRAFT由来＋脳科学・まず児童）** ── 設計・導入計画v0.2・台本#3 まで済み。▶**有璽氏待ち**：先生への連絡（有璽氏が自分で）と導入計画§6の4点（03に行あり・@10/31）。★先生への文面は作らない・催促しない。経緯 `memory/project_family_growth_brain_content.md`
   **★同じ対象に手をつけないでください**: Drive `10-100_経営戦略/familyBrainコンテンツ開発/` の設計書群
