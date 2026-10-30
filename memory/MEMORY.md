@@ -42,6 +42,7 @@
 - [毎ターン届くMDは丸ごと書かない](feedback_memory_index_hygiene.md) — 00_Systemも1行ずつEdit（全文書き戻しで同期と衝突し03が壊れた）
 - [AIが検証できない所に人の手を置かない](feedback_dont_put_hands_where_ai_cannot_verify.md) — 人に打たせる前にダミーで同じ道を通す
 - [判断はSlackのボタン](project_ask_hub_push_decisions.md) — 10/14フックで届く。★「押されるまで待つ」で終えず戻る時刻を決める(10/15)
+- [判断カードは問いごとに選んで送信](feedback_decision_card_multi_select.md) — ★1押しで確定にしない。初期値はAIの見立て。★ラジオはvalue無し＝socketが誤エラーを返す(10/30)
 - [問いを出したら待ち役を走らせる](project_ask_hub_push_decisions.md) — ★ask後は同じターンで待ち役を走らせる
 - [Slackの窓口はビビ・ビビは動かない](project_slack_command_center.md) — ★受けるのはビビ。受領と担当と目安を返して流す。作業は担当
 - [Slackは1件1スレッド](project_slack_command_center.md) — ★有璽氏がスレッドへ返した発言も拾う。返事も同じスレッドへ
