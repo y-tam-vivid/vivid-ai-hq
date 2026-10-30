@@ -24,5 +24,7 @@ metadata:
 
 **残り115件は「顧客DB未登録」だが、その多くはそもそも顧客ではない**：田村有璽本人（名寄せで相手欄に本人名が入った分）・社内スタッフ（野本／田端さくら／篠原弘行）・行政/警察（藤井寺市・柏原市・羽曳野警察署）・採用候補。**顧客DBへ足すのではなく「社内」等へ再分類するのが筋**。要確認CSV＝`~/.vivid-relay/meeting_customer_link_report.csv`（mini）。
 
+**★2026-10-30 条件を1つ足した**：対象は「仕分け」列が空か「受付待ち」の行だけ（仕分けカード③と二重に相手を決めないため）。控え mini `_backups/notion_meeting_customer_link.py.bak_20261030-1123` → [[project_meeting_sort_card]]
+
 正＝[🔗 議事録DB × 顧客DB 連携フロー（現況まとめ）](https://app.notion.com/p/3b27b1568b578184902ffd4324882ed5) の8章。
 関連 [[project_giji_automation_gas]] [[reference_kintone_customer_master]] [[reference_notion_mcp_read_limits]]
