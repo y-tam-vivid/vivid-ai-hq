@@ -46,6 +46,7 @@
 - [Slackの窓口はビビ・ビビは動かない](project_slack_command_center.md) — ★受けるのはビビ。受領と担当と目安を返して流す。作業は担当
 - [Slackは1件1スレッド](project_slack_command_center.md) — ★有璽氏がスレッドへ返した発言も拾う。返事も同じスレッドへ
 - [Slackの件をClaude Codeで続ける](project_slack_command_center.md) — ★受付番号で呼ぶ。流れを読み、同じスレッドへ書き戻せる
+- [議事録botのボタンはSocketが受ける](reference_slack_tokens_and_socket_mode.md) — ★10/30 mini slack_socketがGASへ転送。GAS応答200は成功の証拠でない
 - [モックアップは生成で](feedback_who_makes_the_images.md) — ★10/28 PILの紙袋は不採用→生成の紙袋は「めっちゃいい」。ロゴは展開図（名刺・封筒・トート等）で見せる
 - [成果物はパスで返さない](feedback_cannot_copy_from_terminal.md) — ★画像はDriveへ置きFinderで開いて表示する
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
