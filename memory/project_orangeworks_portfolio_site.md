@@ -669,3 +669,25 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - ★作品集は別の面（claude.ai 側）でも更新されている。10/29 時点の正は Artifact の公開版（flat-240/260/210/250/220 が -v2）。★手元の scratchpad の index.html と m/ は古かった。
 - ★着手前に `Artifact read`（url と path）で公開中の画像・HTML を取り直してから作る。手元の同名ファイルを元にして作り直しが1回出た（v2 では他のアイテムのロゴも小さく作り直されていた）。
 - v3＝候補1のシャツを110%（466×551px・x129-595）にし、ノートの DAYS ロゴ（幅61px）を左胸に乗算で刷った。v2 から変えたのは x100-620・y110-780 の内側だけ（外側の差分0を実測）。Drive `15-400_オレンジワークス藤井寺/芽育ラボ作品集_モックアップ/20261029_flat-210_シャツ候補/`
+
+## 2026-10-29 23:2x 有璽氏：作品集を orange-works.co/portfolio/ に静的ページで公開する
+- 方式：WordPress の階層に portfolio/ フォルダを置くだけ。★WPのファイル・設定・DB・.htaccess は触らない。既存の /works/ は残す
+- 鍵：★チャットに書かせない。環境変数か ~/.ssh/config で渡してもらう。接続方式（SFTP/SSH/FTP）とホスト・ユーザーは有璽氏に聞く
+- 手順：WP の階層（wp-config.php のある所）を見せて承認 → 同名があれば止まる → 755/644 → curl で 200・title・画像3点・トップと /works/ も 200
+- 404やWPのページになったら .htaccess を直さず、見立てと案を出して止まる。キャッシュ・CDN は手順の案内だけ
+- サーバーは★さくら vivid（vivid.sakura.ne.jp・WAF有効）。本番WPは別セッションも並行して作業中
+- ★~/Downloads/portfolio.zip は 23:2x 時点で MacBook にも mini にも無かった（作ったのは claude.ai 側と思われる）
+- ★公開中の Artifact は 1793283178-bb32 に進んでいた（109ファイル。zip の84と数が違う＝使われていない旧版も入っている）
+- 23:3x 有璽氏「ビビッドのさくらで合っている」。★さくら vivid は SSH 可（publickey,password を受ける＝実測）。MacBook の既存鍵は未登録
+- 鍵は専用に作った：MacBook `~/.ssh/ow_sakura`（パスフレーズ無し）＋ `~/.ssh/config` の `Host ow-sakura`（控え config.bak_20261029_*）
+- 登録は★有璽氏が自分の「ターミナル」で `ssh-copy-id -i ~/.ssh/ow_sakura.pub ow-sakura` → サーバーパスワードを打つ（AIは見ない）。以後 `ssh ow-sakura` で入れる
+- 23:4x 鍵の登録済み（有璽氏）。`ssh ow-sakura` で入れる。★ログインシェルは csh＝`ssh ow-sakura "/bin/sh -s" <<'EOF'` で渡す
+- ★WP の階層＝`/home/vivid/www/orangeworks/`（Google確認ファイルのハッシュと OGP-1.webp の容量の2経路で公開側と一致）。portfolio は未存在
+- ★.htaccess に画像の直リンク禁止（リファラが orange-works.co 以外だと jpg/png が403）＝同じドメイン内なら問題ない。WP の書き換えは !-f/!-d なので実在フォルダはWPを通らない
+- ▶アップロード先の承認待ち（有璽氏）
+- ✅10/29 23:5x 公開済み（有璽氏OK）：https://orange-works.co/portfolio/ ＝`/home/vivid/www/orangeworks/portfolio/`（80ファイル・755/644・ローカルとmd5全件一致）。title・本文md5一致、参照画像79件すべて200、トップと/works/も200。WPのファイル・設定・DB・.htaccessは未変更
+- ★zipの「84」はファイル80＋フォルダ4。★計測タグ（GA4/GTM/Clarity/SB）は入っていない＝web-tracking-setup の対象。入れるかは有璽氏判断
+- ★作品集を直したら同じ場所へ上げ直す：`tar -cf - portfolio | ssh ow-sakura "/bin/sh -c 'cd ~/www/orangeworks && tar -xf -'"`（★Artifact とは別物＝両方そろえる）
+- ✅10/30 0:0x 計測タグを入れた（有璽氏「入れてください」）：本体と同じ ID（SB 17e298ff…／GTM-PL37X5BK／Clarity ysq8wingsx＝★同じドメインなのでサイト扱いも同じ。Clarity は URL で /portfolio/ に絞る）。data-cta は header・contact-form の2つ
+  検査 web_tracking_check.py はファイルも本番URLも✗0。実ブラウザ（?utm_source=check）で clarity4・collect4・sb-track1・GTM2 の通信、dataLayer に page_meta と cta_click(header)。画像94枚の欠け0
+  ★タグ無しの版の控え＝さくら `~/_backup_portfolio/index.html.bak_20261030_notag`（公開フォルダの外）。★zip の元（タグ無し）から作り直すとタグが消える＝上げ直す前に snippet を入れる
