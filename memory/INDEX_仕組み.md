@@ -42,7 +42,7 @@
 - [入力と出力先を先に見る](reference_ai_output_blamed_before_inputs.md) — ★フォールバックは工程ごとに散る(議事録で7個)。1本直しても潰れない
 - [印を消すだけでは戻らない](reference_processed_flag_is_not_enough.md) — 元データが取得元にあるかを見る／隔離配下は対象外にする
 - [却下は永続的な取りこぼし](reference_silent_rejection_backlog.md) — 却下=処理済み扱いで二度と拾われない。連続0件の日で探す
-- [議事録自動整理GAS](project_giji_automation_gas.md) — ★10/30 承認カードは役目終了（移動先は月で自動）。8/25〜の改名・移動が未処理。相手確認カードへ置換を相談中
+- [議事録自動整理GAS](project_giji_automation_gas.md) — ★10/30 承認カード廃止・改名移動は自動。溜まり134/135件移動済。相手確認カードは名鑑側へ
 - [議事録の社員展開](project_minutes_employee_rollout.md) — パイロット5名で入口を開いた。全社への自動昇格は意図的に未実装
 - [議事録の隔離運用](project_minutes_quarantine.md) — 空・機微・重複はDrive`_要確認`へ移す。移動のみ・削除は有璽氏
 - [議事録の整理ルール](project_giji_organizing_rules.md) — 区分は台帳が持つ／表記は台帳と同じ／指標は社外会議の紐付率
