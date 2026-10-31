@@ -1,0 +1,133 @@
+[
+ {
+  "id": "m1",
+  "name": "ひだまりキッズ",
+  "type": "放デイ・児発",
+  "pref": "大阪府",
+  "units": 2,
+  "person": "代表 A.K",
+  "col": "#7a4a3a",
+  "msg": "運営指導を乗り越えた経験なら、いくらでも話せます。",
+  "focus": "年間研修計画と記録様式の見直し",
+  "talk": [
+   4,
+   1
+  ],
+  "open": true,
+  "_meta": {
+   "kind": "sample",
+   "meikan_id": null,
+   "consent": null,
+   "show": true
+  }
+ },
+ {
+  "id": "m2",
+  "name": "こもれび工房",
+  "type": "就労継続支援",
+  "pref": "兵庫県",
+  "units": 1,
+  "person": "代表 T.S",
+  "col": "#4a5a3a",
+  "msg": "自主製品の売り方を、同じ就労系の方と話したいです。",
+  "focus": "焼き菓子のネット販売と工賃の向上",
+  "talk": [
+   7,
+   3
+  ],
+  "open": true,
+  "_meta": {
+   "kind": "sample",
+   "meikan_id": null,
+   "consent": null,
+   "show": true
+  }
+ },
+ {
+  "id": "m3",
+  "name": "そよかぜヘルパーステーション",
+  "type": "居宅介護",
+  "pref": "大阪府",
+  "units": 1,
+  "person": "管理者 M.N",
+  "col": "#3a5a6a",
+  "msg": "ヘルパーの採用、どこも苦労していると思います。工夫を持ち寄りませんか。",
+  "focus": "短時間勤務のヘルパーの採用",
+  "talk": [
+   1,
+   5
+  ],
+  "open": true,
+  "_meta": {
+   "kind": "sample",
+   "meikan_id": null,
+   "consent": null,
+   "show": true
+  }
+ },
+ {
+  "id": "m4",
+  "name": "あおぞらキッズラボ",
+  "type": "放デイ・児発",
+  "pref": "京都府",
+  "units": 4,
+  "person": "代表 K.Y",
+  "col": "#5a4a7a",
+  "msg": "4拠点目で数字の見方が変わりました。多店舗化を考えている方と話したいです。",
+  "focus": "拠点別の収支の見える化",
+  "talk": [
+   7,
+   9
+  ],
+  "open": true,
+  "_meta": {
+   "kind": "sample",
+   "meikan_id": null,
+   "consent": null,
+   "show": true
+  }
+ },
+ {
+  "id": "m5",
+  "name": "（施設名非公開）",
+  "type": "就労継続支援",
+  "pref": "奈良県",
+  "units": 1,
+  "person": "代表",
+  "col": "#6a6a5a",
+  "msg": "施設名は伏せていますが、相談会には参加しています。",
+  "focus": "—",
+  "talk": [
+   11
+  ],
+  "open": false,
+  "_meta": {
+   "kind": "sample",
+   "meikan_id": null,
+   "consent": null,
+   "show": true
+  }
+ },
+ {
+  "id": "m6",
+  "name": "みらいの丘ケアセンター",
+  "type": "介護",
+  "pref": "大阪府",
+  "units": 3,
+  "person": "代表 H.T",
+  "col": "#7a5c1e",
+  "msg": "送迎の組み方は、障害福祉と介護で学び合えるはずです。",
+  "focus": "送迎ルートの組み直しと車両の入れ替え",
+  "talk": [
+   5,
+   3
+  ],
+  "open": true,
+  "_meta": {
+   "kind": "sample",
+   "meikan_id": null,
+   "consent": null,
+   "show": true
+  }
+ }
+]

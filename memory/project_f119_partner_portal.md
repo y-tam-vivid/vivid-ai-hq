@@ -89,3 +89,4 @@ Vercel team fuku-chi-vivid／project fukushi119-partners（prj_OMtPpwmusvYD40idK
 
 - 10/28 公開版を v0.6（119番デザインシステム）へ更新（dpl_75xaSUJxsjVK9RVQ9Fgzgvx1cx5a・commit e4b9c6a・本番と手元のsha1一致を確認）。★「119番について」の3か所は Webサイト(fukushi119-web)公開まで本番LP fukushi119.vivid-global.com へ向けている（build_public.py の SITE_URL）。同日、諸橋さんへLINEで確認依頼の文面を作成（送るのは有璽氏）。
 - 10/28 Webサイト公開 https://fukushi119-web.vercel.app/ （Vercel project fukushi119-web prj_3oteJ2et3q3aJyzHurUJBhijD6xO・ssoProtection=preview・Clarity z46d8rwt4j・rootDirectory=scratchpad/f119-site/public・7ページ×2幅で崩れ0・計測の発火を実測）。解決パートナーの「119番について」3か所を Webサイトへ戻して再公開（dpl_J5fY4MgA91Uu1BmXzEeuzMhR5Gz9）。本番LP fukushi119.vivid-global.com の置き換えは未決。
+- 10/31 有璽氏：諸橋さんから構成はむしろ好評。★名鑑（社内・全件）とポータル（119番に該当×外部公開可×本人承諾のものだけ）の使い分けに決定。つなぐ鍵＝社内顧客ID。掲載の正本を data/*.json に分離（render_data.py・実在は承諾が無いと止まる）。集め方 `scratchpad/f119-portal/掲載情報の集め方.md`・名鑑担当へ `scratchpad/handoff/2026-10-31_名鑑と119番ポータルの分け方.md`。

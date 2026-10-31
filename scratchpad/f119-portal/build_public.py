@@ -7,6 +7,7 @@
 import re
 import shutil
 import subprocess
+import render_data
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -18,6 +19,7 @@ GTM_ID = "GTM-PQX3L4TQ"
 CLARITY_ID = "z431w59a74"
 NOTICE = "協力先さま確認用の試作です。掲載している会社名・人名・事例はすべて架空です。ご意見は福祉施設の119番の担当までお寄せください。"
 SITE_URL = "https://fukushi119-web.vercel.app/"  # 119番Webサイト
+NOTICE_MIXED = "協力先さま確認用の試作です。「架空」と書いた掲載は見本です。ご意見は福祉施設の119番の担当までお寄せください。"
 FORBIDDEN = ["構想書", "118", "SparkLabo", "諸橋", "宮原", "齋藤", "井上", "CAS", "△", "職業安定法", "参考サイト", "concept"]
 
 
@@ -29,10 +31,13 @@ def rep(s, a, b, count=1):
 
 
 def main():
+    render_data.main()
+    rows = [r for _, n in render_data.SETS for r in render_data.load(n)]
+    notice = NOTICE if all(r["sample"] for r in rows) else NOTICE_MIXED
     s = (HERE / "index.html").read_text(encoding="utf-8")
     # 帯の文言・フッターの構想書リンク
     s = re.sub(r'<div class="notice"><div class="wrap">.*?</div></div>',
-               f'<div class="notice"><div class="wrap"><span>{NOTICE}</span></div></div>', s, count=1, flags=re.S)
+               f'<div class="notice"><div class="wrap"><span>{notice}</span></div></div>', s, count=1, flags=re.S)
     s = rep(s, ' ／ <a href="#concept">構想書</a>', '')
     s = rep(s, '解決パートナー（仮称）・試作 ／', '解決パートナー（仮称）・確認用の試作 ／')
     # 構想書の本文と経路
