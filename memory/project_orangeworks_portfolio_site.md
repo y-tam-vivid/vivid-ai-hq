@@ -691,3 +691,5 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - ✅10/30 0:0x 計測タグを入れた（有璽氏「入れてください」）：本体と同じ ID（SB 17e298ff…／GTM-PL37X5BK／Clarity ysq8wingsx＝★同じドメインなのでサイト扱いも同じ。Clarity は URL で /portfolio/ に絞る）。data-cta は header・contact-form の2つ
   検査 web_tracking_check.py はファイルも本番URLも✗0。実ブラウザ（?utm_source=check）で clarity4・collect4・sb-track1・GTM2 の通信、dataLayer に page_meta と cta_click(header)。画像94枚の欠け0
   ★タグ無しの版の控え＝さくら `~/_backup_portfolio/index.html.bak_20261030_notag`（公開フォルダの外）。★zip の元（タグ無し）から作り直すとタグが消える＝上げ直す前に snippet を入れる
+- ▶10/31 有璽氏：/portfolio/ に「見積もりシミュレーション」を作れるか（参考 https://smartcontents.co.jp/estimate/ ＝選ぶ→概算と納期→宛名→相談送信 or 見積書PDFをメール）。★Web だけでなくグラフィック・ロゴ・イラストも含めたい。★金額は未定＝まず「数字以外の実装ができるか」の確認段階
+  ★答えた見立て：選ぶ・計算・表示・PDF は静的ページの JS だけで出来る（WP に触れない）。★金額は1つの表（JSON）に集め後から差し替える。送信は既存 Google フォームへ結果を渡す形が最小／メールで見積書を自動送付は さくら側にサーバー処理が要る＝承認事項。芽育DSの規則で料金表には合計例を添える
