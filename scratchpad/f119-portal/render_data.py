@@ -1,7 +1,8 @@
 """data/*.json（掲載の正本）を index.html の DATA 区間へ書き込む。
 
-掲載するのは _meta.show が true のものだけ。実在の掲載（kind=real）は _meta.consent（掲載の承諾）が無いと止める。
-画面には sample（見本かどうか）だけを渡し、社内の紐付け（meikan_id など）は出さない。
+掲載するのは _meta.show が true のものだけ。kind は3つ：
+  sample＝架空の見本／draft＝実在・本人の確認前（画面に「掲載内容は確認中」）／real＝実在・承諾済み（_meta.consent が無いと止める）
+画面には sample と pending（確認中か）だけを渡し、社内の紐付け（meikan_id など）は出さない。
 使い方：python3 scratchpad/f119-portal/render_data.py  → そのあと build_public.py
 """
 import json
@@ -19,10 +20,14 @@ def load(name):
         meta = r.get("_meta", {})
         if not meta.get("show"):
             continue
-        if meta.get("kind") == "real" and not meta.get("consent"):
+        kind = meta.get("kind")
+        if kind not in ("sample", "draft", "real"):
+            raise SystemExit(f"{name}/{r.get('id')}: kind が不明（{kind}）")
+        if kind == "real" and not meta.get("consent"):
             raise SystemExit(f"{name}/{r.get('id')}: 実在の掲載なのに承諾（_meta.consent）が空")
         rec = {k: v for k, v in r.items() if k != "_meta"}
-        rec["sample"] = meta.get("kind") != "real"
+        rec["sample"] = kind == "sample"
+        rec["pending"] = kind == "draft"
         out.append(rec)
     return out
 
