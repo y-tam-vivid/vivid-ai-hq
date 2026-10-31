@@ -280,3 +280,13 @@ brief() の分岐         長さチェックに到達するか
 関連 [[project_ask_hub_push_decisions]] ／ [[reference_hooks_enforce_what_discipline_cannot]]
 ／ [[reference_permissions_are_part_of_the_environment]] ／ [[reference_fix_where_git_reaches]]
 ／ [[reference_a_warning_nobody_owns]]
+
+## 2026-10-30 承認DMに「中身」をどこまで載せるか ── 有璽氏の判断待ち（10/30 時点）
+
+- 端末の承認を Slack から遠隔で許可させると、Write・Edit・MCP は中身を見せないまま押させることになる。
+  → 線引き：**内容を全部見せられないものは、遠隔で許可させない**（approve2 の報告）。
+- 上限は1か所にまとめてある（人が後から変えられる）：SHOW_MAX 300（Bash）／CONTENT_MAX 600（Write・Edit・MCP）／DETAIL_BUDGET 900。
+- **代償（有璽氏が決める）**：Write・Edit・MCP の中身が DM に載る。顧客名・個人情報を含みうる。
+  宛先は有璽氏の DM 1本だけで、チャンネルには出ない。
+- 同じ報告で分かったこと：`setup_hooks.sh` は登録を巻き戻さない（同じ command が既にあれば足さない）。
+- 通し確認（#a09b43）と時間切れの実測は、報告時点で未回答。結果はこの memory に無い。着手する前に実物を見る。
