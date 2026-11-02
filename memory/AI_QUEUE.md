@@ -3,10 +3,15 @@
 > `bin/web_tracking/seo_action_bridge.py`（mini 毎朝）が改善ログから書き出す。**有璽氏が押さなくても回すための一覧。**
 > 1件でもあれば、いまのセッションの区切りで担当 **ウソップ（search-growth）** の手順で片づける。公開を伴う直しは★直す前／直した後を有璽氏に見せてから。正本＝Notion改善ログ。
 
-更新：2026-11-01 07:40　実施待ち 3件／効果判定 0件
+更新：2026-11-03 07:40　実施待ち 4件／効果判定 2件
 
 ## 実施待ち（有璽氏が「AIに任せる」と回答済み）
+- [119番] robots.txt とサイトマップを置く（SEO・採用）https://app.notion.com/p/robots-txt-40b7b1568b5781f2a2f8e35315951454
 - [こどもステーション] about.html の「反応しない所」を直す（使いやすさ（Clarity）・採用）https://app.notion.com/p/about-html-4097b1568b57814da857cc3d427e40e9
 - [ILIFE] 会社概要・採用・トップの「反応しない所」を直す（使いやすさ（Clarity）・採用）https://app.notion.com/p/4097b1568b5781dc8519c222989eef8e
 - [オレンジワークス] トップページの「反応しない所」を直す（使いやすさ（Clarity）・採用）https://app.notion.com/p/3fd7b1568b5781149270f6d5fd97ac95
+
+## 効果判定の時期（実施日から21日）
+- [こどもステーション] ボランティアページの「反応しない所」を直す（実施 2026-10-13）https://app.notion.com/p/3f67b1568b5781bc8b6ed94bb589692b
+- [ILIFE] 事業と関係ない検索語を呼ぶ記事のタイトルを見直す（実施 2026-10-13）https://app.notion.com/p/3f67b1568b57811bb5beda7b406b7410
 
