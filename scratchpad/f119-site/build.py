@@ -134,7 +134,7 @@ PAGES["index.html"] = ("トップ", "放課後等デイサービス・児童発�
     <h1>実地指導は、<br>必ず来ます。</h1>
     <p class="lead">施設運営の健康診断を入口に、過去の是正と、これからの運営改善までを一体でご支援します。設計しているのは、放課後等デイサービスと就労継続支援B型を自ら運営している事業者です。</p>
     <div class="actions">{cal_btn("無料相談を予約する", "hero", "cta-large")}<a class="btn on-dark" href="service.html">サービスを見る</a></div>
-    <p class="hnote">健康診断はオンライン完結・最短2週間・3万円〜／事業所（税別）</p>
+    <p class="hnote">健康診断はオンライン完結・最短2週間・5万円〜／事業所（税別）</p>
   </div>
 </section>
 
@@ -185,7 +185,7 @@ PAGES["index.html"] = ("トップ", "放課後等デイサービス・児童発�
 <section class="sec sand"><div class="wrap">
   {sh("SERVICE MAP", "点検を入口に、過去の是正と、これからの運営改善", "福祉施設の119番は、ご相談の窓口です。ここを起点に、過去と未来の両方をご支援します。")}
   <div class="cards c3">
-    <div class="bc"><div class="no">01 ／ ENTRY ＝ 健康診断</div><h3>施設運営の健康診断</h3><div class="body">書類をデータで送るだけ。指定権者の視点で人員・運営・報酬請求の3領域を点検し、2週間で貴社の現在地をお返しします。</div><div class="meta">3万円〜／事業所（税別）</div><a class="more" href="service.html#entry">詳しく見る</a></div>
+    <div class="bc"><div class="no">01 ／ ENTRY ＝ 健康診断</div><h3>施設運営の健康診断</h3><div class="body">書類をデータで送るだけ。指定権者の視点で人員・運営・報酬請求の3領域を点検し、2週間で貴社の現在地をお返しします。</div><div class="meta">5万円〜／事業所（税別）</div><a class="more" href="service.html#entry">詳しく見る</a></div>
     <div class="bc"><div class="no">02 ／ THE PAST ＝ 治療</div><h3>遡及点検・是正支援</h3><div class="body">「これまでの分が不安で、前に進めない」。その状態をまず解消します。不備の洗い出しと重要度判定、自主点検報告書の作成支援、過誤調整・自主返還の判断支援まで。</div><div class="meta">別途お見積り</div><a class="more" href="service.html#past">詳しく見る</a></div>
     <div class="bc"><div class="no">03 ／ THE FUTURE ＝ かかりつけ医</div><h3>3つの月額サービス</h3><div class="body">運営指導コンサル、BPO（請求・電話・法定義務）、RPO（採用運用代行）。守り・実務・人材の3方向から、施設の経営を止める要因を解消します。</div><div class="meta">月額3万円〜（税別）</div><a class="more" href="service.html#future">詳しく見る</a></div>
   </div>
@@ -255,7 +255,7 @@ PAGES["service.html"] = ("サービス", "施設運営の健康診断・ドッ�
     <p class="small muted" style="margin-top:12px">健康診断＝書類のみ・オンライン ／ ドック＝現地訪問・当日演習まで。まずは健康診断から、でも構いません。</p>
   </div>
   <div class="cards" style="margin-top:32px">
-    <div class="bc"><div class="no">ENTRY</div><h3>施設運営の健康診断（模擬実地指導・書類編）</h3><div class="body">オンライン完結・最短2週間。</div><div class="meta">30,000円／事業所（税別）</div></div>
+    <div class="bc"><div class="no">ENTRY</div><h3>施設運営の健康診断（模擬実地指導・書類編）</h3><div class="body">オンライン完結・最短2週間。</div><div class="meta">50,000円〜／事業所（税別）</div></div>
     <div class="bc"><div class="no">ENTRY</div><h3>施設運営ドック（模擬実地指導・現地編）</h3><div class="body">現地訪問で模擬実地指導。当日のヒアリング演習から報告会まで。半日〜1日。</div><div class="meta">120,000円／事業所（税別）</div></div>
   </div>
 </div></section>
@@ -339,11 +339,11 @@ PAGES["service.html"] = ("サービス", "施設運営の健康診断・ドッ�
 ''')
 
 # ---------------- 料金 ----------------
-PAGES["price.html"] = ("料金", "福祉施設の119番の料金。健康診断 30,000円／事業所、ドック 120,000円／事業所、運営指導コンサル 月50,000円など（税別）。", sub_hero("PRICE", "料金", "記載の金額はすべて税別です。正式なお見積りは、健康診断の結果を踏まえてご提示します。") + f'''
+PAGES["price.html"] = ("料金", "福祉施設の119番の料金。健康診断 50,000円〜／事業所、ドック 120,000円／事業所、運営指導コンサル 月50,000円など（税別）。", sub_hero("PRICE", "料金", "記載の金額はすべて税別です。正式なお見積りは、健康診断の結果を踏まえてご提示します。") + f'''
 <section class="sec"><div class="wrap">
   {sh("ENTRY ／ 現状を知る", "まずは健康診断から")}
   <div class="tbl"><table><thead><tr><th>メニュー</th><th>内容</th><th>料金（税別）</th></tr></thead><tbody>
-    <tr><td>施設運営の健康診断</td><td>模擬実地指導・書類編。オンライン完結・最短2週間。指摘リスク点検結果・返還リスク金額試算・取得漏れ加算のご提案書をお返しします</td><td class="num">30,000円／事業所</td></tr>
+    <tr><td>施設運営の健康診断</td><td>模擬実地指導・書類編。オンライン完結・最短2週間。指摘リスク点検結果・返還リスク金額試算・取得漏れ加算のご提案書をお返しします</td><td class="num">50,000円〜／事業所</td></tr>
     <tr><td>施設運営ドック</td><td>模擬実地指導・現地編。現地訪問で半日〜1日。当日のヒアリング演習から報告会まで</td><td class="num">120,000円／事業所<br><span class="cap">2事業所目以降 80,000円</span></td></tr>
   </tbody></table></div>
   <p class="small muted" style="margin-top:12px">加算のご提案は費用に含まれます。届出・要件整備の実行支援のみ、別途お見積りです。</p>
@@ -372,7 +372,7 @@ PAGES["price.html"] = ("料金", "福祉施設の119番の料金。健康診断 
 PAGES["flow.html"] = ("導入の流れ", "健康診断からご提案・契約、キックオフ、本稼働まで。最短4週間で本稼働します。", sub_hero("ONBOARDING", "導入の流れ。最短4週間で本稼働", "貴社の負担は、初期ヒアリング3時間程度のみ。現業務を止めずに切り替えられる設計です。") + f'''
 <section class="sec"><div class="wrap">
   {sh("FROM CHECK TO OPERATION", "健康診断から本稼働まで")}
-  {steps([("WEEK 0","健康診断",("navy","3万円〜"),"書類をお送りいただき、点検結果・返還リスク・取得漏れ加算をご報告。",""),
+  {steps([("WEEK 0","健康診断",("navy","5万円〜"),"書類をお送りいただき、点検結果・返還リスク・取得漏れ加算をご報告。",""),
           ("WEEK 1","ご提案・契約",None,"貴社専用の構成・料金をご提示。NDA締結後、契約書を取り交わします。","ご検討期間あり"),
           ("WEEK 2–3","キックオフ",("teal","貴社負担：約3時間"),"受給者証・職員情報・運用ルールを共有。連絡フロー・電話番号も設計。",""),
           ("WEEK 4","本稼働",None,"各サービスの提供開始。月次レポートとレビュー会で改善。","ここから削減効果")])}
