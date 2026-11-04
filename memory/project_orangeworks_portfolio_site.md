@@ -13,6 +13,9 @@ metadata:
 ★**同名の既存サイトと混同しないこと。** オレンジワークスの本体サイトは WordPress（Elementor）で
 別物 → [[reference_group_blogs_and_cms]]。**これは新設のポートフォリオサイトで、STUDIO。**
 
+★**「ポートフォリオサイト」＝ https://orange-works.co/portfolio/（芽育クリエイティブラボ 作品集）**（2026-11-04 有璽氏が明示）。
+　WordPress外の静的HTML。10/28 試作→★10/29 公開→11/3 更新（サーバーのLast-Modified）。★/works/（制作実績・WP・9/15公開）とは別物。取り違えない
+
 ## いまどこにあるか
 
 ```
