@@ -48,7 +48,7 @@
 - [Slackは1件1スレッド](project_slack_command_center.md) — ★有璽氏がスレッドへ返した発言も拾う。返事も同じスレッドへ
 - [Slackの件をClaude Codeで続ける](project_slack_command_center.md) — ★受付番号で呼ぶ。流れを読み、同じスレッドへ書き戻せる
 - [議事録botのボタンはSocketが受ける](reference_slack_tokens_and_socket_mode.md) — ★10/30 mini slack_socketがGASへ転送。GAS応答200は成功の証拠でない
-- [Slackは無料プラン＝アプリ10個まで](reference_slack_free_plan_app_limit.md) — ★新しいAppを最初に勧めない。既存botのpostMessage→既存Appに足す→メールの順(11/4)
+- [Slackは無料プラン＝アプリ10個まで](reference_slack_free_plan_app_limit.md) — ★新Appを勧めない。既存bot→既存App→メールの順(11/4)
 - [モックアップは生成で](feedback_who_makes_the_images.md) — ★10/28 PILの紙袋は不採用→生成の紙袋は「めっちゃいい」。ロゴは展開図（名刺・封筒・トート等）で見せる
 - [成果物はパスで返さない](feedback_cannot_copy_from_terminal.md) — ★画像はDriveへ置きFinderで開いて表示する
 - [請求書はfreeeで作る](reference_invoice_requirements.md) — ★11/4接続。未送付で作れる。途中接続は新しいclaude -p経由。送付は要承認
