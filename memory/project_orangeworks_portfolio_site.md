@@ -758,3 +758,5 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - A/B は同じURLで、localStorage の `reel_v` によって半々に振り分ける。`?v=a|b` は確認用。計測セットは見積もりページと同じ値（SB・GTM-PL37X5BK・Clarity ysq8wingsx）。Clarity では `reel_variant` を set してA/Bを分ける（計測セットの lp_variant はパスから作るので、両案とも同じ値になる）
 - ★有璽氏の条件：HANDOFF の「公開前に確認する文言（4点）」は、有璽氏のOKまで上げない。差分を見せてから上げる。Slack の通知先と Webhook は有璽氏から受け取る
 - ★clasp は両機とも invalid_rapt で切れている（11/4 にも確認）→ GAS は `! clasp login` か、ブラウザの GAS エディタで作る
+- ★11/4 Slack の Incoming Webhook は社内に1本も無かった（mini の .env・json、memory の両方で hooks.slack.com は0件）。有璽氏も URL を持っていない → 既存の bot に足すと scope が増えて再インストールになるので、通知だけの新しい App を作る手順を渡した
+- GAS：シート「リール動画LP 相談一覧」1f3lkft2…／スクリプト 1rxzWBuN…（clasp で作成・版1デプロイ AKfycbwuJDIw…）。初回の許可までは /exec が 403「アクセスが拒否されました」を返す
