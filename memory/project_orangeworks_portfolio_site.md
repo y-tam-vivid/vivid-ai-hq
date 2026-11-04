@@ -765,3 +765,5 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - ★シートは clasp の資格（drive.file）では Sheets API が 403。Drive の export（xlsx）なら読める。書けない＝テスト行5件（utm_source=test）は残したまま
 - ★curl -X POST -L で GAS に送ると、転送先にも POST して「ページが見つかりません」になる（doPost は動いている）。-X を付けず --data だけで送る
 - ▶残り：mini の既存 bot でシートの新しい行を Slack の DM へ流す（ドーベルマンの点検後に載せる）
+- ✅11/5 07:55 Slack 転送を1回だけ手で動かした：mini `~/.vivid-relay/reel_lp_to_slack.py`（シートの判定OKの行を notify.tell で有璽氏DMへ・送ったかは「受付日時|会社名|連絡先」で `reel_lp_to_slack_state.json` に覚える。--dry-run／--init あり）。テスト1件がDMに届き、2回目は0件（二重送信なし）。★cron 未登録・⚙️レジスタ行なし（heartbeat は行が無いので打たれない）→ 載せる前にドーベルマン
+- ★有璽氏は 07:47 にテスト5行の中身を消した（行の枠は残る＝appendRow は次の空行に入る）。11/5 07:55 のテスト行「テスト（Slack転送の確認）」が1件残っている
