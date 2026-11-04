@@ -10,6 +10,7 @@
 - [AI活用→発信ネタ化](project_ai_usage_to_content_pipeline.md) — 区切りごとに⑥へ自動記録(=発信の種)。正本は発信ネタDB1つ／⑥は📅セッション単位で拾う／迷ったら拾う
 - [SNS生成スキルの在り処](reference_sns_skills_location.md) — vivid-sns-*はclaude.ai Project内でローカルに無い。★Manusと生成系が二重＝どちらが正かは未決・寄せない
 - [Manus AIへの外注](project_manus_outsourcing.md) — ★8/27 API連携をやめ有璽氏が仲介。こちらは指示文を書く役／401の真因はプラン無料化＝再発行では直らない
+- [個人IG連載 はじめての衣装作り](project_yuji_ig_yoroi_series.md) — ★11/5 Notion下書き9件済・予約は未。カード#a7a517の回答待ち＋要記入2文＋当日写真の保護者同意。作業は~/yoroi_ig_work(git外)
 - [有璽個人IGの運用](project_yuji_personal_ig_operation.md) — ★週次の定例／画像の在庫3系統／本文200〜215字／**Notionの投稿アーカイブに素材画像列＋「未投稿の在庫」ギャラリーを新設(日付は入れず画像で選ぶ)**／9/11でカルーセル在庫が尽きる
 - [テイストは素材ではない](feedback_taste_is_not_a_sticker.md) — 「型×テイスト」だけでは採用案の画像が貼り込まれる。表紙案を採ったら2枚目以降も同時に決める／完成後は全枚めくる
 - [119番の投稿標準型](project_f119_post_standard.md) — ★Manus停止中(〜8/25 08:00)。差し戻し送信済で復旧待ち／見本はI-03/01とI-04/05

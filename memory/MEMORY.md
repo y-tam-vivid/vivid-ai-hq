@@ -51,6 +51,7 @@
 - [Slackは無料プラン＝アプリ10個まで](reference_slack_free_plan_app_limit.md) — ★新Appを勧めない。既存bot→既存App→メールの順(11/4)
 - [モックアップは生成で](feedback_who_makes_the_images.md) — ★10/28 PILの紙袋は不採用→生成の紙袋は「めっちゃいい」。ロゴは展開図（名刺・封筒・トート等）で見せる
 - [成果物はパスで返さない](feedback_cannot_copy_from_terminal.md) — ★画像はDriveへ置きFinderで開いて表示する
+- [Driveの実パスはグロブで](project_yuji_ig_yoroi_series.md) — ★GoogleDrive-<メール>を直書きするとフックが止める。GoogleDrive-*で書く(11/5)
 - [請求書はfreeeで作る](reference_invoice_requirements.md) — ★11/4接続。未送付で作れる。途中接続は新しいclaude -p経由。送付は要承認
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
 - [人に頼む前に自分の道具](feedback_check_your_own_tools_before_asking_a_human.md) — ListAgents/SendMessageを先に。往復3回超は減らす
