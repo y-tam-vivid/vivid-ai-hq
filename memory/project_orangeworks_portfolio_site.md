@@ -760,3 +760,8 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - ★clasp は両機とも invalid_rapt で切れている（11/4 にも確認）→ GAS は `! clasp login` か、ブラウザの GAS エディタで作る
 - ★11/4 Slack の Incoming Webhook は社内に1本も無かった（mini の .env・json、memory の両方で hooks.slack.com は0件）。有璽氏も URL を持っていない → 既存の bot に足すと scope が増えて再インストールになるので、通知だけの新しい App を作る手順を渡した
 - GAS：シート「リール動画LP 相談一覧」1f3lkft2…／スクリプト 1rxzWBuN…（clasp で作成・版1デプロイ AKfycbwuJDIw…）。初回の許可までは /exec が 403「アクセスが拒否されました」を返す
+- ✅11/5 07:26 `/reel/` 本番公開（md5 0dd460a8… を手元・サーバー・URLの3つで一致）。文言4点OK #0e8521／通知はメール y_tam（#091732）。GAS は版3（受付日時を日本時間に。作ったときのシートは米国西海岸時刻だった）
+- 本番で確かめたこと：12通り（2案×6サイズ）とも横のはみ出しは0／新しい状態で12回開いて A4・B8、同じブラウザでは5回とも同じ案／/reel/?utm_source=test から送信→シートに案B・test・OKで1行、メールが届く／dataLayer に reel_view・reel_cta・reel_form_start・reel_form_submit／計測の検査は本番URLで✗0
+- ★シートは clasp の資格（drive.file）では Sheets API が 403。Drive の export（xlsx）なら読める。書けない＝テスト行5件（utm_source=test）は残したまま
+- ★curl -X POST -L で GAS に送ると、転送先にも POST して「ページが見つかりません」になる（doPost は動いている）。-X を付けず --data だけで送る
+- ▶残り：mini の既存 bot でシートの新しい行を Slack の DM へ流す（ドーベルマンの点検後に載せる）
