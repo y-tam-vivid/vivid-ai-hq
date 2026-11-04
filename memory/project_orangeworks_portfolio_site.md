@@ -752,3 +752,9 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
   ★学び：横送りのパネルは高さ固定（100%）＝中身を足したら、ノートPCの高さ（650〜800）で枠に収まるかを上げる前に測る。
 - ✅11/3 有璽氏OK→2列の直し入りで作品集を上げ直した（md5 260bbe0c… サーバー・手元・https 一致）。8サイズ（1024×640〜1920×960・スマホ390）すべて対応範囲が枠に収まる・カード4/金額4・横あふれ無し。estimate/ へのリンク2か所。
   ★測るときは iframe の URL に毎回別のクエリを付ける（付けないとキャッシュの旧版を測った＝カード3枚で出た）。
+
+## 2026-11-04 リール動画LP `/reel/`（claude.ai で作った一式 `meiku-reel-lp-for-claude-code.zip`）
+- 置き場はさくら `~/www/orangeworks/reel/index.html`（作品集と同じく WP の外の静的ページ）。上げる前の `/reel/` は WP の 404 だった
+- A/B は同じURLで、localStorage の `reel_v` によって半々に振り分ける。`?v=a|b` は確認用。計測セットは見積もりページと同じ値（SB・GTM-PL37X5BK・Clarity ysq8wingsx）。Clarity では `reel_variant` を set してA/Bを分ける（計測セットの lp_variant はパスから作るので、両案とも同じ値になる）
+- ★有璽氏の条件：HANDOFF の「公開前に確認する文言（4点）」は、有璽氏のOKまで上げない。差分を見せてから上げる。Slack の通知先と Webhook は有璽氏から受け取る
+- ★clasp は両機とも invalid_rapt で切れている（11/4 にも確認）→ GAS は `! clasp login` か、ブラウザの GAS エディタで作る
