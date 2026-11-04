@@ -50,6 +50,7 @@
 - [議事録botのボタンはSocketが受ける](reference_slack_tokens_and_socket_mode.md) — ★10/30 mini slack_socketがGASへ転送。GAS応答200は成功の証拠でない
 - [モックアップは生成で](feedback_who_makes_the_images.md) — ★10/28 PILの紙袋は不採用→生成の紙袋は「めっちゃいい」。ロゴは展開図（名刺・封筒・トート等）で見せる
 - [成果物はパスで返さない](feedback_cannot_copy_from_terminal.md) — ★画像はDriveへ置きFinderで開いて表示する
+- [請求書はfreeeで作る](reference_invoice_requirements.md) — ★11/4接続。未送付で作れる。途中接続は新しいclaude -p経由。送付は要承認
 - [離席を告げられたらSlackへ](reference_slack_notification_rules.md) — 以降の進捗は notify.tell()。会話に書いても届かない
 - [人に頼む前に自分の道具](feedback_check_your_own_tools_before_asking_a_human.md) — ListAgents/SendMessageを先に。往復3回超は減らす
 - [セッション間に自動の橋は無い](reference_two_sessions_built_the_same_thing.md) — 人の手で渡すものは「渡すのは有璽氏の手」と書く
