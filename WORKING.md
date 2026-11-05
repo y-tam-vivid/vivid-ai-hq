@@ -80,7 +80,7 @@
   **★同じ対象に手をつけないでください**: GAS「議事録自動整理スクリプト」の processFile／moveAndRename_／backlog*
 - **【ビビ→ピタゴラス(mini) / 2026-10-30 11:09〜】議事録の仕分けカード③ 段階1** ── 設計は名鑑の設計担当（`scratchpad/handoff/2026-10-30_仕分けカード③の設計.md`・クラウドのブランチ）。✅10/30 11:57 mini cron に載せた（--live 15分毎・--digest 17:05。ステラ条件付き合格→直し済み・ドーベルマン条件付き可）。▶初回の見張り：17:06 の夕方の一覧／新しい議事録が入った最初の回。経緯 `memory/project_meeting_sort_card.md`
   **★同じ対象に手をつけないでください**: mini `~/.vivid-relay/{meeting_sort.py,meeting_sort/}`
-  ▶10/30 13:50〜 カードを「問いごとに選ぶ→送信」へ（有璽氏）。★ask_hub.py・slack_socket.py に差分を入れる＝バックオフィス担当の了承済み（10/30 13:4x「差分はそちらで」）。控えを取ってから・後方互換。完了目安 15:30
+  ✅10/30 カードを「問いごとに選ぶ→送信」へ（ask_hub questions・slack_socket askhubq_）。✅11/5 21:56 社内の自動確定をOFF＝全件カードで有璽氏が承認（有璽氏）。▶#78d80b（GASの改名移動・古い議事録のリンカーも承認にするか）の答え待ち
 - **【ビビ / MacBook 2026-10-28】オレンジワークス クリエイター名義の別ポートフォリオ（参考 studio-myy.com）** ── ✅10/29 https://orange-works.co/portfolio/ に静的ページで公開（`/home/vivid/www/orangeworks/portfolio/`・ssh ow-sakura）。★WPのファイル・設定・DB・.htaccess は触らない。✅10/30 計測タグ入り（発火確認済み）。▶有璽氏がブラウザで見た目を確認中。⛔11/2 見積もりシミュレーション v2 は見づらく v1 に戻した（非公開 https://claude.ai/artifact/4R8GkvJ3C6wuEv9ffkLr3x）。✅11/3 見積もりページ /portfolio/estimate/ 公開（リンク無し・本番確認済み）。✅11/3 作品集に料金の目安（対応範囲を2列）を本番反映・8サイズで収まりを確認。★本番へは有璽氏のOK後
 - **【ビビ / MacBook 2026-11-04】芽育ラボ リール動画LP `/reel/`（A/B・相談フォーム→GAS→シート＋Slack）** ── 書く：さくら `~/www/orangeworks/reel/`（新規）・新しいスプレッドシートとGAS。✅11/4 文言4点OK（#0e8521）・通知はまずメール(y_tam)→後でminiの既存botがSlackへ（#091732）。✅11/5 07:26 本番公開・本番確認済み（GAS版3）。✅11/5 Slack転送 mini `reel_lp_to_slack.py` を手で1回動かしDMに届いた。✅11/5 13:13 動き入りv2を本番反映・本番確認済み。✅16:33 ヘッダーがFV上端を隠す件と下フォームの横はみ出しを直して反映。▶cron に載せるか有璽氏の判断→ドーベルマン点検→レジスタ。★WPと .htaccess は触らない・OK前は上げない
   **★同じ対象に手をつけないでください**: さくら `orangeworks/reel/`

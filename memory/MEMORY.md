@@ -48,6 +48,7 @@
 - [Slackの窓口はビビ・ビビは動かない](project_slack_command_center.md) — ★受けるのはビビ。受領と担当と目安を返して流す。作業は担当
 - [Slackは1件1スレッド](project_slack_command_center.md) — ★有璽氏がスレッドへ返した発言も拾う。返事も同じスレッドへ
 - [Slackの件をClaude Codeで続ける](project_slack_command_center.md) — ★受付番号で呼ぶ。流れを読み、同じスレッドへ書き戻せる
+- [議事録の仕分けは全件人が承認](project_meeting_sort_card.md) — ★11/5有璽氏。AIは見立てを初期値にしたカードまで。自動確定はOFF
 - [議事録botのボタンはSocketが受ける](reference_slack_tokens_and_socket_mode.md) — ★10/30 mini slack_socketがGASへ転送。GAS応答200は成功の証拠でない
 - [Slackは無料プラン＝アプリ10個まで](reference_slack_free_plan_app_limit.md) — ★新Appを勧めない。既存bot→既存App→メールの順(11/4)
 - [裏のタブは動きが止まる](project_orangeworks_portfolio_site.md) — ★操作タブはhiddenでrAF・IOが止まる。撮るたび1コマ進む(11/5)
