@@ -44,6 +44,7 @@
 - [却下は永続的な取りこぼし](reference_silent_rejection_backlog.md) — 却下=処理済み扱いで二度と拾われない。連続0件の日で探す
 - [議事録の仕分けカード③](project_meeting_sort_card.md) — ★10/30〜mini cron 15分毎。リンカーは仕分け空/受付待ちの行だけ。共有は顧客が付いてから
 - [議事録自動整理GAS](project_giji_automation_gas.md) — ★10/30 承認カード廃止・改名移動は自動。溜まり134/135件移動済。相手確認カードは名鑑側へ
+- [clasp資格は両機で切れている](reference_clasp_login_expired.md) — ★11/4 両機 invalid_rapt。GAS前に確かめる。直す＝有璽氏の clasp login
 - [議事録の社員展開](project_minutes_employee_rollout.md) — パイロット5名で入口を開いた。全社への自動昇格は意図的に未実装
 - [議事録の隔離運用](project_minutes_quarantine.md) — 空・機微・重複はDrive`_要確認`へ移す。移動のみ・削除は有璽氏
 - [議事録の整理ルール](project_giji_organizing_rules.md) — 区分は台帳が持つ／表記は台帳と同じ／指標は社外会議の紐付率
