@@ -772,3 +772,5 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - ★Chrome の操作タブは visibilityState=hidden のことがある → requestAnimationFrame と IntersectionObserver が止まり「価格が0」「要素が出ない」に見える。**画面を撮る（screenshot）とそのたびに1コマ進む**。動きの検査はスクロール→撮る の繰り返しで行う
 - ★zip は依頼と同じ分（13:01）に保存されていた。1回目の検索（13:01）で見つからず「無い」と返した → 渡された直後は1分おいてもう一度見る
 - ✅11/5 13:13 v2（動き入り）を本番へ（有璽氏「上げてください」）。控え `~/_backup_portfolio/reel_index.html.bak_20261105_before_motion`（0dd460a8…）。md5 16cf4754… を3経路で一致。本番で：A案PC 47/47表示・価格 5,500/3,596/18,700・計測の通信 clarity3/collect2/sb1/gtm3・reel_view／B案390px 47/47（★800px飛ばしで2つ未表示→その位置へ戻すと出た＝画面を通り過ぎた要素は戻れば出る）・はみ出し0・下固定ボタンあり
+- ✅11/5 16:33 ヘッダー直し（有璽氏のスクショ指摘「ナビとFVの間に余白が無い」）。原因＝motion-css の `.m-head{clip-path:inset(0 -100vmax -30px)}` が白(box-shadow 100vmax)をヘッダー下30pxまで描きFV上端を隠していた → `inset(0 -100vmax)`、スクロール中の線は inset の影（高さを変えない）。★同時に見つけた：`.s-last .form` の m-right（右40pxずれ）が出る前、スマホ・タブレットで横に24pxはみ出し → `.s-last{overflow-x:clip}`。控え `reel_index.html.bak_20261105_before_headfix`（16cf…）。本番 0057feac…・余白24px・はみ出し0
+- ★検査の穴：v2 の確認は「全部表示した後」に横幅を測った → 出る前の transform のはみ出しを見落とした。動きのある版は**読み込み直後と最後の両方**で横幅を測る
