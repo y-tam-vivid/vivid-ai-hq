@@ -34,5 +34,6 @@ metadata:
 - 切り取りは座標でなく JS（`svg[aria-label*="切り取り"]` の親を click→innerText `4:5` を click）。座標だと 1:1 のまま・時刻 14:08 になって確定前に破棄した回がある。
 - 時刻の欄だけは画面座標で click→キー入力→zoom で「日付／時間」を目で見てから「投稿日時を指定」。
 - カレンダーの「>」は読み込み直後だと効かない・週を飛ばすことがある＝見出しの日付を見て確かめる。
+- ★確定後の「日時指定中」が10秒で終わらず、読み込み直したら枠が空に見えた回がある（11/27）。もう一度読み込むと入っていた＝★空に見えても作り直さない（二重予約になる）。少し置いて読み直してから判断。
 
 関連 [[feedback_ask_instagram_each_time]] [[project_minamikawachi_kodomo_station_site]] [[project_yuji_ig_yoroi_series]]
