@@ -768,3 +768,6 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - ✅11/5 07:55 Slack 転送を1回だけ手で動かした：mini `~/.vivid-relay/reel_lp_to_slack.py`（シートの判定OKの行を notify.tell で有璽氏DMへ・送ったかは「受付日時|会社名|連絡先」で `reel_lp_to_slack_state.json` に覚える。--dry-run／--init あり）。テスト1件がDMに届き、2回目は0件（二重送信なし）。★cron 未登録・⚙️レジスタ行なし（heartbeat は行が無いので打たれない）→ 載せる前にドーベルマン
 - ★有璽氏は 07:47 にテスト5行の中身を消した（行の枠は残る＝appendRow は次の空行に入る）。11/5 07:55 のテスト行「テスト（Slack転送の確認）」が1件残っている
 - 11/5 08:1x 実測：/reel/ は200・上げた版と同じ md5。作品集・トップからのリンクは0本（URLを知る人だけが着く）。robots の指定なし
+- 11/5 13:0x 動き入り v2（`meiku-reel-lp-for-claude-code-v2.zip`・UPDATE-2026-11-05.md）。初版との差はファイル末尾の motion-css／motion-js の150行だけ（HANDOFF・Code.gs は同じ）。本番の4か所（計測セット・仮コメント削除・Clarity の reel_variant・GAS_URL）を移した版 md5 16cf4754… は、本番の版との差が追加150行と完全一致・消える行0。手元の 127.0.0.1:8761 で A/B×PC・390px を最後まで送り、47要素すべてが表示され、横のはみ出しは0
+- ★Chrome の操作タブは visibilityState=hidden のことがある → requestAnimationFrame と IntersectionObserver が止まり「価格が0」「要素が出ない」に見える。**画面を撮る（screenshot）とそのたびに1コマ進む**。動きの検査はスクロール→撮る の繰り返しで行う
+- ★zip は依頼と同じ分（13:01）に保存されていた。1回目の検索（13:01）で見つからず「無い」と返した → 渡された直後は1分おいてもう一度見る
