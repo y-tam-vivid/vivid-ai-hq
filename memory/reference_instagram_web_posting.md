@@ -28,4 +28,11 @@ metadata:
 
 - 10/15 有璽氏「芋掘りの報告の形でなく、イベントを告知する形・別のデザインで」→ 第37回こどもまつり（10/18）の告知をチラシ型で作成（`~/kodomo-photo-work/matsuri_announce.py`・Drive `07_Instagram活動レポート/2026-10-18_第37回こどもまつり_告知/`）。★告知は開催の週に当日配信したいと有璽氏（今日でも）。→ 有璽氏OKで ★10/15 19:00 に予約（/scheduled_content/ で木15 19:00 を確認・いちごは金16 9:00）。ストーリーズはスマホで有璽氏（03に行・10/15 有璽氏「OKです」＝引き受け済み・出たら[x]）。
 
-関連 [[feedback_ask_instagram_each_time]] [[project_minamikawachi_kodomo_station_site]]
+**2026-11-05 個人IG（yuji_tam3.0_2026）で複数本を続けて予約した実測**
+- ★Chrome が別アカウント（stationkodomo）のまま開いていた＝予約前に作成画面のプロフ名を毎回見る。切り替えはパスワード不要。終わったら元へ戻す。
+- ★1本予約したら `/scheduled_content/` を読み込み直す（同じ画面で続けると作成画面が閉じる）。
+- 切り取りは座標でなく JS（`svg[aria-label*="切り取り"]` の親を click→innerText `4:5` を click）。座標だと 1:1 のまま・時刻 14:08 になって確定前に破棄した回がある。
+- 時刻の欄だけは画面座標で click→キー入力→zoom で「日付／時間」を目で見てから「投稿日時を指定」。
+- カレンダーの「>」は読み込み直後だと効かない・週を飛ばすことがある＝見出しの日付を見て確かめる。
+
+関連 [[feedback_ask_instagram_each_time]] [[project_minamikawachi_kodomo_station_site]] [[project_yuji_ig_yoroi_series]]
