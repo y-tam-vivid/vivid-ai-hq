@@ -771,3 +771,4 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - 11/5 13:0x 動き入り v2（`meiku-reel-lp-for-claude-code-v2.zip`・UPDATE-2026-11-05.md）。初版との差はファイル末尾の motion-css／motion-js の150行だけ（HANDOFF・Code.gs は同じ）。本番の4か所（計測セット・仮コメント削除・Clarity の reel_variant・GAS_URL）を移した版 md5 16cf4754… は、本番の版との差が追加150行と完全一致・消える行0。手元の 127.0.0.1:8761 で A/B×PC・390px を最後まで送り、47要素すべてが表示され、横のはみ出しは0
 - ★Chrome の操作タブは visibilityState=hidden のことがある → requestAnimationFrame と IntersectionObserver が止まり「価格が0」「要素が出ない」に見える。**画面を撮る（screenshot）とそのたびに1コマ進む**。動きの検査はスクロール→撮る の繰り返しで行う
 - ★zip は依頼と同じ分（13:01）に保存されていた。1回目の検索（13:01）で見つからず「無い」と返した → 渡された直後は1分おいてもう一度見る
+- ✅11/5 13:13 v2（動き入り）を本番へ（有璽氏「上げてください」）。控え `~/_backup_portfolio/reel_index.html.bak_20261105_before_motion`（0dd460a8…）。md5 16cf4754… を3経路で一致。本番で：A案PC 47/47表示・価格 5,500/3,596/18,700・計測の通信 clarity3/collect2/sb1/gtm3・reel_view／B案390px 47/47（★800px飛ばしで2つ未表示→その位置へ戻すと出た＝画面を通り過ぎた要素は戻れば出る）・はみ出し0・下固定ボタンあり
