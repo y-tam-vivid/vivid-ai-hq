@@ -16,6 +16,7 @@ metadata:
 - 他のカードでも、答えが2軸以上なら同じ型にする。
 - ★罠（10/30 バックオフィス担当が実物で指摘）：slack_socket.py の handle_interactive は actions[0].value を json.loads し、読めなければ「ボタンの中身が読めませんでした」と返す。ラジオ・セレクトには value が無い（selected_option だけ）＝選び直すたびにエラー返事が出る。action_id を `askhubq_` で始め、json.loads の前で return する。
 - 送信ボタンは value `{'hub':'ask','id':…,'opt':'__submit__'}` にすれば既存の分岐に乗る。選んだ値は payload['state']['values']（block_id を `askq_<key>`）。answer['label'] には要約を入れて待ち役・台帳の読み手を壊さない。回答済みで閉じるときはラジオのブロックも消す。
+- ★11/6 有璽氏「やり方はこれで良い。選択すると選択肢が選べる形式に」＝ラジオでなくプルダウン（static_select）。ask_hub の既定をプルダウンにした（q['style']='radio' で戻せる・控え `_backups/ask_hub.py.bak_20261106-2300_select`）。値の読み方（selected_option）は同じ。最初の本物 #a5915e。
 - 10/30 バックオフィス担当の返事：持ち主の根拠は無い・差分はこちらで入れてよい（WORKING の該当行に1行添えて控えを取ってから）。
 
 関連 [[project_meeting_sort_card]] [[project_ask_hub_push_decisions]]
