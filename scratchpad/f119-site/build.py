@@ -3,7 +3,8 @@ import os
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
 CAL = "https://calendar.app.google/c5aJoxPMVB5brw9b8"
-PARTNERS = "https://fukushi119-partners.vercel.app/"
+PARTNERS = "https://119-partners.fuku-chi.com/"
+SITE = "https://119.fuku-chi.com/"  # 本番URL（2026-11-06〜）
 IRYO = "https://iryo.vivid-global.com/"
 MAIL = "sales-consulting@vivid-global.com"
 # 計測セット（bin/web_tracking/snippet.html v2）。SB・GTM は自社共通、Clarity はこのサイト専用
@@ -33,8 +34,8 @@ def head(title, desc, cur):
 <!--TRACKING-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow">
 <title>{full}</title>
+<link rel="canonical" href="{SITE}{"" if cur == "index.html" else cur}">
 <meta name="description" content="{desc}">
 <link rel="icon" href="assets/logo/fukushi119_logo_symbol_fullcolor.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/styles.css">
@@ -492,8 +493,17 @@ document.getElementById('cform').addEventListener('submit',function(e){{e.preven
 for fn, (title, desc, body) in PAGES.items():
     with open(os.path.join(OUT, fn), "w", encoding="utf-8") as f:
         f.write((head(title, desc, fn) + body + foot()).replace("<!--TRACKING-->", SNIPPET.strip(), 1))
-for name, text in {"robots.txt": "User-agent: *\nDisallow: /\n", ".vercelignore": "*.md\n*.bak*\n",
-                   "vercel.json": '{\n  "headers": [\n    { "source": "/(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ] }\n  ]\n}\n'}.items():
+# 検索に載せる（2026-11-06 有璽氏）。旧URL（vercel.app）は本番URLへ恒久リダイレクトし、そちらは検索に出さない
+SITEMAP = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
+    f'  <url><loc>{SITE}{"" if fn == "index.html" else fn}</loc></url>\n' for fn in PAGES) + '</urlset>\n'
+VERCEL = """{
+  "redirects": [
+    { "source": "/:path*", "has": [ { "type": "host", "value": "fukushi119-web.vercel.app" } ], "destination": "https://119.fuku-chi.com/:path*", "permanent": true }
+  ]
+}
+"""
+for name, text in {"robots.txt": f"User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n", ".vercelignore": "*.md\n*.bak*\n",
+                   "sitemap.xml": SITEMAP, "vercel.json": VERCEL}.items():
     with open(os.path.join(OUT, name), "w", encoding="utf-8") as f:
         f.write(text)
 print("wrote", len(PAGES), "pages")

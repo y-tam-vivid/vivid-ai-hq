@@ -1,5 +1,5 @@
 {
-  "headers": [
-    { "source": "/(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ] }
+  "redirects": [
+    { "source": "/:path*", "has": [ { "type": "host", "value": "fukushi119-web.vercel.app" } ], "destination": "https://119.fuku-chi.com/:path*", "permanent": true }
   ]
 }

@@ -18,7 +18,7 @@ SB_TOKEN = "8d63c4ed-05b5-4cd8-90cd-d1a8a89e947b"  # 自社の公開ページに
 GTM_ID = "GTM-PQX3L4TQ"
 CLARITY_ID = "z431w59a74"
 NOTICE = "協力先さま確認用の試作です。掲載している会社名・人名・事例はすべて架空です。ご意見は福祉施設の119番の担当までお寄せください。"
-SITE_URL = "https://fukushi119-web.vercel.app/"  # 119番Webサイト
+SITE_URL = "https://119.fuku-chi.com/"  # 119番Webサイト（2026-11-06〜）
 NOTICE_MIXED = "協力先さま確認用の試作です。「架空」と書いた掲載は見本です。「確認中」と書いた掲載は、内容をご本人に確認しているところです。ご意見は福祉施設の119番の担当までお寄せください。"
 FORBIDDEN = ["構想書", "118", "SparkLabo", "諸橋", "宮原", "井上", "CAS", "△", "職業安定法", "参考サイト", "concept"]
 
@@ -89,7 +89,7 @@ def main():
     shutil.copytree(HERE / "photos", PUB / "photos")
     (PUB / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
     (PUB / ".vercelignore").write_text("*.md\n*.bak*\n", encoding="utf-8")
-    (PUB / "vercel.json").write_text('{\n  "headers": [\n    { "source": "/(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ] }\n  ]\n}\n', encoding="utf-8")
+    (PUB / "vercel.json").write_text('{\n  "redirects": [\n    { "source": "/:path*", "has": [ { "type": "host", "value": "fukushi119-partners.vercel.app" } ], "destination": "https://119-partners.fuku-chi.com/:path*", "permanent": true }\n  ],\n  "headers": [\n    { "source": "/(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ] }\n  ]\n}\n', encoding="utf-8")
     subprocess.run(["python3", str(REPO / "bin/web_tracking_check.py"), str(PUB / "index.html")], check=True)
 
 

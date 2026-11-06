@@ -96,3 +96,4 @@ Vercel team fuku-chi-vivid／project fukushi119-partners（prj_OMtPpwmusvYD40idK
 - 11/5 有璽氏提供の資料で追加：D-Luca（齋藤秀吉さん・法定研修・サイト＋議事録で裏取り）／ビジとり（秋田様・運営会社名不明・★税と社保の効果は未検証のため不掲載）。Fulmoは公式資料v3.2で肩書・料金・事例を確定。★LIMONDE（ECオーナー管理事業）は保留＝施設が自社名義で出店し2年解約不可・凍結で同名義再出店不可・入出金権限を渡す等のリスク、福祉との接点無し、同型の議事録（フォール小幡さん）は資料共有NG。dpl_6LgfLpLqY11RoZEH5XXEPqhmw9vC
 - 11/5 有璽氏「載せてOK」でLIMONDEを確認中で掲載（こちらの保留推奨は記録済み）。裏取りは資料1経路のみ（limonde.jpは社名だけ・法人番号見つからず）。
 - 11/6 119番Webサイト本番へ健康診断5万円〜を反映（dpl_6kn7a7GBp2H9u5XDvWmgSn8XEvpX・commit 20752e8・7ページのsha1一致を確認）。
+- 11/6 有璽氏：本番URLを fuku-chi.com のサブドメインへ＝119.fuku-chi.com（Webサイト・★検索に載せる）／119-partners.fuku-chi.com（解決パートナー・noindexのまま）。Vercelにドメイン登録済み。CNAME＝119→3a78e88142f0a797.vercel-dns-016.com.／119-partners→ee6957219c051462.vercel-dns-016.com.（DNSはお名前.com・NS 01-04.dnsv.jp）。★DNSが通るまで新ビルドは公開しない（旧vercel.appを301で飛ばすため、先に出すと止まる）。

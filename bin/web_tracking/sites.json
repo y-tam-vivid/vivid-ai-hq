@@ -156,12 +156,12 @@
     },
     {
       "name": "福祉施設の119番 解決パートナー（協力先確認用の試作）",
-      "url": "https://fukushi119-partners.vercel.app/",
+      "url": "https://119-partners.fuku-chi.com/",
       "cms": "静的HTML・Vercel（team fuku-chi-vivid／project fukushi119-partners・リポジトリ連携なし）",
       "clarity": "z431w59a74",
       "gtm": "GTM-PQX3L4TQ",
       "install_route": "scratchpad/f119-portal/public/index.html の <head> 直後に snippet v2。公開は Vercel API の gitSource（rootDirectory=scratchpad/f119-portal/public）で1回ずつ",
-      "status": "2026-10-27 公開・SB/GTM/Clarity/クリックログの発火を実ブラウザで確認。noindex（meta＋X-Robots-Tag＋robots.txt）。協力先確認用＝本公開時に作り直す",
+      "status": "2026-10-27 公開・SB/GTM/Clarity/クリックログの発火を実ブラウザで確認。noindex（meta＋X-Robots-Tag＋robots.txt）。協力先確認用＝本公開時に作り直す。★2026-11-06 本番URLを 119-partners.fuku-chi.com へ移す（旧vercel.appは301）・noindexのまま",
       "brand": [
         "119番",
         "解決パートナー"
@@ -170,12 +170,12 @@
     },
     {
       "name": "福祉施設の119番 Webサイト（試作）",
-      "url": "https://fukushi119-web.vercel.app/",
+      "url": "https://119.fuku-chi.com/",
       "cms": "静的HTML 7ページ・Vercel（team fuku-chi-vivid／project fukushi119-web・リポジトリ連携なし）",
       "clarity": "z46d8rwt4j",
       "gtm": "GTM-PQX3L4TQ",
       "install_route": "scratchpad/f119-site/build.py が <!--TRACKING--> を snippet v2 に置換。公開は Vercel API の gitSource（rootDirectory=scratchpad/f119-site/public）",
-      "status": "2026-10-28 公開・SB/GTM/GA4/Clarityの発火を実ブラウザで確認・noindex（meta＋X-Robots-Tag＋robots.txt）。本番LP fukushi119.vivid-global.com の置き換えは未決",
+      "status": "2026-10-28 公開・SB/GTM/GA4/Clarityの発火を実ブラウザで確認・noindex（meta＋X-Robots-Tag＋robots.txt）。本番LP fukushi119.vivid-global.com の置き換えは未決。★2026-11-06 本番URLを 119.fuku-chi.com へ移す（旧vercel.appは301）・検索に載せる",
       "brand": [
         "119番"
       ],
