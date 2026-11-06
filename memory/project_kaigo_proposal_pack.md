@@ -57,6 +57,7 @@ metadata:
   A2 施設向け「介護施設のお困り事解決パック」12枚 https://claude.ai/artifact/18n85sDdiy4F1n92DzziF5
   原稿 `scratchpad/kaigo_proposal/deckA_end/`・`deckA_partner/`
   ★スライドのメモ欄（aside）は開いた人なら誰でも読める＝社外に出す資料に社内メモを書かない。A2と資料Bのメモ欄は全部外した（11/6）
+- ✅11/6 有璽氏：介護向け資料の「運営の健康診断（書類の点検）」は**50,000円/事業所**（119番資料v2.3の30,000円から変更）。A1・A2に反映済み。★119番の障害福祉向け資料の価格も変えるかは未確認
 - ▶まだ：資料Bの費用の形／D-Luca・ビズキューブ・保険代理店の紹介条件／ビズキューブの料金の形／訪問看護を誰が支えるか／資料A（提携4社がそろったので作れる）（有璽氏が探し中）／リクルート難易度表の扱い／資料Bの費用の形
 - ★Drive の Google Doc は本文を書き換える道具が無い（update_file はメタデータのみ）＝回答は原稿 md に反映し、v0.2 で Doc を作り直す
 - ★Claude Docs は don't ask モードで書き込み拒否＝空の Doc 1件（claude.ai/artifact/49DCL1CD4GfvvrWtEFqCar）が残っている
