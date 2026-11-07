@@ -184,3 +184,8 @@ self_audit / memory_sweep / slack_inbox / inbox_runner / team_run / run_agent.sh
 ## ★Drive の大量読み出しは mini だと遅い（2026-10-24 実測）
 こどもS素材写真の一覧画像づくり（同じスクリプト・同じ共有ドライブ）で、mini は5分で約60枚。MacBook は1分で約180枚＝★約50倍の差（mini は Drive からの取り込みで詰まる）。
 → ★写真・動画を何千枚も読む作業は MacBook で回す（「長い処理は mini へ」の例外）。MacBook の空きが少ないときは、空き5GB未満で止まる安全弁をスクリプトに入れる。
+
+## 2026-11-07 外部の文章を claude -p に渡すときの型（meiku_jobs で実測）
+- ★cron からは `~/.vivid-relay/claude_cron.sh` 経由で呼ぶ（直に ~/.npm-global/bin/claude を呼ぶと cron では認証が無い）
+- ★`--disallowedTools` は後ろの引数を全部ツール名として食う＝プロンプトを引数で渡すと「入力が無い」で落ちる。★プロンプトは標準入力で渡す
+- 外部の誰でも書ける文（案件本文・メール等）を入れるなら：`--tools "" --strict-mcp-config --mcp-config <{"mcpServers":{}}> --disallowedTools "Bash,...,mcp__*"`・空の cwd・env は HOME と PATH だけ。「Bash で ls ~」「Notion を呼べ」の試験文で実行されないことを確かめる（出力にそれらしい文字が出ても実物と照合する）
