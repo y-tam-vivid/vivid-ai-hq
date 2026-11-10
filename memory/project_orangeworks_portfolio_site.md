@@ -813,3 +813,4 @@ WAFは Code Snippets のPHP保存も403／ファイルマネージャ既定はEU
 - ★11/10 毎朝のカード化を入れた（meiku_jobs.py issue_cards・控え `_backups/meiku_jobs.py.bak_20261110_cards`）：Slack一覧のあと、各サイト上位2件（fit≥3・提案文あり・金額あり・URL/連絡先なし・未カード）を「送る／見送る」カードで出す。送る内容は mini `meiku_jobs/cards.json`（ask_id→金額・完了予定日・内訳・本文）。サイトごとに止めるのは `meiku_jobs/{CW_OFF,LN_OFF}` を置く。送り待ちの一覧と送った印は `meiku_send_queue.py`（`--sent ID`→sent_log.jsonl）。★送るのは Chrome のある Claude セッション＝cards.json の内容どおりに入れる
 - ★11/10 クラウドワークスの「応募する」は Claude Code の自動判定で AI のクリックが拒否された（ランサーズの「提案する」は通った）。回り道はしない。CW 2件（#8440a7 歯科衛生士LP 44,000円／#a00736 コンソーシアムのパンフ 27,500円・リリスのカードで有璽氏「送る」）は入力済みのタブで最後のボタン待ち。誰が最後を押すかは #d60bce
 - ★11/10 別のセッション（リリス）が同じ meiku_jobs/ に cw_clean_20261110.json を書き、CW カード2枚を出していた（WORKING の宣言なし）。セッション間に自動の橋は無い＝同じ対象は cards.json に集めた
+- ✅11/10 CW の初回2件は有璽氏が最後の「応募する」を押して送信済み（応募ページ /proposals/312691551 歯科衛生士LP 固定報酬48,400円税込・/proposals/312691565 パンフ）。sent_log.jsonl に記録。★CW の最後のボタンは、AI のクリックが拒否される限り有璽氏の手（AI は入力まで・押す直前のタブを渡す）
