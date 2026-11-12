@@ -76,6 +76,8 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
+- **【ビビ / MacBook 2026-11-12】行政ニュースの自動配信（試作）** ── #d320a4：社内・Slack・府市ページ込み。✅11/12 見本v2をDMへ（60件→9件）。#8f077f＝まとめ1通は不採用・DBに集約→出し分け。▶#6ab3bb（DB置き場・出し方・置き場）の答え待ち→作り替え→ステラ・ドーベルマン→cron。書く：mini `~/.vivid-relay/{gov_news.py,gov_news/}`（新規・cron未登録・自動投稿なし）。経緯 `memory/project_gov_news_feed.md`
+  **★同じ対象に手をつけないでください**: mini `~/.vivid-relay/{gov_news.py,gov_news/}`
 - **【ビビ / MacBook 2026-10-30】議事録GAS：承認カードをやめて改名・移動を自動に** ── ✅GAS 変更（ステラ条件付き合格→直し済み）・✅溜まった PENDING 135件中134件を移動（1件はゴミ箱）。▶次に議事録が入った回で自動移動を実物で確かめる。③相手確認カードは名鑑の設計担当へ（引き継ぎ書 `scratchpad/handoff/2026-10-30_議事録GASの変更と名鑑側で引き取ること.md`・渡すのは有璽氏の手）
   **★同じ対象に手をつけないでください**: GAS「議事録自動整理スクリプト」の processFile／moveAndRename_／backlog*
 - **【ビビ→ピタゴラス(mini) / 2026-10-30 11:09〜】議事録の仕分けカード③ 段階1** ── 設計は名鑑の設計担当（`scratchpad/handoff/2026-10-30_仕分けカード③の設計.md`・クラウドのブランチ）。✅10/30 11:57 mini cron に載せた（--live 15分毎・--digest 17:05。ステラ条件付き合格→直し済み・ドーベルマン条件付き可）。▶初回の見張り：17:06 の夕方の一覧／新しい議事録が入った最初の回。経緯 `memory/project_meeting_sort_card.md`
