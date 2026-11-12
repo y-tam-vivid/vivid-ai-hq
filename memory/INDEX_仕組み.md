@@ -87,4 +87,4 @@
 - [効果記録は判定に任せると漏れる](reference_effect_log_is_not_optional.md) — 台帳もプルダウンも「仕組み」＝記録の対象
 - [Supabaseの認証URL](reference_supabase_auth_urls.md) — ★再設定メールは Site URL/Redirect URLs へ飛ぶ。独自ドメインを繋いだ日に同じ日に直す／TOTPは環境ごとに別登録
 - [PHP 脆弱性への版上げ（2026-10）](project_php_upgrade_202610.md) — 対象＝さくら vivid（4サイト）＋エックスサーバー（LSU）。★10/28 両サーバーとも 8.3.36（修正版）で稼働を実測＝作業不要
-- [行政ニュースの自動配信（構想）](project_gov_news_feed.md) — 11/12発案・厚労省RSS/jGrants/パブコメ★DBに集約→出口で出し分け（#8f077f）。見本v2済・#6ab3bb（DB置き場/出し方）待ち・NPO助成は別軸
+- [行政ニュースの自動配信（構想）](project_gov_news_feed.md) — 11/12発案・厚労省RSS/jGrants/パブコメ★Notion 📰行政ニュースDBに集約→Slackは分野ごと1投稿(#6ab3bb)。試運転中・cron前・NPO助成は別軸
