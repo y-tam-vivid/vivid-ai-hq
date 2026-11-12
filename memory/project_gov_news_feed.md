@@ -32,6 +32,8 @@ jGrants API・e-Gov パブコメの利用条件は未確認（社内用の段階
 **#8f077f（11/12 14:55 有璽氏・記述）**：①★項目（分野）ごとに分けて出したい ②★直接配信でなく、まずデータベースに集約→そこからSlack・メルマガ等へ配る形（Chatworkもそうなっているはず）③★1日1通のまとめでなく出し方を出し分けたい（件数が増えても）。
 → 毎朝まとめ1通の作りは不採用。
 **#6ab3bb（11/12 15:31 有璽氏）**：★集約DB＝Notionに新しいDB／★Slackは分野ごとに1投稿（その日の分野ごとのまとめ）／置き場は有璽氏DMのまま。
-**DB（11/12 作成）**：📰 行政ニュースDB https://app.notion.com/p/ea309f3404a543ca9d22ca57c630cfbd（親＝ビビッド業務管理・正本層）。★data_source_id＝`882bfb8e-d027-49c2-9000-fb1230252013`（database_id と別物）。mini の NOTION_TOKEN で読み書き可を実測。
-流れ：保存（元URLで重複を弾く）→ Slack未配信を分野ごとに notify.tell → 送れた行に「配信済み=Slack」。公開レベルは既定「内部限定」。`--no-post` で投稿せず標準出力。
+**★正本DB**：🏛️ 行政ニュース集約DB https://app.notion.com/p/4167b1568b578129babec9290a23dd2d（★有璽氏がSlack #s5dd414 で置き場を「情報発信 コンテンツ管理DB」に指定・フランキー作成）。data_source_id＝`4167b156-8b57-81ff-b42b-000b32d5ab32`（database_id と別物）。列：見出し・分野・重要度(3/2/1)・提供元・公開日・期限・収集日・要約・元URL・公開レベル・Slack/メルマガ/LINE配信済み（チェック）。mini の NOTION_TOKEN で読み書き可を実測。
+⛔ ビビッド業務管理の下の 📰行政ニュースDB（ea309f34…）は二重に作った廃止側（注記済み・削除しない）→ [[feedback_read_the_card_thread_before_acting]]
+流れ：保存（元URLで重複を弾く）→ Slack配信済み=未 の行を分野ごとに notify.tell → 送れた行にチェック。公開レベル既定「内部限定」。`--no-post` 投稿なし／`--deliver-only` 配るだけ。
+集約DBの見本24行（WAM NET由来2行を含む）はSlack未配信のまま＝初回の実行で5分野に分けて出る。
 **未決**：顧客向けの配信手段（LINE／Messenger／メール）。

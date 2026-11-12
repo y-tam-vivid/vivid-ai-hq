@@ -76,7 +76,7 @@
   `memory/{project_kakei_daicho,project_toc_customer_ledger,reference_dropdowns_prevent_value_sprawl}.md`
 
 ### 進行中（MacBookセッション記入）
-- **【ビビ / MacBook 2026-11-12】行政ニュースの自動配信（試作）** ── #d320a4：社内・Slack・府市ページ込み。✅11/12 見本v2をDMへ（60件→9件）。#8f077f＝まとめ1通は不採用・DBに集約→出し分け。✅#6ab3bb→Notion 📰行政ニュースDB作成・分野ごと配信に作り替え。▶試運転の確認→ステラ・ドーベルマン→cron。書く：mini `~/.vivid-relay/{gov_news.py,gov_news/}`（新規・cron未登録・自動投稿なし）。経緯 `memory/project_gov_news_feed.md`
+- **【ビビ / MacBook 2026-11-12】行政ニュースの自動配信（試作）** ── #d320a4：社内・Slack・府市ページ込み。✅11/12 見本v2をDMへ（60件→9件）。#8f077f＝まとめ1通は不採用・DBに集約→出し分け。✅#6ab3bb→分野ごと配信に作り替え。★集約先は有璽氏指定（#s5dd414）の🏛️行政ニュース集約DB（フランキー作成）に一本化・こちらで作った📰行政ニュースDBは⛔廃止。▶ステラ・ドーベルマン検査中→レジスタ行→cron 9:05。書く：mini `~/.vivid-relay/{gov_news.py,gov_news/}`（cron未登録）・集約DBの行。経緯 `memory/project_gov_news_feed.md`
   **★同じ対象に手をつけないでください**: mini `~/.vivid-relay/{gov_news.py,gov_news/}`
 - **【ビビ / MacBook 2026-10-30】議事録GAS：承認カードをやめて改名・移動を自動に** ── ✅GAS 変更（ステラ条件付き合格→直し済み）・✅溜まった PENDING 135件中134件を移動（1件はゴミ箱）。▶次に議事録が入った回で自動移動を実物で確かめる。③相手確認カードは名鑑の設計担当へ（引き継ぎ書 `scratchpad/handoff/2026-10-30_議事録GASの変更と名鑑側で引き取ること.md`・渡すのは有璽氏の手）
   **★同じ対象に手をつけないでください**: GAS「議事録自動整理スクリプト」の processFile／moveAndRename_／backlog*

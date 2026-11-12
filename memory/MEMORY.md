@@ -48,6 +48,7 @@
 - [問いを出したら待ち役を走らせる](project_ask_hub_push_decisions.md) — ★ask後は同じターンで待ち役を走らせる
 - [Slackの窓口はビビ・ビビは動かない](project_slack_command_center.md) — ★受けるのはビビ。受領と担当と目安を返して流す。作業は担当
 - [Slackは1件1スレッド](project_slack_command_center.md) — ★有璽氏がスレッドへ返した発言も拾う。返事も同じスレッドへ
+- [カードの答えで動く前にスレッドを読む](feedback_read_the_card_thread_before_acting.md) — ★11/12 置き場の指定を見落としDBを二重に作った
 - [Slackの件をClaude Codeで続ける](project_slack_command_center.md) — ★受付番号で呼ぶ。流れを読み、同じスレッドへ書き戻せる
 - [議事録の仕分けは全件人が承認](project_meeting_sort_card.md) — ★11/5有璽氏。AIは見立てを初期値にしたカードまで。自動確定はOFF
 - [議事録botのボタンはSocketが受ける](reference_slack_tokens_and_socket_mode.md) — ★10/30 mini slack_socketがGASへ転送。GAS応答200は成功の証拠でない
