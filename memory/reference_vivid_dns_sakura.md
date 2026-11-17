@@ -138,9 +138,10 @@ TTLだけ見て「5分で切り替わる」と言わない。
 
 ★さくら側の作法（エントリ名はサブドメイン部分だけ・データは末尾ドット）は変わらない。**変わるのは値だけ。**
 
-## 2026-11-17 Vercelの向け先は「API で取れる」── 画面を人に見せてもらわなくてよい
+## 2026-11-17 Vercelの向け先は `vercel domains verify` で取る（★v6/v7 の config API は当てにならない）
 
-- 接続ツール（MCP）が dontAsk で拒否されても、`npx --yes vercel api "/v6/domains/<名前>/config?projectIdOrName=<案件>" --scope fuku-chi-vivid` で読める（ログイン済み）
-- `recommendedCNAME` の rank1 が正。専用値がある案件は専用値が出る（kakei＝63241d…vercel-dns-016 で照合済み）
-- ★fukushi119-web／fukushi119-partners は rank1 が `cname.vercel-dns.com.` だけ（v6・v7 の2経路で一致）＝汎用値が正の案件もある
-- 名前の付け先も `vercel domains inspect <apex>` で見える（119系は11/6に付与済みだった）
+- 接続ツール（MCP）が dontAsk で拒否されても、ログイン済みの `npx --yes vercel ...` で読める
+- ★正しい取り方：`npx --yes vercel domains verify <名前> --project <案件> --scope fuku-chi-vivid` の `records[].value`
+- ⛔誤り：`vercel api /v6(/v7)/domains/<名前>/config` の rank1 は、★DNSが入る前は汎用 `cname.vercel-dns.com.` しか返さなかった
+  → 119系にそれを入れた。動くが、入れた後の verify で★専用値が出た（119＝3a78e88142f0a797…／119-partners＝ee6957219c051462….vercel-dns-016.com.）
+- 名前の付け先は `vercel domains inspect <apex>` で見える（119系は11/6に付与済みだった）
