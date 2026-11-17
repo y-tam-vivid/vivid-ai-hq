@@ -137,3 +137,10 @@ TTLだけ見て「5分で切り替わる」と言わない。
   **1経路で断定するな** → [[feedback_one_route_is_not_verification]]
 
 ★さくら側の作法（エントリ名はサブドメイン部分だけ・データは末尾ドット）は変わらない。**変わるのは値だけ。**
+
+## 2026-11-17 Vercelの向け先は「API で取れる」── 画面を人に見せてもらわなくてよい
+
+- 接続ツール（MCP）が dontAsk で拒否されても、`npx --yes vercel api "/v6/domains/<名前>/config?projectIdOrName=<案件>" --scope fuku-chi-vivid` で読める（ログイン済み）
+- `recommendedCNAME` の rank1 が正。専用値がある案件は専用値が出る（kakei＝63241d…vercel-dns-016 で照合済み）
+- ★fukushi119-web／fukushi119-partners は rank1 が `cname.vercel-dns.com.` だけ（v6・v7 の2経路で一致）＝汎用値が正の案件もある
+- 名前の付け先も `vercel domains inspect <apex>` で見える（119系は11/6に付与済みだった）

@@ -91,5 +91,6 @@
 - [インスタは毎回確認](feedback_ask_instagram_each_time.md) — 法人問わずレポートごとに「作るか／投稿までか」を聞く
 - [HUGの本日の様子](reference_hug_record_output.md) — ★受け取り→専用スクリプト。正本は00_System/19
 - [Workspaceのagentic](reference_workspace_agentic_oauth.md) — 11/11期限の通知は影響なし。既存クライアントに印を付けない(10/13決定)
+- [Vercelの向け先はAPIで取る](reference_vivid_dns_sakura.md) — ★npx vercel api /v6/domains/<名前>/config の rank1 が正。119系は汎用値が正(11/17)
 - [さくらはログインで鯖が替わる](feedback_sakura_cp_switches_server.md) — 書く前に初期ドメインで確認（10/13 団体側へ誤追加）
 - [芽育ラボの応募](project_orangeworks_portfolio_site.md) — ★送信は「送る」を押した分だけ(#79632e)。11/10 ランサーズ本人確認済／CWは審査待ち＝CWへ送らない
