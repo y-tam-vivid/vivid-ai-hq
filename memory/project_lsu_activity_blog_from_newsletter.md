@@ -56,3 +56,9 @@ URL       https://lsu-blog-review.vercel.app/  （Vercel lsu-blog-review／チ�
 - 反映：有璽氏がXサーバーのファイル管理で上書き。本番のハッシュ一致＋実ブラウザ表示で5/5確認（10/23）。元画像は lifestandup-wp 4b6ca3f の親
 - ★GitHubのテーマは9/10版で本番(9/14〜)と不一致＝zipを作り直して上げると直しが戻る。写真だけの上書きにした
 - ★旧サイトのページ（/trial・/company・/beginners-guide 等）がまだ200で見える。残すかは未判断
+
+## 写真（11/18 受領・反映）
+
+- 現場から58枚（Drive 1J9Pl2omW7iI8PGxJUekwJqGm1gXgyzx7 の part1/part2・ファイル名が〔写真〕枠の名前）。本文は現場OK
+- ★顔は既存ブログと同じ「笑顔スタンプ」（有璽氏 11/18。モザイクでは揃わない）。道具 lifestandup-wp/blog-review/stamp_faces.py
+- ★顔検出だけでは漏れる（横顔・マスク・眼鏡で8か所）＝全枚を目で見て手で足す。ポスターの絵に誤検出も出る
