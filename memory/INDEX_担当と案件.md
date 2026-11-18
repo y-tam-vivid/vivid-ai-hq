@@ -39,4 +39,4 @@
 - [家計台帳 実装側の013〜015](project_kakei_daicho_impl_013.md) — 10/8 ★リポジトリは ~/Downloads/家計台帳/kakei-daicho へ移動。開発用は013〜015適用済み・persons 0件。★設計担当の指示文がまだ実装側に無い
 - [医療連携システムの自社開発](project_iryo_renkei_system.md) — 10/10 cross-care.netをステーションの役割で調査済み・設計メモはscratchpad/iryo-renkei。運営者版・先に開発（弁護士確認は並行）。★現行への追加調査は凍結・調査メモは実装担当に渡さない
 - [福祉プラットフォーム（Claudeで操作）](project_fukushi_platform_claude_operated.md) — 11/18構想。アプリは別々・ポータルで紐付け・現場はClaudeから操作。★自社用/外販/D-Luca共同が未決
-- [施設運営の事業計画（ちはや子どもサポートを手本）](project_facility_bizplan_chihaya_benchmark.md) — 11/18 決算5期・第三者評価・国の人件費率(放デイ64%)まで済。先方R7は62.8%。次＝離職の裏取りか自社の数字(有璽氏が選ぶ)
+- [施設事業計画（ちはや手本）](project_facility_bizplan_chihaya_benchmark.md) — 11/18 分析済・人件費率62.8%/国64%。次＝離職裏取りか自社数字
