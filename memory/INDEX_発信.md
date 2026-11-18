@@ -134,7 +134,7 @@
 - [こどもステーション団体サイト](project_minamikawachi_kodomo_station_site.md) — ko-station.org 本番v46。Ad Grants審査待ち
 - [こどもSの沿革をPR資産に](project_kodomo_history_as_pr_asset.md) — ★10/22 有璽氏「沿革は強く厚く」＋ブログ・SNS・リリースのネタとしてストック。正本 Drive 05_…WEBサイト/09_沿革/（沿革_正本＋ネタ帳）。大東市は「出張版こどもまつり」（正式）
 - [こどもまつりのリリース](project_npo_press_kodomomatsuri_202610.md) — 告知は10/6配信済み。▶10/22 実施報告4種（Web v58未公開・Insta7枚・報告書PDF v1・リリース下書き）＝★数字は届いたら差し替え。★第37回は庁舎建て替え前の最後（再開は全体供用2031予定以降）。Instaは「声」シリーズを別に
-- [Google広告の作成画面](reference_google_ads_campaign_wizard.md) — 3キャンペーン稼働・表示0(10/16)。週次月次報告 ads_grants_report.py＋広告スクリプト。★スクリプト承認はシークレットで
+- [Google広告の作成画面](reference_google_ads_campaign_wizard.md) — 3本稼働・11/17 1週後も表示0（入札は原因でない）。語・地域の打ち手は有璽氏判断待ち #e0af3b。★出す前に過去の打ち手をgrep（11/17 済みの案を出した）。週次報告 ads_grants_report.py
 
 - [社畜メガネ→ポイ活案件サイト→資産形成](project_shachiku_poikatsu_funnel.md) — 10/23構想。★MNP・ROLEX・FX系は法務未確認＝載せる前に仕分け
 > ★**フォルダ番号の注記（2026-10-11）** ── このファイルに出てくる
