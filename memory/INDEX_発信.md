@@ -38,6 +38,7 @@
 - [LIFE STAND UP デモの掲載範囲とSNSリンク](project_lifestandup_website_wordpress.md) — ★9/5 有璽氏**デモのブログは5投稿でよい**（全件不要・既に5本）／⛔**IGリンクの「正解は本人にしか無い」は解消**＝9/6 有璽氏が`life.standup_official`を正と明示(life_stand_upは誤り)／**一覧が見える≠記事が開ける**
 - [LSU 記事の2系統](project_lifestandup_website_wordpress.md) — ★9/5 **ストック型(SEO)とフロー型を分ける**。実装せず案を出す／移送5本は「活動」／**URLは変えない**
 - [LSU 活動ブログ](project_lsu_activity_blog_from_newsletter.md) — 10/23 確認用 lsu-blog-review.vercel.app／実名・金額は載せない
+- [STAND UP ブログ写真の恒久ルール](feedback_lsu_blog_photo_rules.md) — 11/18 子=スタンプ/職員=顔出し/一般=モザイク・4枚は2×2・2枚は横並び
 - [LSU★オートレイアウト検証(sweep)](project_lifestandup_responsive_sweep.md) — 9/13 有璽氏の語=**「レスポンシブ／オートレイアウト」で統一**（言い換え禁止）。幅を連続で掃き崩れる帯を機械が名指し／代表5P・20px→2px2段階・崩れの定義=横あふれ+重なりのみ
 - [LIFE STAND UP 写真の運用](project_lifestandup_website_wordpress.md) — ★9/4 有璽氏「公開前なら一旦載せて後で差し替え」＝枠待ちをやめた／**★入れたら必ず目で見る。CSSの詳細度とショートハンドで写真が隠れる・切れる（実地2件）**／公開直前の確認2点＝全枠の○と板書の英文（英語スタッフ判定）
 - [LSU 正は仮公開サイト](project_lifestandup_website_wordpress.md) — ★9/6 有璽氏**仮公開の設計をもとにWPを構築する**＝**原本との1px差は不具合でない**／原本の飾りは意図でないことがある(トップ3枚のカテゴリ表記)／**Xはアカウント無し=共有ボタンを外す**／IG正=life.standup_official／**電話は現場負担=LINE/フォームを前へ**／**課金が要る手(地図API・IG実投稿)は実装せず案で止める**
