@@ -62,3 +62,10 @@ URL       https://lsu-blog-review.vercel.app/  （Vercel lsu-blog-review／チ�
 - 現場から58枚（Drive 1J9Pl2omW7iI8PGxJUekwJqGm1gXgyzx7 の part1/part2・ファイル名が〔写真〕枠の名前）。本文は現場OK
 - ★顔は既存ブログと同じ「笑顔スタンプ」（有璽氏 11/18。モザイクでは揃わない）。道具 lifestandup-wp/blog-review/stamp_faces.py
 - ★顔検出だけでは漏れる（横顔・マスク・眼鏡で8か所）＝全枚を目で見て手で足す。ポスターの絵に誤検出も出る
+
+## テーマとナビ（11/18 本番反映）
+
+- ★本番テーマの元は Drive の 9/14 版ZIP（GitHub の theme/ は 9/10 の古い版＝使わない）。11/18 に 0.2.3→0.2.5-20261118 まで上げた
+- コラム（スラッグ column）は名前を「お役立ち情報」に変え、/useful にも並ぶ（ブログ一覧にも残る）。バッジは lsu_flow_cat の 'column'→useful
+- ★一覧の列数は 外観→カスタマイズ→「一覧の列数（LIFE STAND UP）」で1〜3列（お役立ち情報＝既定2・お知らせ一覧＝既定1）。PC 861px以上だけ効く。/活動風景/ のカテゴリーページは対象外
+- ナビの お知らせ▾ に「お役立ち情報」（/useful）を追加＝Code Snippets #6。正本 bin/web_tracking/lsu_navdrop.html
