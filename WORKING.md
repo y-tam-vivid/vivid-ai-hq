@@ -161,6 +161,9 @@
 
 ## クラウド（claude.ai/code）セッション
 
+- **【リリス / クラウド 2026-11-18】LSU 活動ブログ「Halloween Party 2026!!」** ── 確認用 https://lsu-blog-review.vercel.app/halloween-2026/ に下書きとサムネイルを掲載。▶現場の確認（3つ目のゲーム名・写真）待ち
+  **★同じ対象に手をつけないでください**: Vercel `lsu-blog-review`／`~/lifestandup-wp/blog-review/`
+
 
 ## 触ってはいけないもの（両セッション共通）
 
