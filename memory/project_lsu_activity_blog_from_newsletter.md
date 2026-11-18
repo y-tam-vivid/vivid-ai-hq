@@ -69,3 +69,4 @@ URL       https://lsu-blog-review.vercel.app/  （Vercel lsu-blog-review／チ�
 - コラム（スラッグ column）は名前を「お役立ち情報」に変え、/useful にも並ぶ（ブログ一覧にも残る）。バッジは lsu_flow_cat の 'column'→useful
 - ★一覧の列数は 外観→カスタマイズ→「一覧の列数（LIFE STAND UP）」で1〜3列（お役立ち情報＝既定2・お知らせ一覧＝既定1）。PC 861px以上だけ効く。/活動風景/ のカテゴリーページは対象外
 - ナビの お知らせ▾ に「お役立ち情報」（/useful）を追加＝Code Snippets #6。正本 bin/web_tracking/lsu_navdrop.html
+- ★STAND UP は放課後等デイサービスのみ（児童発達支援は現在行っていない・有璽氏 11/18）。記事で「児発・放デイの事業所」と書かない。11/18 お役立ち情報2本を修正済み（何歳から何歳まで に注釈「小学生以上を対象に放デイ」）
