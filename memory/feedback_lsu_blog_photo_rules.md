@@ -41,3 +41,5 @@ metadata:
 - `~/lifestandup-wp/blog-review/`：stamp_faces.py（顔の処理）・face_roles.json（誰を出す/隠す）・wp/post_drafts.py（下書き投入）・wp/apply_layout_rule.py（並びを全記事へ・--dry で数えるだけ）
 - ★XサーバーはREST APIを国外IPから止めている＝投入の間だけ有璽氏が「国外IPアクセス制限」のREST APIをOFF→終わったらON。
 - ★/wp/v2/users はセキュリティプラグインが403にする。ログイン確認は posts?status=draft で行う。
+
+- 2026-11-20 ハロウィンで現場に確かめたスタッフ（顔出し）：白衣の方・Xavier先生・黒Tの方・魔女の帽子の方に加え、★猫耳の若い女性・ピエロの方・黒いパーカーの女性もスタッフ。ピンクのパーカーはお子さま（スタンプ）。判定の控え lifestandup-wp/blog-review/halloween2026_face_roles.json
