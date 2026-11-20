@@ -3,8 +3,9 @@ import os
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
 CAL = "https://calendar.app.google/c5aJoxPMVB5brw9b8"
-PARTNERS = "https://fukushi119-partners.vercel.app/"
-IRYO = "/iryo"  # 2026-11-20 サイト内のLPへ（旧 iryo.vivid-global.com）
+PARTNERS = "https://119-partners.fuku-chi.com/"
+SITE = "https://119.fuku-chi.com/"  # 本番URL（2026-11-06〜）
+IRYO = "/iryo"  # 2026-11-20 サイト内のLPへ（旧 iryo.vivid-global.com は /iryo へ転送）
 MAIL = "sales-consulting@vivid-global.com"
 # 計測セット（bin/web_tracking/snippet.html v2）。SB・GTM は自社共通、Clarity はこのサイト専用
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -17,6 +18,49 @@ for k, v in TRACK.items():
 
 NAV = [("index.html", "トップ"), ("service.html", "サービス"), ("price.html", "料金"),
        ("flow.html", "導入の流れ"), ("about.html", "わたしたち"), ("faq.html", "よくある質問")]
+
+
+
+# ===== 検索・AI検索・地図向けの共通部品（2026-11-20 SEO・AEO・MEO サイト側） =====
+import json, re as _re
+OG_IMAGE = SITE + "assets/photo/field-staff.jpg"
+ADDRESS = {"@type": "PostalAddress", "postalCode": "530-0001", "addressRegion": "大阪府", "addressLocality": "大阪市北区",
+           "streetAddress": "梅田1-1-3 大阪駅前第3ビル 29階", "addressCountry": "JP"}
+ORG = {"@type": "ProfessionalService", "@id": SITE + "#org", "name": "福祉施設の119番", "alternateName": "Welfare Facility Rescue Line",
+       "url": SITE, "logo": SITE + "assets/logo/119ban-logo-tight.jpg", "image": OG_IMAGE, "email": MAIL, "address": ADDRESS,
+       "areaServed": {"@type": "Country", "name": "日本"},
+       "description": "放課後等デイサービス・児童発達支援・就労継続支援の運営法人向けの経営支援サービス。施設運営の健康診断、遡及点検・是正支援、運営指導コンサル、BPO、RPO、医療連携体制構築支援。",
+       "knowsAbout": ["運営指導", "実地指導", "障害福祉サービス報酬", "加算の取得", "医療連携体制加算", "放課後等デイサービス", "児童発達支援", "就労継続支援"],
+       "parentOrganization": {"@type": "Organization", "name": "株式会社ビビッド", "alternateName": "ふくち。グループ", "address": ADDRESS}}
+
+def jsonld(obj):
+    return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False, separators=(",", ":")) + '</script>'
+
+def seo_meta(full, desc, url, image=None):
+    image = image or OG_IMAGE
+    return "\n".join([
+        '<meta property="og:type" content="website">', '<meta property="og:site_name" content="福祉施設の119番">',
+        '<meta property="og:locale" content="ja_JP">', f'<meta property="og:title" content="{full}">',
+        f'<meta property="og:description" content="{desc}">', f'<meta property="og:url" content="{url}">',
+        f'<meta property="og:image" content="{image}">', '<meta name="twitter:card" content="summary_large_image">'])
+
+def crumbs(items):
+    return {"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": i + 1, "name": n, "item": u} for i, (n, u) in enumerate(items)]}
+
+def strip_tags(t):
+    return _re.sub(r"<[^>]+>", "", t).strip()
+
+def page_ld(title, cur):
+    graph = [ORG]
+    if cur == "index.html":
+        graph.append({"@type": "WebSite", "@id": SITE + "#site", "name": "福祉施設の119番", "url": SITE, "inLanguage": "ja", "publisher": {"@id": SITE + "#org"}})
+    else:
+        graph.append(crumbs([("福祉施設の119番", SITE), (title, SITE + cur)]))
+    if cur == "faq.html":
+        graph.append({"@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": strip_tags(q), "acceptedAnswer": {"@type": "Answer", "text": strip_tags(a)}} for q, a in FAQ]})
+    return {"@context": "https://schema.org", "@graph": graph}
 
 
 def cal_btn(label, cta, cls="cta", extra=""):
@@ -33,9 +77,11 @@ def head(title, desc, cur):
 <!--TRACKING-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow">
 <title>{full}</title>
+<link rel="canonical" href="{SITE}{"" if cur == "index.html" else cur}">
 <meta name="description" content="{desc}">
+{seo_meta(full, desc, SITE + ("" if cur == "index.html" else cur))}
+{jsonld(page_ld(title, cur))}
 <link rel="icon" href="assets/logo/fukushi119_logo_symbol_fullcolor.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/site.css">
@@ -492,8 +538,46 @@ document.getElementById('cform').addEventListener('submit',function(e){{e.preven
 for fn, (title, desc, body) in PAGES.items():
     with open(os.path.join(OUT, fn), "w", encoding="utf-8") as f:
         f.write((head(title, desc, fn) + body + foot()).replace("<!--TRACKING-->", SNIPPET.strip(), 1))
-for name, text in {"robots.txt": "User-agent: *\nDisallow: /\n", ".vercelignore": "*.md\n*.bak*\n",
-                   "vercel.json": '{\n  "headers": [\n    { "source": "/(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ] }\n  ]\n}\n'}.items():
+# 検索に載せる（2026-11-06 有璽氏）。旧URL（vercel.app）は本番URLへ恒久リダイレクトし、そちらは検索に出さない
+LASTMOD = "2026-11-20"
+SITEMAP = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
+    f'  <url><loc>{SITE}{u}</loc><lastmod>{LASTMOD}</lastmod></url>\n' for u in ["" if fn == "index.html" else fn for fn in PAGES] + ["iryo"]) + '</urlset>\n'
+
+# AI検索向けの案内（llms.txt）。中身はページの title と description から作る
+LLMS = "# 福祉施設の119番\n\n> 放課後等デイサービス・児童発達支援・就労継続支援の運営法人向けの経営支援サービス。運営：株式会社ビビッド（ふくち。グループ、大阪市北区梅田）。\n\n## ページ\n" + "".join(
+    f"- [{t}]({SITE}{'' if fn == 'index.html' else fn}): {d}\n" for fn, (t, d, _) in PAGES.items()) + \
+    f"- [医療連携体制構築支援]({SITE}iryo): 医療連携体制加算の取得を、看護師の確保から医療機関との連携、書類の準備まで支援。初期費用0円。\n\n## 連絡先\n- 無料相談の予約: {CAL}\n- メール: {MAIL}\n"
+
+# /iryo（手で作られた1枚もの）へ、印の間だけを毎回差し替える
+IRYO_FILE = os.path.join(OUT, "iryo", "index.html")
+IRYO_URL = SITE + "iryo"
+def iryo_seo():
+    s = open(IRYO_FILE, encoding="utf-8").read()
+    s = s.replace('<meta name="robots" content="noindex">\n', "")
+    title = _re.search(r"<title>(.*?)</title>", s).group(1)
+    desc = _re.search(r'<meta name="description" content="(.*?)">', s).group(1)
+    faqs = _re.findall(r'<summary>(.*?)</summary>\s*<div class="a">(.*?)</div>', s, _re.S)
+    service = {"@type": "Service", "@id": IRYO_URL + "#service", "name": "医療連携体制構築支援", "serviceType": "医療連携体制加算の取得支援",
+               "description": desc, "url": IRYO_URL, "provider": {"@id": SITE + "#org"}, "areaServed": {"@type": "Country", "name": "日本"},
+               "audience": {"@type": "BusinessAudience", "audienceType": "障害福祉サービス事業所を運営する法人"}}
+    ld = {"@context": "https://schema.org", "@graph": [ORG, service, crumbs([("福祉施設の119番", SITE), ("医療連携体制構築支援", IRYO_URL)]),
+          {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": strip_tags(q), "acceptedAnswer": {"@type": "Answer", "text": strip_tags(a)}} for q, a in faqs]}]}
+    block = "<!--SEO-->\n" + f'<link rel="canonical" href="{IRYO_URL}">\n' + seo_meta(title, desc, IRYO_URL, SITE + "iryo/assets/medical-photo.jpg") + \
+            '\n<link rel="icon" href="/assets/logo/fukushi119_logo_symbol_fullcolor.svg" type="image/svg+xml">\n' + jsonld(ld) + "\n<!--/SEO-->\n"
+    s = _re.sub(r"<!--SEO-->.*?<!--/SEO-->\n", "", s, flags=_re.S)
+    a = s.index("<meta name=\"description\"")
+    a = s.index("\n", a) + 1
+    s = s[:a] + block + s[a:]
+    open(IRYO_FILE, "w", encoding="utf-8").write(s)
+iryo_seo()
+VERCEL = """{
+  "redirects": [
+    { "source": "/:path*", "has": [ { "type": "host", "value": "fukushi119-web.vercel.app" } ], "destination": "https://119.fuku-chi.com/:path*", "permanent": true }
+  ]
+}
+"""
+for name, text in {"robots.txt": f"User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n", ".vercelignore": "*.md\n*.bak*\n",
+                   "sitemap.xml": SITEMAP, "vercel.json": VERCEL, "llms.txt": LLMS}.items():
     with open(os.path.join(OUT, name), "w", encoding="utf-8") as f:
         f.write(text)
 print("wrote", len(PAGES), "pages")

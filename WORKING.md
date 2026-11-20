@@ -168,6 +168,11 @@
   ★`~/kodomo-photo-work/build_site.py` を2セッションで触る。公開は★必ず最新の番号から（いま v55・10/13 ボランティア応募ボタン）。直しの正本は `oct3_fixes.py` ほか `*_fixes.py`
   **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定／`~/kodomo-photo-work/{oct3_fixes,apply_oct3}.py`
 
+## クラウドセッション（claude.ai/code）
+
+- **【クラウド / 2026-11-20】119番サイト 119.fuku-chi.com を検索に載せる＋SEO・AEO・MEO(サイト側)** ── 書く：ブランチ `claude/trusting-planck-573l32` の `scratchpad/f119-site/`（★本番 fukushi119-web はこのブランチから出している・11/6の af8b5d9e を取り込む）。✅旧医療LP iryo.vivid-global.com は有璽氏の決定で全パス→/iryo へ308（dpl_FtYPhg2L…・戻すときは dpl_7XwAUr3W… を本番へ）。▶旧119番LP（さくら）の301は mini へ手順書
+  **★同じ対象に手をつけないでください**: Vercel fukushi119-web・fukushi119-iryo-lp の本番
+
 ## Claude Desktop セッション
 
 > 3つ目の面。SalesBreaker 関連のやり取りはここで行われている（2026-08-13 有璽氏）。
