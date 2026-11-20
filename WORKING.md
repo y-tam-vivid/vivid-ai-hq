@@ -170,7 +170,7 @@
 
 ## クラウドセッション（claude.ai/code）
 
-- **【クラウド / 2026-11-20】119番サイト 119.fuku-chi.com を検索に載せる＋SEO・AEO・MEO(サイト側)** ── 書く：ブランチ `claude/trusting-planck-573l32` の `scratchpad/f119-site/`（★本番 fukushi119-web はこのブランチから出している・11/6の af8b5d9e を取り込む）。✅旧医療LP iryo.vivid-global.com は有璽氏の決定で全パス→/iryo へ308（dpl_FtYPhg2L…・戻すときは dpl_7XwAUr3W… を本番へ）。▶旧119番LP（さくら）の301は mini へ手順書
+- **【クラウド / 2026-11-20】119番サイト 119.fuku-chi.com を検索に載せる＋SEO・AEO・MEO(サイト側)** ── 書く：ブランチ `claude/trusting-planck-573l32` の `scratchpad/f119-site/`（★本番 fukushi119-web はこのブランチから出している・11/6の af8b5d9e を取り込む）。✅旧医療LP iryo.vivid-global.com は有璽氏の決定で全パス→/iryo へ308（dpl_FtYPhg2L…・戻すときは dpl_7XwAUr3W… を本番へ）。✅11/20 本番を検索可に（dpl_4umvYScU…・noindex 0・構造化データ実測）。▶旧119番LP（さくら）の301＝手順書 `scratchpad/handoff/2026-11-20_旧119番LPを新サイトへ301.md`（mini で実行・渡すのは有璽氏）
   **★同じ対象に手をつけないでください**: Vercel fukushi119-web・fukushi119-iryo-lp の本番
 
 ## Claude Desktop セッション

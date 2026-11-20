@@ -80,7 +80,7 @@
       "cms": "静的HTML（nginx）・さくら 210.224.185.82",
       "clarity": "ysq969p6oj",
       "install_route": "さくら(vivid)ファイルマネージャー /home/vivid/www/fukushi119/index.html の <head> 直後（★編集画面は値をJSで変えただけだと保存されない→実キー入力を1回入れてから「保存」）",
-      "status": "Clarity 設置済（2026-10-08 実測で確認・旧表記は誤り）。★2026-10-08 SBタグ・共用GTM・クリックログ 設置済（index.html の Clarity の直後・控え ~/.vivid-relay/_backups/fukushi119_index_20261008.html）",
+      "status": "Clarity 設置済（2026-10-08 実測で確認・旧表記は誤り）。★2026-10-08 SBタグ・共用GTM・クリックログ 設置済（index.html の Clarity の直後・控え ~/.vivid-relay/_backups/fukushi119_index_20261008.html） ★2026-11-20 新サイト 119.fuku-chi.com を検索に載せた（有璽氏）。この旧LPは新サイトへ301する方針＝さくら側の作業は mini（scratchpad/handoff/2026-11-20_旧119番LPを新サイトへ301.md）",
       "gsc": {
         "property": "sc-domain:vivid-global.com",
         "page_contains": "://fukushi119.vivid-global.com"
@@ -91,6 +91,24 @@
       ],
       "log_label": "119番",
       "gtm": "GTM-PQX3L4TQ"
+    },
+    {
+      "name": "福祉施設の119番 Webサイト（本番）",
+      "url": "https://119.fuku-chi.com/",
+      "cms": "静的HTML 7ページ＋/iryo・Vercel（team fuku-chi-vivid／project fukushi119-web）",
+      "clarity": "z46d8rwt4j",
+      "gtm": "GTM-PQX3L4TQ",
+      "gsc": {
+        "property": "",
+        "page_contains": "://119.fuku-chi.com"
+      },
+      "brand": [
+        "119番",
+        "福祉施設の119"
+      ],
+      "log_label": "119番Webサイト",
+      "install_route": "scratchpad/f119-site/build.py が <!--TRACKING--> を snippet v2 に置換（/iryo は手で入れた同じ snippet）。公開は Vercel API の gitSource（ブランチ claude/trusting-planck-573l32・rootDirectory=scratchpad/f119-site/public）",
+      "status": "2026-11-20 検索に載せた（noindex解除・canonical・sitemap・llms.txt・構造化データ）。/iryo＝医療連携LP（旧 iryo.vivid-global.com は全パス308でここへ）。旧 fukushi119-web.vercel.app は308。★Search Console の登録とサイトマップ送信は未（property 未記入）"
     },
     {
       "name": "NPO法人 南河内こどもステーション",
