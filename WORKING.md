@@ -168,11 +168,6 @@
   ★`~/kodomo-photo-work/build_site.py` を2セッションで触る。公開は★必ず最新の番号から（いま v55・10/13 ボランティア応募ボタン）。直しの正本は `oct3_fixes.py` ほか `*_fixes.py`
   **★同じ対象に手をつけないでください**: さくらの DNS（ko-station.org）／Vercel のドメイン設定／`~/kodomo-photo-work/{oct3_fixes,apply_oct3}.py`
 
-## クラウドセッション（claude.ai/code）
-
-- **【クラウド / 2026-11-20】119番Webサイトに /iryo（医療連携LP）を追加** ── 書く：ブランチ `claude/trusting-planck-573l32` の `scratchpad/f119-site/`（本番 20752e8 の状態＋/iryo のみ）。▶プレビュー確認→有璽氏OK後に本番。★`claude/awesome-heisenberg-6b056m` の未公開 af8b5d9e（ドメイン移行・検索可）は混ぜていない
-  **★同じ対象に手をつけないでください**: Vercel fukushi119-web の本番昇格
-
 ## Claude Desktop セッション
 
 > 3つ目の面。SalesBreaker 関連のやり取りはここで行われている（2026-08-13 有璽氏）。
