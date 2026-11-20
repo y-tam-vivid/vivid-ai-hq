@@ -123,7 +123,9 @@ def head(title, desc, cur):
 <meta name="description" content="{desc}">
 {seo_meta(full, desc, SITE + ("" if cur == "index.html" else cur))}
 {jsonld(page_ld(title, cur))}
-<link rel="icon" href="assets/logo/fukushi119_logo_symbol_fullcolor.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/site.css">
 </head>
@@ -605,7 +607,7 @@ def iryo_seo():
     ld = {"@context": "https://schema.org", "@graph": [ORG, service, crumbs([("福祉施設の119番", SITE), ("医療連携体制構築支援", IRYO_URL)]),
           {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": strip_tags(q), "acceptedAnswer": {"@type": "Answer", "text": strip_tags(a)}} for q, a in faqs]}]}
     block = "<!--SEO-->\n" + f'<link rel="canonical" href="{IRYO_URL}">\n' + seo_meta(title, desc, IRYO_URL, SITE + "iryo/assets/medical-photo.jpg") + \
-            '\n<link rel="icon" href="/assets/logo/fukushi119_logo_symbol_fullcolor.svg" type="image/svg+xml">\n' + jsonld(ld) + "\n<!--/SEO-->\n"
+            '\n<link rel="icon" href="/favicon.ico" sizes="any">\n<link rel="icon" href="/favicon.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="/apple-touch-icon.png">\n' + jsonld(ld) + "\n<!--/SEO-->\n"
     s = _re.sub(r"<!--SEO-->.*?<!--/SEO-->\n", "", s, flags=_re.S)
     a = s.index("<meta name=\"description\"")
     a = s.index("\n", a) + 1
