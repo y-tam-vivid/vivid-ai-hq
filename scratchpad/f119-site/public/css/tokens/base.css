@@ -1,0 +1,5 @@
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:var(--font-sans);font-size:var(--fs-body);line-height:var(--lh-body);letter-spacing:var(--tr-body);-webkit-font-smoothing:antialiased}
+a{color:var(--text-link);text-decoration:underline;text-decoration-color:var(--border-line);text-underline-offset:4px;transition:color var(--dur-base) var(--ease-out)}
+a:hover{color:var(--text-link-hover);text-decoration-color:var(--f119-teal)}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
