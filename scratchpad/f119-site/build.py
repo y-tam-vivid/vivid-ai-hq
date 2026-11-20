@@ -146,7 +146,7 @@ def foot():
   <div class="wrap top">
     <div class="brand">
       <img src="assets/logo/119ban-logo-white-tight.jpg" alt="福祉施設の119番" width="190" height="40">
-      <p>障がい福祉施設（{SERVICES_MAIN} ほか）の運営法人さま向けの経営支援サービスです。<br>記載の金額はすべて税別です。</p>
+      <p>障がい福祉施設の運営法人さま向けの経営支援サービスです。<br>記載の金額はすべて税別です。</p>
       <p class="svc-types"><b>対応しているサービス</b>{"／".join(SERVICE_TYPES)}</p>
     </div>
     <div><h4>SITE MAP</h4><ul>{links}<li><a href="contact.html">無料相談・お問い合わせ</a></li></ul></div>

@@ -229,5 +229,5 @@ section[id]{scroll-margin-top:96px}
 .ftr .soon{background:rgba(255,255,255,.14);color:#fff}
 .nav .soon-link{color:var(--f119-navy);font-size:var(--fs-sm);letter-spacing:var(--tr-label);white-space:nowrap;opacity:.75}
 .btn.is-soon{cursor:default;opacity:.7;pointer-events:none}
-.ftr .svc-types{font-size:12px;line-height:1.9}
+.ftr .brand p.svc-types{font-size:12px;line-height:1.9}
 .ftr .svc-types b{display:block;color:#fff;font-weight:500;margin-bottom:2px}
