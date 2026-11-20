@@ -4,7 +4,7 @@ import os
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
 CAL = "https://calendar.app.google/c5aJoxPMVB5brw9b8"
 PARTNERS = "https://fukushi119-partners.vercel.app/"
-IRYO = "https://iryo.vivid-global.com/"
+IRYO = "/iryo"  # 2026-11-20 サイト内のLPへ（旧 iryo.vivid-global.com）
 MAIL = "sales-consulting@vivid-global.com"
 # 計測セット（bin/web_tracking/snippet.html v2）。SB・GTM は自社共通、Clarity はこのサイト専用
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -62,7 +62,7 @@ def foot():
     <div><h4>SITE MAP</h4><ul>{links}<li><a href="contact.html">無料相談・お問い合わせ</a></li></ul></div>
     <div><h4>RELATED</h4><ul>
       <li><a href="{PARTNERS}" data-cta="footer-partners">解決パートナー</a></li>
-      <li><a href="{IRYO}" target="_blank" rel="noopener">医療連携体制構築支援</a></li>
+      <li><a href="{IRYO}">医療連携体制構築支援</a></li>
       <li>運営：株式会社ビビッド（ふくち。グループ）</li>
       <li>大阪市北区梅田1-1-3 大阪駅前第3ビル 29階</li>
     </ul></div>
@@ -333,7 +333,7 @@ PAGES["service.html"] = ("サービス", "施設運営の健康診断・ドッ�
     <div class="eyebrow" style="margin-bottom:12px">FLOW ／ 導入開始までの流れ（最短約1か月）</div>
     {steps([("開始","契約締結",None,"ご契約後、準備に着手",""),("1〜2週目","利用者へのご説明",None,"同意書・アンケート回収（回収サポートあり）",""),("3週目","指示書の発行",None,"アンケート情報をもとに病院が各利用者分を発行",""),("4週目","面談・計画反映",None,"オンライン面談／個別支援計画へ反映",""),("完了","算定開始",None,"最短1か月ほどで準備が完了","")])}
   </div>
-  <div class="btnrow"><a class="btn secondary" href="{IRYO}" target="_blank" rel="noopener" data-cta="iryo-lp">医療連携体制構築支援の詳しいページへ</a></div>
+  <div class="btnrow"><a class="btn secondary" href="{IRYO}" data-cta="iryo-lp">医療連携体制構築支援の詳しいページへ</a></div>
 </div></section>
 {cta_section(cta="band-service")}
 ''')
