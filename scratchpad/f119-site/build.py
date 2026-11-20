@@ -7,6 +7,13 @@ PARTNERS = "https://119-partners.fuku-chi.com/"
 SITE = "https://119.fuku-chi.com/"  # 本番URL（2026-11-06〜）
 IRYO = "/iryo"  # 2026-11-20 サイト内のLPへ（旧 iryo.vivid-global.com は /iryo へ転送）
 MAIL = "sales-consulting@vivid-global.com"
+# 対応しているサービス種別（2026-11-20 有璽氏「障がい福祉施設全般いける」。SEOのため主要3種を先頭に）
+SERVICES_MAIN = "放課後等デイサービス・児童発達支援・就労継続支援"
+SERVICE_TYPES = ["放課後等デイサービス", "児童発達支援", "就労継続支援（A型・B型）", "就労移行支援", "就労定着支援", "生活介護",
+                 "共同生活援助（グループホーム）", "短期入所", "施設入所支援", "自立訓練（機能訓練・生活訓練）", "自立生活援助",
+                 "居宅介護", "重度訪問介護", "同行援護", "行動援護", "計画相談支援", "障害児相談支援", "保育所等訪問支援", "居宅訪問型児童発達支援"]
+# 解決パートナーは中身の確認中（2026-11-20 有璽氏）＝リンクを外して「準備中」と出す。公開するときは True にする
+PARTNERS_OPEN = False
 # 計測セット（bin/web_tracking/snippet.html v2）。SB・GTM は自社共通、Clarity はこのサイト専用
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TRACK = {"{{SB_TRACK_ID}}": "17e298ff-5e02-4630-a16d-0f4f25ede23a", "{{SB_TRACK_TOKEN}}": "8d63c4ed-05b5-4cd8-90cd-d1a8a89e947b",
@@ -29,8 +36,8 @@ ADDRESS = {"@type": "PostalAddress", "postalCode": "530-0001", "addressRegion": 
 ORG = {"@type": "ProfessionalService", "@id": SITE + "#org", "name": "福祉施設の119番", "alternateName": "Welfare Facility Rescue Line",
        "url": SITE, "logo": SITE + "assets/logo/119ban-logo-tight.jpg", "image": OG_IMAGE, "email": MAIL, "address": ADDRESS,
        "areaServed": {"@type": "Country", "name": "日本"},
-       "description": "放課後等デイサービス・児童発達支援・就労継続支援の運営法人向けの経営支援サービス。施設運営の健康診断、遡及点検・是正支援、運営指導コンサル、BPO、RPO、医療連携体制構築支援。",
-       "knowsAbout": ["運営指導", "実地指導", "障害福祉サービス報酬", "加算の取得", "医療連携体制加算", "放課後等デイサービス", "児童発達支援", "就労継続支援"],
+       "description": "障がい福祉施設（放課後等デイサービス・児童発達支援・就労継続支援ほか障害福祉サービス全般）の運営法人向けの経営支援サービス。施設運営の健康診断、遡及点検・是正支援、運営指導コンサル、BPO、RPO、医療連携体制構築支援。",
+       "knowsAbout": SERVICE_TYPES + ["運営指導", "実地指導", "障害福祉サービス報酬", "加算の取得", "医療連携体制加算", "放課後等デイサービス", "児童発達支援", "就労継続支援"],
        "parentOrganization": {"@type": "Organization", "name": "株式会社ビビッド", "alternateName": "ふくち。グループ", "address": ADDRESS}}
 
 def jsonld(obj):
@@ -63,13 +70,47 @@ def page_ld(title, cur):
     return {"@context": "https://schema.org", "@graph": graph}
 
 
+
+# ===== クリックの名前付け（2026-11-20 有璽氏「どこが押されたか見えるように」） =====
+# data-cta の無いリンクに「置き場所-行き先」の名前を付ける。計測セット v2 が GA4 と Clarity へ cta_click として送る。
+_REGIONS = [('<header', 'hdr'), ('<section class="hero"', 'hero'), ('<div class="stats"', 'body'), ('id="issue"', 'issue'),
+            ('<main', 'body'), ('id="overview"', 'body'), ('id="cta"', 'cta'), ('<footer', 'footer'), ('class="mbar"', 'mbar')]
+def _cta_key(tag):
+    href = (_re.search(r'href="([^"]*)"', tag) or [None, ""])[1]
+    cls = (_re.search(r'class="([^"]*)"', tag) or [None, ""])[1]
+    if "js-dl-file" in cls: return "dl-pdf"
+    if "js-mail-req" in cls: return "mail-req"
+    if "js-book" in cls: return "book"
+    if "js-dl" in cls: return "dl"
+    if "logo" in cls: return "logo"
+    if href.startswith("mailto:"): return "mail"
+    if href.startswith("tel:"): return "tel"
+    if href.startswith("#"): return href[1:] or "top"
+    if href.startswith("http"):
+        return "ext-" + _re.sub(r"[^a-z0-9]+", "-", href.split("//", 1)[-1].split("/")[0].lower()).strip("-")
+    base, _, frag = href.lstrip("/").partition("#")
+    base = base.replace(".html", "") or "index"
+    return base + ("-" + frag if frag else "")
+def name_ctas(html):
+    body_at = html.find("<body")
+    marks = sorted((html.find(m, body_at), r) for m, r in _REGIONS if html.find(m, body_at) >= 0)
+    def sub(mo):
+        tag = mo.group(0)
+        if "data-cta=" in tag or "href=" not in tag: return tag
+        region = "body"
+        for pos, r in marks:
+            if pos <= body_at + mo.start(): region = r
+        return tag[:-1] + f' data-cta="{region}-{_cta_key(tag)}">'
+    return html[:body_at] + _re.sub(r"<a\b[^>]*>", sub, html[body_at:])
+
 def cal_btn(label, cta, cls="cta", extra=""):
     return f'<a class="btn {cls}{extra}" href="{CAL}" target="_blank" rel="noopener" data-cta="{cta}">{label}</a>'
 
 
 def head(title, desc, cur):
     nav = "".join(f'<a href="{h}"{" aria-current=\"page\"" if h == cur else ""}>{t}</a>' for h, t in NAV)
-    nav += f'<a href="{PARTNERS}" class="ext" data-cta="nav-partners">解決パートナー</a>'
+    nav += (f'<a href="{PARTNERS}" class="ext" data-cta="nav-partners">解決パートナー</a>' if PARTNERS_OPEN
+            else '<span class="soon-link">解決パートナー<span class="soon">準備中</span></span>')
     full = "福祉施設の119番" if cur == "index.html" else f"{title}｜福祉施設の119番"
     return f'''<!doctype html>
 <html lang="ja">
@@ -103,11 +144,12 @@ def foot():
   <div class="wrap top">
     <div class="brand">
       <img src="assets/logo/119ban-logo-white-tight.jpg" alt="福祉施設の119番" width="190" height="40">
-      <p>放課後等デイサービス・児童発達支援・就労継続支援の運営法人さま向けの経営支援サービスです。<br>記載の金額はすべて税別です。</p>
+      <p>障がい福祉施設（{SERVICES_MAIN} ほか）の運営法人さま向けの経営支援サービスです。<br>記載の金額はすべて税別です。</p>
+      <p class="svc-types"><b>対応しているサービス</b>{"／".join(SERVICE_TYPES)}</p>
     </div>
     <div><h4>SITE MAP</h4><ul>{links}<li><a href="contact.html">無料相談・お問い合わせ</a></li></ul></div>
     <div><h4>RELATED</h4><ul>
-      <li><a href="{PARTNERS}" data-cta="footer-partners">解決パートナー</a></li>
+      <li>{f'<a href="{PARTNERS}" data-cta="footer-partners">解決パートナー</a>' if PARTNERS_OPEN else '解決パートナー<span class="soon">準備中</span>'}</li>
       <li><a href="{IRYO}">医療連携体制構築支援</a></li>
       <li>運営：株式会社ビビッド（ふくち。グループ）</li>
       <li>大阪市北区梅田1-1-3 大阪駅前第3ビル 29階</li>
@@ -170,7 +212,7 @@ CHECKS = ['個別支援計画の期限切れ', '計画の作成手順の不備',
           '加配加算の要件不備', '専門的支援加算の不備', '支援記録の記載漏れ', '自己評価の未公表', '契約・重説の書類不備']
 sc_buttons = "".join(f'<button type="button" aria-pressed="false" data-sc><span class="num">{i+1:02d}</span><span class="dot"></span><span>{c}</span></button>' for i, c in enumerate(CHECKS))
 
-PAGES["index.html"] = ("トップ", "放課後等デイサービス・児童発達支援・就労継続支援の運営法人さま向け。施設運営の健康診断を入口に、過去の是正と、これからの運営改善までを一体でご支援します。", f'''
+PAGES["index.html"] = ("トップ", "障がい福祉施設（放課後等デイサービス・児童発達支援・就労継続支援ほか）の運営法人さま向け。施設運営の健康診断を入口に、過去の是正と、これからの運営改善までを一体でご支援します。", f'''
 <section class="hero">
   <img class="bg" src="assets/photo/field-staff.jpg" alt="">
   <div class="scrim"></div>
@@ -241,7 +283,7 @@ PAGES["index.html"] = ("トップ", "放課後等デイサービス・児童発�
 <section class="sec"><div class="wrap promo">
   <div>
     {sh("PARTNERS", "119番では解けないお悩みも、解ける会社へ", "人・お金・現場・経営者ご自身のこと。施設経営のお悩みごとに、解決できる協力企業とその想いを紹介する「解決パートナー」を準備しています。ご相談の窓口は119番ひとつです。")}
-    <div class="btnrow" style="margin-top:0"><a class="btn secondary" href="{PARTNERS}" data-cta="promo-partners">解決パートナーを見る</a></div>
+    <div class="btnrow" style="margin-top:0">{f'<a class="btn secondary" href="{PARTNERS}" data-cta="promo-partners">解決パートナーを見る</a>' if PARTNERS_OPEN else '<span class="btn secondary is-soon" aria-disabled="true">解決パートナー<span class="soon">準備中</span></span>'}</div>
   </div>
   <div class="photo"><img src="assets/photo/partners.jpg" alt="施設経営者と協力企業の担当者が話し合う様子（イメージ）"><div class="cap-on">お悩みから、解ける会社へ</div></div>
 </div></section>
@@ -491,7 +533,7 @@ FAQ = [
     ("どのくらいの期間で結果が分かりますか？", "健康診断は最短2週間で、貴社の現在地をお返しします（事前書類調査 約1週間／報告書納品・報告会 約1週間）。"),
     ("新しく資料を作る必要はありますか？", "ありません。既存の書類だけで結構です。"),
     ("何を点検しますか？", "人員基準・運営基準・報酬請求の3領域、計120項目超を、自治体の点検表に準拠して確認します。"),
-    ("対象となるサービス種別は？", "放課後等デイサービス・児童発達支援・就労継続支援を運営する法人さまを対象としています。"),
+    ("対象となるサービス種別は？", "障害福祉サービス全般を運営する法人さまが対象です。放課後等デイサービス・児童発達支援・就労継続支援のほか、生活介護、共同生活援助（グループホーム）、就労移行支援、相談支援、居宅介護なども対応しています。"),
     ("加算の提案は別料金ですか？", "加算のご提案は健康診断の費用に含まれます。届出・要件整備の実行支援のみ、別途お見積りです。"),
     ("過去の記録が足りない場合、作成してもらえますか？", "支援記録・個別支援計画の後付け作成や、事実と異なる書類の作成は行いません。既存の事実・記録にもとづいて、不備の洗い出し・是正可能な範囲の整理・自主点検報告書の作成支援などを行います。"),
     ("料金は税込ですか？", "記載の金額はすべて税別です。"),
@@ -537,14 +579,14 @@ document.getElementById('cform').addEventListener('submit',function(e){{e.preven
 
 for fn, (title, desc, body) in PAGES.items():
     with open(os.path.join(OUT, fn), "w", encoding="utf-8") as f:
-        f.write((head(title, desc, fn) + body + foot()).replace("<!--TRACKING-->", SNIPPET.strip(), 1))
+        f.write(name_ctas((head(title, desc, fn) + body + foot()).replace("<!--TRACKING-->", SNIPPET.strip(), 1)))
 # 検索に載せる（2026-11-06 有璽氏）。旧URL（vercel.app）は本番URLへ恒久リダイレクトし、そちらは検索に出さない
 LASTMOD = "2026-11-20"
 SITEMAP = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
     f'  <url><loc>{SITE}{u}</loc><lastmod>{LASTMOD}</lastmod></url>\n' for u in ["" if fn == "index.html" else fn for fn in PAGES] + ["iryo"]) + '</urlset>\n'
 
 # AI検索向けの案内（llms.txt）。中身はページの title と description から作る
-LLMS = "# 福祉施設の119番\n\n> 放課後等デイサービス・児童発達支援・就労継続支援の運営法人向けの経営支援サービス。運営：株式会社ビビッド（ふくち。グループ、大阪市北区梅田）。\n\n## ページ\n" + "".join(
+LLMS = "# 福祉施設の119番\n\n> 障がい福祉施設（放課後等デイサービス・児童発達支援・就労継続支援ほか障害福祉サービス全般）の運営法人向けの経営支援サービス。運営：株式会社ビビッド（ふくち。グループ、大阪市北区梅田）。\n\n## ページ\n" + "".join(
     f"- [{t}]({SITE}{'' if fn == 'index.html' else fn}): {d}\n" for fn, (t, d, _) in PAGES.items()) + \
     f"- [医療連携体制構築支援]({SITE}iryo): 医療連携体制加算の取得を、看護師の確保から医療機関との連携、書類の準備まで支援。初期費用0円。\n\n## 連絡先\n- 無料相談の予約: {CAL}\n- メール: {MAIL}\n"
 
@@ -568,7 +610,8 @@ def iryo_seo():
     a = s.index("<meta name=\"description\"")
     a = s.index("\n", a) + 1
     s = s[:a] + block + s[a:]
-    open(IRYO_FILE, "w", encoding="utf-8").write(s)
+    s = _re.sub(r' data-cta="[^"]*"', "", s)  # 元の1枚ものに名前は無い＝毎回付け直す
+    open(IRYO_FILE, "w", encoding="utf-8").write(name_ctas(s))
 iryo_seo()
 VERCEL = """{
   "redirects": [

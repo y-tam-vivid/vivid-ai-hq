@@ -223,3 +223,11 @@ textarea.input{resize:vertical}
 .ftr .bottom .id .sep{opacity:.4;margin:0 8px}
 .ftr .bottom .c{font-size:var(--fs-cap);color:var(--text-on-dark-muted)}
 section[id]{scroll-margin-top:96px}
+
+/* 準備中の表示（2026-11-20 解決パートナー） */
+.soon{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:2px;font-size:11px;letter-spacing:.06em;line-height:1.6;background:var(--f119-sand);color:var(--f119-navy);vertical-align:middle;white-space:nowrap}
+.ftr .soon{background:rgba(255,255,255,.14);color:#fff}
+.nav .soon-link{color:var(--f119-navy);font-size:var(--fs-sm);letter-spacing:var(--tr-label);white-space:nowrap;opacity:.75}
+.btn.is-soon{cursor:default;opacity:.7;pointer-events:none}
+.ftr .svc-types{font-size:12px;line-height:1.9}
+.ftr .svc-types b{display:block;color:#fff;font-weight:500;margin-bottom:2px}
