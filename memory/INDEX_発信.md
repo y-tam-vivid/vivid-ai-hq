@@ -14,6 +14,7 @@
 - [有璽個人IGの運用](project_yuji_personal_ig_operation.md) — ★週次の定例／画像の在庫3系統／本文200〜215字／**Notionの投稿アーカイブに素材画像列＋「未投稿の在庫」ギャラリーを新設(日付は入れず画像で選ぶ)**／9/11でカルーセル在庫が尽きる
 - [テイストは素材ではない](feedback_taste_is_not_a_sticker.md) — 「型×テイスト」だけでは採用案の画像が貼り込まれる。表紙案を採ったら2枚目以降も同時に決める／完成後は全枚めくる
 - [119番の投稿標準型](project_f119_post_standard.md) — ★Manus停止中(〜8/25 08:00)。差し戻し送信済で復旧待ち／見本はI-03/01とI-04/05
+- [119番 公開サイトの作り方](project_f119_public_site.md) — ★正本は scratchpad/f119-site/build.py。public/ の HTML は生成物（直すと次の build で消える）／PARTNERS_OPEN=False で解決パートナーは準備中／現在地は WORKING.md
 - [型でなく構図](feedback_type_is_not_layout.md) — 単調なら構図のレバーを増やす／検算は全点並べる／**★3回目=別レイアウトの在庫があるのに1系統だけ使っていた。定例作業ほど同じ引き出しを開き続ける**
 - [Manus APIの実測挙動](reference_manus_api_behaviors.md) — 添付不可＝Driveリンク／`stopped`は完了と中断を区別しない
 - [広報PRモルガンズ](project_pr_agent.md) — agents/pr.md。資料ベースで設計・実送信は承認後。露出モードはpr-playbook.md準拠
