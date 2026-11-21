@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/:path*", "has": [ { "type": "host", "value": "fukushi119-web.vercel.app" } ], "destination": "https://119.fuku-chi.com/:path*", "permanent": true }
+  ]
+}

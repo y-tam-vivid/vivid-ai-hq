@@ -1,0 +1,41 @@
+/* 福祉施設の119番 — 色（CI／VIデザイン仕様書 v1.0 4章）。ふくち。本体の色は使わない */
+:root{
+--f119-navy:#0E2A47;        /* PRIMARY 見出し・濃色面・結論の帯・表ヘッダー */
+--f119-teal:#1C7293;        /* SECONDARY 英字小見出し・リンク・ラベル面 */
+--f119-sky:#57A6C9;         /* SUB 図版の階調・色帯3番目のみ。文字色／白文字の面に使わない */
+--f119-orange:#E2733B;      /* ACCENT ロゴ・色帯4番目・短い棒・18.66px太字以上のボタン */
+--f119-orange-solid:#B85A2A;/* 白文字を載せるオレンジ面・白地の小さなオレンジ文字（白比4.63）。確認待ち */
+--f119-sand:#F4F1EA;        /* BASE カード・パネルの面 */
+--f119-white:#FFFFFF;       /* ページの地 */
+--f119-ink:#1E2A33;         /* 本文 */
+--f119-sub:#5C6B73;         /* 補足・キャプション */
+--f119-line:#D8DEE2;        /* 区切り・枠。文字色に使わない */
+/* 状態色（追加・確認待ち） */
+--f119-navy-hover:#0A2038;
+--f119-teal-hover:#165C77;
+--f119-orange-solid-hover:#9F4D24;
+--f119-on-dark-muted:#C9D3DD;
+/* 色帯の順番 */
+--f119-band-1:var(--f119-navy);
+--f119-band-2:var(--f119-teal);
+--f119-band-3:var(--f119-sky);
+--f119-band-4:var(--f119-orange);
+/* セマンティック */
+--text-strong:var(--f119-navy);
+--text-body:var(--f119-ink);
+--text-muted:var(--f119-sub);
+--text-on-dark:var(--f119-white);
+--text-on-dark-muted:var(--f119-on-dark-muted);
+--text-accent:var(--f119-orange-solid);
+--text-link:var(--f119-teal);
+--text-link-hover:var(--f119-navy);
+--surface-page:var(--f119-white);
+--surface-panel:var(--f119-sand);
+--surface-inverse:var(--f119-navy);
+--border-line:var(--f119-line);
+--border-strong:var(--f119-navy);
+--accent-cta:var(--f119-orange-solid);
+--accent-cta-hover:var(--f119-orange-solid-hover);
+--accent-cta-large:var(--f119-orange);
+--focus-ring:var(--f119-navy);
+}

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://119.fuku-chi.com/sitemap.xml
