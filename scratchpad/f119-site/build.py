@@ -6,7 +6,7 @@ CAL = "https://calendar.app.google/c5aJoxPMVB5brw9b8"
 PARTNERS = "https://119-partners.fuku-chi.com/"
 SITE = "https://119.fuku-chi.com/"  # 本番URL（2026-11-06〜）
 IRYO = "/iryo"  # 2026-11-20 サイト内のLPへ（旧 iryo.vivid-global.com は /iryo へ転送）
-MAIL = "sales-consulting@vivid-global.com"
+MAIL = "119.fuku-chi@vivid-global.com"  # 119番窓口（Workspace グループ・2026-11-21〜）
 # 対応しているサービス種別（2026-11-20 有璽氏「障がい福祉施設全般いける」。SEOのため主要3種を先頭に）
 SERVICES_MAIN = "放課後等デイサービス・児童発達支援・就労継続支援"
 SERVICE_TYPES = ["放課後等デイサービス", "児童発達支援", "就労継続支援（A型・B型）", "就労移行支援", "就労定着支援", "生活介護",
