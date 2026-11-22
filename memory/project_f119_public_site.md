@@ -12,6 +12,7 @@ metadata:
 - `public/` の HTML だけを直すと、次に build.py を回した時点で消える。
 - 出力先は `OUT = <build.py と同じ場所>/public`（build.py:4）。`/iryo` は `public/iryo/index.html`（build.py:596）。
 - 全リンクのクリック名（`data-cta`）は `name_ctas()` が毎回付ける（build.py:94）。手で付けた名前も上書きされる。
+- 問い合わせ先は build.py の `MAIL` 定数（119番窓口の Workspace グループ `119.fuku-chi@vivid-global.com`・2026-11-21〜）。contact・about・構造化データ・llms.txt に出るので、変えるなら定数を1か所だけ変えて build する（public/ を直接書き換えない）。
 
 **スイッチ**
 - `PARTNERS_OPEN = False`（build.py:16）：解決パートナーは「準備中」表示。公開するときだけ True。
