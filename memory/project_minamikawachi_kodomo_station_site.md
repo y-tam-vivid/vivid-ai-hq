@@ -452,3 +452,4 @@ metadata:
 - ✅**2026-11-24 Instagram 2本を stationkodomo に投稿**（有璽氏がChromeを団体アカウントへ切替済み）：①冬の行事チラシ5枚 https://www.instagram.com/stationkodomo/p/DgGmTGIkT8N/ ②12月の予定表3枚 https://www.instagram.com/stationkodomo/p/DgGmyw0EfrB/（予定はサイトの data/schedule から計算＝サイトと同じ中身・生成 `~/kodomo-photo-work/ig_winter_v2.py`）。どちらも本文一致を投稿ページで確認
   ★投稿の型：作成→投稿→file_upload（JPEG）→切り取りで4:5を選ぶ（既定は1:1で上下が切れる）→次へ×2→本文→シェア
   ▶冬の行事 v2（チラシを貼らず写真＋要点で作り直し・6枚）は Drive `20261124_冬の行事_v2_作り直し`・★未投稿。もちつきの写真（photo-mochitsuki.jpg）は顔がぼかし無し＝出す前に有璽氏の判断（#下のカード）
+  ✅11/24 有璽氏「一先ず今のInstagram投稿の画像のままで掲載続けます」＝v2（作り直し6枚）は投稿しない・Driveに保管のみ（#2f4248 は答えなしで閉じた扱い）。もちつき写真の顔ぼかしも未着手のまま
