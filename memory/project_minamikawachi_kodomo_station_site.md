@@ -449,3 +449,6 @@ metadata:
   ★予定表の更新のしかた＝data/schedule/YYYY-MM.json に「定例との差」だけ書く（add/skip/override/features）＋index.json に月を足す
 - ✅**2026-11-24 v61 本番公開**（有璽氏「TOPページのお知らせなども更新して」）：トップのお知らせ欄を4件（12月予定表／芋煮会／とんど／もちつき）に、こどもまつりの紹介文を「10/18…開きました」に。正本 `~/kodomo-photo-work/top_fixes_1124.py`（★build_site.NEWS_TOP の10月版より新しい＝次の作り直しはこちらを正に）。実測：index/news/schedule が v61 と md5 一致
   ★お知らせの番号（news.html#news-N）は先頭に足すとずれる。トップのリンクは足した後の番号で書く。他ページから #news-N へのリンクは index だけ（11/24 grep）
+- ✅**2026-11-24 Instagram 2本を stationkodomo に投稿**（有璽氏がChromeを団体アカウントへ切替済み）：①冬の行事チラシ5枚 https://www.instagram.com/stationkodomo/p/DgGmTGIkT8N/ ②12月の予定表3枚 https://www.instagram.com/stationkodomo/p/DgGmyw0EfrB/（予定はサイトの data/schedule から計算＝サイトと同じ中身・生成 `~/kodomo-photo-work/ig_winter_v2.py`）。どちらも本文一致を投稿ページで確認
+  ★投稿の型：作成→投稿→file_upload（JPEG）→切り取りで4:5を選ぶ（既定は1:1で上下が切れる）→次へ×2→本文→シェア
+  ▶冬の行事 v2（チラシを貼らず写真＋要点で作り直し・6枚）は Drive `20261124_冬の行事_v2_作り直し`・★未投稿。もちつきの写真（photo-mochitsuki.jpg）は顔がぼかし無し＝出す前に有璽氏の判断（#下のカード）
