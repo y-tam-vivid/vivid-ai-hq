@@ -58,6 +58,7 @@
 - [記録を書くが読んでいない](reference_delivered_but_unread.md) — **★定説は無い＝輸入でなく自前で実測。作る前に数える・「無いから作る」禁止**
 - [届いていても読まれない](reference_delivered_but_unread.md) — 長い文書は埋もれる。起動直前に関係する行だけ4行出す／**★2026-08-24 フックは正しく鳴ったのにこちらが読まず、決着済みの議論(Z列確認欄のSlack運用)を蒸し返した。出力を増やす方向で直さない**
 - [止めるのはフック](reference_hooks_enforce_what_discipline_cannot.md) — ★9/5 役割検問がmini担当セッションを誤検出(agent_id無=ビビと断定)
+- [発言ログに貼り付けが混ざる](reference_utterance_log_takes_pastes.md) — ★11/23 貼り付けの雛形が発言欄に入った。発言扱いの前に出どころを確かめる
 - [作って繋いで動かし続ける](reference_make_it_impossible_not_detectable.md) — 🔴9/14「機械化」23回中動いてたのは1本。①作②繋③発火を実測
 - [検出でなく不可能にする](reference_make_it_impossible_not_detectable.md) — ★1975年に結論済＝検出型は原理的に不完全／**★対策は層をまたいで用意する（検知・予防・解除）。検知だけでは止まる回数は1回も減らない**／★記録は再発を止めない＝入口に検問を置く（全部本文へ）
 - [規範95枚に止める機械は4つ](reference_norms_outnumber_their_enforcement.md) — **★在るのに効かない穴＝新しい検問を足したら同じターンで毎朝の点検CASESにも足す。★規範の変更とお金はいまもaskに無い（全部本文へ）**
