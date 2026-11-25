@@ -173,6 +173,9 @@
 - **【クラウド / 2026-11-20】119番サイト 119.fuku-chi.com（検索公開・/iryo・クリック名・解決パートナー準備中）** ── ✅本番 dpl_4jq2R7KT…（commit 1607532・main にも反映）。★本番 fukushi119-web は `scratchpad/f119-site/` を gitSource で出す（作業ブランチ claude/trusting-planck-573l32＝main と同じ）。✅旧医療LP iryo.vivid-global.com→/iryo 308（戻すときは dpl_7XwAUr3W… を本番へ）。▶残：①旧119番LP（さくら）の301＝手順書 `scratchpad/handoff/2026-11-20_旧119番LPを新サイトへ301.md`（mini）②Clarity の API 鍵 z46d8rwt4j を mini の clarity_tokens.json へ（有璽氏）③GTM-PQX3L4TQ に cta_click→GA4 のタグが無い（dataLayer と Clarity には届く・GA4 には届かない＝全サイト共通・リリスの持ち物）
   **★同じ対象に手をつけないでください**: Vercel fukushi119-web・fukushi119-iryo-lp の本番／`scratchpad/f119-site/build.py`
 
+- **【クラウド / 2026-11-26】顧客情報の更新提案（設計 Notion 4237b156…）** ── 書く：受付シート 1XCqGDG1… に新タブ「更新提案」（★受付タブは触らない）。mini の meeting_sort.py / intake_register.py の拡張は★このクラウドから届かないため差分案を `scratchpad/handoff/` に置くだけ（適用は mini のセッション）
+  **★同じ対象に手をつけないでください**: 受付シートの「更新提案」タブ
+
 ## Claude Desktop セッション
 
 > 3つ目の面。SalesBreaker 関連のやり取りはここで行われている（2026-08-13 有璽氏）。
