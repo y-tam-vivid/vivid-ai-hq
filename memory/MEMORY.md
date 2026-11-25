@@ -84,7 +84,7 @@
 - [シェルは全角の直前で落ちる](reference_shell_fullwidth_paren_breaks_var.md) — 変数は${VAR}。★埋め込みPythonは取り出してpy_compile
 - [Obsidian Core_Brainが動的正本](project_obsidian_core_brain.md) — 00_Systemを毎ターン@import／10_Skills_RepositoryはSync対象外
 - [ツールの使い分け](project_tool_roles_and_adoption.md) — Obsidian=机・Notion=本棚。★有璽氏が普段見るのはObsidian（10/8）
-- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — ★11/19再開。ガード停止は目印だけ外れた行が原因＝同名行に目印を付け直す（流すと二重作成）。[x]は完了日の翌日に移る
+- [Current_Focus⇄Notion同期](project_notion_focus_sync.md) — ★11/25 08:27まで大量消失ガードが毎回見送り（目印5件消失・原因未確認）。目印は同名行へ付け直す（流すと二重作成）。[x]は完了日の翌日に移る
 - [[x]が消えない＝目印の重複](project_notion_focus_sync.md) — ★同期が同名の新行へ既存の目印を付けていた。10/27修正・両行凍結
 - [仮称を識別子に入れない](reference_provisional_name_isolate_identifiers.md) — 識別子は役割で付ける。置換は数えてから
 - [インスタのハイライトカバー](reference_instagram_highlight_cover.md) — ★縁の丸を画像の幅いっぱいに。縁は消さない
