@@ -93,4 +93,4 @@
 - [Workspaceのagentic](reference_workspace_agentic_oauth.md) — 11/11期限の通知は影響なし。既存クライアントに印を付けない(10/13決定)
 - [Vercelの向け先はverifyで取る](reference_vivid_dns_sakura.md) — ★npx vercel domains verify の records が正。config APIは入る前だと汎用値しか出ない(11/17)
 - [さくらはログインで鯖が替わる](feedback_sakura_cp_switches_server.md) — 書く前に初期ドメインで確認（10/13 団体側へ誤追加）
-- [芽育ラボの応募](project_orangeworks_portfolio_site.md) — ★送信は「送る」を押した分だけ(#79632e)。11/10 ランサーズ本人確認済／CWは審査待ち＝CWへ送らない
+- [芽育ラボの応募](project_orangeworks_portfolio_site.md) — ★11/25 承認60件が未送信(送りが人の一言待ち)。有璽氏:数を増やす・全自動可
