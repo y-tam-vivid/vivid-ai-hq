@@ -31,6 +31,11 @@ ALLOWED = {
     "00_企業マスタ": ["会社名かな", "法人番号", "電話番号", "都道府県", "市区町村", "住所", "URL",
                       "事業ライン", "サービス種別", "備考"],
 }
+# 選択肢がある列（90_選択肢マスタ 2026-11-26 実測）。ここに無い値は「要確認のみ」に落とす（値の散らばりを作らない）
+OPTIONS = {
+    "事業ライン": {"福祉施設", "補助金・助成金", "toC"},
+    "サービス種別": {"放課後等デイサービス", "児童発達支援", "就労継続支援A型", "就労継続支援B型", "就労移行支援", "その他"},
+}
 # 人が決める列。提案は「要確認のみ」でしか出さない（値は台帳へ入れない）
 CONFIRM_ONLY = {"関係区分_顧客", "関係区分_パートナー", "関係区分_見込み客"}
 # 何があっても提案しない列
@@ -93,6 +98,8 @@ def classify(column: str, current: str, fact: Fact) -> tuple[str, str] | None:
         return None
     if column in CONFIRM_ONLY:
         return TYPE_CONFIRM, ""
+    if column in OPTIONS and fact.value not in OPTIONS[column]:
+        return TYPE_CONFIRM, ""
     if not str(current or "").strip():
         return TYPE_FILL, fact.value
     if fact.certainty == SURE:
@@ -120,7 +127,8 @@ def build_rows(ctx: Context, ledger_row: dict[str, str], facts: Iterable[Fact],
         kind, value = got
         evidence = f.evidence[:60]
         if kind == TYPE_CONFIRM and f.value and f.column not in CONFIRM_ONLY:
-            evidence = f"候補「{f.value}」（推定のため値は入れない）／{evidence}"
+            why = "選択肢に無い値" if f.column in OPTIONS and f.value not in OPTIONS[f.column] else "推定での書き換え"
+            evidence = f"候補「{f.value}」（{why}のため値は入れない）／{evidence}"
         row = [""] * len(HEADERS)
         row[COL["提案日時"]] = stamp
         row[COL["提案元"]] = ctx.source

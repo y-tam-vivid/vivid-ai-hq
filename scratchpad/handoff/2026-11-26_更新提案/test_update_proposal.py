@@ -45,6 +45,15 @@ class Classify(unittest.TestCase):
         self.assertEqual(col(rows[0], "種別"), up.TYPE_CONFIRM)
         self.assertEqual(col(rows[0], "提案する値"), "")
 
+    def test_value_outside_options_becomes_confirm_only(self):
+        rows = up.build_rows(CTX, ROW_B0408, [up.Fact("サービス種別", "多機能型（児発＋放デイ）", "x")], NOW)
+        self.assertEqual(col(rows[0], "種別"), up.TYPE_CONFIRM)
+        self.assertEqual(col(rows[0], "提案する値"), "")
+
+    def test_value_in_options_fills(self):
+        rows = up.build_rows(CTX, ROW_B0408, [up.Fact("事業ライン", "福祉施設", "x")], NOW)
+        self.assertEqual(col(rows[0], "種別"), up.TYPE_FILL)
+
     def test_sensitive_minutes_produce_nothing(self):
         ctx = up.Context(**{**CTX.__dict__, "sensitive_flag": "法的紛争"})
         self.assertEqual(up.build_rows(ctx, ROW_B0408, [up.Fact("URL", "https://a", "x")], NOW), [])
